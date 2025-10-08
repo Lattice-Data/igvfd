@@ -47,7 +47,7 @@ def acl_from_settings(settings):
 class IGVFRoot(Root):
     properties = {
         'title': 'Home',
-        'portal_title': 'IGVF',
+        'portal_title': 'Lattice',
     }
 
     @reify
