@@ -1,8 +1,11 @@
 [
     {
-	"institute_label": "Stanford",
-	"name":
-	"pi": "tklein@stanford.edu",
-	"uuid": "ffdd233e-57b8-486c-9bb4-c33b8daf7b06"
+        "awards": [
+            "CZIBCP"
+        ],
+        "institute_label": "Stanford",
+        "name": "teri-klein",
+        "pi": "tklein@stanford.edu",
+        "uuid": "ffdd233e-57b8-486c-9bb4-c33b8daf7b06"
     }
 ]

@@ -76,5 +76,19 @@
             "/labs/teri-klein/"
         ],
         "uuid": "a2b75182-21bc-4f2b-a090-3394feeca1be"
+    },
+    {
+        "email": "tklein@stanford.edu",
+        "first_name": "Teri",
+        "job_title": "Principal Investigator",
+        "lab": "/labs/teri-klein/",
+        "last_name": "Klein",
+        "groups": [
+            "verified"
+        ],
+        "submits_for": [
+            "/labs/teri-klein/"
+        ],
+        "uuid": "860c4750-8d3c-40f5-8f2c-90c5e5d19e89"
     }
 ]
