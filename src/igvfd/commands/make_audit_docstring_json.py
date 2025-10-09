@@ -31,29 +31,6 @@ NON_AUDIT_FUNCTION_NAMES = [
 ]
 
 AUDIT_MODULES_TO_PROCESS = [
-    igvfd.audit.analysis_set,
-    igvfd.audit.auxiliary_set,
-    igvfd.audit.biosample,
-    igvfd.audit.construct_library_set,
-    igvfd.audit.curated_set,
-    igvfd.audit.file_set,
-    igvfd.audit.file,
-    igvfd.audit.formatter,
-    igvfd.audit.human_donor,
-    igvfd.audit.in_vitro_system,
-    igvfd.audit.index_file,
-    igvfd.audit.matrix_file,
-    igvfd.audit.measurement_set,
-    igvfd.audit.model_set,
-    igvfd.audit.multiplexed_sample,
-    igvfd.audit.ontology_term,
-    igvfd.audit.reference_file,
-    igvfd.audit.sample,
-    igvfd.audit.sequence_file,
-    igvfd.audit.tissue,
-    igvfd.audit.treatment,
-    igvfd.audit.whole_organism,
-    igvfd.audit.workflow
 ]
 
 
