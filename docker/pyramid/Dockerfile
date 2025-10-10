@@ -64,10 +64,6 @@ RUN make-reference-db
 
 COPY --chown=igvfd:igvfd . .
 
-RUN mkdir -p src/igvfd/static/doc/
-
-RUN chown -R igvfd:igvfd src/igvfd/static/doc
-
 EXPOSE 6543
 
 ENTRYPOINT ["/scripts/pyramid/entrypoint.sh"]

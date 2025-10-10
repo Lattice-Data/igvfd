@@ -60,7 +60,6 @@ services:
     volumes:
       - ".:/igvfd"
       - "/igvfd/src/igvfd.egg-info"
-      - "/igvfd/src/igvfd/static"
     entrypoint: ./docker/wait-for-local-services-entrypoint.sh
     command: /scripts/pyramid/run-create-mapping.sh
     depends_on:
@@ -84,7 +83,6 @@ services:
     volumes:
       - ".:/igvfd"
       - "/igvfd/src/igvfd.egg-info"
-      - "/igvfd/src/igvfd/static"
     entrypoint: ./docker/wait-for-local-services-entrypoint.sh
     command: load-development
     depends_on:
@@ -109,7 +107,6 @@ services:
     volumes:
       - ".:/igvfd"
       - "/igvfd/src/igvfd.egg-info"
-      - "/igvfd/src/igvfd/static"
     entrypoint: ./docker/wait-for-local-services-entrypoint.sh
     command: /scripts/pyramid/run-development.sh
     ports:
