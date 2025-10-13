@@ -122,7 +122,8 @@
             "type": "string",
             "enum": [
                 "community",
-                "IGVF"
+                "IGVF",
+                "BCP"
             ],
             "submissionExample": {
                 "appscript": "community",
