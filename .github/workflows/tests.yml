@@ -96,14 +96,12 @@ jobs:
         run: |
           mkdir -p /tmp/.buildx-cache
           export DOCKER_BUILDKIT=1
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/pyramid/Dockerfile -t igvfd-pyramid .
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/postgres/Dockerfile -t igvfd-postgres ./docker/postgres/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/localstack/Dockerfile -t igvfd-localstack ./docker/localstack/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/nginx/Dockerfile -t igvfd-nginx .
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/snoindex/Dockerfile -t igvfd-snoindex ./docker/snoindex/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/dedup/Dockerfile -t igvfd-dedup ./docker/dedup/
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/pyramid/Dockerfile -t igvfd-pyramid .
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/postgres/Dockerfile -t igvfd-postgres ./docker/postgres/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/localstack/Dockerfile -t igvfd-localstack ./docker/localstack/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/nginx/Dockerfile -t igvfd-nginx .
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/snoindex/Dockerfile -t igvfd-snoindex ./docker/snoindex/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/dedup/Dockerfile -t igvfd-dedup ./docker/dedup/
       - name: Run tests
         run: |
           echo "Skipping tests"
@@ -133,14 +131,12 @@ jobs:
         run: |
           mkdir -p /tmp/.buildx-cache
           export DOCKER_BUILDKIT=1
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/pyramid/Dockerfile -t igvfd-pyramid .
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/postgres/Dockerfile -t igvfd-postgres ./docker/postgres/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/localstack/Dockerfile -t igvfd-localstack ./docker/localstack/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/opensearch/Dockerfile -t igvfd-opensearch ./docker/opensearch/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/nginx/Dockerfile -t igvfd-nginx .
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/snoindex/Dockerfile -t igvfd-snoindex ./docker/snoindex/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/dedup/Dockerfile -t igvfd-dedup ./docker/dedup/
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/pyramid/Dockerfile -t igvfd-pyramid .
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/postgres/Dockerfile -t igvfd-postgres ./docker/postgres/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/localstack/Dockerfile -t igvfd-localstack ./docker/localstack/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/opensearch/Dockerfile -t igvfd-opensearch ./docker/opensearch/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/nginx/Dockerfile -t igvfd-nginx .
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/snoindex/Dockerfile -t igvfd-snoindex ./docker/snoindex/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/dedup/Dockerfile -t igvfd-dedup ./docker/dedup/
       - name: Check OpenSearch mappings
         run: echo "Skipping OpenSearch mappings check" #docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
