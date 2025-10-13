@@ -1,29 +1,5 @@
 import json
 
-import igvfd.audit.analysis_set
-import igvfd.audit.auxiliary_set
-import igvfd.audit.biosample
-import igvfd.audit.construct_library_set
-import igvfd.audit.curated_set
-import igvfd.audit.file_set
-import igvfd.audit.file
-import igvfd.audit.formatter
-import igvfd.audit.human_donor
-import igvfd.audit.in_vitro_system
-import igvfd.audit.index_file
-import igvfd.audit.matrix_file
-import igvfd.audit.measurement_set
-import igvfd.audit.model_set
-import igvfd.audit.multiplexed_sample
-import igvfd.audit.ontology_term
-import igvfd.audit.reference_file
-import igvfd.audit.sample
-import igvfd.audit.sequence_file
-import igvfd.audit.tissue
-import igvfd.audit.treatment
-import igvfd.audit.whole_organism
-import igvfd.audit.workflow
-
 
 NON_AUDIT_FUNCTION_NAMES = [
     'audit_checker',
