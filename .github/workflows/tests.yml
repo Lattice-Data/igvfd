@@ -94,8 +94,10 @@ jobs:
             ${{ runner.os }}-buildx-
       - name: Build Docker images
         run: |
-          docker-compose -f docker-compose.test.yml build
-          docker-compose -f docker-compose.test-indexer.yml build
+          mkdir -p /tmp/.buildx-cache
+          export DOCKER_BUILDKIT=1
+          docker-compose -f docker-compose.test.yml build --build-arg BUILDKIT_INLINE_CACHE=1
+          docker-compose -f docker-compose.test-indexer.yml build --build-arg BUILDKIT_INLINE_CACHE=1
       - name: Run tests
         run: |
           echo "Skipping tests"
@@ -122,6 +124,9 @@ jobs:
             ${{ runner.os }}-buildx-mappings-
             ${{ runner.os }}-buildx-
       - name: Build Docker images
-        run: docker-compose -f docker-compose.yml build
+        run: |
+          mkdir -p /tmp/.buildx-cache
+          export DOCKER_BUILDKIT=1
+          docker-compose -f docker-compose.yml build --build-arg BUILDKIT_INLINE_CACHE=1
       - name: Check OpenSearch mappings
         run: echo "Skipping OpenSearch mappings check" #docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
