@@ -90,11 +90,11 @@
             "/labs/teri-klein/"
         ],
         "uuid": "860c4750-8d3c-40f5-8f2c-90c5e5d19e89"
-    }
+    },
     {
         "email": "jychien@stanford.edu",
         "first_name": "Jennifer",
-	"last_name": "Chien",
+        "last_name": "Chien",
         "groups": [
             "admin",
             "verified"
@@ -102,14 +102,14 @@
         "job_title": "Data Wrangler",
         "status": "current",
         "submits_for": [
-	    "/labs/teri-klein/"
+            "/labs/teri-klein/"
         ],
-        "uuid": "71c7b6d6-f6dd-4ed4-826c-6b3003a8ad9b",
+        "uuid": "71c7b6d6-f6dd-4ed4-826c-6b3003a8ad9b"
     },
     {
         "email": "jlz@stanford.edu",
         "first_name": "Jennifer",
-	"last_name": "Zamanian",
+        "last_name": "Zamanian",
         "groups": [
             "admin",
             "verified"
@@ -117,8 +117,8 @@
         "job_title": "Data Wrangler",
         "status": "current",
         "submits_for": [
-	    "/labs/teri-klein/"
+            "/labs/teri-klein/"
         ],
-        "uuid": "454435fe-702d-4657-a955-641e5631982c",
+        "uuid": "454435fe-702d-4657-a955-641e5631982c"
     }
 ]
