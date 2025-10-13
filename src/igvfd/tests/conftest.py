@@ -16,7 +16,6 @@ pytest_plugins = [
     'igvfd.tests.fixtures.aws',
     'igvfd.tests.fixtures.report',
     'igvfd.tests.fixtures.schemas.access_key',
-    'igvfd.tests.fixtures.schemas.source',
     'igvfd.tests.fixtures.schemas.award',
     'igvfd.tests.fixtures.schemas.lab',
     'igvfd.tests.fixtures.schemas.gene',
