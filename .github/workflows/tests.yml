@@ -85,10 +85,6 @@ jobs:
           sudo useradd -u 1444 igvfd
           sudo usermod -a -G igvfd runner
           sudo chown -R runner:igvfd ./
-          mkdir -p .test-results
-          sudo chown -R 1444:1444 .test-results
-          touch .coverage
-          sudo chown 1444:1444 .coverage
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
