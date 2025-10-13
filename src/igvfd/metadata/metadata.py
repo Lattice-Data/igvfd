@@ -31,8 +31,6 @@ from snosearch.interfaces import RANGES
 from snosearch.parsers import QueryString
 from snovault.util import simple_path_ids
 
-from igvfd.types.file_set import FileSet
-
 
 def includeme(config):
     config.add_route('metadata', '/metadata{slash:/?}')
@@ -410,33 +408,4 @@ def batch_download_v2(context, request):
 @allowed_types_v2(FILE_METADATA_ALLOWED_TYPES)
 def file_batch_download_v2(context, request):
     file_metadata_report = FileMetadataReport(request)
-    return file_metadata_report.generate()
-
-
-@view_config(
-    name='all-files',
-    context=FileSet,
-    request_method='GET',
-    permission='view',
-)
-def all_files(context, request):
-    files_sets_and_files = find_all_file_sets_and_files(
-        request, [
-            request.resource_path(context)
-        ]
-    )
-    if asbool(request.params.get('soft')):
-        return files_sets_and_files
-    if not files_sets_and_files['files']:
-        raise HTTPNotFound()
-    qs = QueryString(request)
-    qs.drop('type')
-    qs.append(('type', 'File'))
-    new_request = qs.get_request_with_new_query_string()
-    new_request.body = json.dumps(
-        {
-            'elements': files_sets_and_files['files']
-        }
-    ).encode('utf-8')
-    file_metadata_report = FileMetadataReport(new_request)
     return file_metadata_report.generate()

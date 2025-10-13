@@ -17,7 +17,7 @@
     },
     {
         "name": "testpage",
-        "title": "The IGVF Project",
+        "title": "The Lattice Project",
         "status": "released",
         "uuid": "27f9abd9-0081-4ade-8c82-95ec12b3a7dd",
         "layout": {
@@ -25,7 +25,7 @@
                 {
                     "@id": "#block1",
                     "@type": "markdown",
-                    "body": "# IGVF\n\nThe IGVF project dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+                    "body": "# Lattice\n\nThe Lattice project dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
                     "direction": "ltr"
                 },
                 {
@@ -52,9 +52,9 @@
     {
         "name": "test-section",
         "title": "Test Section",
-        "lab": "j-michael-cherry",
+        "lab": "teri-klein",
         "status": "released",
-        "submitted_by": "massa.porta@varius.mauris",
+        "submitted_by": "fytanaka@stanford.edu",
         "uuid": "41c4ea4e-7a8e-4b91-8fe3-384d0adc8735",
         "layout": {
             "blocks": [
@@ -72,8 +72,8 @@
         "name": "subpage",
         "title": "Subpage",
         "status": "released",
-        "lab": "j-michael-cherry",
-        "submitted_by": "massa.porta@varius.mauris",
+        "lab": "teri-klein",
+        "submitted_by": "fytanaka@stanford.edu",
         "uuid": "331928f7-d8f7-4ea6-b4e0-8d380fb22974",
         "layout": {
             "blocks": [
@@ -90,8 +90,8 @@
         "parent": "/test-section",
         "name": "subpage-in-progress",
         "title": "Subpage in progress not visible to users",
-        "lab": "j-michael-cherry",
-        "submitted_by": "massa.porta@varius.mauris",
+        "lab": "teri-klein",
+        "submitted_by": "fytanaka@stanford.edu",
         "status": "in progress",
         "uuid": "83173355-31ff-4ca7-a259-e4af0f3a0169",
         "layout": {
@@ -109,8 +109,8 @@
         "parent": "/test-section",
         "name": "subpage-preview-status",
         "title": "Subpage preview status publicly visible",
-        "lab": "j-michael-cherry",
-        "submitted_by": "massa.porta@varius.mauris",
+        "lab": "teri-klein",
+        "submitted_by": "fytanaka@stanford.edu",
         "status": "preview",
         "preview_timestamp": "2024-03-06T12:34:56Z",
         "uuid": "74c06614-f72e-4e36-bd05-a2e282715c3d",
@@ -127,8 +127,8 @@
     },
     {
         "name": "help",
-        "title": "IGVF Help Documentation",
-        "lab": "j-michael-cherry",
+        "title": "Lattice Help Documentation",
+        "lab": "teri-klein",
         "status": "released",
         "submitted_by": "fytanaka@stanford.edu",
         "uuid": "74aa2c4c-8767-4904-a442-1bf851fa56e4",
@@ -137,7 +137,7 @@
                 {
                     "@id": "#block1",
                     "@type": "markdown",
-                    "body": "Learn to use the [IGVF](https://igvf.org/) portal.",
+                    "body": "Learn to use the [Lattice](https://data.lattice-data.org/) portal.",
                     "direction": "ltr"
                 }
             ]
@@ -148,7 +148,7 @@
         "name": "samples",
         "title": "Samples",
         "status": "released",
-        "lab": "j-michael-cherry",
+        "lab": "teri-klein",
         "submitted_by": "fytanaka@stanford.edu",
         "uuid": "1b34820d-7fc1-457a-89c2-2a5accc3e8e6",
         "layout": {
@@ -166,7 +166,7 @@
         "parent": "/help/",
         "name": "donors",
         "title": "Donors",
-        "lab": "j-michael-cherry",
+        "lab": "teri-klein",
         "submitted_by": "fytanaka@stanford.edu",
         "status": "released",
         "uuid": "c8733d26-8242-40f3-a663-ce6c7659a0b3",
@@ -185,7 +185,7 @@
         "parent": "/help/donors/",
         "name": "human-donors",
         "title": "Human Donors",
-        "lab": "j-michael-cherry",
+        "lab": "teri-klein",
         "submitted_by": "fytanaka@stanford.edu",
         "status": "released",
         "uuid": "d91b048e-2d8a-4562-893d-93f0e68397c0",
@@ -204,7 +204,7 @@
         "parent": "/help/donors/",
         "name": "rodent-donors",
         "title": "Rodent Donors",
-        "lab": "j-michael-cherry",
+        "lab": "teri-klein",
         "submitted_by": "fytanaka@stanford.edu",
         "status": "released",
         "uuid": "c0557916-f228-4895-8918-554eebb3c651",
@@ -223,7 +223,7 @@
         "parent": "/help/",
         "name": "ontologies",
         "title": "Ontologies",
-        "lab": "j-michael-cherry",
+        "lab": "teri-klein",
         "submitted_by": "fytanaka@stanford.edu",
         "status": "released",
         "uuid": "b32b3cb7-e22c-4445-8465-e7636783437d",
@@ -242,7 +242,7 @@
         "parent": "/help/ontologies/",
         "name": "assays",
         "title": "Assays",
-        "lab": "j-michael-cherry",
+        "lab": "teri-klein",
         "submitted_by": "fytanaka@stanford.edu",
         "status": "released",
         "uuid": "235a1359-74bd-4b95-b0bb-70bf46f7856c",
@@ -261,7 +261,7 @@
         "parent": "/help/ontologies/",
         "name": "phenotypes",
         "title": "Phenotypes",
-        "lab": "j-michael-cherry",
+        "lab": "teri-klein",
         "submitted_by": "fytanaka@stanford.edu",
         "status": "released",
         "uuid": "cb3e37da-af1b-4f6f-92a5-fd77f3e69154",
