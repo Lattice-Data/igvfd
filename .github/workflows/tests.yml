@@ -89,15 +89,21 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ hashFiles('docker/**', 'docker-compose.test.yml', 'docker-compose.test-indexer.yml') }}
+          key: ${{ runner.os }}-buildx-${{ hashFiles('docker/**', 'src/**', 'setup.cfg', 'pyproject.toml', 'requirements*.txt', 'docker-compose.test.yml', 'docker-compose.test-indexer.yml') }}
           restore-keys: |
             ${{ runner.os }}-buildx-
       - name: Build Docker images
         run: |
           mkdir -p /tmp/.buildx-cache
           export DOCKER_BUILDKIT=1
-          docker-compose -f docker-compose.test.yml build --build-arg BUILDKIT_INLINE_CACHE=1
-          docker-compose -f docker-compose.test-indexer.yml build --build-arg BUILDKIT_INLINE_CACHE=1
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/pyramid/Dockerfile -t igvfd-pyramid .
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/postgres/Dockerfile -t igvfd-postgres ./docker/postgres/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/localstack/Dockerfile -t igvfd-localstack ./docker/localstack/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/nginx/Dockerfile -t igvfd-nginx .
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/snoindex/Dockerfile -t igvfd-snoindex ./docker/snoindex/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/dedup/Dockerfile -t igvfd-dedup ./docker/dedup/
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
       - name: Run tests
         run: |
           echo "Skipping tests"
@@ -119,7 +125,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-mappings-${{ hashFiles('docker/**', 'docker-compose.yml') }}
+          key: ${{ runner.os }}-buildx-mappings-${{ hashFiles('docker/**', 'src/**', 'setup.cfg', 'pyproject.toml', 'requirements*.txt', 'docker-compose.yml') }}
           restore-keys: |
             ${{ runner.os }}-buildx-mappings-
             ${{ runner.os }}-buildx-
@@ -127,6 +133,14 @@ jobs:
         run: |
           mkdir -p /tmp/.buildx-cache
           export DOCKER_BUILDKIT=1
-          docker-compose -f docker-compose.yml build --build-arg BUILDKIT_INLINE_CACHE=1
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/pyramid/Dockerfile -t igvfd-pyramid .
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/postgres/Dockerfile -t igvfd-postgres ./docker/postgres/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/localstack/Dockerfile -t igvfd-localstack ./docker/localstack/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/opensearch/Dockerfile -t igvfd-opensearch ./docker/opensearch/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/nginx/Dockerfile -t igvfd-nginx .
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/snoindex/Dockerfile -t igvfd-snoindex ./docker/snoindex/
+          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache-new -f docker/dedup/Dockerfile -t igvfd-dedup ./docker/dedup/
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
       - name: Check OpenSearch mappings
         run: echo "Skipping OpenSearch mappings check" #docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
