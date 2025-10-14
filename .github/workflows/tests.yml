@@ -149,6 +149,9 @@ jobs:
 
   igvfd-check-opensearch-mappings:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
     needs: lint
     steps:
       - uses: actions/checkout@v3
