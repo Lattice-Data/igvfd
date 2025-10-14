@@ -63,7 +63,7 @@ def wrangler(testapp):
 
 
 @pytest.fixture
-def verified_member(testapp, award):
+def verified_member(testapp):
     item = {
         'first_name': 'IGVF',
         'last_name': 'VerifiedMember',
@@ -75,7 +75,7 @@ def verified_member(testapp, award):
 
 
 @pytest.fixture
-def unverified_member(testapp, award):
+def unverified_member(testapp):
     item = {
         'first_name': 'IGVF',
         'last_name': 'NonVerifiedMember',
@@ -87,13 +87,12 @@ def unverified_member(testapp, award):
 
 
 @pytest.fixture
-def submitter(testapp, lab, award):
+def submitter(testapp, lab):
     item = {
         'first_name': 'IGVF',
         'last_name': 'Submitter',
         'email': 'igvf_submitter@example.org',
-        'submits_for': [lab['@id']],
-        'viewing_groups': [award['viewing_group']],
+        'submits_for': [lab['@id']]
     }
     res = testapp.post_json('/user', item)
     return testapp.get(res.location).json
@@ -112,12 +111,11 @@ def pi(testapp):
 
 
 @pytest.fixture
-def viewing_group_member(testapp, award):
+def viewing_group_member(testapp):
     item = {
         'first_name': 'Viewing',
         'last_name': 'Group',
         'email': 'viewing_group_member@example.org',
-        'viewing_groups': [award['viewing_group']],
     }
     # User @@object view has keys omitted.
     res = testapp.post_json('/user', item)

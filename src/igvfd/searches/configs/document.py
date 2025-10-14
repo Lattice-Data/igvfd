@@ -19,9 +19,6 @@ def document():
             'lab.title': {
                 'title': 'Lab'
             },
-            'award.component': {
-                'title': 'Award',
-            },
             'status': {
                 'title': 'Status'
             },
@@ -47,9 +44,6 @@ def document():
             },
             'aliases': {
                 'title': 'Aliases'
-            },
-            'award': {
-                'title': 'Award'
             },
             'document_type': {
                 'title': 'Document Type'

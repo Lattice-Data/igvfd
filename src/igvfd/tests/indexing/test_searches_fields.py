@@ -18,7 +18,6 @@ def test_searches_fields_result_columns_response_field_query(workbook, testapp):
     assert 'uuid' in r.json['result_columns']
     assert 'title' in r.json['result_columns']
     assert 'aliases' in r.json['result_columns']
-    assert 'awards' in r.json['result_columns']
     assert 'name' in r.json['result_columns']
     assert 'status' in r.json['result_columns']
     assert 'pi' in r.json['result_columns']
