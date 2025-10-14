@@ -31,9 +31,9 @@ def test_batch_download_lookup_column_value(lookup_column_value_item, lookup_col
 
 def test_get_host_type():
     assert 'localhost' == get_host_type('localhost:8000')
-    assert 'data' == get_host_type('api.data.igvf.org')
-    assert 'sandbox' == get_host_type('api.sandbox.igvf.org')
-    assert 'staging' == get_host_type('api.staging.igvf.org')
-    assert 'igvfd-dev' == get_host_type('igvfd-dev.demo.igvf.org')
+    assert 'data' == get_host_type('api.data.lattice-data.org')
+    assert 'sandbox' == get_host_type('api.sandbox.lattice-data.org')
+    assert 'staging' == get_host_type('api.staging.lattice-data.org')
+    assert 'igvfd-dev' == get_host_type('igvfd-dev.demo.lattice-data.org')
     assert 'igvfd-igvf-2320-improve-sample-summary' == get_host_type(
-        'igvfd-igvf-2320-improve-sample-summary.demo.igvf.org')
+        'igvfd-igvf-2320-improve-sample-summary.demo.lattice-data.org')

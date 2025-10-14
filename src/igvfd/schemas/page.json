@@ -33,14 +33,11 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "4"
+            "default": "1"
         },
         "parent": {
             "title": "Parent Page",
-            "type": [
-                "string",
-                "null"
-            ],
+            "type": "string",
             "description": "The parent page associated with this page.",
             "linkTo": "Page",
             "validators": [

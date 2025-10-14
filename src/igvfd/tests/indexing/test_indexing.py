@@ -15,21 +15,21 @@ def test_indexing_simple_igvfd(testapp, workbook, poll_until_indexing_is_done):
 
 
 def test_indexing_updated_name_invalidates_dependents(testapp, dummy_request, workbook, poll_until_indexing_is_done):
-    response = testapp.get('/search/?type=User&lab=/labs/j-michael-cherry/')
-    assert len(response.json['@graph']) >= 22
+    response = testapp.get('/search/?type=User&lab=/labs/teri-klein/')
+    assert len(response.json['@graph']) >= 7
     testapp.patch_json(
-        '/labs/j-michael-cherry/',
+        '/labs/teri-klein/',
         {'name': 'some-other-name'}
     )
     poll_until_indexing_is_done(testapp)
     response = testapp.get('/search/?type=User&lab=/labs/some-other-name/')
-    assert len(response.json['@graph']) >= 22
-    testapp.get('/search/?type=User&lab=/labs/j-michael-cherry/', status=404)
+    assert len(response.json['@graph']) >= 7
+    testapp.get('/search/?type=User&lab=/labs/teri-klein/', status=404)
     testapp.patch_json(
         '/labs/some-other-name/',
-        {'name': 'j-michael-cherry'}
+        {'name': 'teri-klien'}
     )
     poll_until_indexing_is_done(testapp)
     testapp.get('/search/?type=User&lab=/labs/some-other-lab/', status=404)
-    response = testapp.get('/search/?type=User&lab=/labs/j-michael-cherry/')
-    assert len(response.json['@graph']) >= 22
+    response = testapp.get('/search/?type=User&lab=/labs/teri-klein/')
+    assert len(response.json['@graph']) >= 7

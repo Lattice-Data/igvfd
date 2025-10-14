@@ -109,9 +109,7 @@
             "type": "string",
             "enum": [
                 "community",
-                "ENCODE",
-                "IGVF",
-                "IGVF affiliate"
+                "BCP"
             ],
             "submissionExample": {
                 "appscript": "IGVF",
@@ -124,7 +122,8 @@
             "type": "string",
             "enum": [
                 "community",
-                "IGVF"
+                "IGVF",
+                "BCP"
             ],
             "submissionExample": {
                 "appscript": "community",

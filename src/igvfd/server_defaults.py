@@ -68,7 +68,7 @@ PROD_ACCESSION_FORMAT = (
 
 def prod_accession(accession_type):
     random_part = ''.join(random.choice(s) for s in PROD_ACCESSION_FORMAT)
-    return 'IGVF' + accession_type + random_part
+    return 'LATT' + accession_type + random_part
 
 
 TEST_ACCESSION_FORMAT = (digits, ) * 8

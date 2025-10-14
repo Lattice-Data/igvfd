@@ -96,7 +96,7 @@ def _convert_camel_to_snake(type_str):
 
 def get_host_type(host):
     host_type = 'localhost'
-    if host.endswith('igvf.org'):
+    if host.endswith('lattice-data.org'):
         host_split = host.split('.')
         host_type = host_split[-3]
         if host_type == 'demo':
@@ -247,7 +247,7 @@ def multitype_report_download(context, request):
     # Stream response using chunked encoding.
     request.response.content_type = 'text/tsv'
     host_type = get_host_type(request.host)
-    request.response.content_disposition = 'attachment;filename="igvf_{}_{}_report_{}_{}_{}_{}h_{}m.tsv"'.format(
+    request.response.content_disposition = 'attachment;filename="lattice_{}_{}_report_{}_{}_{}_{}h_{}m.tsv"'.format(
         host_type,
         report_type,
         downloadtime.year,

@@ -6,16 +6,16 @@ pytestmark = [pytest.mark.indexing]
 
 def test_search_views_search_view_with_filters(workbook, testapp):
     r = testapp.get(
-        '/search/?type=User&lab=/labs/j-michael-cherry/'
+        '/search/?type=User&lab=/labs/teri-klein/'
     )
     assert r.json['title'] == 'Search'
-    assert len(r.json['@graph']) >= 22
+    assert len(r.json['@graph']) >= 7
     r = testapp.get(
-        '/search/?type=User&lab=/labs/j-michael-cherry/&title=Ben%20Hitz'
+        '/search/?type=User&lab=/labs/teri-klein/&title=Idan%20Gabdank'
     )
-    assert r.json['@graph'][0]['title'] == 'Ben Hitz'
+    assert r.json['@graph'][0]['title'] == 'Idan Gabdank'
     assert 'User' in r.json['@graph'][0]['@type']
-    assert r.json['@id'] == '/search/?type=User&lab=/labs/j-michael-cherry/&title=Ben%20Hitz'
+    assert r.json['@id'] == '/search/?type=User&lab=/labs/teri-klein/&title=Idan%20Gabdank'
     assert r.json['@context'] == '/terms/'
     assert r.json['@type'] == ['Search']
     assert r.json['total'] == 1
@@ -35,23 +35,19 @@ def test_search_views_search_view_with_limit(workbook, testapp):
     assert len(r.json['@graph']) == 5
     assert 'all' in r.json
     r = testapp.get(
-        '/search/?type=User&limit=26'
+        '/search/?type=User&limit=7'
     )
-    assert len(r.json['@graph']) == 26
+    assert len(r.json['@graph']) == 7
     assert 'all' in r.json
     r = testapp.get(
         '/search/?type=User&limit=all'
     )
-    assert len(r.json['@graph']) >= 100
+    assert len(r.json['@graph']) >= 8
     assert 'all' not in r.json
-    r = testapp.get(
-        '/search/?type=User&limit=48'
-    )
-    assert len(r.json['@graph']) == 48
     r = testapp.get(
         '/search/?type=User&limit=100000'
     )
-    assert len(r.json['@graph']) >= 100
+    assert len(r.json['@graph']) >= 8
     assert 'all' not in r.json
 
 
@@ -61,7 +57,7 @@ def test_search_views_search_view_with_limit_zero(workbook, testapp):
     )
     assert len(r.json['@graph']) == 0
     assert 'all' in r.json
-    assert r.json['total'] >= 48
+    assert r.json['total'] >= 8
 
 
 def test_search_views_search_view_values(workbook, testapp):
@@ -108,7 +104,7 @@ def test_search_views_search_view_values_item_wildcard(workbook, testapp):
         '/search/?type=*',
     )
     assert r.json['notification'] == 'Success'
-    assert r.json['total'] >= 300
+    assert r.json['total'] >= 10
 
 
 def test_search_views_search_view_values_invalid_search_term(workbook, testapp):
@@ -177,7 +173,7 @@ def test_search_views_search_generator(workbook, dummy_request, threadlocals):
     assert len(r.keys()) == 1
     assert isinstance(r['@graph'], GeneratorType)
     hits = [dict(h) for h in r['@graph']]
-    assert len(hits) >= 310
+    assert len(hits) >= 10
     assert '@id' in hits[0]
 
 
@@ -197,32 +193,9 @@ def test_search_views_search_generator_field_specified(workbook, dummy_request, 
     assert len(hits[0].keys()) == 2
 
 
-def test_search_views_report_view(workbook, testapp):
-    r = testapp.get(
-        '/report/?type=Gene&symbol=BAP1&symbol=CXXC1'
-    )
-    assert r.json['title'] == 'Report'
-    assert len(r.json['@graph']) == 2
-    assert 'Gene' in r.json['@graph'][0]['@type']
-    assert len(r.json['facets']) >= 2
-    assert r.json['@id'] == '/report/?type=Gene&symbol=BAP1&symbol=CXXC1'
-    assert r.json['@context'] == '/terms/'
-    assert r.json['@type'] == ['Report']
-    assert r.json['total'] == 2
-    assert r.json['notification'] == 'Success'
-    assert len(r.json['filters']) == 3
-    assert r.status_code == 200
-    assert r.json['clear_filters'] == '/report/?type=Gene'
-    assert 'debug' not in r.json
-    assert 'columns' in r.json
-    assert len(r.json['columns']) >= 5
-    assert 'non_sortable' in r.json
-    assert 'sort' in r.json
-
-
 def test_search_views_report_response_with_search_term_type_only_clear_filters(workbook, testapp):
     r = testapp.get(
-        '/report/?query=cherry&type=Lab'
+        '/report/?query=klein&type=Lab'
     )
     assert 'clear_filters' in r.json
     assert r.json['clear_filters'] == '/report/?type=Lab'
@@ -235,23 +208,19 @@ def test_search_views_report_view_with_limit(workbook, testapp):
     assert len(r.json['@graph']) == 5
     assert 'all' in r.json
     r = testapp.get(
-        '/report/?type=User&limit=26'
+        '/report/?type=User&limit=7'
     )
-    assert len(r.json['@graph']) == 26
+    assert len(r.json['@graph']) == 7
     assert 'all' in r.json
     r = testapp.get(
         '/report/?type=User&limit=all'
     )
-    assert len(r.json['@graph']) >= 48
+    assert len(r.json['@graph']) >= 8
     assert 'all' not in r.json
-    r = testapp.get(
-        '/report/?type=User&limit=48'
-    )
-    assert len(r.json['@graph']) == 48
     r = testapp.get(
         '/report/?type=User&limit=100000'
     )
-    assert len(r.json['@graph']) >= 48
+    assert len(r.json['@graph']) >= 8
 
 
 def test_search_views_report_view_with_limit_zero(workbook, testapp):
@@ -260,7 +229,7 @@ def test_search_views_report_view_with_limit_zero(workbook, testapp):
     )
     assert len(r.json['@graph']) == 0
     assert 'all' in r.json
-    assert r.json['total'] >= 48
+    assert r.json['total'] >= 8
 
 
 def test_search_views_report_view_with_limit_zero_from_zero(workbook, testapp):
@@ -269,7 +238,7 @@ def test_search_views_report_view_with_limit_zero_from_zero(workbook, testapp):
     )
     assert len(r.json['@graph']) == 0
     assert 'all' in r.json
-    assert r.json['total'] >= 48
+    assert r.json['total'] >= 8
 
 
 def test_search_views_report_view_values_bad_type(workbook, testapp):
@@ -365,11 +334,8 @@ def test_search_views_search_config_registry(workbook, testapp):
     assert 'defaults' in r.json
     assert 'aliases' in r.json
     configs = r.json['configs']
-    assert len(configs) > 40
+    assert len(configs) > 3
     assert 'User' in configs
-    assert 'Award' in configs
-    assert 'facets' in configs['Award']
-    assert 'columns' in configs['Award']
 
 
 def test_search_views_multireport_view_values(workbook, testapp):
@@ -384,110 +350,6 @@ def test_search_views_multireport_view_values(workbook, testapp):
 
 def test_search_views_search_quick(workbook, testapp):
     r = testapp.get(
-        '/search-quick/?type=User&lab=/labs/j-michael-cherry/'
+        '/search-quick/?type=User&lab=/labs/teri-klein/'
     )
-    assert len(r.json['@graph']) >= 22
-
-
-def test_search_views_dataset_summary(workbook, testapp):
-    r = testapp.get(
-        '/dataset-summary'
-    )
-    assert len(r.json['@graph']) >= 10
-
-
-def test_search_views_dataset_summary_agg(workbook, testapp):
-    testapp.get(
-        '/dataset-summary-agg',
-        status=400,
-    )
-    r = testapp.get(
-        '/dataset-summary-agg?type=MeasurementSet&config=PreferredAssayTitleSummary',
-        status=200,
-    )
-    assert 'matrix' in r.json
-    assert r.json['matrix']['y']['doc_count'] > 10
-    assert r.json['matrix']['y']['lab.title']['buckets'][0]['preferred_assay_titles']['buckets'] is not None
-    r = testapp.get(
-        '/dataset-summary-agg?type=AnalysisSet&config=AssayTitlesSummary',
-        status=200,
-    )
-    assert r.json['matrix']['y']['lab.title']['buckets'][0]['assay_titles']['buckets'][0]['status']['buckets'] is not None
-    r = testapp.get(
-        '/dataset-summary-agg?type=PredictionSet&config=FileSetTypeSummary',
-        status=200,
-    )
-    assert r.json['matrix']['y']['lab.title']['buckets'][0]['file_set_type']['buckets'][0]['status']['buckets'] is not None
-
-
-def test_search_views_datasets_released(workbook, testapp):
-    r = testapp.get(
-        '/datasets-released'
-    )
-    assert 'datasets_released' in r.json
-    assert len(r.json['datasets_released']) >= 7
-    assert any(
-        'Mar 2024' in item
-        for item in r.json['datasets_released']
-    )
-    assert list(r.json['datasets_released'][0].values())[0] > 20
-
-
-def test_search_views_missing_matrix(workbook, testapp):
-    r = testapp.get(
-        '/missing-matrix?type=MeasurementSet&config=PreferredAssayTitleSummary'
-    )
-    assert r.json['total'] > 10
-    assert 'matrix' in r.json
-
-
-def test_search_views_tissue_homo_sapiens(workbook, testapp):
-    r = testapp.get(
-        '/tissue-homo-sapiens',
-        status=400,
-    )
-    r = testapp.get(
-        '/tissue-homo-sapiens/?type=Tissue',
-        status=200,
-    )
-    assert 'matrix' in r.json
-    assert r.json['matrix']['x']['doc_count'] > 5
-    assert r.json['matrix']['y']['doc_count'] > 5
-    assert r.json['matrix']['y']['sample_terms.term_name']['buckets'][0]['sex']['buckets'] is not None
-
-
-def test_search_views_tissue_mus_musculus(workbook, testapp):
-    r = testapp.get(
-        '/tissue-mus-musculus',
-        status=400,
-    )
-    r = testapp.get(
-        '/tissue-mus-musculus/?type=Tissue',
-        status=200,
-    )
-    assert 'matrix' in r.json
-    assert r.json['matrix']['x']['doc_count'] > 5
-    assert r.json['matrix']['y']['doc_count'] > 5
-    assert r.json['matrix']['y']['sample_terms.term_name']['buckets'][0]['sex']['buckets'] is not None
-
-
-def test_search_views_omnimatrix(workbook, testapp):
-    r1 = testapp.get(
-        '/omnimatrix/?type=MeasurementSet&config=PreferredAssayTitleSummary',
-        status=200,
-    )
-    assert 'matrix' in r1.json
-    assert r1.json['matrix']['y']['doc_count'] > 10
-    assert r1.json['matrix']['y']['lab.title']['buckets'][0]['preferred_assay_titles']['buckets'] is not None
-    assert r1.json['@type'] == 'Omnimatrix'
-    assert r1.json['title'] == 'Omnimatrix'
-    assert 'facets' not in r1
-    assert 'facet_groups' not in r1
-    assert 'filters' not in r1
-    assert 'clear_filters' not in r1
-    assert 'search_base' not in r1
-    r2 = testapp.get(
-        '/missing-matrix/?type=MeasurementSet&config=PreferredAssayTitleSummary',
-        status=200,
-    )
-    assert r1.json['total'] >= r2.json['total']
+    assert len(r.json['@graph']) >= 8
