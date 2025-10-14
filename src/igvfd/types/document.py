@@ -23,7 +23,6 @@ class Document(ItemWithAttachment, Item):
     item_type = 'document'
     schema = load_schema('igvfd:schemas/document.json')
     embedded_with_frame = [
-        Path('award', include=['@id', 'component']),
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
     ]

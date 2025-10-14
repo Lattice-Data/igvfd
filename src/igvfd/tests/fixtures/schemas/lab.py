@@ -55,7 +55,6 @@ def lab_v1(lab):
     item = lab.copy()
     item.update({
         'schema_version': '1',
-        'awards': [],
         'aliases': []
     })
     return item

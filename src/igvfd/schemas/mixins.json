@@ -242,17 +242,6 @@
                 "appscript": "/labs/john-doe/",
                 "igvf_utils": "/labs/john-doe/"
             }
-        },
-        "award": {
-            "title": "Award",
-            "description": "Grant associated with the submission.",
-            "comment": "Required. See award.json for list of available identifiers.",
-            "type": "string",
-            "linkTo": "Award",
-            "submissionExample": {
-                "appscript": "/awards/HG012012/",
-                "igvf_utils": "/awards/HG012012/"
-            }
         }
     },
     "attachment": {

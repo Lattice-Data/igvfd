@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.fixture
-def no_login_submitter(testapp, lab, award):
+def no_login_submitter(testapp, lab):
     item = {
         'first_name': 'ENCODE',
         'last_name': 'Submitter',

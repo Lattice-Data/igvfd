@@ -8,8 +8,7 @@
         "document_type",
         "description",
         "attachment",
-        "lab",
-        "award"
+        "lab"
     ],
     "identifyingProperties": [
         "uuid",

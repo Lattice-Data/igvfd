@@ -1,6 +1,6 @@
 {
-    "hash": "decd6dbf289db75607df42b10c5a8617",
-    "index_name": "document_decd6dbf",
+    "hash": "ca99cd45d04a23f650d62297c6b8dc7a",
+    "index_name": "document_ca99cd45",
     "item_type": "document",
     "mapping": {
         "dynamic_templates": [
@@ -181,77 +181,6 @@
                         },
                         "type": "object"
                     },
-                    "award": {
-                        "properties": {
-                            "@id": {
-                                "type": "keyword"
-                            },
-                            "@type": {
-                                "type": "keyword"
-                            },
-                            "aliases": {
-                                "type": "keyword"
-                            },
-                            "component": {
-                                "type": "keyword"
-                            },
-                            "contact_pi": {
-                                "type": "keyword"
-                            },
-                            "creation_timestamp": {
-                                "type": "date"
-                            },
-                            "description": {
-                                "type": "text"
-                            },
-                            "end_date": {
-                                "type": "keyword"
-                            },
-                            "name": {
-                                "type": "keyword"
-                            },
-                            "notes": {
-                                "type": "text"
-                            },
-                            "pis": {
-                                "type": "keyword"
-                            },
-                            "project": {
-                                "type": "keyword"
-                            },
-                            "schema_version": {
-                                "type": "keyword"
-                            },
-                            "start_date": {
-                                "type": "keyword"
-                            },
-                            "status": {
-                                "type": "keyword"
-                            },
-                            "submitted_by": {
-                                "type": "keyword"
-                            },
-                            "submitter_comment": {
-                                "type": "keyword"
-                            },
-                            "summary": {
-                                "type": "keyword"
-                            },
-                            "title": {
-                                "type": "keyword"
-                            },
-                            "url": {
-                                "type": "keyword"
-                            },
-                            "uuid": {
-                                "type": "keyword"
-                            },
-                            "viewing_group": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
-                    },
                     "characterization_method": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
@@ -276,9 +205,6 @@
                                 "type": "keyword"
                             },
                             "aliases": {
-                                "type": "keyword"
-                            },
-                            "awards": {
                                 "type": "keyword"
                             },
                             "creation_timestamp": {

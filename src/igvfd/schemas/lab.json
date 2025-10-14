@@ -52,24 +52,6 @@
                 "igvf_utils": "/users/ffc520df-7ed9-4769-a30d-143f0633cf5g/"
             }
         },
-        "awards": {
-            "title": "Award",
-            "description": "Grants associated with the lab.",
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": {
-                "title": "Grant",
-                "description": "A grant associated with the lab.",
-                "comment": "See award.json for available identifiers.",
-                "type": "string",
-                "linkTo": "Award"
-            },
-            "submissionExample": {
-                "appscript": "[\"/awards/HG012047/\", \"john-doe:award01\"]",
-                "igvf_utils": "/awards/HG012047/, john-doe:award01"
-            }
-        },
         "institute_label": {
             "title": "Institute Label",
             "description": "An abbreviation for the institute the lab is associated with.",

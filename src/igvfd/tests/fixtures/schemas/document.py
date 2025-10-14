@@ -3,11 +3,10 @@ from ...constants import *
 
 
 @pytest.fixture
-def experimental_protocol_document(testapp, other_lab, award):
+def experimental_protocol_document(testapp, other_lab):
     item = {
         'document_type': 'experimental protocol',
         'description': 'Generic experimental protocol',
-        'award': award['@id'],
         'lab': other_lab['@id'],
         'attachment': {'download': 'red-dot.png', 'href': RED_DOT},
     }
@@ -15,11 +14,10 @@ def experimental_protocol_document(testapp, other_lab, award):
 
 
 @pytest.fixture
-def document_pipeline_parameters(testapp, other_lab, award):
+def document_pipeline_parameters(testapp, other_lab):
     item = {
         'document_type': 'pipeline parameters',
         'description': 'Pipeline parameters.',
-        'award': award['@id'],
         'lab': other_lab['@id'],
         'attachment': {'download': 'red-dot.png', 'href': RED_DOT},
     }
@@ -38,11 +36,10 @@ def document_v1(experimental_protocol_document):
 
 
 @pytest.fixture
-def plasmid_map_document(testapp, other_lab, award):
+def plasmid_map_document(testapp, other_lab):
     item = {
         'document_type': 'plasmid map',
         'description': 'Generic experimental protocol',
-        'award': award['@id'],
         'lab': other_lab['@id'],
         'attachment': {'download': 'red-dot.png', 'href': RED_DOT}
     }
