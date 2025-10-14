@@ -88,8 +88,6 @@ jobs:
           sudo useradd -u 1444 igvfd
           sudo usermod -a -G igvfd runner
           sudo chown -R runner:igvfd ./
-          sudo mkdir -p /igvfd/.pytest_cache
-          sudo chown -R runner:igvfd /igvfd/.pytest_cache
       - name: Build pyramid image
         uses: docker/build-push-action@v5
         with:
@@ -146,6 +144,8 @@ jobs:
           cache-to: type=gha,scope=dedup
       - name: Run tests
         run: |
+          sudo mkdir -p /igvfd/.pytest_cache
+          sudo chown -R runner:igvfd /igvfd/.pytest_cache
           docker-compose -f docker-compose.test.yml up --exit-code-from pyramid
           docker-compose -f docker-compose.test-indexer.yml up --exit-code-from indexer-tests
 
