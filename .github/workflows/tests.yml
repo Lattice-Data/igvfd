@@ -230,4 +230,5 @@ jobs:
           sudo useradd -u 1444 igvfd
           sudo usermod -a -G igvfd runner
           sudo chown -R runner:igvfd ./
+          sudo chmod -R 777 ./
           docker-compose run pyramid ls -lah
