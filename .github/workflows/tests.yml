@@ -95,8 +95,8 @@ jobs:
           file: docker/pyramid/Dockerfile
           push: false
           tags: igvfd-pyramid
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=pyramid
+          cache-to: type=gha,mode=max,scope=pyramid
       # - name: Build postgres image
       #   uses: docker/build-push-action@v5
       #   with:
