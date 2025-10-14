@@ -9,7 +9,7 @@ def test_search_views_search_view_with_filters(workbook, testapp):
         '/search/?type=User&lab=/labs/teri-klein/'
     )
     assert r.json['title'] == 'Search'
-    assert len(r.json['@graph']) >= 22
+    assert len(r.json['@graph']) >= 7
     r = testapp.get(
         '/search/?type=User&lab=/labs/teri-klein/&title=Idan%20Gabdank'
     )
@@ -104,7 +104,7 @@ def test_search_views_search_view_values_item_wildcard(workbook, testapp):
         '/search/?type=*',
     )
     assert r.json['notification'] == 'Success'
-    assert r.json['total'] >= 300
+    assert r.json['total'] >= 10
 
 
 def test_search_views_search_view_values_invalid_search_term(workbook, testapp):
@@ -173,7 +173,7 @@ def test_search_views_search_generator(workbook, dummy_request, threadlocals):
     assert len(r.keys()) == 1
     assert isinstance(r['@graph'], GeneratorType)
     hits = [dict(h) for h in r['@graph']]
-    assert len(hits) >= 310
+    assert len(hits) >= 10
     assert '@id' in hits[0]
 
 

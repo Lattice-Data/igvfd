@@ -89,12 +89,14 @@
         "submits_for": [
             "/labs/teri-klein/"
         ],
+	"status": "current",
         "uuid": "860c4750-8d3c-40f5-8f2c-90c5e5d19e89"
     },
     {
         "email": "jychien@stanford.edu",
         "first_name": "Jennifer",
         "last_name": "Chien",
+	"lab": "/labs/teri-klein/",
         "groups": [
             "admin",
             "verified"
@@ -110,6 +112,7 @@
         "email": "jlz@stanford.edu",
         "first_name": "Jennifer",
         "last_name": "Zamanian",
+	"lab": "/labs/teri-klein/",
         "groups": [
             "admin",
             "verified"
