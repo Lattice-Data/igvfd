@@ -226,5 +226,5 @@ jobs:
         run: |
           sudo useradd -u 1444 igvfd
           sudo usermod -a -G igvfd runner
-          sudo chown -R runner:igvfd ./ 
+          sudo chown -R runner:igvfd ./
           docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
