@@ -94,51 +94,51 @@ jobs:
           tags: igvfd-pyramid
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Build postgres image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker/postgres/
-          file: docker/postgres/Dockerfile
-          push: false
-          tags: igvfd-postgres
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Build localstack image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker/localstack/
-          file: docker/localstack/Dockerfile
-          push: false
-          tags: igvfd-localstack
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Build nginx image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: docker/nginx/Dockerfile
-          push: false
-          tags: igvfd-nginx
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Build snoindex image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker/snoindex/
-          file: docker/snoindex/Dockerfile
-          push: false
-          tags: igvfd-snoindex
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Build dedup image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./docker/dedup/
-          file: docker/dedup/Dockerfile
-          push: false
-          tags: igvfd-dedup
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      # - name: Build postgres image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./docker/postgres/
+      #     file: docker/postgres/Dockerfile
+      #     push: false
+      #     tags: igvfd-postgres
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      # - name: Build localstack image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./docker/localstack/
+      #     file: docker/localstack/Dockerfile
+      #     push: false
+      #     tags: igvfd-localstack
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      # - name: Build nginx image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: .
+      #     file: docker/nginx/Dockerfile
+      #     push: false
+      #     tags: igvfd-nginx
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      # - name: Build snoindex image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./docker/snoindex/
+      #     file: docker/snoindex/Dockerfile
+      #     push: false
+      #     tags: igvfd-snoindex
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      # - name: Build dedup image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./docker/dedup/
+      #     file: docker/dedup/Dockerfile
+      #     push: false
+      #     tags: igvfd-dedup
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
       - name: Run tests
         run: |
           echo "Skipping tests"
