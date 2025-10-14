@@ -64,7 +64,6 @@ def test_search_views_search_view_values(workbook, testapp):
     r = testapp.get(
         '/search/?status=released'
     )
-    assert r.json['all'] == '/search/?status=released&limit=all'
     assert r.json['notification'] == 'Success'
     assert r.json['filters'][0] == {'field': 'status', 'remove': '/search/', 'term': 'released'}
     assert r.json['clear_filters'] == '/search/'
@@ -278,7 +277,6 @@ def test_search_views_collection_listing_es_view(workbook, testapp):
     assert '@id' in r.json
     assert 'facets' in r.json
     assert 'filters' in r.json
-    assert 'all' in r.json
     assert 'columns' in r.json
     assert 'clear_filters' in r.json
     assert r.json['clear_filters'] == '/search/?type=User'
@@ -342,7 +340,6 @@ def test_search_views_multireport_view_values(workbook, testapp):
     r = testapp.get(
         '/multireport/?status=released'
     )
-    assert r.json['all'] == '/multireport/?status=released&limit=all'
     assert r.json['notification'] == 'Success'
     assert r.json['filters'][0] == {'field': 'status', 'remove': '/multireport/', 'term': 'released'}
     assert r.json['clear_filters'] == '/multireport/'

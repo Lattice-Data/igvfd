@@ -27,7 +27,7 @@ def test_indexing_updated_name_invalidates_dependents(testapp, dummy_request, wo
     testapp.get('/search/?type=User&lab=/labs/teri-klein/', status=404)
     testapp.patch_json(
         '/labs/some-other-name/',
-        {'name': 'teri-klien'}
+        {'name': 'teri-klein'}
     )
     poll_until_indexing_is_done(testapp)
     testapp.get('/search/?type=User&lab=/labs/some-other-lab/', status=404)
