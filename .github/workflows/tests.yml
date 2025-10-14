@@ -71,6 +71,9 @@ jobs:
 
   igvfd-pytest:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     needs: lint
     steps:
       - uses: actions/checkout@v3
