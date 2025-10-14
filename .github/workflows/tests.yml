@@ -222,4 +222,9 @@ jobs:
           cache-from: type=gha,scope=dedup
           cache-to: type=gha,scope=dedup
       - name: Check OpenSearch mappings
-        run: echo "Skipping OpenSearch mappings check" #docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
+
+        run: |
+          sudo useradd -u 1444 igvfd
+          sudo usermod -a -G igvfd runner
+          sudo chown -R runner:igvfd ./ 
+          docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
