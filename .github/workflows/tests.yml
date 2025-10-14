@@ -75,7 +75,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -85,23 +85,60 @@ jobs:
           sudo useradd -u 1444 igvfd
           sudo usermod -a -G igvfd runner
           sudo chown -R runner:igvfd ./
-      - name: Cache Docker layers
-        uses: actions/cache@v3
+      - name: Build pyramid image
+        uses: docker/build-push-action@v5
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ hashFiles('docker/**', 'src/**', 'setup.cfg', 'pyproject.toml', 'requirements*.txt', 'docker-compose.test.yml', 'docker-compose.test-indexer.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-      - name: Build Docker images
-        run: |
-          mkdir -p /tmp/.buildx-cache
-          export DOCKER_BUILDKIT=1
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/pyramid/Dockerfile -t igvfd-pyramid .
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/postgres/Dockerfile -t igvfd-postgres ./docker/postgres/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/localstack/Dockerfile -t igvfd-localstack ./docker/localstack/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/nginx/Dockerfile -t igvfd-nginx .
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/snoindex/Dockerfile -t igvfd-snoindex ./docker/snoindex/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/dedup/Dockerfile -t igvfd-dedup ./docker/dedup/
+          context: .
+          file: docker/pyramid/Dockerfile
+          push: false
+          tags: igvfd-pyramid
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build postgres image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/postgres/
+          file: docker/postgres/Dockerfile
+          push: false
+          tags: igvfd-postgres
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build localstack image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/localstack/
+          file: docker/localstack/Dockerfile
+          push: false
+          tags: igvfd-localstack
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build nginx image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/nginx/Dockerfile
+          push: false
+          tags: igvfd-nginx
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build snoindex image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/snoindex/
+          file: docker/snoindex/Dockerfile
+          push: false
+          tags: igvfd-snoindex
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build dedup image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/dedup/
+          file: docker/dedup/Dockerfile
+          push: false
+          tags: igvfd-dedup
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Run tests
         run: |
           echo "Skipping tests"
@@ -114,29 +151,73 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-      - name: Cache Docker layers
-        uses: actions/cache@v3
+      - name: Build pyramid image
+        uses: docker/build-push-action@v5
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-mappings-${{ hashFiles('docker/**', 'src/**', 'setup.cfg', 'pyproject.toml', 'requirements*.txt', 'docker-compose.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-mappings-
-            ${{ runner.os }}-buildx-
-      - name: Build Docker images
-        run: |
-          mkdir -p /tmp/.buildx-cache
-          export DOCKER_BUILDKIT=1
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/pyramid/Dockerfile -t igvfd-pyramid .
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/postgres/Dockerfile -t igvfd-postgres ./docker/postgres/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/localstack/Dockerfile -t igvfd-localstack ./docker/localstack/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/opensearch/Dockerfile -t igvfd-opensearch ./docker/opensearch/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/nginx/Dockerfile -t igvfd-nginx .
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/snoindex/Dockerfile -t igvfd-snoindex ./docker/snoindex/
-          docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache --cache-to=type=local,dest=/tmp/.buildx-cache -f docker/dedup/Dockerfile -t igvfd-dedup ./docker/dedup/
+          context: .
+          file: docker/pyramid/Dockerfile
+          push: false
+          tags: igvfd-pyramid
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build postgres image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/postgres/
+          file: docker/postgres/Dockerfile
+          push: false
+          tags: igvfd-postgres
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build localstack image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/localstack/
+          file: docker/localstack/Dockerfile
+          push: false
+          tags: igvfd-localstack
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build opensearch image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/opensearch/
+          file: docker/opensearch/Dockerfile
+          push: false
+          tags: igvfd-opensearch
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build nginx image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/nginx/Dockerfile
+          push: false
+          tags: igvfd-nginx
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build snoindex image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/snoindex/
+          file: docker/snoindex/Dockerfile
+          push: false
+          tags: igvfd-snoindex
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build dedup image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/dedup/
+          file: docker/dedup/Dockerfile
+          push: false
+          tags: igvfd-dedup
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       - name: Check OpenSearch mappings
         run: echo "Skipping OpenSearch mappings check" #docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
