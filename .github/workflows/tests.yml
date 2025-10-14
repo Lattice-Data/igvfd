@@ -88,6 +88,8 @@ jobs:
           sudo useradd -u 1444 igvfd
           sudo usermod -a -G igvfd runner
           sudo chown -R runner:igvfd ./
+          sudo mkdir -p /igvfd/.pytest_cache
+          sudo chown -R runner:igvfd /igvfd/.pytest_cache
       - name: Build pyramid image
         uses: docker/build-push-action@v5
         with:
