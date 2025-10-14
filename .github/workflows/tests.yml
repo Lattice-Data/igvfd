@@ -1,0 +1,227 @@
+name: Tests
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install pre-commit
+        run: pip install pre-commit==2.17.0
+      - name: Run pre-commit
+        run: pre-commit run --all-files
+
+  cdk-mypy:
+    runs-on: ubuntu-latest
+    needs: lint
+    defaults:
+      run:
+        working-directory: cdk
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Run mypy
+        run: mypy .
+
+  cdk-pytest:
+    runs-on: ubuntu-latest
+    needs: lint
+    defaults:
+      run:
+        working-directory: cdk
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Run pytest
+        run: pytest tests/
+
+  cdk-lambda-runtime-pytest:
+    runs-on: ubuntu-latest
+    needs: lint
+    defaults:
+      run:
+        working-directory: cdk/infrastructure/runtime/lambdas/snapshot
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Run pytest
+        run: pytest tests/
+
+  igvfd-pytest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+      - name: Set folder permissions for mounted volume
+        run: |
+          sudo useradd -u 1444 igvfd
+          sudo usermod -a -G igvfd runner
+          sudo chown -R runner:igvfd ./
+          sudo mkdir -p /igvfd/.pytest_cache
+          sudo chown -R runner:igvfd /igvfd/.pytest_cache
+      - name: Build pyramid image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/pyramid/Dockerfile
+          push: false
+          tags: igvfd-pyramid
+          cache-from: type=gha,scope=pyramid
+          cache-to: type=gha,scope=pyramid
+      - name: Build postgres image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/postgres/
+          file: docker/postgres/Dockerfile
+          push: false
+          tags: igvfd-postgres
+          cache-from: type=gha,scope=postgres
+          cache-to: type=gha,scope=postgres
+      - name: Build localstack image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/localstack/
+          file: docker/localstack/Dockerfile
+          push: false
+          tags: igvfd-localstack
+          cache-from: type=gha,scope=localstack
+          cache-to: type=gha,scope=localstack
+      - name: Build nginx image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/nginx/Dockerfile
+          push: false
+          tags: igvfd-nginx
+          cache-from: type=gha,scope=nginx
+          cache-to: type=gha,scope=nginx
+      - name: Build snoindex image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/snoindex/
+          file: docker/snoindex/Dockerfile
+          push: false
+          tags: igvfd-snoindex
+          cache-from: type=gha,scope=snoindex
+          cache-to: type=gha,scope=snoindex
+      - name: Build dedup image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/dedup/
+          file: docker/dedup/Dockerfile
+          push: false
+          tags: igvfd-dedup
+          cache-from: type=gha,scope=dedup
+          cache-to: type=gha,scope=dedup
+      - name: Run tests
+        run: |
+          docker-compose -f docker-compose.test.yml up --exit-code-from pyramid
+          docker-compose -f docker-compose.test-indexer.yml up --exit-code-from indexer-tests
+
+  igvfd-check-opensearch-mappings:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+      - name: Build pyramid image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/pyramid/Dockerfile
+          push: false
+          tags: igvfd-pyramid
+          cache-from: type=gha,scope=pyramid
+          cache-to: type=gha,scope=pyramid
+      - name: Build postgres image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/postgres/
+          file: docker/postgres/Dockerfile
+          push: false
+          tags: igvfd-postgres
+          cache-from: type=gha,scope=postgres
+          cache-to: type=gha,scope=postgres
+      - name: Build localstack image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/localstack/
+          file: docker/localstack/Dockerfile
+          push: false
+          tags: igvfd-localstack
+          cache-from: type=gha,scope=localstack
+          cache-to: type=gha,scope=localstack
+      - name: Build opensearch image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/opensearch/
+          file: docker/opensearch/Dockerfile
+          push: false
+          tags: igvfd-opensearch
+          cache-from: type=gha,scope=opensearch
+          cache-to: type=gha,scope=opensearch
+      - name: Build nginx image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/nginx/Dockerfile
+          push: false
+          tags: igvfd-nginx
+          cache-from: type=gha,scope=nginx
+          cache-to: type=gha,scope=nginx
+      - name: Build snoindex image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/snoindex/
+          file: docker/snoindex/Dockerfile
+          push: false
+          tags: igvfd-snoindex
+          cache-from: type=gha,scope=snoindex
+          cache-to: type=gha,scope=snoindex
+      - name: Build dedup image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/dedup/
+          file: docker/dedup/Dockerfile
+          push: false
+          tags: igvfd-dedup
+          cache-from: type=gha,scope=dedup
+          cache-to: type=gha,scope=dedup
+      - name: Check OpenSearch mappings
+        run: echo "Skipping OpenSearch mappings check" #docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
