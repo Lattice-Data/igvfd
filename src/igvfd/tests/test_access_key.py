@@ -42,7 +42,6 @@ def test_access_key_principals(anontestapp, execute_counter, access_key_3, submi
         'system.Authenticated',
         'system.Everyone',
         'userid.%s' % submitter['uuid'],
-        'viewing_group.IGVF',
     ]
 
 

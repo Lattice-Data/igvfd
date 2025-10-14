@@ -115,13 +115,13 @@ def test_wrangler_patch_groups_allowed(submitter, other_lab, wrangler_testapp):
 
 def test_submitter_patch_viewing_groups_disallowed(submitter, other_lab, submitter_testapp):
     res = submitter_testapp.get(submitter['@id'])
-    vgroups = {'viewing_groups': res.json['viewing_groups'] + ['community']}
+    vgroups = {'viewing_groups': ['community']}
     submitter_testapp.patch_json(res.json['@id'], vgroups, status=422)
 
 
 def test_wrangler_patch_viewing_groups_allowed(submitter, other_lab, wrangler_testapp):
     res = wrangler_testapp.get(submitter['@id'])
-    vgroups = {'viewing_groups': res.json['viewing_groups'] + ['community']}
+    vgroups = {'viewing_groups': ['community']}
     wrangler_testapp.patch_json(res.json['@id'], vgroups, status=200)
 
 
