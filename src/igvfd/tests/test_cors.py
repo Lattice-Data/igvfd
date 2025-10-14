@@ -94,7 +94,7 @@ def test_cors_get_allowed_origins(dummy_request):
 def test_cors_get_allowed_suffixes(dummy_request):
     from igvfd.cors import get_allowed_suffixes
     assert get_allowed_suffixes(dummy_request) == [
-        '.demo.igvf.org',
+        '.demo.lattice-data.org',
     ]
 
 
@@ -156,33 +156,33 @@ def test_cors_origin_maches_suffix(dummy_request):
     from igvfd.cors import origin_matches_suffix
     dummy_request.headers.update({'Origin': 'http://localhost:3000'})
     assert not origin_matches_suffix(dummy_request)
-    dummy_request.headers.update({'Origin': 'http://abc.demo.igvf.org'})
+    dummy_request.headers.update({'Origin': 'http://abc.demo.lattice-data.org'})
     assert not origin_matches_suffix(dummy_request)
-    dummy_request.headers.update({'Origin': 'https://abc.baddemo.igvf.org'})
+    dummy_request.headers.update({'Origin': 'https://abc.baddemo.lattice-data.org'})
     assert not origin_matches_suffix(dummy_request)
-    dummy_request.headers.update({'Origin': 'https://abc.demo.igvf.org'})
+    dummy_request.headers.update({'Origin': 'https://abc.demo.lattice-data.org'})
     assert origin_matches_suffix(dummy_request)
     original_trusted = dummy_request.registry.settings['cors_trusted_suffixes']
     dummy_request.registry.settings['cors_trusted_suffixes'] = ''
     assert not origin_matches_suffix(dummy_request)
     dummy_request.registry.settings['cors_trusted_suffixes'] = (
-        '.test.igvf.org'
+        '.test.lattice-data.org'
     )
     assert not origin_matches_suffix(dummy_request)
     dummy_request.registry.settings['cors_trusted_suffixes'] = (
-        '.igvf.org'
+        '.lattice-data.org'
     )
     assert origin_matches_suffix(dummy_request)
     dummy_request.registry.settings['cors_trusted_suffixes'] = (
-        '.test.igvf.org\n.data.igvf.org'
+        '.test.lattice-data.org\n.data.lattice-data.org'
     )
     assert not origin_matches_suffix(dummy_request)
     dummy_request.registry.settings['cors_trusted_suffixes'] = (
-        '.test.igvf.org\n.demo.igvf.org'
+        '.test.lattice-data.org\n.demo.lattice-data.org'
     )
     assert origin_matches_suffix(dummy_request)
     dummy_request.registry.settings['cors_trusted_suffixes'] = original_trusted
-    dummy_request.headers.update({'Origin': 'https://xyz.prod.igvf.org'})
+    dummy_request.headers.update({'Origin': 'https://xyz.prod.lattice-data.org'})
     assert not origin_matches_suffix(dummy_request)
 
 
@@ -205,11 +205,11 @@ def test_cors_origin_is_allowed(dummy_request):
     assert origin_is_allowed(dummy_request)
     dummy_request.registry.settings['cors_trusted_origins'] = original_trusted
     assert not origin_is_allowed(dummy_request)
-    dummy_request.headers.update({'Origin': 'https://abc.test.igvf.org'})
+    dummy_request.headers.update({'Origin': 'https://abc.test.lattice-data.org'})
     assert not origin_is_allowed(dummy_request)
-    dummy_request.headers.update({'Origin': 'http://xyz.demo.igvf.org'})
+    dummy_request.headers.update({'Origin': 'http://xyz.demo.lattice-data.org'})
     assert not origin_is_allowed(dummy_request)
-    dummy_request.headers.update({'Origin': 'https://xyz.demo.igvf.org'})
+    dummy_request.headers.update({'Origin': 'https://xyz.demo.lattice-data.org'})
     assert origin_is_allowed(dummy_request)
 
 
@@ -245,10 +245,10 @@ def test_cors_should_add_cors_to_headers(dummy_request):
     dummy_request.headers.update({'Origin': 'http://localhost:3000'})
     dummy_request.method = 'DELETE'
     assert not should_add_cors_to_headers(dummy_request)
-    dummy_request.headers.update({'Origin': 'https://abc.demo.igvf.org'})
+    dummy_request.headers.update({'Origin': 'https://abc.demo.lattice-data.org'})
     dummy_request.method = 'POST'
     assert should_add_cors_to_headers(dummy_request)
-    dummy_request.headers.update({'Origin': 'https://abc.demo.igvf.org.com'})
+    dummy_request.headers.update({'Origin': 'https://abc.demo.lattice-data.org.com'})
     dummy_request.method = 'POST'
     assert not should_add_cors_to_headers(dummy_request)
     dummy_request.headers.update({'Origin': 'https://abc.demo.igvf.com'})
@@ -356,7 +356,7 @@ def test_cors_maybe_add_cors_to_response_header_suffix(dummy_request):
     assert 'Vary' not in dummy_request.response.headers
     dummy_request.headers.update(
         {
-            'Origin': 'http://abc.igvf.org'
+            'Origin': 'http://abc.lattice-data.org'
         }
     )
     maybe_add_cors_to_response_headers(dummy_request)
@@ -366,7 +366,7 @@ def test_cors_maybe_add_cors_to_response_header_suffix(dummy_request):
     assert 'Vary' not in dummy_request.response.headers
     dummy_request.headers.update(
         {
-            'Origin': 'https://abc.demo.igvf.org'
+            'Origin': 'https://abc.demo.lattice-data.org'
         }
     )
     maybe_add_cors_to_response_headers(dummy_request)
@@ -374,7 +374,7 @@ def test_cors_maybe_add_cors_to_response_header_suffix(dummy_request):
     assert 'Access-Control-Allow-Credentials' in dummy_request.response.headers
     assert 'Access-Control-Expose-Headers' in dummy_request.response.headers
     assert dummy_request.response.headers['Access-Control-Allow-Origin'] == (
-        'https://abc.demo.igvf.org'
+        'https://abc.demo.lattice-data.org'
     )
     assert 'Vary' in dummy_request.response.headers
     assert 'Origin' in dummy_request.response.headers['Vary']
@@ -421,7 +421,7 @@ def test_cors_maybe_add_preflight_cors_to_response_header_suffix(dummy_request):
     dummy_request.method = 'PATCH'
     dummy_request.headers.update(
         {
-            'Origin': 'https://demo.igvf.org.evilhost.com',
+            'Origin': 'https://demo.lattice-data.org.evilhost.com',
             'Access-Control-Request-Method': 'PATCH',
             'Access-Control-Request-Headers': 'Accept,Origin,X-CSRF-Token',
         }
@@ -431,7 +431,7 @@ def test_cors_maybe_add_preflight_cors_to_response_header_suffix(dummy_request):
     assert 'Access-Control-Allow-Headers' not in dummy_request.response.headers
     dummy_request.headers.update(
         {
-            'Origin': 'https://abc.notdemo.igvf.org',
+            'Origin': 'https://abc.notdemo.lattice-data.org',
             'Access-Control-Request-Method': 'PATCH',
             'Access-Control-Request-Headers': 'Accept,Origin,X-CSRF-Token',
         }
@@ -442,7 +442,7 @@ def test_cors_maybe_add_preflight_cors_to_response_header_suffix(dummy_request):
     dummy_request.method = 'PATCH'
     dummy_request.headers.update(
         {
-            'Origin': 'https://feature.demo.igvf.org',
+            'Origin': 'https://feature.demo.lattice-data.org',
             'Access-Control-Request-Method': 'PATCH',
             'Access-Control-Request-Headers': 'Accept,Origin,X-CSRF-Token',
         }
@@ -489,7 +489,7 @@ def test_cors_test_handle_cors_preflight_view_suffix(testapp):
         status=404
     )
     headers = {
-        'Origin': 'http://evilhost.demo.igvf.org',
+        'Origin': 'http://evilhost.demo.lattice-data.org',
         'Access-Control-Request-Method': 'POST',
         'Access-Control-Request-Headers': 'Accept,Origin,X-CSRF-Token,Content-Length',
     }
@@ -501,7 +501,7 @@ def test_cors_test_handle_cors_preflight_view_suffix(testapp):
     assert 'Access-Control-Allow-Methods' not in response.headers
     assert 'Access-Control-Allow-Headers' not in response.headers
     headers = {
-        'Origin': 'https://feature.demo.igvf.org',
+        'Origin': 'https://feature.demo.lattice-data.org',
         'Access-Control-Request-Method': 'POST',
         'Access-Control-Request-Headers': 'Accept,Origin,X-CSRF-Token,Content-Length',
     }
@@ -573,7 +573,7 @@ def test_cors_maybe_add_cors_to_header_view_deriver_suffix(testapp):
     assert 'Access-Control-Expose-Headers' not in response.headers
     testapp.cookiejar.clear()
     headers = {
-        'Origin': 'https://demo.igvf.org.evilhost.com',
+        'Origin': 'https://demo.lattice-data.org.evilhost.com',
     }
     response = testapp.get(
         '/session',
@@ -588,7 +588,7 @@ def test_cors_maybe_add_cors_to_header_view_deriver_suffix(testapp):
     assert 'Access-Control-Expose-Headers' not in response.headers
     testapp.cookiejar.clear()
     headers = {
-        'Origin': 'https://abc.demo.igvf.org',
+        'Origin': 'https://abc.demo.lattice-data.org',
     }
     response = testapp.get(
         '/session',
@@ -601,7 +601,7 @@ def test_cors_maybe_add_cors_to_header_view_deriver_suffix(testapp):
     assert 'Access-Control-Allow-Origin' in response.headers
     assert 'Access-Control-Allow-Credentials' in response.headers
     assert 'Access-Control-Expose-Headers' in response.headers
-    assert response.headers['Access-Control-Allow-Origin'] == 'https://abc.demo.igvf.org'
+    assert response.headers['Access-Control-Allow-Origin'] == 'https://abc.demo.lattice-data.org'
     assert response.headers['Vary'] == 'Origin, Accept, Authorization'
     assert response.headers['Access-Control-Allow-Credentials'] == 'true'
 

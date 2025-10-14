@@ -36,4 +36,4 @@ def test_get_host_type():
     assert 'staging' == get_host_type('api.staging.lattice-data.org')
     assert 'igvfd-dev' == get_host_type('igvfd-dev.demo.lattice-data.org')
     assert 'igvfd-igvf-2320-improve-sample-summary' == get_host_type(
-        'igvfd-igvf-2320-improve-sample-summary.demo.igvf.org')
+        'igvfd-igvf-2320-improve-sample-summary.demo.lattice-data.org')

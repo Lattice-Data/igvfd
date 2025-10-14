@@ -20,7 +20,6 @@ ORDER = [
     'image',
     'page',
     'access_key',
-    'image_file',
 ]
 
 IS_ATTACHMENT = [
