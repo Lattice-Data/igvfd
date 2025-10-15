@@ -83,11 +83,11 @@ jobs:
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-      - name: Set folder permissions for mounted volume
-        run: |
-          sudo useradd -u 1444 igvfd
-          sudo usermod -a -G igvfd runner
-          sudo chown -R runner:igvfd ./
+      #- name: Set folder permissions for mounted volume
+      #  run: |
+      #    sudo useradd -u 1444 igvfd
+      #    sudo usermod -a -G igvfd runner
+      #    sudo chown -R runner:igvfd ./
       - name: Build pyramid image
         uses: docker/build-push-action@v5
         with:
@@ -226,13 +226,11 @@ jobs:
           cache-to: type=gha,scope=dedup
       - name: Check OpenSearch mappings
         run: |
-          sudo useradd -u 1444 igvfd
-          sudo usermod -a -G igvfd runner
-          sudo chown -R runner:igvfd ./
           sudo chmod -R 777 ./
           docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
       - name: introspect
         run: |
           ls -lah
-          docker-compose run pyramid ls -lah
           whoami
+          id -u $(whoami)
+          docker-compose run pyramid ls -lah
