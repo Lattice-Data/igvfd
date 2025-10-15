@@ -1,6 +1,6 @@
 {
     "title": "User",
-    "description": "A user of Lattice data portal.",
+    "description": "A user of the Lattice Data Portal.",
     "$id": "/profiles/user.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",

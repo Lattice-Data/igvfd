@@ -1,6 +1,6 @@
 {
     "title": "Page",
-    "description": "A page on the Lattice portal.",
+    "description": "A page on the Lattice Data Portal.",
     "$id": "/profiles/page.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
