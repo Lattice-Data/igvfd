@@ -138,7 +138,8 @@ jobs:
           cache-to: type=gha,scope=dedup
       - name: Run tests
         run: |
-          chmod -R 775 ./
+          ls -lah
+          chmod -R 777 ./
           docker-compose -f docker-compose.test.yml up --exit-code-from pyramid
           docker-compose -f docker-compose.test-indexer.yml up --exit-code-from indexer-tests
 
@@ -221,5 +222,5 @@ jobs:
           cache-to: type=gha,scope=dedup
       - name: Check OpenSearch mappings
         run: |
-          sudo chmod -R 775 ./
+          sudo chmod -R 777 ./
           docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
