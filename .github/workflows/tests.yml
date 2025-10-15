@@ -3,7 +3,6 @@ name: Tests
 on:
   push:
     branches: ['**']
-  pull_request:
 
 jobs:
   lint:
@@ -83,13 +82,6 @@ jobs:
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
-      - name: Set folder permissions for mounted volume
-        run: |
-          sudo useradd -u 1444 igvfd
-          sudo usermod -a -G igvfd runner
-          sudo chown -R runner:igvfd ./
-          sudo mkdir -p /igvfd/.pytest_cache
-          sudo chown -R runner:igvfd /igvfd/.pytest_cache
       - name: Build pyramid image
         uses: docker/build-push-action@v5
         with:
@@ -146,11 +138,18 @@ jobs:
           cache-to: type=gha,scope=dedup
       - name: Run tests
         run: |
+          sudo useradd -u 1444 igvfd
+          sudo usermod -a -G igvfd $(id -gn)
+          sudo chown -R $(id -gn):igvfd ./
+          sudo chmod -R g+w ./
           docker-compose -f docker-compose.test.yml up --exit-code-from pyramid
           docker-compose -f docker-compose.test-indexer.yml up --exit-code-from indexer-tests
 
   igvfd-check-opensearch-mappings:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     needs: lint
     steps:
       - uses: actions/checkout@v3
@@ -224,4 +223,9 @@ jobs:
           cache-from: type=gha,scope=dedup
           cache-to: type=gha,scope=dedup
       - name: Check OpenSearch mappings
-        run: echo "Skipping OpenSearch mappings check" #docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
+        run: |
+          sudo useradd -u 1444 igvfd
+          sudo usermod -a -G igvfd $(id -gn)
+          sudo chown -R $USER:igvfd ./
+          sudo chmod -R g+w ./
+          docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh

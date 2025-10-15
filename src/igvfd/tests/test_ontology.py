@@ -132,7 +132,7 @@ def test_ontology_item_encode_and_decode():
     assert decoded_item == item
 
 
-def test_ontology_write_data_to_reference_database():
+def test_ontology_write_data_to_reference_database(tmp_path):
     import os
     from igvfd.ontology import write_data_to_reference_database
     data = {
@@ -140,7 +140,7 @@ def test_ontology_write_data_to_reference_database():
         'c': ['d', 'e', 'f', {'x': False}, 'y', 1, 'z'],
         1: True
     }
-    filename = 'test.sqlite'
+    filename = tmp_path / 'test.sqlite'
     tablename = 'testdata'
     write_data_to_reference_database(
         data,
@@ -148,13 +148,9 @@ def test_ontology_write_data_to_reference_database():
         filename=filename,
     )
     assert os.path.isfile(filename)
-    # Clean up.
-    os.remove(filename)
-    assert not os.path.isfile(filename)
 
 
-def test_ontology_get_connection_to_reference_database():
-    import os
+def test_ontology_get_connection_to_reference_database(tmp_path):
     from igvfd.ontology import write_data_to_reference_database
     from igvfd.ontology import get_connection_to_reference_database
     from sqlitedict import SqliteDict
@@ -163,7 +159,7 @@ def test_ontology_get_connection_to_reference_database():
         'c': ['d', 'e', 'f', {'x': False}, 'y', 1, 'z'],
         1: True
     }
-    filename = 'test.sqlite'
+    filename = tmp_path / 'test.sqlite'
     tablename = 'testdata'
     write_data_to_reference_database(
         data,
@@ -181,6 +177,3 @@ def test_ontology_get_connection_to_reference_database():
     assert 'd' not in db
     for k, v in data.items():
         assert db[k] == v
-    # Clean up.
-    os.remove(filename)
-    assert not os.path.isfile(filename)

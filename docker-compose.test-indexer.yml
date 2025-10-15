@@ -159,7 +159,7 @@ services:
       - "/igvfd/src/igvfd.egg-info"
       - "/igvfd/src/igvfd/static"
     entrypoint: ./docker/wait-for-local-services-entrypoint.sh
-    command: pytest -rf -s -m 'indexing'
+    command: pytest -rf -s --cov=igvfd -m 'indexing'
     depends_on:
       - postgres
       - opensearch
