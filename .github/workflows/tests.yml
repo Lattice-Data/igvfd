@@ -225,10 +225,14 @@ jobs:
           cache-from: type=gha,scope=dedup
           cache-to: type=gha,scope=dedup
       - name: Check OpenSearch mappings
-
         run: |
           sudo useradd -u 1444 igvfd
           sudo usermod -a -G igvfd runner
           sudo chown -R runner:igvfd ./
           sudo chmod -R 777 ./
           docker-compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
+      - name: introspect
+        run: |
+          ls -lah
+          docker-compose run pyramid ls -lah
+          whoami
