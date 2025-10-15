@@ -149,6 +149,7 @@ def test_ontology_write_data_to_reference_database(tmp_path):
     )
     assert os.path.isfile(filename)
 
+
 def test_ontology_get_connection_to_reference_database(tmp_path):
     from igvfd.ontology import write_data_to_reference_database
     from igvfd.ontology import get_connection_to_reference_database
@@ -176,4 +177,3 @@ def test_ontology_get_connection_to_reference_database(tmp_path):
     assert 'd' not in db
     for k, v in data.items():
         assert db[k] == v
-   
