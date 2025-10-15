@@ -1,5 +1,4 @@
-![Github Actions]
-(https://github.com/Lattice-Data/igvfd/.github/workflows/tests.yml/badge.svg)
+![Github Actions](https://github.com/Lattice-Data/igvfd/.github/workflows/tests.yml/badge.svg)
 # igvfD
 Metadata database for IGVF project.
 
