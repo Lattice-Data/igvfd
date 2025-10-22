@@ -270,12 +270,6 @@ def test_constructs_backend_initialize_backend_construct(
                             }
                         },
                         {
-                            'Name': 'RESTRICTED_UPLOAD_USER_ACCESS_KEYS_SECRET_ARN',
-                            'Value': {
-                                'Ref': 'TestSecret16AF87B1'
-                            }
-                        },
-                        {
                             'Name': 'APPCONFIG_APPLICATION',
                             'Value': 'igvfd-demo-some-branch-app'
                         },
@@ -916,12 +910,6 @@ def test_constructs_backend_initialize_backend_construct(
                 },
                 {
                     'Ref': 'UploadManagedPolicy7658189E'
-                },
-                {
-                    'Ref': 'RestrictedDownloadManagedPolicyEEB564DD'
-                },
-                {
-                    'Ref': 'RestrictedUploadManagedPolicy4722D553'
                 },
                 {
                     'Fn::Join': [

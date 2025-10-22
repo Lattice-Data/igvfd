@@ -119,7 +119,7 @@ config: Dict[str, Any] = {
             },
             'waf': {
                 'enabled': True,
-                'arn': 'arn:aws:wafv2:us-west-2:109189702753:regional/webacl/IgvfApiDemoWaf-7ocdanWWnHMn/8e78b5c1-2dcd-4c7d-85bb-d0e41d147f97',
+                'arn': 'arn:aws:wafv2:us-west-2:159466469043:regional/webacl/Lattice2ApiDemoWaf-Wi9CUpMXmj0O/9db3bb63-c6b5-4963-961e-2d4f628f8ce0',
             },
             'tags': [
                 ('time-to-live-hours', '60'),
@@ -133,7 +133,7 @@ config: Dict[str, Any] = {
                         'construct_id': 'Postgres',
                         'on': True,
                         'props': {
-                            'snapshot_arn': 'arn:aws:rds:us-west-2:109189702753:snapshot:manual-dev-10-26-23',
+                            #'snapshot_arn': 'arn:aws:rds:us-west-2:109189702753:snapshot:manual-dev-10-26-23',
                             'allocated_storage': 10,
                             'max_allocated_storage': 20,
                             'instance_type': InstanceType.of(
@@ -189,7 +189,7 @@ config: Dict[str, Any] = {
             },
             'waf': {
                 'enabled': True,
-                'arn': 'arn:aws:wafv2:us-west-2:109189702753:regional/webacl/IgvfApiDemoWaf-7ocdanWWnHMn/8e78b5c1-2dcd-4c7d-85bb-d0e41d147f97',
+                'arn': 'arn:aws:wafv2:us-west-2:159466469043:regional/webacl/Lattice2ApiDemoWaf-Wi9CUpMXmj0O/9db3bb63-c6b5-4963-961e-2d4f628f8ce0',
             },
             'tags': [
             ]
@@ -257,7 +257,7 @@ config: Dict[str, Any] = {
             },
             'waf': {
                 'enabled': True,
-                'arn': 'arn:aws:wafv2:us-west-2:920073238245:regional/webacl/IgvfApiStagingWaf-wfMBFqrzliwq/49cc360d-e3ae-4896-af91-4ed49d6884cc',
+                'arn': 'arn:aws:wafv2:us-west-2:555476105356:regional/webacl/Lattice2ApiStagingWaf-CCeWTQGgZ4mP/d831aaac-1160-4acb-b6f9-2a17737a2627',
             },
             'tags': [
             ],
@@ -326,7 +326,7 @@ config: Dict[str, Any] = {
             },
             'waf': {
                 'enabled': True,
-                'arn': 'arn:aws:wafv2:us-west-2:920073238245:regional/webacl/IgvfApiSandboxWaf-HqkY5pB5adOs/4d69f89b-447e-4fc5-aa2f-22103f7a5d7e',
+                'arn': 'arn:aws:wafv2:us-west-2:555476105356:regional/webacl/Lattice2ApiSandboxWaf-Cz1c6CFXjZpX/8bcc1ee6-b2bd-4edc-acb7-16bbbf1ac93d',
             },
             'tags': [
             ],
@@ -394,7 +394,7 @@ config: Dict[str, Any] = {
             },
             'waf': {
                 'enabled': True,
-                'arn': 'arn:aws:wafv2:us-west-2:035226225042:regional/webacl/IgvfApiProdWaf-VMXaeacWPPbX/f0ecfe7d-32a8-452a-91e5-abe8ba824eb7',
+                'arn': 'arn:aws:wafv2:us-west-2:919468641101:regional/webacl/Lattice2ApiProdWaf-imSYH8XCai8Z/153fa6e0-9c80-4119-a156-9f4a7d417129',
             },
             'tags': [
             ],
@@ -406,7 +406,7 @@ config: Dict[str, Any] = {
 
 @dataclass
 class Common:
-    organization_name: str = 'igvf-dacc'
+    organization_name: str = 'lattice-data'
     project_name: str = 'igvfd'
     default_region: str = 'us-west-2'
     aws_cdk_version: str = '2.151.0'

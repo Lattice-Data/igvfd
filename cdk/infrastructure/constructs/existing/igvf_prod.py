@@ -10,7 +10,6 @@ from shared_infrastructure.igvf_prod.bus import Bus
 from shared_infrastructure.igvf_prod.secret import PortalCredentials
 from shared_infrastructure.igvf_prod.policy import BucketAccessPolicies
 from shared_infrastructure.igvf_prod.secret import UploadFilesUserAccessKeys
-from shared_infrastructure.igvf_prod.secret import UploadRestrictedFilesUserAccessKeys
 
 from typing import Any
 
@@ -54,8 +53,4 @@ class Resources(Construct):
         self.upload_igvf_files_user_access_keys = UploadFilesUserAccessKeys(
             self,
             'UploadFilesUserAccessKeys',
-        )
-        self.upload_igvf_restricted_files_user_access_keys = UploadRestrictedFilesUserAccessKeys(
-            self,
-            'UploadRestrictedFilesUserAccessKeys',
         )
