@@ -271,15 +271,6 @@ class Item(snovault.Item):
     def _update_status(self, new_status, current_status, current_properties, schema, request, item_id, update, validate=True):
         new_properties = current_properties.copy()
         new_properties['status'] = new_status
-        # Some release specific functionality.
-        if new_status == 'released':
-            # This won't be reassigned if you rerelease something.
-            if 'release_timestamp' in schema['properties'] and 'release_timestamp' not in new_properties:
-                new_properties['release_timestamp'] = str(datetime.utcnow().isoformat() + '+00:00')
-        elif new_status == 'preview':
-            # This won't be reassigned if you repreview something.
-            if 'preview_timestamp' in schema['properties'] and 'preview_timestamp' not in new_properties:
-                new_properties['preview_timestamp'] = str(datetime.utcnow().isoformat() + '+00:00')
         if validate:
             self._validate_set_status_patch(request, schema, new_properties, current_properties)
         # Don't update if update parameter not true.
