@@ -280,5 +280,65 @@
                 ]
             }
         ]
+    },
+    "vpc-provider:account=159466469043:filter.vpc-id=vpc-01aad7302843c2d6e:region=us-west-2:returnAsymmetricSubnets=true": {
+        "vpcId": "vpc-01aad7302843c2d6e",
+        "vpcCidrBlock": "10.4.0.0/16",
+        "ownerAccountId": "159466469043",
+        "availabilityZones": [],
+        "subnetGroups": [
+            {
+                "name": "public",
+                "type": "Public",
+                "subnets": [
+                    {
+                        "subnetId": "subnet-0743eb44c96028e2c",
+                        "cidr": "10.4.0.0/20",
+                        "availabilityZone": "us-west-2a",
+                        "routeTableId": "rtb-00a34ffe65092e172"
+                    },
+                    {
+                        "subnetId": "subnet-019aaadd87b88fba4",
+                        "cidr": "10.4.16.0/20",
+                        "availabilityZone": "us-west-2b",
+                        "routeTableId": "rtb-0c8fe6527c66ac44a"
+                    },
+                    {
+                        "subnetId": "subnet-096d10d048924f4f1",
+                        "cidr": "10.4.32.0/20",
+                        "availabilityZone": "us-west-2c",
+                        "routeTableId": "rtb-0a77d3971118d4e39"
+                    }
+                ]
+            },
+            {
+                "name": "isolated",
+                "type": "Isolated",
+                "subnets": [
+                    {
+                        "subnetId": "subnet-089715d833fb15886",
+                        "cidr": "10.4.48.0/20",
+                        "availabilityZone": "us-west-2a",
+                        "routeTableId": "rtb-031b6324adf613d25"
+                    },
+                    {
+                        "subnetId": "subnet-0ec020811488750f6",
+                        "cidr": "10.4.64.0/20",
+                        "availabilityZone": "us-west-2b",
+                        "routeTableId": "rtb-02a566be3f7dc6752"
+                    },
+                    {
+                        "subnetId": "subnet-01bbef6938e37ec79",
+                        "cidr": "10.4.80.0/20",
+                        "availabilityZone": "us-west-2c",
+                        "routeTableId": "rtb-0071fab57000838eb"
+                    }
+                ]
+            }
+        ]
+    },
+    "hosted-zone:account=159466469043:domainName=demo.lattice-data.org:region=us-west-2": {
+        "Id": "/hostedzone/Z0453940E83WFC0I7RJ9",
+        "Name": "demo.lattice-data.org."
     }
 }
