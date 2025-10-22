@@ -294,6 +294,13 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
     template.has_resource_properties(
         'AWS::CodePipeline::Pipeline',
         {
+            'ArtifactStore': {
+                'Location': {
+                    'Ref': 'TestContinuousDeploymentPipelineArtifactsBucket40CBE2D1'
+                },
+                'Type': 'S3'
+            },
+            'RestartExecutionOnUpdate': True,
             'RoleArn': {
                 'Fn::GetAtt': [
                     'TestContinuousDeploymentPipelineRole1B892B27',
@@ -682,11 +689,11 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     'Fn::Join': [
                                         '',
                                         [
-                                                'arn:',
-                                                {
-                                                    'Ref': 'AWS::Partition'
-                                                },
-                                            ':iam::109189702753:role/cdk-hnb659fds-cfn-exec-role-109189702753-us-west-2'
+                                            'arn:',
+                                            {
+                                                'Ref': 'AWS::Partition'
+                                            },
+                                            ':iam::159466469043:role/cdk-hnb659fds-cfn-exec-role-159466469043-us-west-2'
                                         ]
                                     ]
                                 },
@@ -706,10 +713,10 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     '',
                                     [
                                         'arn:',
-                                       {
-                                           'Ref': 'AWS::Partition'
-                                       },
-                                        ':iam::109189702753:role/cdk-hnb659fds-deploy-role-109189702753-us-west-2'
+                                        {
+                                            'Ref': 'AWS::Partition'
+                                        },
+                                        ':iam::159466469043:role/cdk-hnb659fds-deploy-role-159466469043-us-west-2'
                                     ]
                                 ]
                             },
@@ -733,10 +740,10 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     '',
                                     [
                                         'arn:',
-                                       {
-                                           'Ref': 'AWS::Partition'
-                                       },
-                                        ':iam::109189702753:role/cdk-hnb659fds-deploy-role-109189702753-us-west-2'
+                                        {
+                                            'Ref': 'AWS::Partition'
+                                        },
+                                        ':iam::159466469043:role/cdk-hnb659fds-deploy-role-159466469043-us-west-2'
                                     ]
                                 ]
                             },
@@ -761,11 +768,11 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     'Fn::Join': [
                                         '',
                                         [
-                                                'arn:',
-                                                {
-                                                    'Ref': 'AWS::Partition'
-                                                },
-                                            ':iam::109189702753:role/cdk-hnb659fds-cfn-exec-role-109189702753-us-west-2'
+                                            'arn:',
+                                            {
+                                                'Ref': 'AWS::Partition'
+                                            },
+                                            ':iam::159466469043:role/cdk-hnb659fds-cfn-exec-role-159466469043-us-west-2'
                                         ]
                                     ]
                                 },
@@ -785,10 +792,10 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     '',
                                     [
                                         'arn:',
-                                       {
-                                           'Ref': 'AWS::Partition'
-                                       },
-                                        ':iam::109189702753:role/cdk-hnb659fds-deploy-role-109189702753-us-west-2'
+                                        {
+                                            'Ref': 'AWS::Partition'
+                                        },
+                                        ':iam::159466469043:role/cdk-hnb659fds-deploy-role-159466469043-us-west-2'
                                     ]
                                 ]
                             },
@@ -808,11 +815,11 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     'Fn::Join': [
                                         '',
                                         [
-                                                'arn:',
-                                                {
-                                                    'Ref': 'AWS::Partition'
-                                                },
-                                            ':iam::109189702753:role/cdk-hnb659fds-cfn-exec-role-109189702753-us-west-2'
+                                            'arn:',
+                                            {
+                                                'Ref': 'AWS::Partition'
+                                            },
+                                            ':iam::159466469043:role/cdk-hnb659fds-cfn-exec-role-159466469043-us-west-2'
                                         ]
                                     ]
                                 },
@@ -832,10 +839,10 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     '',
                                     [
                                         'arn:',
-                                       {
-                                           'Ref': 'AWS::Partition'
-                                       },
-                                        ':iam::109189702753:role/cdk-hnb659fds-deploy-role-109189702753-us-west-2'
+                                        {
+                                            'Ref': 'AWS::Partition'
+                                        },
+                                        ':iam::159466469043:role/cdk-hnb659fds-deploy-role-159466469043-us-west-2'
                                     ]
                                 ]
                             },
@@ -859,10 +866,10 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     '',
                                     [
                                         'arn:',
-                                       {
-                                           'Ref': 'AWS::Partition'
-                                       },
-                                        ':iam::109189702753:role/cdk-hnb659fds-deploy-role-109189702753-us-west-2'
+                                        {
+                                            'Ref': 'AWS::Partition'
+                                        },
+                                        ':iam::159466469043:role/cdk-hnb659fds-deploy-role-159466469043-us-west-2'
                                     ]
                                 ]
                             },
@@ -886,10 +893,10 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     '',
                                     [
                                         'arn:',
-                                       {
-                                           'Ref': 'AWS::Partition'
-                                       },
-                                        ':iam::109189702753:role/cdk-hnb659fds-deploy-role-109189702753-us-west-2'
+                                        {
+                                            'Ref': 'AWS::Partition'
+                                        },
+                                        ':iam::159466469043:role/cdk-hnb659fds-deploy-role-159466469043-us-west-2'
                                     ]
                                 ]
                             },
@@ -909,11 +916,11 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     'Fn::Join': [
                                         '',
                                         [
-                                                'arn:',
-                                                {
-                                                    'Ref': 'AWS::Partition'
-                                                },
-                                            ':iam::109189702753:role/cdk-hnb659fds-cfn-exec-role-109189702753-us-west-2'
+                                            'arn:',
+                                            {
+                                                'Ref': 'AWS::Partition'
+                                            },
+                                            ':iam::159466469043:role/cdk-hnb659fds-cfn-exec-role-159466469043-us-west-2'
                                         ]
                                     ]
                                 },
@@ -933,10 +940,10 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     '',
                                     [
                                         'arn:',
-                                       {
-                                           'Ref': 'AWS::Partition'
-                                       },
-                                        ':iam::109189702753:role/cdk-hnb659fds-deploy-role-109189702753-us-west-2'
+                                        {
+                                            'Ref': 'AWS::Partition'
+                                        },
+                                        ':iam::159466469043:role/cdk-hnb659fds-deploy-role-159466469043-us-west-2'
                                     ]
                                 ]
                             },
@@ -960,10 +967,10 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                                     '',
                                     [
                                         'arn:',
-                                       {
-                                           'Ref': 'AWS::Partition'
-                                       },
-                                        ':iam::109189702753:role/cdk-hnb659fds-deploy-role-109189702753-us-west-2'
+                                        {
+                                            'Ref': 'AWS::Partition'
+                                        },
+                                        ':iam::159466469043:role/cdk-hnb659fds-deploy-role-159466469043-us-west-2'
                                     ]
                                 ]
                             },
@@ -972,14 +979,7 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                     ],
                     'Name': 'igvfd-some-branch-DeployDevelopment'
                 }
-            ],
-            'ArtifactStore': {
-                'Location': {
-                    'Ref': 'TestContinuousDeploymentPipelineArtifactsBucket40CBE2D1'
-                },
-                'Type': 'S3'
-            },
-            'RestartExecutionOnUpdate': True
+            ]
         }
     )
     template.resource_count_is(
@@ -1032,6 +1032,22 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
     template.has_resource_properties(
         'AWS::CodePipeline::Pipeline',
         {
+            'ArtifactStore': {
+                'EncryptionKey': {
+                    'Id': {
+                        'Fn::GetAtt': [
+                            'TestProductionDeploymentPipelineArtifactsBucketEncryptionKeyE13B70EA',
+                            'Arn'
+                        ]
+                    },
+                    'Type': 'KMS'
+                },
+                'Location': {
+                    'Ref': 'TestProductionDeploymentPipelineArtifactsBucketE2532ECB'
+                },
+                'Type': 'S3'
+            },
+            'RestartExecutionOnUpdate': True,
             'RoleArn': {
                 'Fn::GetAtt': [
                     'TestProductionDeploymentPipelineRole9747ED35',
@@ -1429,7 +1445,6 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                         }
                     ],
                     'Name': 'Assets'
-
                 },
                 {
                     'Actions': [
@@ -1451,7 +1466,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::920073238245:role/cdk-hnb659fds-cfn-exec-role-920073238245-us-west-2'
+                                            ':iam::555476105356:role/cdk-hnb659fds-cfn-exec-role-555476105356-us-west-2'
                                         ]
                                     ]
                                 },
@@ -1474,7 +1489,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1498,7 +1513,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::920073238245:role/cdk-hnb659fds-cfn-exec-role-920073238245-us-west-2'
+                                            ':iam::555476105356:role/cdk-hnb659fds-cfn-exec-role-555476105356-us-west-2'
                                         ]
                                     ]
                                 },
@@ -1521,7 +1536,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1548,7 +1563,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1575,7 +1590,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1599,7 +1614,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::920073238245:role/cdk-hnb659fds-cfn-exec-role-920073238245-us-west-2'
+                                            ':iam::555476105356:role/cdk-hnb659fds-cfn-exec-role-555476105356-us-west-2'
                                         ]
                                     ]
                                 },
@@ -1622,7 +1637,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1649,7 +1664,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1694,7 +1709,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::920073238245:role/cdk-hnb659fds-cfn-exec-role-920073238245-us-west-2'
+                                            ':iam::555476105356:role/cdk-hnb659fds-cfn-exec-role-555476105356-us-west-2'
                                         ]
                                     ]
                                 },
@@ -1717,7 +1732,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1741,7 +1756,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::920073238245:role/cdk-hnb659fds-cfn-exec-role-920073238245-us-west-2'
+                                            ':iam::555476105356:role/cdk-hnb659fds-cfn-exec-role-555476105356-us-west-2'
                                         ]
                                     ]
                                 },
@@ -1764,7 +1779,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1788,7 +1803,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::035226225042:role/cdk-hnb659fds-cfn-exec-role-035226225042-us-west-2'
+                                            ':iam::919468641101:role/cdk-hnb659fds-cfn-exec-role-919468641101-us-west-2'
                                         ]
                                     ]
                                 },
@@ -1811,7 +1826,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::035226225042:role/cdk-hnb659fds-deploy-role-035226225042-us-west-2'
+                                        ':iam::919468641101:role/cdk-hnb659fds-deploy-role-919468641101-us-west-2'
                                     ]
                                 ]
                             },
@@ -1835,7 +1850,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::035226225042:role/cdk-hnb659fds-cfn-exec-role-035226225042-us-west-2'
+                                            ':iam::919468641101:role/cdk-hnb659fds-cfn-exec-role-919468641101-us-west-2'
                                         ]
                                     ]
                                 },
@@ -1858,7 +1873,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::035226225042:role/cdk-hnb659fds-deploy-role-035226225042-us-west-2'
+                                        ':iam::919468641101:role/cdk-hnb659fds-deploy-role-919468641101-us-west-2'
                                     ]
                                 ]
                             },
@@ -1885,7 +1900,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1912,7 +1927,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -1939,7 +1954,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::035226225042:role/cdk-hnb659fds-deploy-role-035226225042-us-west-2'
+                                        ':iam::919468641101:role/cdk-hnb659fds-deploy-role-919468641101-us-west-2'
                                     ]
                                 ]
                             },
@@ -1966,7 +1981,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::035226225042:role/cdk-hnb659fds-deploy-role-035226225042-us-west-2'
+                                        ':iam::919468641101:role/cdk-hnb659fds-deploy-role-919468641101-us-west-2'
                                     ]
                                 ]
                             },
@@ -1990,7 +2005,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::920073238245:role/cdk-hnb659fds-cfn-exec-role-920073238245-us-west-2'
+                                            ':iam::555476105356:role/cdk-hnb659fds-cfn-exec-role-555476105356-us-west-2'
                                         ]
                                     ]
                                 },
@@ -2013,7 +2028,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -2037,7 +2052,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                             {
                                                 'Ref': 'AWS::Partition'
                                             },
-                                            ':iam::035226225042:role/cdk-hnb659fds-cfn-exec-role-035226225042-us-west-2'
+                                            ':iam::919468641101:role/cdk-hnb659fds-cfn-exec-role-919468641101-us-west-2'
                                         ]
                                     ]
                                 },
@@ -2060,7 +2075,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::035226225042:role/cdk-hnb659fds-deploy-role-035226225042-us-west-2'
+                                        ':iam::919468641101:role/cdk-hnb659fds-deploy-role-919468641101-us-west-2'
                                     ]
                                 ]
                             },
@@ -2087,7 +2102,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::920073238245:role/cdk-hnb659fds-deploy-role-920073238245-us-west-2'
+                                        ':iam::555476105356:role/cdk-hnb659fds-deploy-role-555476105356-us-west-2'
                                     ]
                                 ]
                             },
@@ -2114,7 +2129,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                         {
                                             'Ref': 'AWS::Partition'
                                         },
-                                        ':iam::035226225042:role/cdk-hnb659fds-deploy-role-035226225042-us-west-2'
+                                        ':iam::919468641101:role/cdk-hnb659fds-deploy-role-919468641101-us-west-2'
                                     ]
                                 ]
                             },
@@ -2123,23 +2138,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                     ],
                     'Name': 'ProductionAndSandboxDeployWave'
                 }
-            ],
-            'ArtifactStore': {
-                'EncryptionKey': {
-                    'Id': {
-                        'Fn::GetAtt': [
-                            'TestProductionDeploymentPipelineArtifactsBucketEncryptionKeyE13B70EA',
-                            'Arn'
-                        ]
-                    },
-                    'Type': 'KMS'
-                },
-                'Location': {
-                    'Ref': 'TestProductionDeploymentPipelineArtifactsBucketE2532ECB'
-                },
-                'Type': 'S3'
-            },
-            'RestartExecutionOnUpdate': True
+            ]
         }
     )
     template.resource_count_is(

@@ -191,6 +191,7 @@ def upload_igvf_files_policy(stack):
         ]
     )
 
+
 @pytest.fixture
 def bucket_access_policies(
         mocker,
