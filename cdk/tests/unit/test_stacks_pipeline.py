@@ -30,7 +30,7 @@ def test_stacks_pipeline_continuous_deployment_pipeline_stack_initialized(pipeli
     ).get(
         'Stages'
     )
-    assert len(stages) == 6
+    assert len(stages) == 5
 
 
 def test_stacks_pipeline_production_deployment_pipeline_stack_initialized(production_pipeline_config):
