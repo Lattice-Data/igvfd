@@ -310,7 +310,7 @@ aws ecs execute-command \
 
 ## Add new feature flag
 
-1. Add a new feature flag key and value (True/False) to https://github.com/IGVF-DACC/igvfd/blob/dev/cdk/infrastructure/config.py for a specific environment:
+1. Add a new feature flag key and value (True/False) to https://github.com/LATTICE-DATA/igvfd/blob/dev/cdk/infrastructure/config.py for a specific environment:
 
 <p align="center">
   <img src="./images/howto/add-new-feature-flag_1.png" alt="Add new feature flag 1" width="500">
@@ -346,7 +346,7 @@ aws ecs execute-command \
 
 1. Delete `Backend`, `Opensearch`, and `Postgres` stacks in CloudFormation console.
 
-2. (Optional) Update `postgres` config in https://github.com/IGVF-DACC/igvfd/blob/dev/cdk/infrastructure/config.py for a specific environment with a new `snapshot_arn` or `snapshot_source_db_identifier` (or leave the same if you want latest snapshot from same source).
+2. (Optional) Update `postgres` config in https://github.com/LATTICE-DATA/igvfd/blob/dev/cdk/infrastructure/config.py for a specific environment with a new `snapshot_arn` or `snapshot_source_db_identifier` (or leave the same if you want latest snapshot from same source).
 
 3. Commit code and push if (2) or trigger new deployment manually with [Retrigger release pipeline](#retrigger-release-pipeline).
 
@@ -356,7 +356,7 @@ aws ecs execute-command \
 
 (Try swapping on demo instance first.)
 
-1. Specify a new Opensearch cluster in https://github.com/IGVF-DACC/igvfd/blob/dev/cdk/infrastructure/config.py for a specific environment:
+1. Specify a new Opensearch cluster in https://github.com/LATTICE-DATA/igvfd/blob/dev/cdk/infrastructure/config.py for a specific environment:
 
    a. Use a unique `construct_id` name (e.g. `Opensearch27`).
 
@@ -408,7 +408,7 @@ aws ecs execute-command \
 
 2. Take manual snapshot of Postgres database.
 
-3. Specify a new Postgres instance in https://github.com/IGVF-DACC/igvfd/blob/dev/cdk/infrastructure/config.py for a specific environment:
+3. Specify a new Postgres instance in https://github.com/LATTICE-DATA/igvfd/blob/dev/cdk/infrastructure/config.py for a specific environment:
 
    a. Use a unique `construct_id` name (e.g. `Postgres2`).
 

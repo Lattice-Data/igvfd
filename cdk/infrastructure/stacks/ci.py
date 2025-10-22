@@ -66,7 +66,7 @@ class ContinuousIntegrationStack(cdk.Stack):
             self,
             'ContinuousIntegration',
             props=ContinuousIntegrationProps(
-                github_owner='igvf-dacc',
+                github_owner='lattice-data',
                 github_repo='igvfd',
                 build_spec=get_build_spec(),
                 existing_resources=self.existing_resources,
