@@ -19,16 +19,10 @@
             "$ref": "mixins.json#/basic_item"
         },
         {
-            "$ref": "mixins.json#/standard_status"
+            "$ref": "mixins.json#/shared_status"
         },
         {
             "$ref": "mixins.json#/attribution"
-        },
-        {
-            "$ref": "mixins.json#/release_timestamp"
-        },
-        {
-            "$ref": "mixins.json#/preview_timestamp"
         }
     ],
     "properties": {

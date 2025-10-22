@@ -256,12 +256,6 @@
                     "notes": {
                         "type": "text"
                     },
-                    "preview_timestamp": {
-                        "type": "date"
-                    },
-                    "release_timestamp": {
-                        "type": "date"
-                    },
                     "schema_version": {
                         "type": "keyword"
                     },
