@@ -180,7 +180,6 @@ class ContinuousDeploymentPipeline(BasicSelfUpdatingPipeline):
             **kwargs,
         )
         self._define_dev_environment_config()
-        self._add_tooling_wave()
         self._add_development_deploy_stage()
         self._add_slack_notifications()
 
