@@ -5,8 +5,9 @@ from ...constants import *
 @pytest.fixture
 def image(testapp):
     item = {
-        'attachment': {'download': 'red-dot.png', 'href': RED_DOT},
-        'release_timestamp': '2024-03-06T12:34:56Z',
-        'status': 'released'
+        'attachment': 'red-dot.png',
+        'caption': 'A red dot image for testing.',
+        'schema_version': '1',
+        'status': 'current'
     }
     return testapp.post_json('/image', item, status=201).json['@graph'][0]
