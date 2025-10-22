@@ -5,9 +5,12 @@
         ],
         "description": "AB characterization standards.",
         "attachment": "Antibody_Characterization_IGVF.pdf",
-        "document_type": "standards",
+        "document_type": "experimental protocol",
         "lab": "teri-klein",
         "submitted_by": "fytanaka@stanford.edu",
-        "uuid": "bcb5f3c8-d5e9-40d2-805f-4274f940c36d"
+        "uuid": "bcb5f3c8-d5e9-40d2-805f-4274f940c36d",
+        "schema_version": "1",
+        "status": "current",
+        "creation_timestamp": "2023-01-01T00:00:00.000000+00:00"
     }
 ]
