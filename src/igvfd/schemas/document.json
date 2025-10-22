@@ -26,65 +26,9 @@
             "$ref": "mixins.json#/attribution"
         },
         {
-            "$ref": "mixins.json#/standard_status"
-        },
-        {
-            "$ref": "mixins.json#/release_timestamp"
-        },
-        {
-            "$ref": "mixins.json#/preview_timestamp"
+            "$ref": "mixins.json#/shared_status"
         }
     ],
-    "dependentSchemas": {
-        "$merge": [
-            "shared_dependencies.json#/standard_status"
-        ],
-        "document_type": {
-            "comment": "Characterization documents require characterization_method.",
-            "oneOf": [
-                {
-                    "required": [
-                        "characterization_method"
-                    ],
-                    "properties": {
-                        "document_type": {
-                            "enum": [
-                                "characterization"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "not": {
-                        "properties": {
-                            "document_type": {
-                                "enum": [
-                                    "characterization"
-                                ]
-                            }
-                        }
-                    }
-                }
-            ]
-        },
-        "standardized_file_format": {
-            "comment": "If standardized_file_format is true, the document_type must be file format specification",
-            "if": {
-                "properties": {
-                    "standardized_file_format": {
-                        "const": true
-                    }
-                }
-            },
-            "then": {
-                "properties": {
-                    "document_type": {
-                        "const": "file format specification"
-                    }
-                }
-            }
-        }
-    },
     "properties": {
         "schema_version": {
             "default": "1"
@@ -94,45 +38,12 @@
             "description": "The category that best describes the document.",
             "type": "string",
             "enum": [
-                "cell fate change protocol",
-                "characterization",
                 "computational protocol",
-                "experimental protocol",
-                "file format specification",
-                "image",
-                "library structure seqspec",
-                "model source data",
-                "pipeline log",
-                "pipeline parameters",
-                "plate map",
-                "plasmid map",
-                "plasmid sequence",
-                "quality control report",
-                "standards"
+                "experimental protocol"
             ],
             "submissionExample": {
-                "appscript": "plasmid map",
-                "igvf_utils": "plasmid map"
-            }
-        },
-        "characterization_method": {
-            "title": "Characterization Method",
-            "description": "The method used for the characterization.",
-            "type": "string",
-            "enum": [
-                "FACS",
-                "immunoblot",
-                "immunofluorescence",
-                "immunoprecipitation",
-                "mass spectrometry",
-                "PCR",
-                "restriction digest",
-                "RT-qPCR",
-                "sequencing"
-            ],
-            "submissionExample": {
-                "appscript": "sequencing",
-                "igvf_utils": "sequencing"
+                "appscript": "experimental protocol",
+                "igvf_utils": "experimental protocol"
             }
         },
         "urls": {
@@ -152,22 +63,10 @@
                 "appscript": "[\"https://www.addgene.org/search/catalog/plasmids/?q=cas9\"]",
                 "igvf_utils": "https://www.addgene.org/search/catalog/plasmids/?q=cas9"
             }
-        },
-        "standardized_file_format": {
-            "title": "Standardized File Format",
-            "description": "Specifies whether this format is an IGVF-standardized file format defined by Focus Groups or produced by a uniform pipeline.",
-            "type": "boolean",
-            "default": false,
-            "permission": "admin_only",
-            "submissionExample": {
-                "appscript": true,
-                "igvf_utils": true
-            }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
-        "characterization_method",
         "description",
         "document_type",
         "lab.title",
