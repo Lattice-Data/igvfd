@@ -6,7 +6,7 @@ from ...constants import *
 def experimental_protocol_document(testapp, other_lab):
     item = {
         'document_type': 'experimental protocol',
-        'description': 'Generic experimental protocol',
+        'description': 'Experimental protocol for laboratory procedures.',
         'lab': other_lab['@id'],
         'attachment': {'download': 'red-dot.png', 'href': RED_DOT},
     }
@@ -16,8 +16,8 @@ def experimental_protocol_document(testapp, other_lab):
 @pytest.fixture
 def document_pipeline_parameters(testapp, other_lab):
     item = {
-        'document_type': 'pipeline parameters',
-        'description': 'Pipeline parameters.',
+        'document_type': 'computational protocol',
+        'description': 'Computational protocol for data processing pipeline.',
         'lab': other_lab['@id'],
         'attachment': {'download': 'red-dot.png', 'href': RED_DOT},
     }
@@ -38,8 +38,8 @@ def document_v1(experimental_protocol_document):
 @pytest.fixture
 def plasmid_map_document(testapp, other_lab):
     item = {
-        'document_type': 'plasmid map',
-        'description': 'Generic experimental protocol',
+        'document_type': 'experimental protocol',
+        'description': 'Experimental protocol for plasmid mapping procedures.',
         'lab': other_lab['@id'],
         'attachment': {'download': 'red-dot.png', 'href': RED_DOT}
     }
