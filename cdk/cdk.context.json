@@ -342,5 +342,185 @@
     "hosted-zone:account=159466469043:domainName=demo.lattice-data.org:region=us-west-2": {
         "Id": "/hostedzone/Z0453940E83WFC0I7RJ9",
         "Name": "demo.lattice-data.org."
+    },
+    "vpc-provider:account=555476105356:filter.vpc-id=vpc-0975d809358cfe91c:region=us-west-2:returnAsymmetricSubnets=true": {
+        "vpcId": "vpc-0975d809358cfe91c",
+        "vpcCidrBlock": "10.5.0.0/16",
+        "ownerAccountId": "555476105356",
+        "availabilityZones": [],
+        "subnetGroups": [
+            {
+                "name": "public",
+                "type": "Public",
+                "subnets": [
+                    {
+                        "subnetId": "subnet-09e88b50d48da0b7d",
+                        "cidr": "10.5.0.0/20",
+                        "availabilityZone": "us-west-2a",
+                        "routeTableId": "rtb-0d0cdde5fe2704c92"
+                    },
+                    {
+                        "subnetId": "subnet-06bfafbdf55eef421",
+                        "cidr": "10.5.16.0/20",
+                        "availabilityZone": "us-west-2b",
+                        "routeTableId": "rtb-0fb58feddbe8d4d4f"
+                    },
+                    {
+                        "subnetId": "subnet-0f829e69137f6683f",
+                        "cidr": "10.5.32.0/20",
+                        "availabilityZone": "us-west-2c",
+                        "routeTableId": "rtb-0298a72fe60d8e864"
+                    }
+                ]
+            },
+            {
+                "name": "isolated",
+                "type": "Isolated",
+                "subnets": [
+                    {
+                        "subnetId": "subnet-030755467511d5cd6",
+                        "cidr": "10.5.48.0/20",
+                        "availabilityZone": "us-west-2a",
+                        "routeTableId": "rtb-0ab06dd68634cafdc"
+                    },
+                    {
+                        "subnetId": "subnet-095d6b89b2c8fe064",
+                        "cidr": "10.5.64.0/20",
+                        "availabilityZone": "us-west-2b",
+                        "routeTableId": "rtb-0a9e6d11ab8644a32"
+                    },
+                    {
+                        "subnetId": "subnet-0677c7cc32bef2132",
+                        "cidr": "10.5.80.0/20",
+                        "availabilityZone": "us-west-2c",
+                        "routeTableId": "rtb-0d4ea9dd7efd577c1"
+                    }
+                ]
+            }
+        ]
+    },
+    "hosted-zone:account=555476105356:domainName=staging.lattice-data.org:region=us-west-2": {
+        "Id": "/hostedzone/Z04300903M90KIDX0IOAD",
+        "Name": "staging.lattice-data.org."
+    },
+    "vpc-provider:account=555476105356:filter.vpc-id=vpc-03b11bae7026053e4:region=us-west-2:returnAsymmetricSubnets=true": {
+        "vpcId": "vpc-03b11bae7026053e4",
+        "vpcCidrBlock": "10.6.0.0/16",
+        "ownerAccountId": "555476105356",
+        "availabilityZones": [],
+        "subnetGroups": [
+            {
+                "name": "isolated",
+                "type": "Isolated",
+                "subnets": [
+                    {
+                        "subnetId": "subnet-0a262489893d40d12",
+                        "cidr": "10.6.48.0/20",
+                        "availabilityZone": "us-west-2a",
+                        "routeTableId": "rtb-074d0b96b9a3d841a"
+                    },
+                    {
+                        "subnetId": "subnet-0dbbd43f84bd69740",
+                        "cidr": "10.6.64.0/20",
+                        "availabilityZone": "us-west-2b",
+                        "routeTableId": "rtb-0144316da2da55289"
+                    },
+                    {
+                        "subnetId": "subnet-003d227a933326969",
+                        "cidr": "10.6.80.0/20",
+                        "availabilityZone": "us-west-2c",
+                        "routeTableId": "rtb-047c924dc3be27d66"
+                    }
+                ]
+            },
+            {
+                "name": "public",
+                "type": "Public",
+                "subnets": [
+                    {
+                        "subnetId": "subnet-03e73ad560aa59df2",
+                        "cidr": "10.6.0.0/20",
+                        "availabilityZone": "us-west-2a",
+                        "routeTableId": "rtb-004389a8ceccf860f"
+                    },
+                    {
+                        "subnetId": "subnet-018199ed8df598624",
+                        "cidr": "10.6.16.0/20",
+                        "availabilityZone": "us-west-2b",
+                        "routeTableId": "rtb-0b4d13781d7eb1953"
+                    },
+                    {
+                        "subnetId": "subnet-082674830ba76f51c",
+                        "cidr": "10.6.32.0/20",
+                        "availabilityZone": "us-west-2c",
+                        "routeTableId": "rtb-0472873f592711c5b"
+                    }
+                ]
+            }
+        ]
+    },
+    "hosted-zone:account=555476105356:domainName=sandbox.lattice-data.org:region=us-west-2": {
+        "Id": "/hostedzone/Z102326910I8K0WJW52IB",
+        "Name": "sandbox.lattice-data.org."
+    },
+    "vpc-provider:account=919468641101:filter.vpc-id=vpc-043c13b37b08c0e5d:region=us-west-2:returnAsymmetricSubnets=true": {
+        "vpcId": "vpc-043c13b37b08c0e5d",
+        "vpcCidrBlock": "10.7.0.0/16",
+        "ownerAccountId": "919468641101",
+        "availabilityZones": [],
+        "subnetGroups": [
+            {
+                "name": "public",
+                "type": "Public",
+                "subnets": [
+                    {
+                        "subnetId": "subnet-0f9b120f4dcab3d8d",
+                        "cidr": "10.7.0.0/20",
+                        "availabilityZone": "us-west-2a",
+                        "routeTableId": "rtb-0270a27829d122902"
+                    },
+                    {
+                        "subnetId": "subnet-06c75d3f115b9c14d",
+                        "cidr": "10.7.16.0/20",
+                        "availabilityZone": "us-west-2b",
+                        "routeTableId": "rtb-0d7df455c4b6f6703"
+                    },
+                    {
+                        "subnetId": "subnet-0c0d84c5ac404fd7e",
+                        "cidr": "10.7.32.0/20",
+                        "availabilityZone": "us-west-2c",
+                        "routeTableId": "rtb-02aec7154f8aeba2a"
+                    }
+                ]
+            },
+            {
+                "name": "isolated",
+                "type": "Isolated",
+                "subnets": [
+                    {
+                        "subnetId": "subnet-0debf9e4f671b771a",
+                        "cidr": "10.7.48.0/20",
+                        "availabilityZone": "us-west-2a",
+                        "routeTableId": "rtb-01cb9d3d44e973b04"
+                    },
+                    {
+                        "subnetId": "subnet-0bd9dd0080cc1ba67",
+                        "cidr": "10.7.64.0/20",
+                        "availabilityZone": "us-west-2b",
+                        "routeTableId": "rtb-052d4cc3a2c0c6643"
+                    },
+                    {
+                        "subnetId": "subnet-010f7b81958520b4c",
+                        "cidr": "10.7.80.0/20",
+                        "availabilityZone": "us-west-2c",
+                        "routeTableId": "rtb-07be6021c637b7dbb"
+                    }
+                ]
+            }
+        ]
+    },
+    "hosted-zone:account=919468641101:domainName=data.lattice-data.org:region=us-west-2": {
+        "Id": "/hostedzone/Z08263531I0G0I4K6JJBV",
+        "Name": "data.lattice-data.org."
     }
 }
