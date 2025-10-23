@@ -40,7 +40,7 @@ class ContinuousDeploymentPipelineStack(Stack):
             self,
             'ContinuousDeploymentPipeline',
             props=ContinuousDeploymentPipelineProps(
-                github_repo='LATTICE-DATA/igvfd',
+                github_repo='Lattice-Data/igvfd',
                 existing_resources=self.existing_resources,
                 config=config,
             )
@@ -67,7 +67,7 @@ class DemoDeploymentPipelineStack(Stack):
             self,
             'DemoDeploymentPipeline',
             props=DemoDeploymentPipelineProps(
-                github_repo='LATTICE-DATA/igvfd',
+                github_repo='Lattice-Data/igvfd',
                 existing_resources=self.existing_resources,
                 config=config,
             )
@@ -94,7 +94,7 @@ class ProductionDeploymentPipelineStack(Stack):
             self,
             'ProductionDeploymentPipeline',
             props=ProductionDeploymentPipelineProps(
-                github_repo='LATTICE-DATA/igvfd',
+                github_repo='Lattice-Data/igvfd',
                 existing_resources=self.existing_resources,
                 config=config,
             )
