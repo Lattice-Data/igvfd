@@ -4,8 +4,6 @@ from aws_cdk import RemovalPolicy
 
 from aws_cdk.aws_codepipeline import Pipeline
 
-from aws_cdk.aws_iam import PolicyStatement
-
 from aws_cdk.aws_s3 import Bucket
 from aws_cdk.aws_s3 import BlockPublicAccess
 
@@ -159,26 +157,6 @@ class BasicSelfUpdatingPipeline(Construct):
             self.props.existing_resources.notification.encode_dcc_chatbot,
         )
 
-    def _add_permission_to_use_connection(self) -> None:
-        # Default IAM policy uses `codestar-connections:UseConnection` but
-        # new connection ARN uses `codeconnections:UseConnection`.
-        # Assumes Source node only has one child.
-        source_role = self._get_underlying_pipeline().node.find_child(
-            'Source'
-        ).node.children[0].node.find_child(
-            'CodePipelineActionRole'
-        )
-        source_role.add_to_policy(
-            PolicyStatement(
-                actions=[
-                    'codeconnections:UseConnection'
-                ],
-                resources=[
-                    f'{self.props.existing_resources.code_star_connection.arn}'
-                ]
-            )
-        )
-
 
 ContinuousDeploymentPipelineProps = BasicSelfUpdatingPipelineProps
 
@@ -204,7 +182,6 @@ class ContinuousDeploymentPipeline(BasicSelfUpdatingPipeline):
         self._define_dev_environment_config()
         self._add_development_deploy_stage()
         self._add_slack_notifications()
-        self._add_permission_to_use_connection()
 
     def _define_dev_environment_config(self) -> None:
         self.dev_config = build_config_from_name(
@@ -270,7 +247,6 @@ class DemoDeploymentPipeline(BasicSelfUpdatingPipeline):
         self._define_demo_environment_config()
         self._add_development_deploy_stage()
         self._add_slack_notifications()
-        self._add_permission_to_use_connection()
 
     def _define_demo_environment_config(self) -> None:
         self.demo_config = build_config_from_name(
@@ -332,7 +308,6 @@ class ProductionDeploymentPipeline(BasicSelfUpdatingPipeline):
         self._add_sandbox_stage_to_production_deploy_wave()
         self._add_production_stage_to_production_deploy_wave()
         self._add_slack_notifications()
-        self._add_permission_to_use_connection()
 
     def _define_staging_config(self) -> None:
         self.staging_config = build_config_from_name(
