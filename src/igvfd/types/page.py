@@ -41,7 +41,6 @@ class Page(SharedItem):
         Path('submitted_by', include=['@id', 'title']),
     ]
 
-
     def unique_keys(self, properties):
         keys = super(Page, self).unique_keys(properties)
         parent = properties.get('parent')

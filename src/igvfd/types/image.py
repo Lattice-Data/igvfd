@@ -30,7 +30,6 @@ class Image(ItemWithAttachment, Item):
         Path('submitted_by', include=['@id', 'title']),
     ]
 
-
     def unique_keys(self, properties):
         keys = super(Image, self).unique_keys(properties)
         value = properties['attachment']['download']

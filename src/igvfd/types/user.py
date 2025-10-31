@@ -54,7 +54,6 @@ class User(Item):
         Path('submitted_by', include=['@id', 'title']),
     ]
 
-
     STATUS_ACL = {
         'current': [(Allow, 'role.owner', ['edit', 'view_details'])] + USER_ALLOW_CURRENT,
         'deleted': USER_DELETED,
