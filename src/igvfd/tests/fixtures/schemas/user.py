@@ -2,13 +2,13 @@ import pytest
 
 
 @pytest.fixture
-def disabled_user(testapp, lab):
+def deleted_user(testapp, lab):
     item = {
         'first_name': 'IGVF',
         'last_name': 'Submitter',
         'email': 'no_login_submitter@example.org',
         'submits_for': [lab['@id']],
-        'status': 'disabled',
+        'status': 'deleted',
     }
     res = testapp.post_json('/user', item)
     return testapp.get(res.location).json
