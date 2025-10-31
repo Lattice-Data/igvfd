@@ -80,32 +80,15 @@ ALLOW_SUBMITTER_ADD = [
 ]
 
 # Key is new status. Value is list of current statuses that can transition to the new status.
-# For example, a released or in progress experiment can transition to released.
-# Transitioning to the same status (released -> released) allows for the child objects to be crawled
-# without actually making a patch if the new and current statuses are the same.
 STATUS_TRANSITION_TABLE = {
-    'released': ['released', 'in progress', 'preview'],
-    'preview': ['preview', 'in progress'],
-    'in progress': ['in progress'],
-    'deleted': ['deleted', 'in progress', 'current'],
-    'revoked': ['revoked', 'released', 'archived'],
-    'archived': ['archived', 'released'],
-    'replaced': [],
-    'disabled': ['disabled', 'current'],
-    'current': ['current'],
+    'deleted': ['deleted', 'current'],
+    'current': ['current', 'deleted'],
 }
 
 # Used to calculate whether new_status is more or less than current_status.
 STATUS_HIERARCHY = {
-    'released': 100,
     'current': 100,
-    'preview': 95,
-    'in progress': 90,
-    'archived': 70,
-    'revoked': 50,
-    'disabled': 10,
     'deleted': 0,
-    'replaced': -10,
 }
 
 

@@ -25,9 +25,6 @@ class Lab(Item):
         Path('submitted_by', include=['@id', 'title']),
     ]
 
-    set_status_up = []
-    set_status_down = []
-
     @calculated_property(
         define=True,
         schema={

@@ -170,7 +170,7 @@ def test_put_object_adding_child(content_with_child, testapp):
         'reverse': [
             content_with_child['child'],
             {
-                'status': 'released',
+                'status': 'current',
             }
         ]
     }
@@ -190,7 +190,7 @@ def test_submitter_put_object_adding_disallowed_child(
         'reverse': [
             content_with_child['child'],
             {
-                'status': 'released',
+                'status': 'current',
             }
         ]
     }
@@ -247,7 +247,7 @@ def test_put_object_validates_child_references(content_with_child, testapp):
 def test_post_object_with_child(testapp):
     edit = {
         'reverse': [{
-            'status': 'released',
+            'status': 'current',
         }]
     }
     res = testapp.post_json('/testing-link-targets', edit, status=201)
