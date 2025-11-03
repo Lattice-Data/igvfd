@@ -5,7 +5,7 @@ from ...constants import *
 @pytest.fixture
 def image(testapp):
     item = {
-        'attachment': 'red-dot.png',
+        'attachment': {'download': 'red-dot.png', 'href': RED_DOT},
         'caption': 'A red dot image for testing.',
         'schema_version': '1',
         'status': 'current'
