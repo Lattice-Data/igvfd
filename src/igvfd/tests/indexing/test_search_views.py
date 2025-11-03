@@ -71,7 +71,7 @@ def test_search_views_search_view_values(workbook, testapp):
 
 def test_search_views_search_view_values_no_results(workbook, testapp):
     r = testapp.get(
-        '/search/?status=current&type=User',
+        '/search/?status=releasedtype=User',
         status=404
     )
     assert r.json['notification'] == 'No results found'
