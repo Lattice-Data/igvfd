@@ -321,15 +321,11 @@ class TestingIGVFItem(IGVFItem):
                 'title': 'Status',
                 'type': 'string',
                 'permission': 'admin_only',
-                'default': 'in progress',
+                'default': 'current',
                 'description': 'The status of the metadata object.',
                 'enum': [
-                    'in progress',
-                    'released',
-                    'preview',
-                    'deleted',
-                    'replaced',
-                    'revoked'
+                    'current',
+                    'deleted'
                 ]
             }
         }
