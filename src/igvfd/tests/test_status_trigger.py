@@ -88,17 +88,17 @@ def test_item_set_status_current_deleted_transitions(testapp, content, root, dum
     # Item starts with 'current' (default from schema)
     res = testapp.get(igvf_item_id)
     assert res.json['status'] == 'current'
-    
+
     # Test: current -> deleted (valid transition)
     testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'deleted'}, status=200)
     res = testapp.get(igvf_item_id)
     assert res.json['status'] == 'deleted'
-    
+
     # Test: deleted -> current (valid transition, allowed per STATUS_TRANSITION_TABLE)
     testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'current'}, status=200)
     res = testapp.get(igvf_item_id)
     assert res.json['status'] == 'current'
-    
+
     # Test: current -> current (same status, should work)
     testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'current'}, status=200)
     res = testapp.get(igvf_item_id)
