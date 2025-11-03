@@ -157,12 +157,12 @@ def test_put_object_editing_child(content_with_child, testapp):
     edit = {
         'reverse': [{
             '@id': content_with_child['child'],
-            'status': 'released',
+            'status': 'current',
         }]
     }
     testapp.put_json(content_with_child['@id'], edit, status=200)
     res = testapp.get(content_with_child['child'] + '?frame=embedded')
-    assert res.json['status'] == 'released'
+    assert res.json['status'] == 'current'
 
 
 def test_put_object_adding_child(content_with_child, testapp):
