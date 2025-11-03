@@ -8,7 +8,7 @@ def no_login_submitter(testapp, lab):
         'last_name': 'Submitter',
         'email': 'no_login_submitter@example.org',
         'submits_for': [lab['@id']],
-        'status': 'disabled',
+        'status': 'deleted',
     }
     # User @@object view has keys omitted.
     res = testapp.post_json('/user', item)

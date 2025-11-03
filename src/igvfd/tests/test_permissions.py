@@ -125,16 +125,16 @@ def test_wrangler_patch_viewing_groups_allowed(submitter, other_lab, wrangler_te
     wrangler_testapp.patch_json(res.json['@id'], vgroups, status=200)
 
 
-def test_disabled_user_denied_authenticated(authenticated_testapp, disabled_user):
-    authenticated_testapp.get(disabled_user['@id'], status=403)
+def test_disabled_user_denied_authenticated(authenticated_testapp, deleted_user):
+    authenticated_testapp.get(deleted_user['@id'], status=403)
 
 
-def test_disabled_user_denied_submitter(submitter_testapp, disabled_user):
-    submitter_testapp.get(disabled_user['@id'], status=403)
+def test_disabled_user_denied_submitter(submitter_testapp, deleted_user):
+    submitter_testapp.get(deleted_user['@id'], status=403)
 
 
-def test_disabled_user_wrangler(wrangler_testapp, disabled_user):
-    wrangler_testapp.get(disabled_user['@id'], status=200)
+def test_disabled_user_wrangler(wrangler_testapp, deleted_user):
+    wrangler_testapp.get(deleted_user['@id'], status=200)
 
 
 def test_labs_view_wrangler(wrangler_testapp, other_lab):
