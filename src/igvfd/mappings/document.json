@@ -1,6 +1,6 @@
 {
-    "hash": "ca99cd45d04a23f650d62297c6b8dc7a",
-    "index_name": "document_ca99cd45",
+    "hash": "32a391f805c09e3d1e530ecc5d299f09",
+    "index_name": "document_32a391f8",
     "item_type": "document",
     "mapping": {
         "dynamic_templates": [
@@ -181,10 +181,6 @@
                         },
                         "type": "object"
                     },
-                    "characterization_method": {
-                        "copy_to": "_fuzzy",
-                        "type": "keyword"
-                    },
                     "creation_timestamp": {
                         "type": "date"
                     },
@@ -258,10 +254,6 @@
                     },
                     "schema_version": {
                         "type": "keyword"
-                    },
-                    "standardized_file_format": {
-                        "store": true,
-                        "type": "boolean"
                     },
                     "status": {
                         "type": "keyword"
