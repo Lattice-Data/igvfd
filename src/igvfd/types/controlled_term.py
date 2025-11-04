@@ -33,4 +33,3 @@ class ControlledTerm(Item):
         if aliases:
             return aliases[0]
         return self.uuid
-

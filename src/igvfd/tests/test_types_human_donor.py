@@ -57,4 +57,3 @@ def test_human_donor_create(testapp, other_lab):
     res = testapp.post_json('/human_donor', item, status=201)
     assert res.json['@graph'][0]['taxa'] == 'Homo sapiens'
     assert res.json['@graph'][0]['lab']['@id'] == other_lab['@id']
-

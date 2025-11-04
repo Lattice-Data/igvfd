@@ -103,4 +103,3 @@ def test_controlled_term_with_all_fields(testapp):
     assert res.json['@graph'][0]['definition'] == 'A complete definition.'
     assert res.json['@graph'][0]['synonyms'] == ['syn1', 'syn2']
     assert res.json['@graph'][0]['dbxrefs'] == ['PMID:12345678', 'DOI:10.1234/test']
-

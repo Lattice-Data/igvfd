@@ -38,4 +38,3 @@ class HumanDonor(Item):
         if description:
             return description
         return self.uuid
-
