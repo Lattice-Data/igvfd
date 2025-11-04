@@ -21,6 +21,7 @@ pytest_plugins = [
     'igvfd.tests.fixtures.schemas.page',
     'igvfd.tests.fixtures.schemas.image',
     'igvfd.tests.fixtures.schemas.human_donor',
+    'igvfd.tests.fixtures.schemas.controlled_term',
 ]
 
 

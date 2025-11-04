@@ -1,0 +1,94 @@
+{
+    "title": "Controlled Term",
+    "$id": "/profiles/controlled_term.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A controlled vocabulary term from biological ontologies for sample classification, experimental conditions, and metadata annotation.",
+    "type": "object",
+    "required": [
+        "term_id",
+        "term_name",
+        "ontology_source"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "term_id": {
+            "title": "Term ID",
+            "description": "An ontology identifier from the specified ontology source.",
+            "type": "string",
+            "pattern": "^(CL|EFO|UBERON|CHEBI|UniProt|Cellosaurus):[A-Za-z0-9_]+$"
+        },
+        "term_name": {
+            "title": "Term Name",
+            "description": "Human-readable name of the ontology term.",
+            "type": "string",
+            "pattern": "^(?![\\s\"'])[\\S|\\s]*[^\\s\"']$"
+        },
+        "ontology_source": {
+            "title": "Ontology Source",
+            "description": "The source ontology this term comes from.",
+            "type": "string",
+            "enum": [
+                "CL",
+                "EFO",
+                "UBERON",
+                "CHEBI",
+                "UniProt",
+                "Cellosaurus"
+            ]
+        },
+        "definition": {
+            "title": "Definition",
+            "description": "The formal definition of this term from the source ontology.",
+            "type": "string"
+        },
+        "synonyms": {
+            "title": "Synonyms",
+            "description": "Alternative names or synonyms for this term.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string"
+            }
+        },
+        "dbxrefs": {
+            "title": "External References",
+            "description": "External identifiers for this ontology term.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "External Identifier",
+                "description": "An identifier from external resource.",
+                "type": "string",
+                "pattern": "^(PMID:[0-9]+|DOI:10\\.[0-9]+/.+)$"
+            }
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description",
+        "term_name",
+        "definition",
+        "synonyms"
+    ],
+    "exact_searchable_fields": [
+        "@type",
+        "term_id",
+        "ontology_source"
+    ],
+    "changelog": "/profiles/changelogs/controlled_term.md"
+}
