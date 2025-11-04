@@ -50,4 +50,3 @@ def controlled_term():
             },
         }
     }
-
