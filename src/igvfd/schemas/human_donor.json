@@ -32,7 +32,9 @@
             "title": "Taxa",
             "type": "string",
             "description": "The species of the organism.",
-            "enum": ["Homo sapiens"]
+            "enum": [
+                "Homo sapiens"
+            ]
         },
         "ethnicity": {
             "title": "Ethnicity",
@@ -53,4 +55,3 @@
     ],
     "changelog": "/profiles/changelogs/human_donor.md"
 }
-
