@@ -1,0 +1,23 @@
+[
+    {
+        "lab": "teri-klein",
+        "taxa": "Homo sapiens",
+        "uuid": "d4e5f6a7-b8c9-0123-def4-456789012345",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [],
+        "description": "Test human donor 1"
+    },
+    {
+        "lab": "teri-klein",
+        "taxa": "Homo sapiens",
+        "ethnicity": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+        "uuid": "e5f6a7b8-c9d0-1234-ef45-567890123456",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:test-donor-1",
+            "lattice:test-donor-alias"
+        ]
+    }
+]

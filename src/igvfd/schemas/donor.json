@@ -1,11 +1,12 @@
 {
-    "title": "Image",
-    "description": "An image to be displayed on the Lattice Data Portal. This is not a data object.",
-    "$id": "/profiles/image.json",
+    "title": "Donor",
+    "description": "Abstract schema for donors.",
+    "$id": "/profiles/donor.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "required": [
-        "attachment"
+        "lab",
+        "taxa"
     ],
     "identifyingProperties": [
         "uuid",
@@ -17,7 +18,7 @@
             "$ref": "mixins.json#/basic_item"
         },
         {
-            "$ref": "mixins.json#/attachment"
+            "$ref": "mixins.json#/attribution"
         },
         {
             "$ref": "mixins.json#/shared_status"
@@ -27,23 +28,19 @@
         "schema_version": {
             "default": "1"
         },
-        "caption": {
-            "title": "Caption",
-            "type": "string",
-            "description": "The caption of the image.",
-            "submissionExample": {
-                "appscript": "This is an image caption.",
-                "igvf_utils": "This is an image caption."
-            }
+        "taxa": {
+            "title": "Taxa",
+            "description": "The species of the organism.",
+            "type": "string"
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
-        "attachment.type",
-        "caption"
+        "description",
+        "taxa"
     ],
     "exact_searchable_fields": [
         "@type"
     ],
-    "changelog": "/profiles/changelogs/image.md"
+    "changelog": "/profiles/changelogs/donor.md"
 }

@@ -9,7 +9,7 @@ def lookup_column_value_item():
         'accession': 'ENCSR751ISO',
         'assay_title': 'long read RNA-seq',
         'award': {'project': 'Roadmap'},
-        'status': 'released',
+        'status': 'current',
         '@id': '/experiments/ENCSR751ISO/',
         '@type': ['Experiment', 'Dataset', 'Item'],
         'biosample_ontology': {'term_name': 'midbrain'}

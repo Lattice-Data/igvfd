@@ -1,8 +1,5 @@
 import pytest
 
-from datetime import datetime
-from pyramid.httpexceptions import HTTPNotFound
-
 
 items = [
     {'description': 'item0'},
@@ -46,48 +43,25 @@ def test_item_set_status_no_status_validation_error(testapp, content, root):
     igvf_item.update(igvf_item_properties)
     res = testapp.get(igvf_item_id)
     assert 'status' not in res.json
-    res = testapp.patch_json(igvf_item_id + '@@set_status', {'status': 'released'}, status=422)
+    res = testapp.patch_json(igvf_item_id + '@@set_status', {'status': 'current'}, status=422)
     assert res.json['errors'][0]['description'] == 'No property status'
 
 
-def test_item_set_status_invalid_transition_parent(testapp, content, root, dummy_request):
-    # Can't go from deleted to released.
-    from snovault.validation import ValidationFailure
-    res = testapp.get('/test-igvf-items/')
-    igvf_item_uuid = res.json['@graph'][0]['uuid']
-    igvf_item_id = res.json['@graph'][0]['@id']
-    testapp.patch_json(igvf_item_id, {'status': 'deleted'}, status=200)
-    igvf_item = root.get_by_uuid(igvf_item_uuid)
-    with pytest.raises(ValidationFailure) as e:
-        igvf_item.set_status('released', dummy_request)
-    assert e.value.detail['description'] == 'Status transition deleted to released not allowed'
-
-
-def test_item_set_status_invalid_transition_child(testapp, content, root, dummy_request):
-    # Don't raise error if invalid transition on child object.
-    res = testapp.get('/test-igvf-items/')
-    igvf_item_uuid = res.json['@graph'][0]['uuid']
-    igvf_item_id = res.json['@graph'][0]['@id']
-    testapp.patch_json(igvf_item_id, {'status': 'deleted'}, status=200)
-    igvf_item = root.get_by_uuid(igvf_item_uuid)
-    assert igvf_item.set_status('released', dummy_request, parent=False) is False
-
-
-def test_item_release_endpoint_calls_set_status(testapp, content, mocker):
+def test_item_current_endpoint_calls_set_status(testapp, content, mocker):
     from igvfd.types.base import Item
     res = testapp.get('/test-igvf-items/')
     igvf_item_id = res.json['@graph'][0]['@id']
     mocker.patch('igvfd.types.base.Item.set_status')
-    testapp.patch_json(igvf_item_id + '@@set_status', {'status': 'released'})
+    testapp.patch_json(igvf_item_id + '@@set_status', {'status': 'current'})
     assert Item.set_status.call_count == 1
 
 
-def test_item_release_endpoint_triggers_set_status(testapp, content, mocker):
+def test_item_current_endpoint_triggers_set_status(testapp, content, mocker):
     from igvfd.types.base import Item
     res = testapp.get('/test-igvf-items/')
     igvf_item_id = res.json['@graph'][0]['@id']
     mocker.spy(Item, 'set_status')
-    testapp.patch_json(igvf_item_id + '@@set_status', {'status': 'released'})
+    testapp.patch_json(igvf_item_id + '@@set_status', {'status': 'current'})
     assert Item.set_status.call_count == 1
 
 
@@ -103,20 +77,29 @@ def test_set_status_endpoint_status_specified(testapp, content):
     igvf_item_id = res.json['@graph'][0]['@id']
     testapp.patch_json(
         igvf_item_id + '@@set_status?update=true&force_audit=true',
-        {'status': 'released'},
+        {'status': 'current'},
         status=200
     )
 
 
-def test_item_set_status_preview_status_transitions(testapp, content, root, dummy_request):
+def test_item_set_status_current_deleted_transitions(testapp, content, root, dummy_request):
     res = testapp.get('/test-igvf-items/')
     igvf_item_id = res.json['@graph'][0]['@id']
-    testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'preview'}, status=200)
+    # Item starts with 'current' (default from schema)
     res = testapp.get(igvf_item_id)
-    assert res.json['status'] == 'preview'
-    testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'in progress'}, status=422)
+    assert res.json['status'] == 'current'
+
+    # Test: current -> deleted (valid transition)
+    testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'deleted'}, status=200)
     res = testapp.get(igvf_item_id)
-    assert res.json['status'] == 'preview'
-    testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'released'}, status=200)
+    assert res.json['status'] == 'deleted'
+
+    # Test: deleted -> current (valid transition, allowed per STATUS_TRANSITION_TABLE)
+    testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'current'}, status=200)
     res = testapp.get(igvf_item_id)
-    assert res.json['status'] == 'released'
+    assert res.json['status'] == 'current'
+
+    # Test: current -> current (same status, should work)
+    testapp.patch_json(igvf_item_id + '@@set_status?update=true', {'status': 'current'}, status=200)
+    res = testapp.get(igvf_item_id)
+    assert res.json['status'] == 'current'

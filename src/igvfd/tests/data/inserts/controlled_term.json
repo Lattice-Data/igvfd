@@ -1,0 +1,36 @@
+[
+    {
+        "term_id": "CL:0000001",
+        "term_name": "T cell",
+        "ontology_source": "CL",
+        "definition": "A type of lymphocyte whose defining characteristic is the expression of a T-cell receptor complex.",
+        "synonyms": [
+            "T lymphocyte",
+            "T-lymphocyte"
+        ],
+        "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": []
+    },
+    {
+        "term_id": "EFO:0000001",
+        "term_name": "European",
+        "ontology_source": "EFO",
+        "definition": "A person of European descent.",
+        "uuid": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": []
+    },
+    {
+        "term_id": "UBERON:0000001",
+        "term_name": "brain",
+        "ontology_source": "UBERON",
+        "definition": "The brain is an organ that serves as the center of the nervous system.",
+        "uuid": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": []
+    }
+]

@@ -1,7 +1,7 @@
 {
-    "hash": "32a391f805c09e3d1e530ecc5d299f09",
-    "index_name": "document_32a391f8",
-    "item_type": "document",
+    "hash": "4169f7aa1197701285979c085e8afe9d",
+    "index_name": "human_donor_4169f7aa",
+    "item_type": "human_donor",
     "mapping": {
         "dynamic_templates": [
             {
@@ -152,35 +152,6 @@
                         "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
-                    "attachment": {
-                        "properties": {
-                            "download": {
-                                "type": "keyword"
-                            },
-                            "height": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "href": {
-                                "type": "keyword"
-                            },
-                            "md5sum": {
-                                "type": "keyword"
-                            },
-                            "size": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "type": {
-                                "type": "keyword"
-                            },
-                            "width": {
-                                "store": true,
-                                "type": "long"
-                            }
-                        },
-                        "type": "object"
-                    },
                     "creation_timestamp": {
                         "type": "date"
                     },
@@ -188,7 +159,7 @@
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
-                    "document_type": {
+                    "ethnicity": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
@@ -237,7 +208,6 @@
                                 "type": "keyword"
                             },
                             "title": {
-                                "copy_to": "_fuzzy",
                                 "type": "keyword"
                             },
                             "url": {
@@ -315,7 +285,6 @@
                                 "type": "keyword"
                             },
                             "title": {
-                                "copy_to": "_fuzzy",
                                 "type": "keyword"
                             },
                             "uuid": {
@@ -333,7 +302,8 @@
                     "summary": {
                         "type": "keyword"
                     },
-                    "urls": {
+                    "taxa": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "uuid": {

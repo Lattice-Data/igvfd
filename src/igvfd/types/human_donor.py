@@ -1,27 +1,24 @@
-from snovault.attachment import ItemWithAttachment
 from snovault import (
-    calculated_property,
     collection,
     load_schema,
+    calculated_property,
 )
 from snovault.util import Path
 from .base import (
     Item,
-    ALLOW_CURRENT,
-    DELETED,
 )
 
 
 @collection(
-    name='documents',
+    name='human_donors',
     properties={
-        'title': 'Documents',
-        'description': 'Listing of Biosample Documents',
+        'title': 'Human Donors',
+        'description': 'Listing of human research subjects and donors',
     }
 )
-class Document(ItemWithAttachment, Item):
-    item_type = 'document'
-    schema = load_schema('igvfd:schemas/document.json')
+class HumanDonor(Item):
+    item_type = 'human_donor'
+    schema = load_schema('igvfd:schemas/human_donor.json')
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
@@ -31,12 +28,13 @@ class Document(ItemWithAttachment, Item):
         schema={
             'title': 'Summary',
             'type': 'string',
-            'description': 'A summary of the document.',
+            'description': 'A summary of the human donor.',
             'notSubmittable': True,
         }
     )
-    def summary(self, description):
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
         if description:
             return description
-        else:
-            return self.uuid
+        return self.uuid

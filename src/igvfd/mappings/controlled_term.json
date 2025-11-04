@@ -1,7 +1,7 @@
 {
-    "hash": "32a391f805c09e3d1e530ecc5d299f09",
-    "index_name": "document_32a391f8",
-    "item_type": "document",
+    "hash": "32901bb1eb5418f619240824ff3aa2d3",
+    "index_name": "controlled_term_32901bb1",
+    "item_type": "controlled_term",
     "mapping": {
         "dynamic_templates": [
             {
@@ -152,105 +152,26 @@
                         "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
-                    "attachment": {
-                        "properties": {
-                            "download": {
-                                "type": "keyword"
-                            },
-                            "height": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "href": {
-                                "type": "keyword"
-                            },
-                            "md5sum": {
-                                "type": "keyword"
-                            },
-                            "size": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "type": {
-                                "type": "keyword"
-                            },
-                            "width": {
-                                "store": true,
-                                "type": "long"
-                            }
-                        },
-                        "type": "object"
-                    },
                     "creation_timestamp": {
                         "type": "date"
+                    },
+                    "dbxrefs": {
+                        "type": "keyword"
+                    },
+                    "definition": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
                     },
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
-                    "document_type": {
-                        "copy_to": "_fuzzy",
-                        "type": "keyword"
-                    },
-                    "lab": {
-                        "properties": {
-                            "@id": {
-                                "type": "keyword"
-                            },
-                            "@type": {
-                                "type": "keyword"
-                            },
-                            "aliases": {
-                                "type": "keyword"
-                            },
-                            "creation_timestamp": {
-                                "type": "date"
-                            },
-                            "description": {
-                                "type": "text"
-                            },
-                            "institute_label": {
-                                "type": "keyword"
-                            },
-                            "name": {
-                                "type": "keyword"
-                            },
-                            "notes": {
-                                "type": "text"
-                            },
-                            "pi": {
-                                "type": "keyword"
-                            },
-                            "schema_version": {
-                                "type": "keyword"
-                            },
-                            "status": {
-                                "type": "keyword"
-                            },
-                            "submitted_by": {
-                                "type": "keyword"
-                            },
-                            "submitter_comment": {
-                                "type": "keyword"
-                            },
-                            "summary": {
-                                "type": "keyword"
-                            },
-                            "title": {
-                                "copy_to": "_fuzzy",
-                                "type": "keyword"
-                            },
-                            "url": {
-                                "type": "keyword"
-                            },
-                            "uuid": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
-                    },
                     "notes": {
                         "type": "text"
+                    },
+                    "ontology_source": {
+                        "copy_to": "_exact",
+                        "type": "keyword"
                     },
                     "schema_version": {
                         "type": "keyword"
@@ -259,73 +180,7 @@
                         "type": "keyword"
                     },
                     "submitted_by": {
-                        "properties": {
-                            "@id": {
-                                "type": "keyword"
-                            },
-                            "@type": {
-                                "type": "keyword"
-                            },
-                            "aliases": {
-                                "type": "keyword"
-                            },
-                            "creation_timestamp": {
-                                "type": "date"
-                            },
-                            "description": {
-                                "type": "text"
-                            },
-                            "email": {
-                                "type": "keyword"
-                            },
-                            "first_name": {
-                                "type": "keyword"
-                            },
-                            "groups": {
-                                "type": "keyword"
-                            },
-                            "job_title": {
-                                "type": "keyword"
-                            },
-                            "lab": {
-                                "type": "keyword"
-                            },
-                            "last_name": {
-                                "type": "keyword"
-                            },
-                            "notes": {
-                                "type": "text"
-                            },
-                            "schema_version": {
-                                "type": "keyword"
-                            },
-                            "status": {
-                                "type": "keyword"
-                            },
-                            "submits_for": {
-                                "type": "keyword"
-                            },
-                            "submitted_by": {
-                                "type": "keyword"
-                            },
-                            "submitter_comment": {
-                                "type": "keyword"
-                            },
-                            "summary": {
-                                "type": "keyword"
-                            },
-                            "title": {
-                                "copy_to": "_fuzzy",
-                                "type": "keyword"
-                            },
-                            "uuid": {
-                                "type": "keyword"
-                            },
-                            "viewing_groups": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
+                        "type": "keyword"
                     },
                     "submitter_comment": {
                         "type": "keyword"
@@ -333,7 +188,16 @@
                     "summary": {
                         "type": "keyword"
                     },
-                    "urls": {
+                    "synonyms": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
+                    },
+                    "term_id": {
+                        "copy_to": "_exact",
+                        "type": "keyword"
+                    },
+                    "term_name": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "uuid": {

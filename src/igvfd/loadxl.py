@@ -19,6 +19,8 @@ ORDER = [
     'image',
     'page',
     'access_key',
+    'controlled_term',
+    'human_donor',
 ]
 
 IS_ATTACHMENT = [

@@ -1,0 +1,226 @@
+{
+    "title": "Biosample",
+    "description": "Abstract schema for biological samples.",
+    "$id": "/profiles/biosample.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+        "lab",
+        "donors",
+        "sample_terms"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        }
+    ],
+    "dependentSchemas": {
+        "sample_procurement_interval": {
+            "required": [
+                "sample_procurement_interval_units"
+            ]
+        },
+        "sample_procurement_interval_units": {
+            "required": [
+                "sample_procurement_interval"
+            ]
+        }
+    },
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "donors": {
+            "title": "Donors",
+            "description": "Donor(s) the sample was derived from.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Donor",
+                "description": "Donor.",
+                "comment": "See donor.json for available identifiers.",
+                "type": "string",
+                "linkTo": "Donor"
+            }
+        },
+        "sample_terms": {
+            "title": "Sample Terms",
+            "description": "Ontology terms identifying a biosample.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Sample Term",
+                "description": "Ontology term identifying a biosample.",
+                "comment": "See controlled_term.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ControlledTerm"
+            }
+        },
+        "sample_procurement_interval": {
+            "title": "Sample Procurement Interval",
+            "description": "Time passing from the moment of sample collection till the freezing or initiation of the experiment with the sample.",
+            "type": "integer",
+            "minimum": 0
+        },
+        "sample_procurement_interval_units": {
+            "title": "Sample Procurement Interval Units",
+            "description": "The unit in which the sample procurement interval was reported.",
+            "type": "string",
+            "enum": [
+                "second",
+                "minute",
+                "hour",
+                "day",
+                "week"
+            ]
+        },
+        "suspension_type": {
+            "title": "Suspension Type",
+            "description": "Type of suspension - single cells or single nuclei.",
+            "type": "string",
+            "enum": [
+                "cell",
+                "nucleus"
+            ]
+        },
+        "treatment": {
+            "title": "Treatment",
+            "description": "Treatment applied to this biosample.",
+            "comment": "See treatment.json for available identifiers.",
+            "type": "string",
+            "linkTo": "Treatment"
+        },
+        "genetic_modification": {
+            "title": "Genetic Modification",
+            "description": "Genetic modification applied to this biosample.",
+            "comment": "See genetic_modification.json for available identifiers.",
+            "type": "string",
+            "linkTo": "GeneticModification"
+        },
+        "enrichment_method": {
+            "title": "Enrichment Method",
+            "description": "Method used for cell enrichment or sorting.",
+            "type": "string",
+            "enum": [
+                "FACS",
+                "MACS",
+                "size exclusion",
+                "density gradient",
+                "manual picking",
+                "microfluidics"
+            ]
+        },
+        "enriched_cell_types": {
+            "title": "Enriched Cell Types",
+            "description": "Cell types that were enriched in this sample. Must reference ControlledTerm objects with Cell Ontology (CL) terms.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Enriched Cell Type",
+                "description": "Reference to ControlledTerm with Cell Ontology (CL) term for enriched cell type.",
+                "comment": "Must link to ControlledTerm with ontology_source='CL'. See controlled_term.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ControlledTerm"
+            }
+        },
+        "depleted_cell_types": {
+            "title": "Depleted Cell Types",
+            "description": "Cell types that were depleted from this sample. Must reference ControlledTerm objects with Cell Ontology (CL) terms.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Depleted Cell Type",
+                "description": "Reference to ControlledTerm with Cell Ontology (CL) term for depleted cell type.",
+                "comment": "Must link to ControlledTerm with ontology_source='CL'. See controlled_term.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ControlledTerm"
+            }
+        },
+        "enrichment_markers": {
+            "title": "Enrichment Markers",
+            "description": "Markers used for cell enrichment or depletion.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "marker",
+                    "expression_level"
+                ],
+                "properties": {
+                    "marker": {
+                        "title": "Marker",
+                        "description": "Cell surface marker or protein used for enrichment.",
+                        "type": "string",
+                        "enum": [
+                            "CD3",
+                            "CD4",
+                            "CD8",
+                            "CD14",
+                            "CD16",
+                            "CD19",
+                            "CD20",
+                            "CD31",
+                            "CD34",
+                            "CD45",
+                            "CD56",
+                            "CD90",
+                            "CD123",
+                            "CD141",
+                            "CD144",
+                            "CD205"
+                        ]
+                    },
+                    "expression_level": {
+                        "title": "Expression Level",
+                        "description": "Level of marker expression used for selection.",
+                        "type": "string",
+                        "enum": [
+                            "positive",
+                            "negative",
+                            "low",
+                            "high",
+                            "intermediate"
+                        ]
+                    }
+                }
+            }
+        },
+        "experimental_conditions": {
+            "title": "Experimental Conditions",
+            "description": "Environmental and experimental parameters affecting the sample.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Experimental Condition",
+                "description": "Reference to experimental condition applied to this sample.",
+                "comment": "See experimental_condition.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ExperimentalCondition"
+            }
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description",
+        "sample_terms"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/biosample.md"
+}

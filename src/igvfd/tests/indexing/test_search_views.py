@@ -62,16 +62,16 @@ def test_search_views_search_view_with_limit_zero(workbook, testapp):
 
 def test_search_views_search_view_values(workbook, testapp):
     r = testapp.get(
-        '/search/?status=released'
+        '/search/?status=current'
     )
     assert r.json['notification'] == 'Success'
-    assert r.json['filters'][0] == {'field': 'status', 'remove': '/search/', 'term': 'released'}
+    assert r.json['filters'][0] == {'field': 'status', 'remove': '/search/', 'term': 'current'}
     assert r.json['clear_filters'] == '/search/'
 
 
 def test_search_views_search_view_values_no_results(workbook, testapp):
     r = testapp.get(
-        '/search/?status=released&type=User',
+        '/search/?status=releasedtype=User',
         status=404
     )
     assert r.json['notification'] == 'No results found'
@@ -87,12 +87,12 @@ def test_search_views_search_view_values_malformed_query_string(workbook, testap
 
 def test_search_views_search_view_values_bad_type(workbook, testapp):
     r = testapp.get(
-        '/search/?status=released&type=Exp',
+        '/search/?status=current&type=Exp',
         status=400
     )
     assert r.json['description'] == "Invalid types: ['Exp']"
     r = testapp.get(
-        '/search/?status=released&type=Exp&type=Per',
+        '/search/?status=current&type=Exp&type=Per',
         status=400
     )
     assert r.json['description'] == "Invalid types: ['Exp', 'Per']"
@@ -242,12 +242,12 @@ def test_search_views_report_view_with_limit_zero_from_zero(workbook, testapp):
 
 def test_search_views_report_view_values_bad_type(workbook, testapp):
     r = testapp.get(
-        '/report/?status=released&type=Exp',
+        '/report/?status=current&type=Exp',
         status=400
     )
     assert r.json['description'] == "Invalid types: ['Exp']"
     r = testapp.get(
-        '/report/?status=released&type=Exp&type=Per',
+        '/report/?status=current&type=Exp&type=Per',
         status=400
     )
     assert r.json['description'] == "Report view requires specifying a single type: [('type', 'Exp'), ('type', 'Per')]"
@@ -255,7 +255,7 @@ def test_search_views_report_view_values_bad_type(workbook, testapp):
 
 def test_search_views_report_view_values_single_subtype(workbook, testapp):
     r = testapp.get(
-        '/report/?status=released&type=Item',
+        '/report/?status=current&type=Item',
         status=400
     )
     assert 'Report view requires a type with no child types:' in r.json['description']
@@ -263,7 +263,7 @@ def test_search_views_report_view_values_single_subtype(workbook, testapp):
 
 def test_search_views_report_view_values_no_type(workbook, testapp):
     r = testapp.get(
-        '/report/?status=released',
+        '/report/?status=current',
         status=400
     )
     assert r.json['description'] == 'Report view requires specifying a single type: []'
@@ -338,10 +338,10 @@ def test_search_views_search_config_registry(workbook, testapp):
 
 def test_search_views_multireport_view_values(workbook, testapp):
     r = testapp.get(
-        '/multireport/?status=released'
+        '/multireport/?status=current'
     )
     assert r.json['notification'] == 'Success'
-    assert r.json['filters'][0] == {'field': 'status', 'remove': '/multireport/', 'term': 'released'}
+    assert r.json['filters'][0] == {'field': 'status', 'remove': '/multireport/', 'term': 'current'}
     assert r.json['clear_filters'] == '/multireport/'
 
 
