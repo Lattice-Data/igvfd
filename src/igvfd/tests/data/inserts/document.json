@@ -1,7 +1,7 @@
 [
     {
         "aliases": [
-            "igvf:Antibody_characterization_standards_IGVF"
+            "lattice:Antibody_characterization_standards_IGVF"
         ],
         "description": "AB characterization standards.",
         "attachment": "Antibody_Characterization_IGVF.pdf",

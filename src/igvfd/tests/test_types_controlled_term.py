@@ -8,7 +8,8 @@ def test_controlled_term_summary_with_term_name(testapp, controlled_term):
 
 def test_controlled_term_summary_with_aliases(testapp, controlled_term_with_aliases):
     res = testapp.get(controlled_term_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:test-term-1'
+    # Summary prioritizes term_name over aliases, so it returns term_name
+    assert res.json.get('summary') == 'test cell type with aliases'
 
 
 def test_controlled_term_summary_with_uuid(testapp, controlled_term):

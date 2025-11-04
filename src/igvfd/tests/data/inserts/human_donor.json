@@ -16,8 +16,8 @@
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "test-donor-1",
-            "test-donor-alias"
+            "lattice:test-donor-1",
+            "lattice:test-donor-alias"
         ]
     }
 ]
