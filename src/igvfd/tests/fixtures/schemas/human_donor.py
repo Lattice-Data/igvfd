@@ -27,7 +27,7 @@ def human_donor_with_aliases(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
         'taxa': 'Homo sapiens',
-        'aliases': ['test-donor-1', 'test-donor-alias'],
+        'aliases': ['lattice:test-donor-1', 'lattice:test-donor-alias'],
         'status': 'current',
     }
     return testapp.post_json('/human_donor', item, status=201).json['@graph'][0]

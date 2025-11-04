@@ -42,7 +42,7 @@ def controlled_term_with_aliases(testapp):
         'term_id': 'CL:0000003',
         'term_name': 'test cell type with aliases',
         'ontology_source': 'CL',
-        'aliases': ['test-term-1', 'test-term-alias'],
+        'aliases': ['lattice:test-term-1', 'lattice:test-term-alias'],
         'status': 'current',
     }
     return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]

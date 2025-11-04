@@ -3,7 +3,7 @@ import pytest
 
 def test_human_donor_summary_with_aliases(testapp, human_donor_with_aliases):
     res = testapp.get(human_donor_with_aliases['@id'])
-    assert res.json.get('summary') == 'test-donor-1'
+    assert res.json.get('summary') == 'lattice:test-donor-1'
 
 
 def test_human_donor_summary_with_description(testapp, human_donor_with_description):
@@ -56,4 +56,4 @@ def test_human_donor_create(testapp, other_lab):
     }
     res = testapp.post_json('/human_donor', item, status=201)
     assert res.json['@graph'][0]['taxa'] == 'Homo sapiens'
-    assert res.json['@graph'][0]['lab']['@id'] == other_lab['@id']
+    assert res.json['@graph'][0]['lab'] == other_lab['@id']
