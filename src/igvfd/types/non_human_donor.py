@@ -38,4 +38,3 @@ class NonHumanDonor(Item):
         if description:
             return description
         return self.uuid
-

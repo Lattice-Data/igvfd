@@ -62,4 +62,3 @@ def test_non_human_donor_create_with_enum_values(testapp, other_lab, taxa):
     res = testapp.post_json('/non_human_donor', item, status=201)
     assert res.json['@graph'][0]['taxa'] == taxa
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
-

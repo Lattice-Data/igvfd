@@ -31,4 +31,3 @@ def non_human_donor_with_aliases(testapp, other_lab):
         'status': 'current',
     }
     return testapp.post_json('/non_human_donor', item, status=201).json['@graph'][0]
-
