@@ -15,9 +15,9 @@ This document outlines all the files that need to be created or updated when add
 - **Example Content**:
   ```markdown
   ## Changelog for {schema_name}.json
-  
+
   ### Schema version X
-  
+
   * Initial release
   ```
 
@@ -41,7 +41,7 @@ This document outlines all the files that need to be created or updated when add
   from .base import (
       Item,
   )
-  
+
   @collection(
       name='{schema_name}s',  # plural
       properties={
@@ -56,7 +56,7 @@ This document outlines all the files that need to be created or updated when add
           Path('lab', include=['@id', 'title']),
           Path('submitted_by', include=['@id', 'title']),
       ]
-      
+
       @calculated_property(
           schema={
               'title': 'Summary',
@@ -73,7 +73,16 @@ This document outlines all the files that need to be created or updated when add
 ### 4. **OpenSearch Mapping** (REQUIRED)
 - **File**: `src/igvfd/mappings/{schema_name}.json`
 - **Purpose**: Defines how the schema is indexed in OpenSearch
-- **Notes**: This is typically auto-generated using mapping generation scripts. However for new schema you would need to add `src/igvfd/mappings/{schema_name}.json` file, that subsequently will be overwritten by the script below.
+- **Notes**: This is typically auto-generated using mapping generation scripts. However for new schema you would need to add `src/igvfd/mappings/{schema_name}.json` file, that subsequently will be overwritten by the script below. Before running the script, ensure the placeholder file contains the required keys so the application can boot:
+  ```json
+  {
+      "hash": "",
+      "index_name": "{schema_name}_initial",
+      "item_type": "{schema_name}",
+      "mapping": {}
+  }
+  ```
+  The `index_name` value is temporary; the generator will replace it with the actual name.
 - **Scripts to Run**:
   ```bash
   # Generate mapping
@@ -98,7 +107,7 @@ This document outlines all the files that need to be created or updated when add
 - **Example**:
   ```python
   import pytest
-  
+
   @pytest.fixture
   def {schema_name}(testapp, other_lab):
       item = {
@@ -223,4 +232,3 @@ If you were to add a new "sample" schema, you would create/update:
 9. ✅ `src/igvfd/loadxl.py` - Add to ORDER list
 
 Then run the mapping generation script and tests.
-

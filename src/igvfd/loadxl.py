@@ -21,6 +21,7 @@ ORDER = [
     'access_key',
     'controlled_term',
     'human_donor',
+    'non_human_donor',
 ]
 
 IS_ATTACHMENT = [
