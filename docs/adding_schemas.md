@@ -25,12 +25,13 @@ This document outlines all the files that need to be created or updated when add
 - **File**: `src/igvfd/types/{schema_name}.py`
 - **Purpose**: Python class that defines the item type, loads schema, and adds calculated properties
 - **Must Include**:
-  - `@collection()` decorator with name and properties
+  - **For concrete schemas**: `@collection()` decorator with name and properties
+  - **For abstract schemas**: `@abstract_collection()` decorator with name and properties
   - `item_type` attribute
   - `schema = load_schema()` call
   - `embedded_with_frame` list (if needed)
-  - `summary` calculated property (recommended)
-- **Example Structure**:
+  - `summary` calculated property (recommended for concrete schemas)
+- **Example Structure for Concrete Schema**:
   ```python
   from snovault import (
       collection,
@@ -69,6 +70,31 @@ This document outlines all the files that need to be created or updated when add
           # Implement summary logic
           pass
   ```
+- **Example Structure for Abstract Schema**:
+  ```python
+  from snovault import (
+      abstract_collection,
+      load_schema,
+  )
+  from .base import (
+      Item,
+  )
+
+  @abstract_collection(
+      name='{schema_name}s',  # plural
+      properties={
+          'title': '{Title}s',
+          'description': 'Abstract base class for {description}',
+      }
+  )
+  class {ClassName}(Item):
+      """
+      Abstract base class for {description}.
+      Concrete implementations are {ConcreteClass1} and {ConcreteClass2}.
+      """
+      item_type = '{schema_name}'
+      schema = load_schema('igvfd:schemas/{schema_name}.json')
+  ```
 
 ### 4. **OpenSearch Mapping** (REQUIRED)
 - **File**: `src/igvfd/mappings/{schema_name}.json`
@@ -98,12 +124,13 @@ This document outlines all the files that need to be created or updated when add
   - Custom columns configuration
   - Search facets (if needed)
 
-### 6. **Test Fixtures** (REQUIRED)
+### 6. **Test Fixtures** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/tests/fixtures/schemas/{schema_name}.py`
 - **Purpose**: Pytest fixtures for creating test instances
 - **Must Include**:
   - At least one basic fixture
   - Additional fixtures for edge cases (with aliases, with relationships, etc.)
+- **Note**: Abstract schemas do NOT need test fixtures (concrete subclasses handle this)
 - **Example**:
   ```python
   import pytest
@@ -118,12 +145,13 @@ This document outlines all the files that need to be created or updated when add
       return testapp.post_json('/{schema_name}', item, status=201).json['@graph'][0]
   ```
 
-### 7. **Test Insert Data** (REQUIRED)
+### 7. **Test Insert Data** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/tests/data/inserts/{schema_name}.json`
 - **Purpose**: Sample data loaded when spinning up a local instance
 - **Notes**: Should include at least one valid example
+- **Note**: Abstract schemas do NOT need test insert data (concrete subclasses handle this)
 
-### 8. **Type Tests** (REQUIRED)
+### 8. **Type Tests** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/tests/test_types_{schema_name}.py`
 - **Purpose**: Unit tests for the type class
 - **Should Test**:
@@ -133,11 +161,13 @@ This document outlines all the files that need to be created or updated when add
   - Calculated properties (like `summary`)
   - Successful creation
   - Edge cases
+- **Note**: Abstract schemas do NOT need type tests (concrete subclasses handle this)
 
-### 9. **Update loadxl.py** (REQUIRED)
+### 9. **Update loadxl.py** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/loadxl.py`
 - **Purpose**: Add schema to the loading order
 - **What to Do**: Add the schema name to the `ORDER` list in the appropriate position (considering dependencies)
+- **Note**: Abstract schemas should NOT be added to the `ORDER` list, as they are not directly instantiated
 
 ### 10. **Update conftest.py** (IF NEEDED)
 - **File**: `src/igvfd/tests/conftest.py`
@@ -147,17 +177,17 @@ This document outlines all the files that need to be created or updated when add
 
 ## Summary by File Type
 
-| File Type | Path Pattern | Required | Auto-Generated |
-|-----------|--------------|----------|----------------|
-| Schema | `src/igvfd/schemas/{name}.json` | ✅ | ❌ |
-| Changelog | `src/igvfd/schemas/changelogs/{name}.md` | ✅ | ❌ |
-| Type Class | `src/igvfd/types/{name}.py` | ✅ | ❌ |
-| Mapping | `src/igvfd/mappings/{name}.json` | ✅ | ⚠️ (via script) |
-| Search Config | `src/igvfd/searches/configs/{name}.py` | ✅ | ❌ |
-| Test Fixtures | `src/igvfd/tests/fixtures/schemas/{name}.py` | ✅ | ❌ |
-| Test Inserts | `src/igvfd/tests/data/inserts/{name}.json` | ✅ | ❌ |
-| Type Tests | `src/igvfd/tests/test_types_{name}.py` | ✅ | ❌ |
-| loadxl.py | `src/igvfd/loadxl.py` | ✅ | ❌ |
+| File Type | Path Pattern | Required | Auto-Generated | Notes |
+|-----------|--------------|----------|----------------|-------|
+| Schema | `src/igvfd/schemas/{name}.json` | ✅ | ❌ | Both abstract and concrete |
+| Changelog | `src/igvfd/schemas/changelogs/{name}.md` | ✅ | ❌ | Both abstract and concrete |
+| Type Class | `src/igvfd/types/{name}.py` | ✅ | ❌ | Use `@abstract_collection` for abstract, `@collection` for concrete |
+| Mapping | `src/igvfd/mappings/{name}.json` | ✅ | ⚠️ (via script) | Both abstract and concrete |
+| Search Config | `src/igvfd/searches/configs/{name}.py` | ✅ | ❌ | Both abstract and concrete |
+| Test Fixtures | `src/igvfd/tests/fixtures/schemas/{name}.py` | ✅ | ❌ | Concrete schemas only |
+| Test Inserts | `src/igvfd/tests/data/inserts/{name}.json` | ✅ | ❌ | Concrete schemas only |
+| Type Tests | `src/igvfd/tests/test_types_{name}.py` | ✅ | ❌ | Concrete schemas only |
+| loadxl.py | `src/igvfd/loadxl.py` | ✅ | ❌ | Concrete schemas only |
 
 ---
 
@@ -199,21 +229,29 @@ Each schema should have tests for:
    - Collection names: plural snake_case (e.g., `human_donors`)
    - item_type: singular snake_case (e.g., `human_donor`)
 
-2. **Dependencies**:
-   - If your schema references other schemas (via linkTo), ensure those schemas are loaded first in `loadxl.py`
+2. **Abstract vs Concrete Schemas**:
+   - **Abstract schemas**: Use `@abstract_collection` decorator, do NOT add to `loadxl.py` ORDER list, do NOT create test fixtures or test data (concrete subclasses handle this)
+   - **Concrete schemas**: Use `@collection` decorator, add to `loadxl.py` ORDER list, create test fixtures and test data
+   - Abstract schemas are base classes that define common properties but are never directly instantiated (e.g., `Donor`, `Biosample`)
+   - Concrete schemas are actual implementations that can be instantiated (e.g., `HumanDonor`, `Tissue`)
 
-3. **Mixins**:
+3. **Dependencies**:
+   - If your schema references other schemas (via linkTo), ensure those schemas are loaded first in `loadxl.py`
+   - If referencing an abstract schema (e.g., `linkTo: "Donor"`), ensure the abstract schema has a type class registered (even if abstract)
+
+4. **Mixins**:
    - Reuse common property groups from `mixins.json`
    - Common mixins: `aliases`, `attribution`, `documents`, `notes`, `shared_status`
 
-4. **Changelog**:
+5. **Changelog**:
    - Always document what changed and why
    - Include schema version numbers
 
-5. **Testing**:
+6. **Testing**:
    - Write comprehensive tests before considering the schema complete
    - Test both success and failure cases
    - Test calculated properties
+   - Note: Abstract schemas don't need their own tests, but concrete implementations should test inheritance behavior
 
 ---
 

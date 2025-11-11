@@ -22,6 +22,7 @@ ORDER = [
     'controlled_term',
     'human_donor',
     'non_human_donor',
+    'tissue',
 ]
 
 IS_ATTACHMENT = [
@@ -485,59 +486,9 @@ PHASE1_PIPELINES = {
     'user': [
         remove_keys('lab', 'submits_for'),
     ],
-    'analysis_set': [
-        remove_keys('pipeline_parameters'),
-    ],
-    'auxiliary_set': [
-        remove_keys('measurement_sets', 'barcode_map'),
-    ],
-    'construct_library_set': [
-        remove_keys('integrated_content_files', 'large_scale_gene_list', 'large_scale_loci_list'),
-    ],
-    'prediction_set': [
-        remove_keys('large_scale_gene_list', 'large_scale_loci_list', 'scope'),
-    ],
-    'in_vitro_system': [
-        remove_keys('pooled_from', 'part_of', 'originated_from', 'construct_library_sets', 'moi',
-                    'nucleic_acid_delivery', 'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
     'tissue': [
-        remove_keys('pooled_from', 'part_of', 'construct_library_sets', 'moi', 'nucleic_acid_delivery',
-                    'time_post_library_delivery', 'time_post_library_delivery_units'),
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
-    'primary_cell': [
-        remove_keys('pooled_from', 'part_of', 'construct_library_sets', 'moi', 'nucleic_acid_delivery',
-                    'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
-    'whole_organism': [
-        remove_keys('construct_library_sets', 'moi', 'nucleic_acid_delivery',
-                    'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
-    'technical_sample': [
-        remove_keys('construct_library_sets', 'moi', 'nucleic_acid_delivery',
-                    'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
-    'multiplexed_sample': [
-        remove_keys('barcode_map'),
-    ],
-    'reference_file': [
-        remove_keys('derived_from', 'file_format_specifications'),
-    ],
-    'sequence_file': [
-        remove_keys('derived_from', 'file_format_specifications', 'seqspec'),
-    ],
-    'alignment_file': [
-        remove_keys('derived_from', 'file_format_specifications'),
-    ],
-    'configuration_file': [
-        remove_keys('derived_from', 'file_format_specifications'),
-    ],
-    'signal_file': [
-        remove_keys('derived_from', 'file_format_specifications'),
-    ],
-    'measurement_set': [
-        remove_keys('auxiliary_sets', 'control_file_sets', 'onlist_files', 'onlist_method', 'primer_designs'),
-    ]
 }
 
 
@@ -552,62 +503,8 @@ PHASE2_PIPELINES = {
     'user': [
         skip_rows_missing_all_keys('lab', 'submits_for'),
     ],
-    'analysis_set': [
-        remove_keys('pipeline_parameters'),
-    ],
-    'auxiliary_set': [
-        skip_rows_missing_all_keys('barcode_map'),
-    ],
-    'construct_library_set': [
-        skip_rows_missing_all_keys('integrated_content_files', 'large_scale_gene_list', 'large_scale_loci_list'),
-    ],
-    'prediction_set': [
-        skip_rows_missing_all_keys('large_scale_gene_list', 'large_scale_loci_list', 'scope'),
-    ],
-    'in_vitro_system': [
-        skip_rows_missing_all_keys('pooled_from', 'part_of', 'originated_from', 'construct_library_sets',
-                                   'moi', 'nucleic_acid_delivery', 'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
     'tissue': [
-        skip_rows_missing_all_keys('pooled_from', 'part_of', 'construct_library_sets', 'moi',
-                                   'nucleic_acid_delivery', 'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
-    'primary_cell': [
-        skip_rows_missing_all_keys('pooled_from', 'part_of', 'construct_library_sets', 'moi',
-                                   'nucleic_acid_delivery', 'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
-    'whole_organism': [
-        skip_rows_missing_all_keys('construct_library_sets', 'moi', 'nucleic_acid_delivery',
-                                   'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
-    'technical_sample': [
-        skip_rows_missing_all_keys('construct_library_sets', 'moi', 'nucleic_acid_delivery',
-                                   'time_post_library_delivery', 'time_post_library_delivery_units'),
-    ],
-    'multiplexed_sample': [
-        skip_rows_missing_all_keys('barcode_map'),
-    ],
-    'reference_file': [
-        skip_rows_missing_all_keys('derived_from', 'file_format_specifications'),
-    ],
-    'sequence_file': [
-        skip_rows_missing_all_keys('derived_from', 'file_format_specifications', 'seqspec'),
-    ],
-    'alignment_file': [
-        skip_rows_missing_all_keys('derived_from', 'file_format_specifications'),
-    ],
-    'configuration_file': [
-        skip_rows_missing_all_keys('derived_from', 'file_format_specifications'),
-    ],
-    'signal_file': [
-        skip_rows_missing_all_keys('derived_from', 'file_format_specifications'),
-    ],
-    'measurement_set': [
-        skip_rows_missing_all_keys('auxiliary_sets', 'control_file_sets',
-                                   'onlist_files', 'onlist_method', 'primer_designs'),
-    ],
-    'auxiliary_set': [
-        skip_rows_missing_all_keys('measurement_sets'),
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
 }
 

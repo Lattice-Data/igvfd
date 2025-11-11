@@ -68,3 +68,14 @@ def controlled_term_ethnicity(testapp):
         'status': 'current',
     }
     return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def controlled_term_brain(testapp):
+    item = {
+        'term_id': 'UBERON:0000955',
+        'term_name': 'brain',
+        'ontology_source': 'UBERON',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
