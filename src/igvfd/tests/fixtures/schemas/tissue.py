@@ -59,4 +59,3 @@ def tissue_with_thickness(testapp, other_lab, human_donor, controlled_term_brain
         'status': 'current',
     }
     return testapp.post_json('/tissue', item, status=201).json['@graph'][0]
-

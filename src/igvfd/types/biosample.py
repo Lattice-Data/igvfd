@@ -62,4 +62,3 @@ class Tissue(Biosample):
         if description:
             return description
         return self.uuid
-

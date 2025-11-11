@@ -61,6 +61,7 @@ class HumanDonor(Donor):
             return description
         return self.uuid
 
+
 @collection(
     name='non_human_donors',
     properties={

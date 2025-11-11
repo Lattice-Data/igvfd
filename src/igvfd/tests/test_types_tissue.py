@@ -212,4 +212,3 @@ def test_tissue_create_with_all_optional_fields(testapp, other_lab, human_donor,
     assert res.json['@graph'][0]['thickness_units'] == 'mm'
     assert res.json['@graph'][0]['date_obtained'] == '2024-01-15'
     assert res.json['@graph'][0]['orientation'] == 'coronal'
-
