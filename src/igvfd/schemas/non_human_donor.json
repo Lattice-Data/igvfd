@@ -24,7 +24,7 @@
             "$ref": "mixins.json#/shared_status"
         },
         {
-            "$ref": "Donor.json#/properties"
+            "$ref": "donor.json#/properties"
         }
     ],
     "properties": {

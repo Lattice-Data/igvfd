@@ -25,7 +25,7 @@
             "$ref": "mixins.json#/shared_status"
         },
         {
-            "$ref": "Biosample.json#/properties"
+            "$ref": "biosample.json#/properties"
         }
     ],
     "dependentSchemas": {
