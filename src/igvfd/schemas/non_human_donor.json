@@ -1,0 +1,80 @@
+{
+    "title": "Non Human Donor",
+    "$id": "/profiles/non_human_donor.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Schema for non human donors.",
+    "type": "object",
+    "required": [
+        "lab",
+        "taxa"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "donor.json#/properties"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "taxa": {
+            "title": "Taxa",
+            "type": "string",
+            "description": "The species of the organism.",
+            "enum": [
+                "Mus musculus",
+                "Ciona intestinalis",
+                "Petromyzon marinus",
+                "Nematostella vectensis",
+                "Octopus bimaculoides",
+                "Patiria miniata",
+                "Leucoraja erinaceus",
+                "Sycon ciliatum",
+                "Saccoglossus kowalevskii",
+                "Biomphalaria glabrata",
+                "Limulus polyphemus",
+                "Beroe ovata",
+                "Mnemiopsis leidyi",
+                "Turritopsis dohrnii",
+                "Parhyale hawaiensis",
+                "Platynereis megalops",
+                "Hydroides elegans",
+                "Littorina littorea",
+                "Sclerodactyla briareus",
+                "Myxine glutinosa",
+                "Euprymna berryi",
+                "Xenopus tropicalis",
+                "Nothobranchius furzeri",
+                "Coturnix japonica",
+                "Anolis carolinensis",
+                "Alligator mississippiensis",
+                "Chrysemys picta bellii",
+                "Ranitomeya imitator",
+                "Monodelphis domestica"
+            ]
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description",
+        "taxa"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/non_human_donor.md"
+}

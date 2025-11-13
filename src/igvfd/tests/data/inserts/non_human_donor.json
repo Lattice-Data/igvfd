@@ -1,0 +1,12 @@
+[
+    {
+        "lab": "teri-klein",
+        "taxa": "Mus musculus",
+        "uuid": "f6a7b8c9-d0e1-2345-fa16-678901234567",
+        "status": "current",
+        "aliases": [
+            "lattice:non-human-donor-example"
+        ],
+        "description": "Example non human donor for testing."
+    }
+]

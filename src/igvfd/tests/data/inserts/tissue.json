@@ -1,0 +1,38 @@
+[
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "414e5c99-e9db-43b1-b7e9-49979fc6efb6",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [],
+        "description": "Test tissue sample 1",
+        "preservation_method": "frozen"
+    },
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "2cc69a5c-eb1f-4e32-b62d-bb53eb396726",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:test-tissue-1",
+            "lattice:test-tissue-alias"
+        ],
+        "preservation_method": "flash-frozen",
+        "thickness": 5.0,
+        "thickness_units": "mm",
+        "orientation": "coronal",
+        "date_obtained": "2024-01-15"
+    }
+]
