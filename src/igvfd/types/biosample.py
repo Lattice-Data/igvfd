@@ -28,6 +28,8 @@ class Biosample(Item):
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
+        Path('donors', include=['@id', 'title', 'aliases']),
+        Path('sample_terms', include=['@id', 'term_name']),
     ]
 
 
@@ -41,12 +43,7 @@ class Biosample(Item):
 class Tissue(Biosample):
     item_type = 'tissue'
     schema = load_schema('igvfd:schemas/tissue.json')
-    embedded_with_frame = [
-        Path('lab', include=['@id', 'title']),
-        Path('submitted_by', include=['@id', 'title']),
-        Path('donors', include=['@id', 'title', 'aliases']),
-        Path('sample_terms', include=['@id', 'term_name']),
-    ]
+    embedded_with_frame = Biosample.embedded_with_frame
 
     @calculated_property(
         schema={
@@ -74,12 +71,7 @@ class Tissue(Biosample):
 class PrimaryCell(Biosample):
     item_type = 'primary_cell'
     schema = load_schema('igvfd:schemas/primary_cell.json')
-    embedded_with_frame = [
-        Path('lab', include=['@id', 'title']),
-        Path('submitted_by', include=['@id', 'title']),
-        Path('donors', include=['@id', 'title', 'aliases']),
-        Path('sample_terms', include=['@id', 'term_name']),
-    ]
+    embedded_with_frame = Biosample.embedded_with_frame
 
     @calculated_property(
         schema={
