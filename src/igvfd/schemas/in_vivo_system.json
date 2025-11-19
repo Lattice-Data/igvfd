@@ -1,0 +1,61 @@
+{
+    "title": "In Vivo System",
+    "$id": "/profiles/in_vivo_system.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A concrete in vivo biological system schema inheriting from abstract Biosample class.",
+    "type": "object",
+    "required": [
+        "lab",
+        "donors",
+        "sample_terms",
+        "classification"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "biosample.json#/properties"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "classification": {
+            "title": "Classification",
+            "description": "The type of in vivo biological system.",
+            "type": "string",
+            "enum": [
+                "xenograft"
+            ]
+        },
+        "host": {
+            "title": "Host",
+            "description": "The host organism for the in vivo system (optional, used for transplantation scenarios).",
+            "comment": "See Donor.json for available identifiers.",
+            "type": "string",
+            "linkTo": "Donor"
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description",
+        "sample_terms"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/in_vivo_system.md"
+}
