@@ -1,0 +1,74 @@
+{
+    "title": "Library",
+    "description": "Abstract schema for libraries prepared from biological samples.",
+    "$id": "/profiles/library.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "required": [
+        "lab",
+        "samples"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        }
+    ],
+    "dependentSchemas": {
+        "multiplexing_method": {
+            "properties": {
+                "samples": {
+                    "minItems": 2
+                }
+            }
+        }
+    },
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "samples": {
+            "title": "Samples",
+            "description": "Biological sample(s) used to prepare this library.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Sample",
+                "description": "Biological sample.",
+                "comment": "See biosample.json for available identifiers.",
+                "type": "string",
+                "linkTo": "Biosample"
+            }
+        },
+        "multiplexing_method": {
+            "title": "Multiplexing Method",
+            "description": "Method used for sample multiplexing in this library.",
+            "type": "string",
+            "enum": [
+                "cell hashing",
+                "lipid hashing",
+                "genetic",
+                "sample barcodes"
+            ]
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/library.md"
+}
