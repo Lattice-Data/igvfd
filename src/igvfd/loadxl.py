@@ -23,6 +23,7 @@ ORDER = [
     'human_donor',
     'non_human_donor',
     'tissue',
+    'primary_cell',
 ]
 
 IS_ATTACHMENT = [
@@ -489,6 +490,9 @@ PHASE1_PIPELINES = {
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
+    'primary_cell': [
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+    ],
 }
 
 
@@ -504,6 +508,9 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('lab', 'submits_for'),
     ],
     'tissue': [
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+    ],
+    'primary_cell': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
 }

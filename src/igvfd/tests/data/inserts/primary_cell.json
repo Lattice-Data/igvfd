@@ -1,0 +1,34 @@
+[
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "8a1b2c3d-4e5f-6789-a0b1-c2d3e4f56789",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [],
+        "description": "Test primary cell sample 1"
+    },
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "9b2c3d4e-5f67-8901-b2c3-d4e5f6789012",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:test-primary-cell-1",
+            "lattice:test-primary-cell-alias"
+        ],
+        "passage_number": 3,
+        "date_obtained": "2024-02-20"
+    }
+]
