@@ -1,6 +1,6 @@
 {
-    "hash": "79a93e2318a50b44b1bc58ca73045e42",
-    "index_name": "tissue_79a93e23",
+    "hash": "c9afce630afdbd12dbb25fcfd9ae6125",
+    "index_name": "tissue_c9afce63",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -311,7 +311,6 @@
                         "type": "keyword"
                     },
                     "sample_terms": {
-                        "copy_to": "_fuzzy",
                         "properties": {
                             "@id": {
                                 "type": "keyword"
@@ -362,6 +361,7 @@
                                 "type": "keyword"
                             },
                             "term_name": {
+                                "copy_to": "_fuzzy",
                                 "type": "keyword"
                             },
                             "uuid": {

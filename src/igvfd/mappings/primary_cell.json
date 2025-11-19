@@ -1,6 +1,6 @@
 {
-    "hash": "2f756ba72301b5e954a1191eb5595197",
-    "index_name": "primary_cell_2f756ba7",
+    "hash": "41edd9c47a98f666b2bf177c7aa811d7",
+    "index_name": "primary_cell_41edd9c4",
     "item_type": "primary_cell",
     "mapping": {
         "dynamic_templates": [
@@ -309,7 +309,6 @@
                         "type": "keyword"
                     },
                     "sample_terms": {
-                        "copy_to": "_fuzzy",
                         "properties": {
                             "@id": {
                                 "type": "keyword"
@@ -360,6 +359,7 @@
                                 "type": "keyword"
                             },
                             "term_name": {
+                                "copy_to": "_fuzzy",
                                 "type": "keyword"
                             },
                             "uuid": {
