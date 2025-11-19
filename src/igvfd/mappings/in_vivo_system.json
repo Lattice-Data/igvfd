@@ -1,6 +1,6 @@
 {
-    "hash": "16ab1ceab6775d3058f1b62c97b4cadc",
-    "index_name": "in_vivo_system_16ab1cea",
+    "hash": "e986c9ed1d2a8011e7f5c091d96b2eb1",
+    "index_name": "in_vivo_system_e986c9ed",
     "item_type": "in_vivo_system",
     "mapping": {
         "dynamic_templates": [
@@ -355,7 +355,6 @@
                         "type": "keyword"
                     },
                     "sample_terms": {
-                        "copy_to": "_fuzzy",
                         "properties": {
                             "@id": {
                                 "type": "keyword"
@@ -406,6 +405,7 @@
                                 "type": "keyword"
                             },
                             "term_name": {
+                                "copy_to": "_fuzzy",
                                 "type": "keyword"
                             },
                             "uuid": {

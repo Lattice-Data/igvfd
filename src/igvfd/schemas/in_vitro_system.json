@@ -48,7 +48,7 @@
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
-        "sample_terms"
+        "sample_terms.term_name"
     ],
     "exact_searchable_fields": [
         "@type"
