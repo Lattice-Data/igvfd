@@ -28,6 +28,8 @@ class Biosample(Item):
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
+        Path('donors', include=['@id', 'title', 'aliases']),
+        Path('sample_terms', include=['@id', 'term_name']),
     ]
 
 
@@ -41,18 +43,41 @@ class Biosample(Item):
 class Tissue(Biosample):
     item_type = 'tissue'
     schema = load_schema('igvfd:schemas/tissue.json')
-    embedded_with_frame = [
-        Path('lab', include=['@id', 'title']),
-        Path('submitted_by', include=['@id', 'title']),
-        Path('donors', include=['@id', 'title', 'aliases']),
-        Path('sample_terms', include=['@id', 'term_name']),
-    ]
+    embedded_with_frame = Biosample.embedded_with_frame
 
     @calculated_property(
         schema={
             'title': 'Summary',
             'type': 'string',
             'description': 'A summary of the tissue sample.',
+            'notSubmittable': True,
+        }
+    )
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
+        if description:
+            return description
+        return self.uuid
+
+
+@collection(
+    name='primary_cells',
+    properties={
+        'title': 'Primary Cells',
+        'description': 'Listing of primary cell samples',
+    }
+)
+class PrimaryCell(Biosample):
+    item_type = 'primary_cell'
+    schema = load_schema('igvfd:schemas/primary_cell.json')
+    embedded_with_frame = Biosample.embedded_with_frame
+
+    @calculated_property(
+        schema={
+            'title': 'Summary',
+            'type': 'string',
+            'description': 'A summary of the primary cell sample.',
             'notSubmittable': True,
         }
     )

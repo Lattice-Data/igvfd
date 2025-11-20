@@ -169,9 +169,19 @@ This document outlines all the files that need to be created or updated when add
 - **What to Do**: Add the schema name to the `ORDER` list in the appropriate position (considering dependencies)
 - **Note**: Abstract schemas should NOT be added to the `ORDER` list, as they are not directly instantiated
 
-### 10. **Update conftest.py** (IF NEEDED)
+### 10. **Update conftest.py** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/tests/conftest.py`
-- **Purpose**: Register test types if they need special handling
+- **Purpose**: Register test fixtures so pytest can discover and use them
+- **What to Do**: Add `'igvfd.tests.fixtures.schemas.{schema_name}'` to the `pytest_plugins` list
+- **Note**: Abstract schemas do NOT need to be registered (concrete subclasses handle this)
+- **Example**:
+  ```python
+  pytest_plugins = [
+      # ... existing plugins ...
+      'igvfd.tests.fixtures.schemas.tissue',
+      'igvfd.tests.fixtures.schemas.primary_cell',  # Add new schema here
+  ]
+  ```
 
 ---
 
@@ -188,6 +198,7 @@ This document outlines all the files that need to be created or updated when add
 | Test Inserts | `src/igvfd/tests/data/inserts/{name}.json` | ❌ | ✅ | ❌ | Only concrete schemas |
 | Type Tests | `src/igvfd/tests/test_types_{name}.py` | ❌ | ✅ | ❌ | Only concrete schemas |
 | loadxl.py | `src/igvfd/loadxl.py` | ❌ | ✅ | ❌ | Only concrete schemas |
+| conftest.py | `src/igvfd/tests/conftest.py` | ❌ | ✅ | ❌ | Concrete schemas only |
 
 ---
 
@@ -283,5 +294,6 @@ If you were to add a new "sample" schema, you would create/update:
 7. ✅ `src/igvfd/tests/data/inserts/sample.json` - Add test data
 8. ✅ `src/igvfd/tests/test_types_sample.py` - Write tests
 9. ✅ `src/igvfd/loadxl.py` - Add to ORDER list
+10. ✅ `src/igvfd/tests/conftest.py` - Register fixtures in pytest_plugins
 
 Then run the mapping generation script and tests.

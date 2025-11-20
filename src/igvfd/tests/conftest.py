@@ -24,6 +24,7 @@ pytest_plugins = [
     'igvfd.tests.fixtures.schemas.controlled_term',
     'igvfd.tests.fixtures.schemas.non_human_donor',
     'igvfd.tests.fixtures.schemas.tissue',
+    'igvfd.tests.fixtures.schemas.primary_cell',
 ]
 
 

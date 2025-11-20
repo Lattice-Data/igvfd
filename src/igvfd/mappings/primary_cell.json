@@ -1,7 +1,7 @@
 {
-    "hash": "c9afce630afdbd12dbb25fcfd9ae6125",
-    "index_name": "tissue_c9afce63",
-    "item_type": "tissue",
+    "hash": "41edd9c47a98f666b2bf177c7aa811d7",
+    "index_name": "primary_cell_41edd9c4",
+    "item_type": "primary_cell",
     "mapping": {
         "dynamic_templates": [
             {
@@ -297,11 +297,9 @@
                     "notes": {
                         "type": "text"
                     },
-                    "orientation": {
-                        "type": "keyword"
-                    },
-                    "preservation_method": {
-                        "type": "keyword"
+                    "passage_number": {
+                        "store": true,
+                        "type": "long"
                     },
                     "sample_procurement_interval": {
                         "store": true,
@@ -371,10 +369,6 @@
                         "type": "object"
                     },
                     "schema_version": {
-                        "type": "keyword"
-                    },
-                    "spatial_information": {
-                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "status": {
@@ -455,13 +449,6 @@
                         "type": "keyword"
                     },
                     "suspension_type": {
-                        "type": "keyword"
-                    },
-                    "thickness": {
-                        "store": true,
-                        "type": "float"
-                    },
-                    "thickness_units": {
                         "type": "keyword"
                     },
                     "treatment": {
