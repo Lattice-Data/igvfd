@@ -5,7 +5,9 @@
         "uuid": "d4e5f6a7-b8c9-0123-def4-456789012345",
         "schema_version": "1",
         "status": "current",
-        "aliases": [],
+        "aliases": [
+            "lattice:human-donor-basic"
+        ],
         "description": "Test human donor 1"
     },
     {
@@ -16,8 +18,9 @@
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:test-donor-1",
-            "lattice:test-donor-alias"
+            "lattice:human-donor-european",
+            "lattice:donor-hd002",
+            "lattice:test-donor-with-ethnicity"
         ]
     }
 ]

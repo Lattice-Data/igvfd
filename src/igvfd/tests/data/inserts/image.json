@@ -7,7 +7,9 @@
         "schema_version": "1",
         "status": "current",
         "creation_timestamp": "2024-03-06T12:34:56.000000+00:00",
-        "aliases": []
+        "aliases": [
+            "lattice:image-h3k4me3-western-blot"
+        ]
     },
     {
         "caption": "Jocelyn",
@@ -17,6 +19,8 @@
         "schema_version": "1",
         "status": "current",
         "creation_timestamp": "2024-03-06T12:34:56.000000+00:00",
-        "aliases": []
+        "aliases": [
+            "lattice:image-jocelyn"
+        ]
     }
 ]

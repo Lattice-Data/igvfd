@@ -1,0 +1,57 @@
+{
+    "title": "In Vitro System",
+    "$id": "/profiles/in_vitro_system.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A concrete in vitro biological system schema inheriting from abstract Biosample class.",
+    "type": "object",
+    "required": [
+        "lab",
+        "donors",
+        "sample_terms",
+        "classification"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "biosample.json#/properties"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "classification": {
+            "title": "Classification",
+            "description": "The type of in vitro biological system.",
+            "type": "string",
+            "enum": [
+                "organoid",
+                "gastruloid",
+                "embryoid",
+                "immortalized cell line"
+            ]
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description",
+        "sample_terms.term_name"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/in_vitro_system.md"
+}

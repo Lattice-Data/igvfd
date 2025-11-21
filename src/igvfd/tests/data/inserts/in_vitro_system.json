@@ -7,14 +7,14 @@
         "sample_terms": [
             "c3d4e5f6-a7b8-9012-cdef-345678901234"
         ],
-        "uuid": "414e5c99-e9db-43b1-b7e9-49979fc6efb6",
+        "uuid": "c6fe3171-9dda-4dea-b672-666be9237e80",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:tissue-frozen-basic"
+            "lattice:in-vitro-organoid"
         ],
-        "description": "Test tissue sample 1",
-        "preservation_method": "frozen"
+        "description": "Test in vitro system sample 1",
+        "classification": "organoid"
     },
     {
         "lab": "teri-klein",
@@ -24,18 +24,15 @@
         "sample_terms": [
             "c3d4e5f6-a7b8-9012-cdef-345678901234"
         ],
-        "uuid": "2cc69a5c-eb1f-4e32-b62d-bb53eb396726",
+        "uuid": "8f44da26-e20c-46a1-932a-1b7b577dbcda",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:tissue-brain-coronal",
-            "lattice:tissue-ts002",
-            "lattice:sample-brain-5mm-section"
+            "lattice:in-vitro-gastruloid",
+            "lattice:in-vitro-ivs002",
+            "lattice:gastruloid-model-system"
         ],
-        "preservation_method": "flash-frozen",
-        "thickness": 5.0,
-        "thickness_units": "mm",
-        "orientation": "coronal",
-        "date_obtained": "2024-01-15"
+        "description": "Test in vitro system sample 2",
+        "classification": "gastruloid"
     }
 ]

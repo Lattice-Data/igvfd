@@ -20,7 +20,7 @@ from .base import (
 class Biosample(Item):
     """
     Abstract base class for biosamples.
-    Concrete implementations are Tissue.
+    Concrete implementations are Tissue, PrimaryCell, InVivoSystem, and InVitroSystem.
     """
     item_type = 'biosample'
     base_types = ['Biosample'] + Item.base_types
@@ -78,6 +78,64 @@ class PrimaryCell(Biosample):
             'title': 'Summary',
             'type': 'string',
             'description': 'A summary of the primary cell sample.',
+            'notSubmittable': True,
+        }
+    )
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
+        if description:
+            return description
+        return self.uuid
+
+
+@collection(
+    name='in_vivo_systems',
+    properties={
+        'title': 'In Vivo Systems',
+        'description': 'Listing of in vivo biological systems',
+    }
+)
+class InVivoSystem(Biosample):
+    item_type = 'in_vivo_system'
+    schema = load_schema('igvfd:schemas/in_vivo_system.json')
+    embedded_with_frame = Biosample.embedded_with_frame + [
+        Path('host', include=['@id', 'title', 'aliases']),
+    ]
+
+    @calculated_property(
+        schema={
+            'title': 'Summary',
+            'type': 'string',
+            'description': 'A summary of the in vivo system.',
+            'notSubmittable': True,
+        }
+    )
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
+        if description:
+            return description
+        return self.uuid
+
+
+@collection(
+    name='in_vitro_systems',
+    properties={
+        'title': 'In Vitro Systems',
+        'description': 'Listing of in vitro biological systems',
+    }
+)
+class InVitroSystem(Biosample):
+    item_type = 'in_vitro_system'
+    schema = load_schema('igvfd:schemas/in_vitro_system.json')
+    embedded_with_frame = Biosample.embedded_with_frame
+
+    @calculated_property(
+        schema={
+            'title': 'Summary',
+            'type': 'string',
+            'description': 'A summary of the in vitro system.',
             'notSubmittable': True,
         }
     )

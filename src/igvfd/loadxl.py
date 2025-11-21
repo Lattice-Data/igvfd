@@ -24,6 +24,8 @@ ORDER = [
     'non_human_donor',
     'tissue',
     'primary_cell',
+    'in_vivo_system',
+    'in_vitro_system',
 ]
 
 IS_ATTACHMENT = [
@@ -493,6 +495,12 @@ PHASE1_PIPELINES = {
     'primary_cell': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
+    'in_vivo_system': [
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+    ],
+    'in_vitro_system': [
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+    ],
 }
 
 
@@ -511,6 +519,12 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'primary_cell': [
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+    ],
+    'in_vivo_system': [
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+    ],
+    'in_vitro_system': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
 }
