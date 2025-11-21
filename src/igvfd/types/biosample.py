@@ -20,7 +20,7 @@ from .base import (
 class Biosample(Item):
     """
     Abstract base class for biosamples.
-    Concrete implementations are Tissue, InVivoSystem, and InVitroSystem.
+    Concrete implementations are Tissue, PrimaryCell, InVivoSystem, and InVitroSystem.
     """
     item_type = 'biosample'
     base_types = ['Biosample'] + Item.base_types
@@ -50,6 +50,34 @@ class Tissue(Biosample):
             'title': 'Summary',
             'type': 'string',
             'description': 'A summary of the tissue sample.',
+            'notSubmittable': True,
+        }
+    )
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
+        if description:
+            return description
+        return self.uuid
+
+
+@collection(
+    name='primary_cells',
+    properties={
+        'title': 'Primary Cells',
+        'description': 'Listing of primary cell samples',
+    }
+)
+class PrimaryCell(Biosample):
+    item_type = 'primary_cell'
+    schema = load_schema('igvfd:schemas/primary_cell.json')
+    embedded_with_frame = Biosample.embedded_with_frame
+
+    @calculated_property(
+        schema={
+            'title': 'Summary',
+            'type': 'string',
+            'description': 'A summary of the primary cell sample.',
             'notSubmittable': True,
         }
     )
