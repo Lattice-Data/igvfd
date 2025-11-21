@@ -496,10 +496,10 @@ PHASE1_PIPELINES = {
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'in_vivo_system': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms', 'classification'),
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'in_vitro_system': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms', 'classification'),
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
 }
 
@@ -522,10 +522,10 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'in_vivo_system': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms', 'classification'),
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'in_vitro_system': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms', 'classification'),
+        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
 }
 
