@@ -3,7 +3,7 @@ import pytest
 
 def test_tissue_summary_with_aliases(testapp, tissue_with_aliases):
     res = testapp.get(tissue_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:test-tissue-1'
+    assert res.json.get('summary') == 'lattice:tissue-brain-coronal'
 
 
 def test_tissue_summary_with_description(testapp, tissue_with_description):

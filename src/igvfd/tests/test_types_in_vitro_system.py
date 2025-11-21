@@ -3,7 +3,7 @@ import pytest
 
 def test_in_vitro_system_summary_with_aliases(testapp, in_vitro_system_with_aliases):
     res = testapp.get(in_vitro_system_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:test-in-vitro-1'
+    assert res.json.get('summary') == 'lattice:in-vitro-organoid'
 
 
 def test_in_vitro_system_summary_with_description(testapp, in_vitro_system_with_description):

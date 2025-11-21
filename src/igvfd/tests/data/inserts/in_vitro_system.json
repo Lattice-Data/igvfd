@@ -10,7 +10,9 @@
         "uuid": "c6fe3171-9dda-4dea-b672-666be9237e80",
         "schema_version": "1",
         "status": "current",
-        "aliases": [],
+        "aliases": [
+            "lattice:in-vitro-organoid"
+        ],
         "description": "Test in vitro system sample 1",
         "classification": "organoid"
     },
@@ -26,8 +28,9 @@
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:test-in-vitro-1",
-            "lattice:test-in-vitro-gastruloid"
+            "lattice:in-vitro-gastruloid",
+            "lattice:in-vitro-ivs002",
+            "lattice:gastruloid-model-system"
         ],
         "description": "Test in vitro system sample 2",
         "classification": "gastruloid"

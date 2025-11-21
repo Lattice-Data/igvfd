@@ -10,7 +10,9 @@
         "uuid": "414e5c99-e9db-43b1-b7e9-49979fc6efb6",
         "schema_version": "1",
         "status": "current",
-        "aliases": [],
+        "aliases": [
+            "lattice:tissue-frozen-basic"
+        ],
         "description": "Test tissue sample 1",
         "preservation_method": "frozen"
     },
@@ -26,8 +28,9 @@
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:test-tissue-1",
-            "lattice:test-tissue-alias"
+            "lattice:tissue-brain-coronal",
+            "lattice:tissue-ts002",
+            "lattice:sample-brain-5mm-section"
         ],
         "preservation_method": "flash-frozen",
         "thickness": 5.0,

@@ -1,7 +1,9 @@
 [
     {
         "aliases": [
-            "lattice:Antibody_characterization_standards_IGVF"
+            "lattice:document-antibody-characterization",
+            "lattice:doc-ab-protocol",
+            "lattice:protocol-igvf-ab-standards"
         ],
         "description": "AB characterization standards.",
         "attachment": "Antibody_Characterization_IGVF.pdf",

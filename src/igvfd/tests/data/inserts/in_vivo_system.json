@@ -11,8 +11,7 @@
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:test-in-vivo-1",
-            "lattice:test-in-vivo-alias"
+            "lattice:in-vivo-xenograft"
         ],
         "description": "Test in vivo system sample 2 with host",
         "classification": "xenograft",

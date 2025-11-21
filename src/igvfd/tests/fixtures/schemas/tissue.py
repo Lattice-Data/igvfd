@@ -30,7 +30,7 @@ def tissue_with_aliases(testapp, other_lab, human_donor, controlled_term_brain):
         'lab': other_lab['@id'],
         'donors': [human_donor['@id']],
         'sample_terms': [controlled_term_brain['@id']],
-        'aliases': ['lattice:test-tissue-1', 'lattice:test-tissue-alias'],
+        'aliases': ['lattice:tissue-brain-coronal'],
         'status': 'current',
     }
     return testapp.post_json('/tissue', item, status=201).json['@graph'][0]

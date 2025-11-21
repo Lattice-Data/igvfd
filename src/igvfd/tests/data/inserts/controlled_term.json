@@ -11,7 +11,11 @@
         "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
         "schema_version": "1",
         "status": "current",
-        "aliases": []
+        "aliases": [
+            "lattice:term-t-cell",
+            "lattice:term-cl-0000001",
+            "lattice:term-t-lymphocyte"
+        ]
     },
     {
         "term_id": "EFO:0000001",
@@ -21,7 +25,10 @@
         "uuid": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
         "schema_version": "1",
         "status": "current",
-        "aliases": []
+        "aliases": [
+            "lattice:term-european-ethnicity",
+            "lattice:term-efo-0000001"
+        ]
     },
     {
         "term_id": "UBERON:0000001",
@@ -31,6 +38,10 @@
         "uuid": "c3d4e5f6-a7b8-9012-cdef-345678901234",
         "schema_version": "1",
         "status": "current",
-        "aliases": []
+        "aliases": [
+            "lattice:term-brain",
+            "lattice:term-uberon-0000001",
+            "lattice:term-brain-tissue"
+        ]
     }
 ]

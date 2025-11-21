@@ -3,6 +3,9 @@
         "institute_label": "Stanford",
         "name": "teri-klein",
         "pi": "860c4750-8d3c-40f5-8f2c-90c5e5d19e89",
-        "uuid": "ffdd233e-57b8-486c-9bb4-c33b8daf7b06"
+        "uuid": "ffdd233e-57b8-486c-9bb4-c33b8daf7b06",
+        "aliases": [
+            "lattice:lab-teri-klein"
+        ]
     }
 ]

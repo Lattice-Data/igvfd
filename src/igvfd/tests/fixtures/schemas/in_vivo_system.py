@@ -33,7 +33,7 @@ def in_vivo_system_with_aliases(testapp, other_lab, human_donor, controlled_term
         'donors': [human_donor['@id']],
         'sample_terms': [controlled_term_brain['@id']],
         'classification': 'xenograft',
-        'aliases': ['lattice:test-in-vivo-1', 'lattice:test-in-vivo-alias'],
+        'aliases': ['lattice:in-vivo-xenograft'],
         'status': 'current',
     }
     return testapp.post_json('/in_vivo_system', item, status=201).json['@graph'][0]

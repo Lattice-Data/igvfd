@@ -3,7 +3,7 @@ import pytest
 
 def test_in_vivo_system_summary_with_aliases(testapp, in_vivo_system_with_aliases):
     res = testapp.get(in_vivo_system_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:test-in-vivo-1'
+    assert res.json.get('summary') == 'lattice:in-vivo-xenograft'
 
 
 def test_in_vivo_system_summary_with_description(testapp, in_vivo_system_with_description):

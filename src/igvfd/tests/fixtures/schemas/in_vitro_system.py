@@ -33,7 +33,7 @@ def in_vitro_system_with_aliases(testapp, other_lab, human_donor, controlled_ter
         'donors': [human_donor['@id']],
         'sample_terms': [controlled_term_brain['@id']],
         'classification': 'organoid',
-        'aliases': ['lattice:test-in-vitro-1', 'lattice:test-in-vitro-alias'],
+        'aliases': ['lattice:in-vitro-organoid'],
         'status': 'current',
     }
     return testapp.post_json('/in_vitro_system', item, status=201).json['@graph'][0]

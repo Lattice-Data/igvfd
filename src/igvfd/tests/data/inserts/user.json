@@ -13,7 +13,10 @@
         "submits_for": [
             "/labs/teri-klein/"
         ],
-        "uuid": "7e95dcd6-9c35-4082-9c53-09d14c5752be"
+        "uuid": "7e95dcd6-9c35-4082-9c53-09d14c5752be",
+        "aliases": [
+            "lattice:user-keenan-graham"
+        ]
     },
     {
         "email": "ojolanki@stanford.edu",
@@ -28,7 +31,10 @@
         "submits_for": [
             "/labs/teri-klein/"
         ],
-        "uuid": "10ab5aae-a007-11ec-b909-0242ac120002"
+        "uuid": "10ab5aae-a007-11ec-b909-0242ac120002",
+        "aliases": [
+            "lattice:user-otto-jolanki"
+        ]
     },
     {
         "email": "fytanaka@stanford.edu",
@@ -43,7 +49,10 @@
         "submits_for": [
             "/labs/teri-klein/"
         ],
-        "uuid": "627eedbc-7cb3-4de3-9743-a86266e435a6"
+        "uuid": "627eedbc-7cb3-4de3-9743-a86266e435a6",
+        "aliases": [
+            "lattice:user-forrest-tanaka"
+        ]
     },
     {
         "email": "gabdank@stanford.edu",
@@ -59,7 +68,10 @@
         "submits_for": [
             "/labs/teri-klein/"
         ],
-        "uuid": "98fb23d3-0d79-4c3d-981d-01539e6589f1"
+        "uuid": "98fb23d3-0d79-4c3d-981d-01539e6589f1",
+        "aliases": [
+            "lattice:user-idan-gabdank"
+        ]
     },
     {
         "email": "jahilton@stanford.edu",
@@ -75,7 +87,10 @@
         "submits_for": [
             "/labs/teri-klein/"
         ],
-        "uuid": "a2b75182-21bc-4f2b-a090-3394feeca1be"
+        "uuid": "a2b75182-21bc-4f2b-a090-3394feeca1be",
+        "aliases": [
+            "lattice:user-jason-hilton"
+        ]
     },
     {
         "email": "tklein@stanford.edu",
@@ -90,7 +105,10 @@
             "/labs/teri-klein/"
         ],
         "status": "current",
-        "uuid": "860c4750-8d3c-40f5-8f2c-90c5e5d19e89"
+        "uuid": "860c4750-8d3c-40f5-8f2c-90c5e5d19e89",
+        "aliases": [
+            "lattice:user-teri-klein"
+        ]
     },
     {
         "email": "jychien@stanford.edu",
@@ -106,7 +124,10 @@
         "submits_for": [
             "/labs/teri-klein/"
         ],
-        "uuid": "71c7b6d6-f6dd-4ed4-826c-6b3003a8ad9b"
+        "uuid": "71c7b6d6-f6dd-4ed4-826c-6b3003a8ad9b",
+        "aliases": [
+            "lattice:user-jennifer-chien"
+        ]
     },
     {
         "email": "jlz@stanford.edu",
@@ -122,6 +143,9 @@
         "submits_for": [
             "/labs/teri-klein/"
         ],
-        "uuid": "454435fe-702d-4657-a955-641e5631982c"
+        "uuid": "454435fe-702d-4657-a955-641e5631982c",
+        "aliases": [
+            "lattice:user-jennifer-zamanian"
+        ]
     }
 ]

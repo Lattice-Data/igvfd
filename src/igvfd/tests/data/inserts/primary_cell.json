@@ -10,7 +10,9 @@
         "uuid": "8a1b2c3d-4e5f-6789-a0b1-c2d3e4f56789",
         "schema_version": "1",
         "status": "current",
-        "aliases": [],
+        "aliases": [
+            "lattice:primary-cell-basic"
+        ],
         "description": "Test primary cell sample 1"
     },
     {
@@ -25,8 +27,7 @@
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:test-primary-cell-1",
-            "lattice:test-primary-cell-alias"
+            "lattice:primary-cell-passage-3"
         ],
         "passage_number": 3,
         "date_obtained": "2024-02-20"
