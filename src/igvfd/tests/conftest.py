@@ -27,6 +27,8 @@ pytest_plugins = [
     'igvfd.tests.fixtures.schemas.tissue',
     'igvfd.tests.fixtures.schemas.in_vivo_system',
     'igvfd.tests.fixtures.schemas.in_vitro_system',
+    'igvfd.tests.fixtures.schemas.plate_based_library',
+    'igvfd.tests.fixtures.schemas.droplet_based_library',
 ]
 
 

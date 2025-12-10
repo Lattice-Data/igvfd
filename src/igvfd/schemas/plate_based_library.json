@@ -1,0 +1,59 @@
+{
+    "title": "Plate Based Library",
+    "$id": "/profiles/plate_based_library.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Plate-based single cell library using 96/384-well workflow.",
+    "type": "object",
+    "required": [
+        "lab",
+        "samples"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "library.json#/properties"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "kit_version": {
+            "title": "Kit Version",
+            "description": "Version of the plate-based library preparation kit.",
+            "type": "string",
+            "enum": [
+                "QuantumScale Single Cell RNA",
+                "sci-RNA-seq3"
+            ]
+        },
+        "indexing_rounds": {
+            "title": "Indexing Rounds",
+            "description": "Number of combinatorial indexing rounds performed.",
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 4
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/plate_based_library.md"
+}

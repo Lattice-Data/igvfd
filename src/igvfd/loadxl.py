@@ -26,6 +26,8 @@ ORDER = [
     'primary_cell',
     'in_vivo_system',
     'in_vitro_system',
+    'plate_based_library',
+    'droplet_based_library',
 ]
 
 IS_ATTACHMENT = [
@@ -501,6 +503,12 @@ PHASE1_PIPELINES = {
     'in_vitro_system': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
+    'plate_based_library': [
+        skip_rows_missing_all_keys('lab', 'samples'),
+    ],
+    'droplet_based_library': [
+        skip_rows_missing_all_keys('lab', 'samples'),
+    ],
 }
 
 
@@ -526,6 +534,12 @@ PHASE2_PIPELINES = {
     ],
     'in_vitro_system': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+    ],
+    'plate_based_library': [
+        skip_rows_missing_all_keys('lab', 'samples'),
+    ],
+    'droplet_based_library': [
+        skip_rows_missing_all_keys('lab', 'samples'),
     ],
 }
 

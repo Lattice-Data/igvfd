@@ -1,0 +1,72 @@
+[
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
+        ],
+        "uuid": "d1e2f3a4-b5c6-7890-def1-234567890abc",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-basic"
+        ],
+        "description": "Test droplet-based library 1"
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "2cc69a5c-eb1f-4e32-b62d-bb53eb396726"
+        ],
+        "uuid": "d2e3f4a5-b6c7-8901-ef12-34567890abcd",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-3prime-v3",
+            "lattice:droplet-lib-002"
+        ],
+        "chemistry_version": "3' v3",
+        "cell_barcode_length": 16,
+        "umi_length": 12,
+        "feature_types": [
+            "Gene Expression"
+        ]
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
+        ],
+        "uuid": "d3e4f5a6-b7c8-9012-f123-4567890abcde",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-multiome"
+        ],
+        "chemistry_version": "Multiome v1",
+        "cell_barcode_length": 16,
+        "umi_length": 10,
+        "feature_types": [
+            "Gene Expression",
+            "ATAC"
+        ]
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "2cc69a5c-eb1f-4e32-b62d-bb53eb396726"
+        ],
+        "uuid": "d4e5f6a7-b8c9-0123-a234-567890abcdef",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-5prime-v2"
+        ],
+        "chemistry_version": "5' v2",
+        "cell_barcode_length": 28,
+        "umi_length": 10,
+        "feature_types": [
+            "Gene Expression",
+            "TCR"
+        ]
+    }
+]
