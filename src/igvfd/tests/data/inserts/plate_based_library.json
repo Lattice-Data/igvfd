@@ -1,0 +1,44 @@
+[
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
+        ],
+        "uuid": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:plate-library-basic"
+        ],
+        "description": "Test plate-based library 1"
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "2cc69a5c-eb1f-4e32-b62d-bb53eb396726"
+        ],
+        "uuid": "f2b3c4d5-e6f7-8901-bcde-f23456789012",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:plate-library-quantumscale",
+            "lattice:plate-lib-002"
+        ],
+        "kit_version": "QuantumScale Single Cell RNA",
+        "indexing_rounds": 3
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
+        ],
+        "uuid": "f3c4d5e6-f7a8-9012-cdef-345678901234",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:plate-library-scirna-seq3"
+        ],
+        "kit_version": "sci-RNA-seq3",
+        "indexing_rounds": 4
+    }
+]

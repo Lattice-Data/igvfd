@@ -150,6 +150,11 @@ This document outlines all the files that need to be created or updated when add
 - **Purpose**: Sample data loaded when spinning up a local instance
 - **Notes**: Should include at least one valid example
 - **Note**: Abstract schemas do NOT need test insert data (concrete subclasses handle this)
+- **UUID Requirements**:
+  - Generate **new valid UUIDs** for each new object being created
+  - When linking to other objects (via `linkTo` fields), use the **existing UUIDs** from those objects' insert files
+  - Example: If creating a library that references a tissue sample, use the UUID from `tissue.json` insert file
+  - Check existing insert files in `src/igvfd/tests/data/inserts/` to find UUIDs for linked objects
 
 ### 8. **Type Tests** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/tests/test_types_{schema_name}.py`
@@ -165,9 +170,34 @@ This document outlines all the files that need to be created or updated when add
 
 ### 9. **Update loadxl.py** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/loadxl.py`
-- **Purpose**: Add schema to the loading order
-- **What to Do**: Add the schema name to the `ORDER` list in the appropriate position (considering dependencies)
-- **Note**: Abstract schemas should NOT be added to the `ORDER` list, as they are not directly instantiated
+- **Purpose**: Add schema to the loading order and pipeline phases
+- **What to Do**:
+  1. Add the schema name to the `ORDER` list in the appropriate position (considering dependencies)
+  2. Add the schema to `PHASE1_PIPELINES` dictionary with appropriate `skip_rows_missing_all_keys` for required fields
+  3. Add the schema to `PHASE2_PIPELINES` dictionary with the same `skip_rows_missing_all_keys` configuration
+  4. Phase 1 uses POST method (initial creation), Phase 2 uses PUT method (updates for reference cycles)
+- **Note**: Abstract schemas should NOT be added to the `ORDER` list or pipeline phases, as they are not directly instantiated
+- **Example**:
+  ```python
+  ORDER = [
+      # ... existing items ...
+      'plate_based_library',
+  ]
+
+  PHASE1_PIPELINES = {
+      # ... existing items ...
+      'plate_based_library': [
+          skip_rows_missing_all_keys('lab', 'samples'),
+      ],
+  }
+
+  PHASE2_PIPELINES = {
+      # ... existing items ...
+      'plate_based_library': [
+          skip_rows_missing_all_keys('lab', 'samples'),
+      ],
+  }
+  ```
 
 ### 10. **Update conftest.py** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/tests/conftest.py`
