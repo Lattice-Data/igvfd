@@ -4,7 +4,7 @@ Install Node.js 20 using `nvm` (Node Version Manager):
 
 ```
 # Install nvm.
-$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 ```
 
 Then in new terminal:
@@ -39,60 +39,62 @@ Demo applications are not deployed directly. Instead you deploy an `AWS CodePipe
 
 ### Configure
 
-#### Traditional IAM user setup
+#### SSO setup (recommended)
 
-Configure your AWS credentials for the `igvf-dev` account (e.g. in `igvf-dev` profile). This is the account where your demo will be deployed.
-
-```
-# In ~/.aws/credentials
-[igvf-dev]
-aws_secret_access_key = XYZ123
-aws_access_key_id = ABC321
-```
-
-```
-# In ~/.aws/config
-[profile igvf-dev]
-region = us-west-2
-```
-
-This sets the access key and region used when you specify `--profile igvf-dev` on the command line.
-
-Ask to be invited to the `aws-igvf-dev` Slack channel, where you can monitor the status transitions of your deployment pipeline.
-
-#### SSO setup
-
-Configure your AWS credentials for the `igvf-dev` account. This is the account where your demo will be deployed.
-Log in at [SSO login portal](https://igvf-dacc.awsapps.com/start/#), choose `Access Keys` under `igvf-dev` account. This will open a pop-up that shows you `SSO start URL` and `SSO Region` that you will need in the next step.
+Configure your AWS credentials for the `lattice2-dev` account. This is the account where your demo will be deployed.
+Log in at [SSO login portal](https://cardinalcloud.awsapps.com/start/#), choose `Access Keys` under `lattice2-dev` account. This will open a pop-up that shows you `SSO start URL` and `SSO Region` that you will need in the next step.
 Open a terminal window and run aws sso configuration command:
 
 ```bash
 $ aws configure sso
 ```
 
-Choose `igvf-dev` account, enter the `SSO start URL` and `SSO region`, choose `PowerUserAccess` role. The `CLI Profile name` will default to `PowerUserAccess-xyz`, you might want to enter something more easy to remember, such as `igvf-dev-sso`.
+Choose `lattice2-dev` account, enter the `SSO start URL` and `SSO region`, choose `PowerUserAccess` role. The `CLI Profile name` will default to `PowerUserAccess-xyz`, you might want to enter something more easy to remember, such as `lattice2-dev-sso`.
 
-This sets the access key and region used when you specify `--profile igvf-dev-sso` on the command line. This is the profile name you should use when deploying demos, or running other AWS CLI commands. The credentials you receive this way are temporary and will expire. The credentials can be renewed by repeating the above procedure.
+This sets the access key and region used when you specify `--profile lattice2-dev-sso` on the command line. This is the profile name you should use when deploying demos, or running other AWS CLI commands. The credentials you receive this way are temporary and will expire. The credentials can be renewed by repeating the above procedure.
 
-Ask to be invited to the `aws-igvf-dev` Slack channel, where you can monitor the status transitions of your deployment pipeline.
+Ask in the team Slack channel where deployment notifications are posted, so you can monitor the status transitions of your deployment pipeline.
+
+#### Traditional IAM user setup (discouraged)
+
+Use IAM access keys only when you have an explicit exception; long-lived keys are discouraged in favor of SSO.
+
+Configure your AWS credentials for the `lattice2-dev` account (e.g. in `lattice2-dev-iam` profile). This is the account where your demo will be deployed.
+
+```
+# In ~/.aws/credentials
+[lattice2-dev-iam]
+aws_secret_access_key = XYZ123
+aws_access_key_id = ABC321
+```
+
+```
+# In ~/.aws/config
+[profile lattice2-dev-iam]
+region = us-west-2
+```
+
+This sets the access key and region used when you specify `--profile lattice2-dev-iam` on the command line.
+
+Ask in the team Slack channel where deployment notifications are posted, so you can monitor the status transitions of your deployment pipeline.
 
 ### Command
 
 Make sure your Python virtual environment is activated, the Node and Python requirements above are installed, and Docker is running.
 
-Push all of your changes to your Github branch (e.g. `IGVF-1234-my-feature-branch`) before deploying. Pick a branch name that doesn't conflict with anyone else's pipeline.
+Push all of your changes to your Github branch (e.g. `LAT-1234-my-feature-branch`) before deploying. Pick a branch name that doesn't conflict with anyone else's pipeline.
 
 ```bash
-$ git push origin IGVF-1234-my-feature-branch
+$ git push origin LAT-1234-my-feature-branch
 ```
 
 Make sure you are in the `cdk` folder of the repo and deploy the pipeline.
 
 ```bash
-$ cdk deploy -c branch=IGVF-1234-my-feature-branch --profile igvf-dev
+$ cdk deploy -c branch=LAT-1234-my-feature-branch --profile lattice2-dev-sso
 ```
 
-This passes the branch name as a context variable, and tells the CDK to use your credentials for the `igvf-dev` account. It's important to match the branch name that you've pushed to Github exactly, as this is where the pipeline listens for code changes. The branch name is also used for generating a URL for the demo.
+This passes the branch name as a context variable, and tells the CDK to use your credentials for the `lattice2-dev` account. It's important to match the branch name that you've pushed to Github exactly, as this is where the pipeline listens for code changes. The branch name is also used for generating a URL for the demo.
 
 If this is the first time you've run the command the underlying Docker image used for bundling could take some time to download. You can monitor what's happening by passing the `-v` verbose flag.
 
@@ -140,7 +142,7 @@ The deployed resources should have metadata tags. For example the RDS instance s
 
 ![rds tags](images/rds_tags.png)
 
-Browse using the demo URL (e.g. `https://igvfd-igvf-1234-my-feature-branch.demo.igvf.org`):
+Browse using the demo URL (e.g. `https://lattice-api-LAT-1234-my-feature-branch.demo.lattice-data.org`):
 
 ![home](images/home.png)
 
@@ -157,7 +159,7 @@ Note there is a lag between when a branch is deleted and when the cleaner runs a
 To manually clean up demo stacks and the associated CodePipeline:
 
 ```bash
-$ python commands/cdk_destroy_all_stacks.py -c branch=IGVF-1234-my-feature-branch --profile igvf-dev
+$ python commands/cdk_destroy_all_stacks.py -c branch=LAT-1234-my-feature-branch --profile lattice2-dev-sso
 # Follow (y/n) prompts...
 ```
 
