@@ -79,3 +79,14 @@ def controlled_term_brain(testapp):
         'status': 'current',
     }
     return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def controlled_term_hancestro(testapp):
+    item = {
+        'term_id': 'HANCESTRO:0000001',
+        'term_name': 'Han Chinese',
+        'ontology_source': 'HANCESTRO',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]

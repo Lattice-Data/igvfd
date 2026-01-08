@@ -39,6 +39,18 @@
                 "Homo sapiens"
             ]
         },
+        "sex": {
+            "title": "Sex",
+            "description": "Biological sex of the donor.",
+            "type": "string",
+            "default": "unspecified",
+            "enum": [
+                "male",
+                "female",
+                "unspecified",
+                "mixed"
+            ]
+        },
         "ethnicity": {
             "title": "Ethnicity",
             "type": "string",

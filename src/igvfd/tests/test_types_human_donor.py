@@ -57,3 +57,28 @@ def test_human_donor_create(testapp, other_lab):
     res = testapp.post_json('/human_donor', item, status=201)
     assert res.json['@graph'][0]['taxa'] == 'Homo sapiens'
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
+
+
+@pytest.mark.parametrize('sex', ['male', 'female', 'unspecified', 'mixed'])
+def test_human_donor_sex_enum_valid(testapp, other_lab, sex):
+    item = {
+        'lab': other_lab['@id'],
+        'taxa': 'Homo sapiens',
+        'sex': sex,
+        'status': 'current',
+    }
+    res = testapp.post_json('/human_donor', item, status=201)
+    assert res.json['@graph'][0]['sex'] == sex
+
+
+def test_human_donor_sex_enum_invalid(testapp, other_lab):
+    testapp.post_json(
+        '/human_donor',
+        {
+            'lab': other_lab['@id'],
+            'taxa': 'Homo sapiens',
+            'sex': 'not-a-real-sex',
+            'status': 'current',
+        },
+        status=422,
+    )
