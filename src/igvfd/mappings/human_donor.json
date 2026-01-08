@@ -1,6 +1,6 @@
 {
-    "hash": "4169f7aa1197701285979c085e8afe9d",
-    "index_name": "human_donor_4169f7aa",
+    "hash": "cf220bae0be35a4d6447a840972d4e14",
+    "index_name": "human_donor_cf220bae",
     "item_type": "human_donor",
     "mapping": {
         "dynamic_templates": [
@@ -223,6 +223,9 @@
                         "type": "text"
                     },
                     "schema_version": {
+                        "type": "keyword"
+                    },
+                    "sex": {
                         "type": "keyword"
                     },
                     "status": {

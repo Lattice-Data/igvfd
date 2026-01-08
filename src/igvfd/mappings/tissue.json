@@ -1,6 +1,6 @@
 {
-    "hash": "c9afce630afdbd12dbb25fcfd9ae6125",
-    "index_name": "tissue_c9afce63",
+    "hash": "00bcc24feebddce9855083209cf873a7",
+    "index_name": "tissue_00bcc24f",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -192,6 +192,9 @@
                                 "type": "text"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sex": {
                                 "type": "keyword"
                             },
                             "status": {

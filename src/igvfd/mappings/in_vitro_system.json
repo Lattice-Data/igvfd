@@ -1,6 +1,6 @@
 {
-    "hash": "6206c095267f05778aa91f4020413bee",
-    "index_name": "in_vitro_system_6206c095",
+    "hash": "f54986ddf728f555c3da659b3c04637c",
+    "index_name": "in_vitro_system_f54986dd",
     "item_type": "in_vitro_system",
     "mapping": {
         "dynamic_templates": [
@@ -192,6 +192,9 @@
                                 "type": "text"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sex": {
                                 "type": "keyword"
                             },
                             "status": {

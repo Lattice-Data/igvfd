@@ -1,6 +1,6 @@
 {
-    "hash": "e986c9ed1d2a8011e7f5c091d96b2eb1",
-    "index_name": "in_vivo_system_e986c9ed",
+    "hash": "d80133a68885301343cc7e78657cdce7",
+    "index_name": "in_vivo_system_d80133a6",
     "item_type": "in_vivo_system",
     "mapping": {
         "dynamic_templates": [
@@ -194,6 +194,9 @@
                             "schema_version": {
                                 "type": "keyword"
                             },
+                            "sex": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -265,6 +268,9 @@
                                 "type": "text"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sex": {
                                 "type": "keyword"
                             },
                             "status": {
