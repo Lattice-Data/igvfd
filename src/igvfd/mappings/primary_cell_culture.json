@@ -1,7 +1,7 @@
 {
     "hash": "8d3d5260efa011617262d3de162dd5a4",
-    "index_name": "primary_cell_8d3d5260",
-    "item_type": "primary_cell",
+    "index_name": "primary_cell_culture_8d3d5260",
+    "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
             {

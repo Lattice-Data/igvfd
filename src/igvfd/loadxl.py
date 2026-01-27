@@ -24,7 +24,7 @@ ORDER = [
     'human_donor',
     'non_human_donor',
     'tissue',
-    'primary_cell',
+    'primary_cell_culture',
     'in_vivo_system',
     'in_vitro_system',
     'plate_based_library',
@@ -498,7 +498,7 @@ PHASE1_PIPELINES = {
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
-    'primary_cell': [
+    'primary_cell_culture': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'in_vivo_system': [
@@ -533,7 +533,7 @@ PHASE2_PIPELINES = {
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
-    'primary_cell': [
+    'primary_cell_culture': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'in_vivo_system': [
