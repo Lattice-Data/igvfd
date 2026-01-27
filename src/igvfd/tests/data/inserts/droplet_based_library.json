@@ -10,7 +10,8 @@
         "aliases": [
             "lattice:droplet-library-basic"
         ],
-        "description": "Test droplet-based library 1"
+        "description": "Test droplet-based library 1",
+        "library_cardinality": "single"
     },
     {
         "lab": "teri-klein",
@@ -29,7 +30,8 @@
         "umi_length": 12,
         "feature_types": [
             "Gene Expression"
-        ]
+        ],
+        "library_cardinality": "single"
     },
     {
         "lab": "teri-klein",
@@ -48,7 +50,8 @@
         "feature_types": [
             "Gene Expression",
             "ATAC"
-        ]
+        ],
+        "library_cardinality": "dual"
     },
     {
         "lab": "teri-klein",
@@ -67,6 +70,7 @@
         "feature_types": [
             "Gene Expression",
             "TCR"
-        ]
+        ],
+        "library_cardinality": "dual"
     }
 ]

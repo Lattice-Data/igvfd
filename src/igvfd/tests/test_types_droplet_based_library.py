@@ -23,6 +23,7 @@ def test_droplet_based_library_required_fields(testapp, other_lab, tissue):
         '/droplet_based_library',
         {
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
         },
         status=422
     )
@@ -31,6 +32,16 @@ def test_droplet_based_library_required_fields(testapp, other_lab, tissue):
         '/droplet_based_library',
         {
             'lab': other_lab['@id'],
+            'library_cardinality': 'single',
+        },
+        status=422
+    )
+    # Missing library_cardinality
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
         },
         status=422
     )
@@ -42,6 +53,7 @@ def test_droplet_based_library_chemistry_version_enum(testapp, other_lab, tissue
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'chemistry_version': 'invalid_chemistry',
             'status': 'current',
         },
@@ -55,6 +67,7 @@ def test_droplet_based_library_cell_barcode_length_enum(testapp, other_lab, tiss
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'cell_barcode_length': 20,
             'status': 'current',
         },
@@ -68,6 +81,7 @@ def test_droplet_based_library_umi_length_enum(testapp, other_lab, tissue):
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'umi_length': 15,
             'status': 'current',
         },
@@ -81,6 +95,7 @@ def test_droplet_based_library_feature_types_min_items(testapp, other_lab, tissu
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'feature_types': [],
             'status': 'current',
         },
@@ -94,6 +109,7 @@ def test_droplet_based_library_feature_types_unique_items(testapp, other_lab, ti
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'feature_types': ['Gene Expression', 'Gene Expression'],
             'status': 'current',
         },
@@ -107,7 +123,21 @@ def test_droplet_based_library_feature_types_enum(testapp, other_lab, tissue):
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'feature_types': ['Invalid Feature Type'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_droplet_based_library_library_cardinality_enum(testapp, other_lab, tissue):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'invalid_cardinality',
             'status': 'current',
         },
         status=422
@@ -138,6 +168,7 @@ def test_droplet_based_library_create_with_chemistry_version_enum_values(testapp
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'chemistry_version': chemistry_version,
         'status': 'current',
     }
@@ -153,6 +184,7 @@ def test_droplet_based_library_create_with_cell_barcode_length_values(testapp, o
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'cell_barcode_length': cell_barcode_length,
         'status': 'current',
     }
@@ -168,6 +200,7 @@ def test_droplet_based_library_create_with_umi_length_values(testapp, other_lab,
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'umi_length': umi_length,
         'status': 'current',
     }
@@ -191,6 +224,7 @@ def test_droplet_based_library_create_with_feature_type_enum_values(testapp, oth
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'feature_types': [feature_type],
         'status': 'current',
     }
@@ -198,21 +232,39 @@ def test_droplet_based_library_create_with_feature_type_enum_values(testapp, oth
     assert res.json['@graph'][0]['feature_types'] == [feature_type]
 
 
+@pytest.mark.parametrize(
+    'library_cardinality',
+    ['single', 'dual']
+)
+def test_droplet_based_library_create_with_library_cardinality_enum_values(testapp, other_lab, tissue, library_cardinality):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': library_cardinality,
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['library_cardinality'] == library_cardinality
+
+
 def test_droplet_based_library_create_success(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
     assert res.json['@graph'][0]['samples'] == [tissue['@id']]
+    assert res.json['@graph'][0]['library_cardinality'] == 'single'
 
 
 def test_droplet_based_library_create_with_all_optional_fields(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
         'chemistry_version': "3' v3",
         'cell_barcode_length': 16,
         'umi_length': 12,
@@ -222,6 +274,7 @@ def test_droplet_based_library_create_with_all_optional_fields(testapp, other_la
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['library_cardinality'] == 'dual'
     assert res.json['@graph'][0]['chemistry_version'] == "3' v3"
     assert res.json['@graph'][0]['cell_barcode_length'] == 16
     assert res.json['@graph'][0]['umi_length'] == 12

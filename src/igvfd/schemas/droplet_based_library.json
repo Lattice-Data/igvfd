@@ -6,7 +6,8 @@
     "type": "object",
     "required": [
         "lab",
-        "samples"
+        "samples",
+        "library_cardinality"
     ],
     "identifyingProperties": [
         "uuid",
@@ -89,6 +90,15 @@
                     "TCR"
                 ]
             }
+        },
+        "library_cardinality": {
+            "title": "Library Cardinality",
+            "description": "Cardinality of the library (single or dual).",
+            "type": "string",
+            "enum": [
+                "single",
+                "dual"
+            ]
         }
     },
     "fuzzy_searchable_fields": [
