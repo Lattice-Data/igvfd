@@ -66,6 +66,9 @@ def droplet_based_library():
             'library_cardinality': {
                 'title': 'Library Cardinality'
             },
+            'linked_libraries': {
+                'title': 'Linked Libraries'
+            },
             'multiplexing_method': {
                 'title': 'Multiplexing Method'
             },

@@ -28,6 +28,15 @@
             "$ref": "library.json#/properties"
         }
     ],
+    "dependentSchemas": {
+        "linked_libraries": {
+            "properties": {
+                "library_cardinality": {
+                    "const": "dual"
+                }
+            }
+        }
+    },
     "properties": {
         "schema_version": {
             "default": "1"
@@ -99,6 +108,20 @@
                 "single",
                 "dual"
             ]
+        },
+        "linked_libraries": {
+            "title": "Linked Libraries",
+            "description": "Droplet-based libraries that are grouped with this library.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Linked Library",
+                "description": "A droplet-based library grouped with this library.",
+                "comment": "See droplet_based_library.json for available identifiers. This property is affected by dependencies. Requires library_cardinality to be 'dual'.",
+                "type": "string",
+                "linkTo": "DropletBasedLibrary"
+            }
         }
     },
     "fuzzy_searchable_fields": [

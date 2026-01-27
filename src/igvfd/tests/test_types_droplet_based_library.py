@@ -281,3 +281,116 @@ def test_droplet_based_library_create_with_all_optional_fields(testapp, other_la
     assert res.json['@graph'][0]['feature_types'] == ['Gene Expression', 'ATAC']
     assert res.json['@graph'][0]['multiplexing_method'] == 'cell hashing'
     assert res.json['@graph'][0]['description'] == 'Complete droplet-based library'
+
+
+def test_droplet_based_library_linked_libraries_min_items(testapp, other_lab, tissue):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
+            'linked_libraries': [],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_droplet_based_library_linked_libraries_unique_items(testapp, other_lab, tissue, droplet_based_library):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
+            'linked_libraries': [droplet_based_library['@id'], droplet_based_library['@id']],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_droplet_based_library_linked_libraries_linkto_validation(testapp, other_lab, tissue):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'dual',
+            'linked_libraries': ['/invalid/library/path/'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_droplet_based_library_create_with_linked_libraries(testapp, other_lab, tissue, droplet_based_library):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'linked_libraries': [droplet_based_library['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['linked_libraries'] == [droplet_based_library['@id']]
+
+
+def test_droplet_based_library_create_with_multiple_linked_libraries(testapp, other_lab, tissue, droplet_based_library, droplet_based_library_with_chemistry_version):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'linked_libraries': [
+            droplet_based_library['@id'],
+            droplet_based_library_with_chemistry_version['@id']
+        ],
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert len(res.json['@graph'][0]['linked_libraries']) == 2
+    assert droplet_based_library['@id'] in res.json['@graph'][0]['linked_libraries']
+    assert droplet_based_library_with_chemistry_version['@id'] in res.json['@graph'][0]['linked_libraries']
+
+
+def test_droplet_based_library_linked_libraries_requires_dual_cardinality(testapp, other_lab, tissue, droplet_based_library):
+    """Test that linked_libraries requires library_cardinality to be 'dual'."""
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
+            'linked_libraries': [droplet_based_library['@id']],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_droplet_based_library_linked_libraries_with_dual_cardinality_succeeds(testapp, other_lab, tissue, droplet_based_library):
+    """Test that linked_libraries works when library_cardinality is 'dual'."""
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'linked_libraries': [droplet_based_library['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['library_cardinality'] == 'dual'
+    assert res.json['@graph'][0]['linked_libraries'] == [droplet_based_library['@id']]
+
+
+def test_droplet_based_library_single_cardinality_without_linked_libraries_succeeds(testapp, other_lab, tissue):
+    """Test that library_cardinality 'single' works when linked_libraries is not specified."""
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['library_cardinality'] == 'single'
+    assert 'linked_libraries' not in res.json['@graph'][0] or res.json['@graph'][0].get('linked_libraries') is None
