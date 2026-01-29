@@ -209,7 +209,7 @@ This document outlines all the files that need to be created or updated when add
   pytest_plugins = [
       # ... existing plugins ...
       'igvfd.tests.fixtures.schemas.tissue',
-      'igvfd.tests.fixtures.schemas.primary_cell',  # Add new schema here
+      'igvfd.tests.fixtures.schemas.primary_cell_culture',  # Add new schema here
   ]
   ```
 

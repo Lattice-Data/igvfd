@@ -1,0 +1,45 @@
+[
+    {
+        "modality": "knockout",
+        "description": "CRISPR-Cas9 knockout of target gene.",
+        "uuid": "d1e2f3a4-b5c6-7890-abcd-123456789001",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:gm-knockout-01",
+            "lattice:gm-cas9-ko"
+        ]
+    },
+    {
+        "modality": "activation",
+        "description": "CRISPRa-based gene activation.",
+        "uuid": "d2e3f4a5-b6c7-8901-bcde-234567890012",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:gm-activation-01",
+            "lattice:gm-crispra"
+        ]
+    },
+    {
+        "modality": "interference",
+        "description": "CRISPRi-based gene interference.",
+        "uuid": "d3e4f5a6-b7c8-9012-cdef-345678901023",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:gm-interference-01",
+            "lattice:gm-crispri"
+        ]
+    },
+    {
+        "modality": "base editing",
+        "description": "Base editing for C-to-T conversion.",
+        "uuid": "d4e5f6a7-b8c9-0123-defa-456789012034",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:gm-base-editing-01"
+        ]
+    }
+]

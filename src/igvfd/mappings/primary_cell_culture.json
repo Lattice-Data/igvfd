@@ -1,7 +1,7 @@
 {
-    "hash": "41edd9c47a98f666b2bf177c7aa811d7",
-    "index_name": "primary_cell_41edd9c4",
-    "item_type": "primary_cell",
+    "hash": "8d3d5260efa011617262d3de162dd5a4",
+    "index_name": "primary_cell_culture_8d3d5260",
+    "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
             {
@@ -192,6 +192,9 @@
                                 "type": "text"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sex": {
                                 "type": "keyword"
                             },
                             "status": {

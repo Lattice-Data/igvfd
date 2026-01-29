@@ -1,8 +1,8 @@
 {
-    "title": "Primary Cell",
-    "$id": "/profiles/primary_cell.json",
+    "title": "Primary Cell Culture",
+    "$id": "/profiles/primary_cell_culture.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "A concrete primary cell sample schema inheriting from abstract Biosample class.",
+    "description": "A concrete primary cell culture sample schema inheriting from abstract Biosample class.",
     "type": "object",
     "required": [
         "lab",
@@ -40,7 +40,7 @@
         },
         "date_obtained": {
             "title": "Date Obtained",
-            "description": "The date the primary cell sample was collected.",
+            "description": "The date the primary cell culture sample was collected.",
             "type": "string",
             "format": "date"
         }
@@ -53,5 +53,5 @@
     "exact_searchable_fields": [
         "@type"
     ],
-    "changelog": "/profiles/changelogs/primary_cell.md"
+    "changelog": "/profiles/changelogs/primary_cell_culture.md"
 }

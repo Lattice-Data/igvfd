@@ -104,3 +104,15 @@ def test_controlled_term_with_all_fields(testapp):
     assert res.json['@graph'][0]['definition'] == 'A complete definition.'
     assert res.json['@graph'][0]['synonyms'] == ['syn1', 'syn2']
     assert res.json['@graph'][0]['dbxrefs'] == ['PMID:12345678', 'DOI:10.1234/test']
+
+
+def test_controlled_term_hancestro_create(testapp):
+    item = {
+        'term_id': 'HANCESTRO:0000001',
+        'term_name': 'Han Chinese',
+        'ontology_source': 'HANCESTRO',
+        'status': 'current',
+    }
+    res = testapp.post_json('/controlled_term', item, status=201)
+    assert res.json['@graph'][0]['term_id'] == 'HANCESTRO:0000001'
+    assert res.json['@graph'][0]['ontology_source'] == 'HANCESTRO'

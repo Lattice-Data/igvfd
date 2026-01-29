@@ -6,7 +6,7 @@ This document describes how to make changes to the JSON schemas ([JSONSchema], [
 Guide to where to edit Source Code
 ----------------
 
-* **src/igvfd** Directory - contains all the Python and Javascript code for front and backends
+* **src/igvfd** Directory - contains all the Python code for backends needs
     * **/audits** - Contains Python scripts that are run post-submission to check JSON objects' metadata stored in the schema
     * **/schemas** - JSON schemas ([JSONSchema], [JSON-LD]) describing allowed types and values for all metadata objects
       * **/schemas/changelogs** - Schema change logs for documenting the changes made in each version of a schema
@@ -24,304 +24,7 @@ Guide to where to edit Source Code
 
 Adding a new schema
 ----------------
-
-1. Add a new JSON file to the **schemas** directory named after the object (i.e. antibody.json). Populate the file with basic schema definition:
-
-
-            {
-                "title": {Metadata Object},
-                "description": "Description of the metadata that this object aims to capture.",
-                "id": "/profiles/{metadata object}.json",
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "identifyingProperties": ["uuid"],
-                "required": [],
-                "additionalProperties": false,
-                "mixinProperties": [
-                    { "$ref": "mixins.json#/schema_version" },
-                    { "$ref": "mixins.json#/uuid" }
-                ],
-                "type": "object",
-                "properties": {
-                    "schema_version": {
-                        "default": "1"
-                    }
-                }
-            }
-
-
-2. Add appropriate properties in the "properties" block. Further guidelines for writing properties is explained in the "Schema property guidelines" section. Examples of different property types:
-
-            {
-                "example_string": {
-                    "title": "Example String",
-                    "description": "An example of a free text property.",
-                    "type": "string"
-                    "submissionExample": {
-                        "appscript": "text",
-                        "igvf_utils": "text"
-                    }
-                },
-                "example_number": {
-                    "title": "Example Number",
-                    "description": "An example of an integer property.",
-                    "type": "integer"
-                    "submissionExample": {
-                        "appscript": "100",
-                        "igvf_utils": "100"
-                    }
-                },
-                "example_enum": {
-                    "title": "Example Enum",
-                    "description": "An example of a property with enumerated values.",
-                    "type": "string",
-                    "enum": [
-                        "option 1",
-                        "option 2",
-                        "option 3"
-                    ]
-                    "submissionExample": {
-                        "appscript": "option 1",
-                        "igvf_utils": "option 1"
-                    }
-                },
-                "example_pattern": {
-                    "title": "Example String With Pattern",
-                    "description": "An example of a property that must match a pattern",
-                    "type": "string",
-                    "pattern": "^[\\S\\s\\d\\-\\(\\)\\+]+$"
-                    "submissionExample": {
-                        "appscript": "regexstring",
-                        "igvf_utils": "regexstring"
-                    }
-                },
-                "example_array_of_items": {
-                    "title": "Example Array of Items",
-                    "description": "An example of a property that is an array.",
-                    "type": "array",
-                    "uniqueItems": true,
-                    "minItems": 1,
-                    "items": {
-                        "title": "Item",
-                        "description": "An example of a value in an array."
-                        "type": "string",
-                        "linkTo": Sample
-                    }
-                    "submissionExample": {
-                        "appscript": "[\"TSTSM01234567\"]",
-                        "igvf_utils": "TSTSM01234567"
-                    }
-                },
-                "example_object": {
-                    "title": "Example Object",
-                    "description": "An example of a property that must match a pattern",
-                    "type": "object",
-                    "properties": {
-                        "object_property_one": {
-                            "title": "Object Property One",
-                            "description": "The first property in the object.",
-                            "type": "string"
-                        },
-                        "object_property_two": {
-                            "title": "Object Property 2",
-                            "description": "The second property in the object.",
-                            "type": "integer",
-                            "minimum": 1
-                        }
-                    }
-                    "submissionExample": {
-                        "appscript": "{\"object_property_one\": \"example\", \"object_property_two\": 1}",
-                        "igvf_utils": "{\"object_property_one\": \"example\", \"object_property_two\": 1}"
-                    }
-                }
-            }
-
-
-3. Identify all required properties for an object type and add them to the "required" array. Identify all of the identifying properties and add them to the "identifyingProperties" array.  For example for treatment object type we might have the following properties:
-
-            "required": ["treatment_term_name", "treatment_type"],
-            "identifyingProperties": ["uuid","aliases"],
-
-
-4. Identify dependent properties and add them to the "dependentSchemas" array. Each dependency must have a comment, explaining hte logic of the dependency. Some properties may not have any dependencies, or may only inherit dependencies from a parent class.
-
-            "dependentSchemas": {
-                "duration": {
-                    "comment": "Specification of duration requires duration_units.",
-                    "required": [
-                        "duration_units"
-                    ]
-                }
-            }
-
-
-5. Add the "exact_searchable_fields" and "fuzzy_searchable_fields" properties using this [guide](https://github.com/IGVF-DACC/igvfd/tree/dev/src/igvfd/searches).
-
-            "fuzzy_searchable_fields": [
-                 "name",
-                 "@type",
-                 "synonyms"
-            ],
-            "exact_searchable_fields": [
-                 "dbxrefs"
-            ],
-
-6. In the **types** directory add a file (i.e. antibody.py) with a collection class for the object to define the rendering of the object.
-Refer to [object-lifecycle.md](https://github.com/IGVF-DACC/igvfd/blob/dev/docs/object_lifecycle.md) to understand object rendering. Example of basic collection definition for treatments:
-
-
-            @collection(
-                name='treatments',
-                properties={
-                    'title': 'Treatments',
-                    'description': 'Listing Biosample Treatments',
-                }
-            )
-            class Treatment(Item):
-                item_type = 'treatment'
-                schema = load_schema('encoded:schemas/treatment.json')
-
-
-7. Within in a class add in  *embedding*, *reverse links*, and *calculated properties* as necessary.
-
-    * *Embedding* - specifying the properties embeded in the object when specifying ```frame=object```, for construct we have:
-
-                embedded = ['target']
-        Typically, embedding with frame is preferred so that we can define which specific properties should be embedded, rather than embedding the entire object:
-
-                embedded_with_frame = [
-                    Path('lab', include=['@id', 'title'])
-                ]
-
-    * *Reverse links* - specifying the links that are back calculated from an object that ```linkTo``` this object, for file we have:
-
-                rev = {
-                    'files': ('File', 'file_set')
-                }
-
-        Note that reverse links should be paired with a calculated property (see below).
-
-    * *Calculated properties* - dynamically calculated before rendering of an object, for platforms we calculate the title:
-
-                @calculated_property(schema={
-                    "title": "Title",
-                    "type": "string",
-                })
-                def title(self, term_name):
-                    return term_name
-
-                @calculated_property(schema={
-                    'title': 'Files',
-                    'type': 'array',
-                    'items': {
-                        'title': 'File',
-                        'type': 'string',
-                        'linkFrom': 'File.file_set',
-                    },
-                    'notSubmittable': True
-                })
-                def files(self, request, files):
-                    return paths_filtered_by_status(request, files)
-
-8. In ``loadxl.py`` add the new metadata object into the ```Order``` array, for example to add new object ```train.json```.
-
-            ORDER = [
-                'user',
-                'award',
-                'lab',
-                'organism',
-                'source',
-                ...
-                'train',
-            ]
-
-9. Add in fixtures to test the new schema in **tests** directory. Create a new .py file in the **fixtures/schemas** directory named after the new metadata object. Fixtures may be used to validate expected schema behavoir with tests defined in test files in **tests** directory.
-
-                @pytest.fixture
-                def wrangler(testapp):
-                    item = {
-                        'uuid': '4c23ec32-c7c8-4ac0-affb-04befcc881d4',
-                        'first_name': 'Wrangler',
-                        'last_name': 'Admin',
-                        'email': 'wrangler@example.org',
-                        'groups': ['admin'],
-                    }
-                    res = testapp.post_json('/user', item)
-                    return testapp.get(res.location).json
-
-
-10.  To load test fixtures of the new metadata object add them to ``/tests/conftest.py`` into the ```pytest_plugins``` array, for example to add new object ```train.json```.
-
-            pytest_plugins = [
-                'igvfd.tests.fixtures.database',
-                'igvfd.tests.fixtures.testapp',
-                'igvfd.tests.fixtures.alias',
-                'igvfd.tests.fixtures.pyramid',
-                'igvfd.tests.fixtures.schemas.access_key',
-                'igvfd.tests.fixtures.schemas.award',
-                'igvfd.tests.fixtures.schemas.lab',
-                'igvfd.tests.fixtures.schemas.user',
-                ...
-                'igvfd.tests.fixtures.schemas.train',
-            ]
-
-11. Add in sample data to test the new schema in **tests** directory. Create a new JSON file in the **data/inserts** directory named after the new metadata object. This new object is an array of example objects that can successfully POST against the schema defined, for example:
-
-            [
-                {
-                    "property_1": "value 1",
-                    "property_2": 10,
-                    "uuid": "1a594ade-218a-4697-9ee1-a3ab50024dfa"
-                },
-                {
-                    "property_1": "value 2",
-                    "property_2": 100,
-                    "uuid": "0137a084-57af-4f69-b756-d6a920393fde"
-                }
-
-
-
-12. If applicable you may want to add audits on the metadata. Please refer to [making_audits]
-
-13. If this object has an accession, you will need to update **schema_formats.py** to add the 2 character prefix.
-To add an object with accession prefix 'SM':
-
-            accession_re = re.compile(r'^IGVF(FI|DS|SR|AB|SM|BS|DO|GM|LB|PL|AN)[0-9][0-9][0-9][A-Z][A-Z][A-Z]$')
-            est_accession_re = re.compile(r'^TST(FI|DS|SR|AB|SM|BS|DO|GM|LB|PL|AN)[0-9][0-9][0-9]([0-9][0-9][0-9]|[A-Z][A-Z][A-Z])$')
-
-14.  Add a change log markdown file for the new schema to the **schemas/changelogs** directory.
-
-            ## Changelog for *`award.json`*
-
-15. To make sure that the objects of that type are searched in unspecified searches add the item to TOP_HITS_ITEM_TYPES in **igvfd/src/igvfd/searches/defaults.py**.  For example to add a type for train sets
-
-            TOP_HITS_ITEM_TYPES = [
-                   'Award',
-                   'Biomarker',
-                   'Document',
-                   'TrainSet'
-            ]
-
-16. In the **igvfd/src/igvfd/searches/configs** directory make a python file for the type (i.e. antibody.py) to hold the columns assignment.
-
-           from snovault.elasticsearch.searches.configs import search_config
-
-            @search_config(
-                  name='AccessKey'
-            )
-            def access_key():
-               return {
-                 'columns': {
-                     'uuid': {
-                         'title': 'UUID'
-                     },
-                     'status': {
-                         'title': 'Status'
-                     },
-                     'access_key_id': {
-                         'title': 'Access Key ID'
-                     }
-                }
-             }
+Follow the checklist in `docs/adding_schemas.md`.
 
 
 -----
@@ -353,7 +56,7 @@ Below are the required and optional components divided according the property's 
     * Objects:
         * `properties`: A nested schema. Must obey above requirements for each property: `title`, `type`, and `description`.
 
-The following are properties categorized by IGVF members' permission to submit. These properties must follow the preceding guidelines according to their `type` in addition to the guidelines below.
+The following are properties categorized by the feasibility to submit. These properties must follow the preceding guidelines according to their `type` in addition to the guidelines below.
 * Submittable properties:
     * `comment`: Instructions for submitters explaining details of how to submit the property. If there is a dependency defined for the property, the comment must include: "This property is affected by dependencies. See \[link\]."
     * `submissionExample`: Required. An example of how to specify the property using appscript and igvf_utils tools.
@@ -423,7 +126,7 @@ Exception: When making substantial changes to an existing schema, even if these 
 * **NOTE:** You should update the schema version when making substantial changes to an existing schema even if these changes do not cause existing objects using this schema to fail validation.
 The new schema version number in such cases helps submitters and users realize that a substantial change has been made to the schema and they may need to update their scripts accordingly.
 
-* **NOTE:** You should also update the appropriate changelog markdown file with documentation of the new schema version, in **schemas/changelogs** directory.  You should update the changelog even if the schema version number has not been bumped up. If so, it appears as "minor changes since schema version xyz".
+* **NOTE:** You should also update the appropriate changelog markdown file with documentation of the new schema version, in `src/igvfd/schemas/changelogs/`. You should update the changelog even if the schema version number has not been bumped up. If so, it appears as "minor changes since schema version xyz".
 
 * **NOTE:** Whenever in doubt (whether to update or not), it would be a good idea to discuss with other members of the group as there can be grey areas as mentioned in the note above. When multiple new properties are being added to the new schema (potentially leading to no conflict with the schema validation), technically the upgrade step would just be bumping the schema version.
 
@@ -431,13 +134,15 @@ The new schema version number in such cases helps submitters and users realize t
 
 ### No update of the schema version
 
-1. In the **schemas** directory, edit the existing properties in the corresponding JSON file named after the object.
+1. In `src/igvfd/schemas/`, edit the existing properties in the corresponding JSON file named after the object.
 
-2. In the **types** directory, make appropriate updates to object class by adding *embedding*, *reverse links*, and *calculated properties* as necessary.
+2. In `src/igvfd/types/`, make appropriate updates to object class by adding *embedding*, *reverse links*, and *calculated properties* as necessary.
 
-3. Update the inserts within the **data/inserts** directory.
+3. If applicable, update the search config in `src/igvfd/searches/configs/{type}.py` (e.g. when changing fields that should appear as columns/facets in search results).
 
-4. Add test in the **tests** directory to make sure your schema change functions as expected.
+4. Update the inserts within `src/igvfd/tests/data/inserts/`.
+
+5. Add test in `src/igvfd/tests/` to make sure your schema change functions as expected.
 
 **Specific example from the treatment object schema change:**
 For example, if we included a minor change in treatment object such that *μg/kg* could be specified as treatment units, the following test should allow one to test whether the update has been successfully implemented or not:
@@ -454,7 +159,14 @@ For example, if we included a minor change in treatment object such that *μg/kg
             ## Status 200 means the object was successfully patched and the schema update works as expected.
         )
 
-5. Document the changes to the corresponding log file within the **schemas/changelogs** directory.
+6. If applicable, regenerate OpenSearch mappings after changes to schemas, calculated properties, or embedded fields (see `README.md` "Generate Opensearch mappings"):
+
+```bash
+docker compose down -v && docker compose build
+docker compose run pyramid /scripts/pyramid/generate-opensearch-mappings.sh
+```
+
+7. Document the changes to the corresponding log file within `src/igvfd/schemas/changelogs/`.
 
 **Specific example from the treatment object schema change:**
 For example, a minor change in the treatment object after version 11 that allowed one to use *μg/kg* as treatment amount units is shown below:
@@ -465,7 +177,7 @@ For example, a minor change in the treatment object after version 11 that allowe
 
 ### Update schema version
 
-1. In the **schemas** directory, edit the existing properties in the corresponding JSON file named after the object and increment the schema version.
+1. In `src/igvfd/schemas/`, edit the existing properties in the corresponding JSON file named after the object and increment the schema version.
 
 **Specific example from the genetic modifications object schema change:**
 
@@ -496,7 +208,7 @@ Replacing the enum "validation" by the enum "characterization" in the list of en
             ]
         },
 
-2. In the **schemas** directory, edit the properties in the corresponding JSON file named after the object and increment the schema version..
+2. In `src/igvfd/schemas/`, edit the properties in the corresponding JSON file named after the object and increment the schema version.
 
 **Specific example from the genetic modifications object upgrade:**
 
@@ -506,7 +218,7 @@ For example if the original schema version for the genetic modification object b
             "default": "7"
         }
 
-3. In the **upgrade** directory add an ```upgrade_step``` to a python file named after the object (create new if there is no such a file in the upgrade directory). For some objects the upgrade is defined in the parent class - like dataset.py for the experiment object.
+3. In `src/igvfd/upgrade/` add an `upgrade_step` to a python file named after the object (create new if there is no such a file in the upgrade directory). For some objects the upgrade is defined in the parent class - like dataset.py for the experiment object.
 
 **Specific example from the genetic modifications object upgrade:**
 
@@ -517,7 +229,7 @@ An example to the upgrade step is shown below. Continuing with our example on ge
             if value['purpose'] == 'validation':
                 value['purpose'] = 'characterization'
 
-4. In the **tests/data/inserts** directory, we will need to change all the corresponding objects to follow the new schema.
+4. In `src/igvfd/tests/data/inserts/`, we will need to change all the corresponding objects to follow the new schema.
 
 **Specific example from the genetic modifications object upgrade:**
 
@@ -533,7 +245,16 @@ Continuing with our example, all the ```"purpose": "validation"``` must now be c
         "purpose": "characterization",
 
 
-5. Next, add an upgrade test to an existing python file named ```test_upgrade_{metadata_object}.py```. If a corresponding test file doesn't exist, create a new file.
+5. Next, add an upgrade test to an existing python file named `test_upgrade_{metadata_object}.py`. If a corresponding test file doesn't exist, create a new file.
+
+6. If applicable, update the search config in `src/igvfd/searches/configs/{type}.py` (e.g. when changing fields that should appear as columns/facets in search results).
+
+7. If applicable, regenerate OpenSearch mappings after changes to schemas, calculated properties, or embedded fields (see `README.md` "Generate Opensearch mappings"):
+
+```bash
+docker compose down -v && docker compose build
+docker compose run pyramid /scripts/pyramid/generate-opensearch-mappings.sh
+```
 
 **Specific example from the genetic modifications object upgrade:**
 
@@ -545,7 +266,7 @@ Below, is an example of an upgrade step that must be added to the ```test_upgrad
             assert value['schema_version'] == '7'
             assert value.get('purpose') == 'characterization'
 
-6. You must check the results of your upgrade on the current database:
+8. You must check the results of your upgrade on the current database:
 
    **Note** it is possible to write a "bad" upgrade that does not prevent your objects from loading or being shown.
 
@@ -583,9 +304,9 @@ INFO [snovault.batchupgrade][MainThread] Run Time: 11.91 minutes
 ```
 If you do see any errors in the summary above, you must to look at log above and find out what objects failed the upgrade and why.
 
-7. If applicable you may need to update audits on the metadata. Please refer to [making_audits]
+9. If applicable you may need to update audits on the metadata. Please refer to [making_audits]
 
-8. To document all the schema changes that occurred between increments of the ```schema_version``` update the object changelogs the **schemas/changelogs** directory.
+10. To document all the schema changes that occurred between increments of the `schema_version` update the object changelogs in `src/igvfd/schemas/changelogs/`.
 
 **Specific example from the genetic modifications object upgrade:**
 

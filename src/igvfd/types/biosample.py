@@ -20,7 +20,7 @@ from .base import (
 class Biosample(Item):
     """
     Abstract base class for biosamples.
-    Concrete implementations are Tissue, PrimaryCell, InVivoSystem, and InVitroSystem.
+    Concrete implementations are Tissue, PrimaryCellCulture, InVivoSystem, and InVitroSystem.
     """
     item_type = 'biosample'
     base_types = ['Biosample'] + Item.base_types
@@ -62,22 +62,22 @@ class Tissue(Biosample):
 
 
 @collection(
-    name='primary_cells',
+    name='primary_cell_cultures',
     properties={
-        'title': 'Primary Cells',
-        'description': 'Listing of primary cell samples',
+        'title': 'Primary Cell Cultures',
+        'description': 'Listing of primary cell culture samples',
     }
 )
-class PrimaryCell(Biosample):
-    item_type = 'primary_cell'
-    schema = load_schema('igvfd:schemas/primary_cell.json')
+class PrimaryCellCulture(Biosample):
+    item_type = 'primary_cell_culture'
+    schema = load_schema('igvfd:schemas/primary_cell_culture.json')
     embedded_with_frame = Biosample.embedded_with_frame
 
     @calculated_property(
         schema={
             'title': 'Summary',
             'type': 'string',
-            'description': 'A summary of the primary cell sample.',
+            'description': 'A summary of the primary cell culture sample.',
             'notSubmittable': True,
         }
     )

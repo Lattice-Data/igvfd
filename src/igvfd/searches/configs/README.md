@@ -148,7 +148,7 @@ Output:
     "title": "Sample classifications",
     "terms": [
         {
-            "key": "primary cell",
+            "key": "primary cell culture",
             "doc_count": 14,
             "subfacet": {
                 "field": "samples.sample_terms.term_name",

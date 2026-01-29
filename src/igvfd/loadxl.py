@@ -20,10 +20,11 @@ ORDER = [
     'page',
     'access_key',
     'controlled_term',
+    'genetic_modification',
     'human_donor',
     'non_human_donor',
     'tissue',
-    'primary_cell',
+    'primary_cell_culture',
     'in_vivo_system',
     'in_vitro_system',
     'plate_based_library',
@@ -491,10 +492,13 @@ PHASE1_PIPELINES = {
     'user': [
         remove_keys('lab', 'submits_for'),
     ],
+    'genetic_modification': [
+        skip_rows_missing_all_keys('modality'),
+    ],
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
-    'primary_cell': [
+    'primary_cell_culture': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'in_vivo_system': [
@@ -523,10 +527,13 @@ PHASE2_PIPELINES = {
     'user': [
         skip_rows_missing_all_keys('lab', 'submits_for'),
     ],
+    'genetic_modification': [
+        skip_rows_missing_all_keys('modality'),
+    ],
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
-    'primary_cell': [
+    'primary_cell_culture': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
     'in_vivo_system': [

@@ -30,7 +30,7 @@
             "title": "Term ID",
             "description": "An ontology identifier from the specified ontology source.",
             "type": "string",
-            "pattern": "^(CL|EFO|UBERON|CHEBI|UniProt|Cellosaurus):[A-Za-z0-9_]+$"
+            "pattern": "^(CL|EFO|UBERON|CHEBI|UniProt|Cellosaurus|HANCESTRO):[A-Za-z0-9_]+$"
         },
         "term_name": {
             "title": "Term Name",
@@ -48,7 +48,8 @@
                 "UBERON",
                 "CHEBI",
                 "UniProt",
-                "Cellosaurus"
+                "Cellosaurus",
+                "HANCESTRO"
             ]
         },
         "definition": {

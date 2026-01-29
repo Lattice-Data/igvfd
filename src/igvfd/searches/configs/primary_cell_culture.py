@@ -2,9 +2,9 @@ from snovault.elasticsearch.searches.configs import search_config
 
 
 @search_config(
-    name='PrimaryCell'
+    name='PrimaryCellCulture'
 )
-def primary_cell():
+def primary_cell_culture():
     return {
         'facets': {
             'passage_number': {

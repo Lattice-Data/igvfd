@@ -19,6 +19,9 @@ def droplet_based_library():
             'feature_types': {
                 'title': 'Feature Types'
             },
+            'library_cardinality': {
+                'title': 'Library Cardinality'
+            },
             'lab.title': {
                 'title': 'Lab'
             },
@@ -59,6 +62,12 @@ def droplet_based_library():
             },
             'feature_types': {
                 'title': 'Feature Types'
+            },
+            'library_cardinality': {
+                'title': 'Library Cardinality'
+            },
+            'linked_libraries': {
+                'title': 'Linked Libraries'
             },
             'multiplexing_method': {
                 'title': 'Multiplexing Method'

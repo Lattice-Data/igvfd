@@ -43,5 +43,18 @@
             "lattice:term-uberon-0000001",
             "lattice:term-brain-tissue"
         ]
+    },
+    {
+        "term_id": "HANCESTRO:0000001",
+        "term_name": "Han Chinese",
+        "ontology_source": "HANCESTRO",
+        "definition": "An ancestry group term from the Human Ancestry Ontology.",
+        "uuid": "f2d9b9aa-4b22-4c8a-9d9b-3a4e2b7b5c10",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-han-chinese",
+            "lattice:term-hancestro-0000001"
+        ]
     }
 ]
