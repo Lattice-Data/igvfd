@@ -1,0 +1,39 @@
+---
+description: Workflow rules — plan before code, tests, pre-commit, docs
+alwaysApply: true
+---
+
+# Workflow Rules
+
+Follow these rules on every change:
+
+## 1. No code changes without approval
+
+- **Never change code without explicit permission.**
+- Always present a **plan of changes** first (what files, what edits, why).
+- Only apply code changes **after** the user approves the plan.
+- If the user asks for a plan, provide it; do not implement until they say to proceed.
+
+## 2. Tests before commit
+
+- Before any commit, **run the test suite** (e.g. `pytest`, project test command).
+- Do not suggest or describe a commit that includes code changes unless tests have been run and passed (or the user explicitly accepts skipping).
+
+## 3. Pre-commit and formatting
+
+- **Always run pre-commit** (or the project’s formatting/lint hooks) before committing.
+- Ensure code is formatted (e.g. Ruff, Black, project config) and that pre-commit checks pass.
+
+## 4. Tests for new code
+
+- For **new properties, functions, modules, or behavior**: add or extend **unit tests** (and integration tests where appropriate).
+- New or modified behavior must be covered by tests unless the user explicitly says otherwise.
+
+## 5. Documentation
+
+- **Always ensure documentation is in place** for new or meaningfully changed behavior (docstrings, README, docs/ as appropriate).
+- Only skip or reduce documentation when the user **explicitly allows** it (e.g. “skip docs for this” or “no documentation needed”).
+
+---
+
+**Summary:** Plan → Get approval → Change code → Run tests → Run pre-commit → Ensure tests + docs for new/changed behavior.
