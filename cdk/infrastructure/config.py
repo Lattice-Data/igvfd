@@ -416,7 +416,7 @@ class Common:
     organization_name: str = 'lattice-data'
     project_name: str = 'igvfd'
     default_region: str = 'us-west-2'
-    aws_cdk_version: str = '2.151.0'
+    aws_cdk_version: str = '2.1031.2'
 
 
 @dataclass
