@@ -3,8 +3,9 @@ from snovault import (
     load_schema,
 )
 from snovault.util import Path
-
-from .base import Item
+from .base import (
+    Item,
+)
 
 
 @abstract_collection(
@@ -15,13 +16,14 @@ from .base import Item
     }
 )
 class File(Item):
-    """Abstract base class for files."""
-
+    """
+    Abstract base class for files.
+    Concrete implementations will define specific file types.
+    """
     item_type = 'file'
     base_types = ['File'] + Item.base_types
     schema = load_schema('igvfd:schemas/file.json')
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
-        Path('dataset', include=['@id', 'title', 'aliases']),
     ]

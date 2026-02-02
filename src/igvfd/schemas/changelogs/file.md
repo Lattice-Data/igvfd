@@ -1,3 +1,5 @@
-# File Changelog
+## Changelog for file.json
 
-- Initial abstract schema definition.
+### Schema version 1
+
+* Initial release

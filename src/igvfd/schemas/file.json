@@ -1,13 +1,13 @@
 {
     "title": "File",
-    "description": "Abstract schema for files.",
     "$id": "/profiles/file.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Abstract schema for submission of a file.",
     "type": "object",
     "required": [
         "lab",
         "md5sum",
-        "dataset"
+        "file_format"
     ],
     "identifyingProperties": [
         "uuid",
@@ -29,24 +29,56 @@
         "schema_version": {
             "default": "1"
         },
+        "file_format": {
+            "title": "File Format",
+            "description": "The file format or extension of the file.",
+            "comment": "This property is overwritten by the subclasses to define specific enum values.",
+            "type": "string",
+            "submissionExample": {
+                "appscript": "bam",
+                "igvf_utils": "bam"
+            }
+        },
+        "file_size": {
+            "title": "File Size",
+            "description": "File size specified in bytes.",
+            "comment": "Do not submit. This value is calculated by the checkfiles script upon submission.",
+            "type": "integer",
+            "minimum": 0
+        },
         "md5sum": {
             "title": "MD5sum",
-            "description": "MD5 checksum of the file content.",
+            "description": "The md5sum of the file being transferred.",
             "type": "string",
-            "format": "md5sum"
+            "format": "hex",
+            "maxLength": 32,
+            "pattern": "[a-f\\d]{32}|[A-F\\d]{32}",
+            "submissionExample": {
+                "appscript": "74b87337454200d4d33f80c4663dc5e5",
+                "igvf_utils": "74b87337454200d4d33f80c4663dc5e5"
+            }
         },
-        "dataset": {
-            "title": "Dataset",
-            "description": "Dataset associated with this file.",
-            "comment": "See dataset.json for available identifiers.",
-            "type": "string",
-            "linkTo": "Dataset"
+        "derived_from": {
+            "title": "Derived From",
+            "description": "The files participating as inputs into software to produce this output file.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "File Derived From",
+                "comment": "See file.json for a list of available identifiers.",
+                "type": "string",
+                "linkTo": "File"
+            },
+            "submissionExample": {
+                "appscript": "[\"IGVFFI1234ABCD\", \"john-doe:file01\"]",
+                "igvf_utils": "IGVFFI1234ABCD, john-doe:file01"
+            }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
-        "description",
-        "md5sum"
+        "description"
     ],
     "exact_searchable_fields": [
         "@type"
