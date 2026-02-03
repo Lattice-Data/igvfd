@@ -1,5 +1,7 @@
 from snovault import (
     abstract_collection,
+    calculated_property,
+    collection,
     load_schema,
 )
 from snovault.util import Path
@@ -27,3 +29,31 @@ class File(Item):
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
     ]
+
+
+@collection(
+    name='sequence_files',
+    properties={
+        'title': 'Sequence Files',
+        'description': 'Listing of sequence files',
+    }
+)
+class SequenceFile(File):
+    item_type = 'sequence_file'
+    schema = load_schema('igvfd:schemas/sequence_file.json')
+    embedded_with_frame = File.embedded_with_frame
+
+    @calculated_property(
+        schema={
+            'title': 'Summary',
+            'type': 'string',
+            'description': 'A summary of the sequence file.',
+            'notSubmittable': True,
+        }
+    )
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
+        if description:
+            return description
+        return self.uuid

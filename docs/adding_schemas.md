@@ -151,7 +151,17 @@ This document outlines all the files that need to be created or updated when add
 - **Notes**: Should include at least one valid example
 - **Note**: Abstract schemas do NOT need test insert data (concrete subclasses handle this)
 - **UUID Requirements**:
-  - Generate **new valid UUIDs** for each new object being created
+  - **CRITICAL: UUIDs must be globally unique across ALL insert files**. Duplicate UUIDs will cause "duplicate key value violates unique constraint" errors during test workbook loading.
+  - Before adding new UUIDs, search existing insert files to ensure no conflicts:
+    ```bash
+    # Check if a UUID is already in use
+    grep -r "your-uuid-here" src/igvfd/tests/data/inserts/
+    ```
+  - Generate **new valid UUIDs** for each new object being created. Use a UUID generator tool or Python:
+    ```python
+    import uuid
+    print(uuid.uuid4())
+    ```
   - When linking to other objects (via `linkTo` fields), use the **existing UUIDs** from those objects' insert files
   - Example: If creating a library that references a tissue sample, use the UUID from `tissue.json` insert file
   - Check existing insert files in `src/igvfd/tests/data/inserts/` to find UUIDs for linked objects
