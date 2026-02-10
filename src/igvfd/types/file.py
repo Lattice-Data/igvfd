@@ -85,31 +85,3 @@ class TabularFile(File):
         if description:
             return description
         return self.uuid
-
-
-@collection(
-    name='matrix_files',
-    properties={
-        'title': 'Matrix Files',
-        'description': 'Listing of matrix files',
-    }
-)
-class MatrixFile(File):
-    item_type = 'matrix_file'
-    schema = load_schema('igvfd:schemas/matrix_file.json')
-    embedded_with_frame = File.embedded_with_frame
-
-    @calculated_property(
-        schema={
-            'title': 'Summary',
-            'type': 'string',
-            'description': 'A summary of the matrix file.',
-            'notSubmittable': True,
-        }
-    )
-    def summary(self, aliases=None, description=None):
-        if aliases:
-            return aliases[0]
-        if description:
-            return description
-        return self.uuid
