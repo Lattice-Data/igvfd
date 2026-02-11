@@ -10,8 +10,7 @@
         "aliases": [
             "lattice:plate-library-basic"
         ],
-        "description": "Test plate-based library 1",
-        "CRO_order": "AN00098765"
+        "description": "Test plate-based library 1"
     },
     {
         "lab": "teri-klein",
@@ -26,8 +25,7 @@
             "lattice:plate-lib-002"
         ],
         "kit_version": "QuantumScale Single Cell RNA",
-        "indexing_rounds": 3,
-        "CRO_order": "NVUS987654321-02"
+        "indexing_rounds": 3
     },
     {
         "lab": "teri-klein",

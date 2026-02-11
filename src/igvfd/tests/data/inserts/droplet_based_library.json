@@ -11,8 +11,7 @@
             "lattice:droplet-library-basic"
         ],
         "description": "Test droplet-based library 1",
-        "library_cardinality": "single",
-        "CRO_order": "AN00012345"
+        "library_cardinality": "single"
     },
     {
         "lab": "teri-klein",
@@ -32,8 +31,7 @@
         "feature_types": [
             "Gene Expression"
         ],
-        "library_cardinality": "single",
-        "CRO_order": "NVUS123456789-01"
+        "library_cardinality": "single"
     },
     {
         "lab": "teri-klein",

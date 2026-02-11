@@ -2,9 +2,9 @@ from snovault.elasticsearch.searches.configs import search_config
 
 
 @search_config(
-    name='SequencingRun'
+    name='SequenceFileSet'
 )
-def sequencing_run():
+def sequence_file_set():
     return {
         'facets': {
             'run_cardinality': {
@@ -39,11 +39,17 @@ def sequencing_run():
             'aliases': {
                 'title': 'Aliases'
             },
+            'library': {
+                'title': 'Library'
+            },
             'run_cardinality': {
                 'title': 'Run Cardinality'
             },
             'sequencing_platform': {
                 'title': 'Sequencing Platform'
+            },
+            'CRO_order': {
+                'title': 'CRO Order'
             },
             'lab': {
                 'title': 'Lab'

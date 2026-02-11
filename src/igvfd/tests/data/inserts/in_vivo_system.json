@@ -15,6 +15,9 @@
         ],
         "description": "Test in vivo system sample 2 with host",
         "classification": "xenograft",
-        "host": "f6a7b8c9-d0e1-2345-fa16-678901234567"
+        "host": "f6a7b8c9-d0e1-2345-fa16-678901234567",
+        "intended_cell_types": [
+            "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        ]
     }
 ]

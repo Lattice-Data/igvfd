@@ -1,5 +1,7 @@
 # In Vitro System Changelog
 
+* Add intended_cell_types.
+
 ## Schema version 1
 
 * Initial release

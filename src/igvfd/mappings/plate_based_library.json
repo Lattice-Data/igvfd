@@ -1,6 +1,6 @@
 {
-    "hash": "a3abd8acedd69c9642392f25a8247b65",
-    "index_name": "plate_based_library_a3abd8ac",
+    "hash": "e74d1ae9a66e7154de03e5f5ee12b7f3",
+    "index_name": "plate_based_library_e74d1ae9",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -148,9 +148,6 @@
                         "copy_to": "_exact",
                         "type": "keyword"
                     },
-                    "CRO_order": {
-                        "type": "keyword"
-                    },
                     "aliases": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
@@ -284,6 +281,9 @@
                                 "type": "keyword"
                             },
                             "host": {
+                                "type": "keyword"
+                            },
+                            "intended_cell_types": {
                                 "type": "keyword"
                             },
                             "lab": {

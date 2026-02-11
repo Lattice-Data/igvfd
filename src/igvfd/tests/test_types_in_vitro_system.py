@@ -122,3 +122,65 @@ def test_in_vitro_system_create_with_classification_enum_values(testapp, other_l
     }
     res = testapp.post_json('/in_vitro_system', item, status=201)
     assert res.json['@graph'][0]['classification'] == classification
+
+
+def test_in_vitro_system_create_with_intended_cell_types(testapp, other_lab, human_donor,
+                                                         controlled_term_brain, controlled_term):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'classification': 'organoid',
+        'intended_cell_types': [controlled_term['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/in_vitro_system', item, status=201)
+    assert res.json['@graph'][0]['intended_cell_types'] == [controlled_term['@id']]
+
+
+def test_in_vitro_system_intended_cell_types_min_items(testapp, other_lab, human_donor,
+                                                       controlled_term_brain):
+    testapp.post_json(
+        '/in_vitro_system',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'classification': 'organoid',
+            'intended_cell_types': [],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_in_vitro_system_intended_cell_types_unique_items(testapp, other_lab, human_donor,
+                                                          controlled_term_brain, controlled_term):
+    testapp.post_json(
+        '/in_vitro_system',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'classification': 'organoid',
+            'intended_cell_types': [controlled_term['@id'], controlled_term['@id']],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_in_vitro_system_intended_cell_types_linkto_validation(testapp, other_lab, human_donor,
+                                                               controlled_term_brain):
+    testapp.post_json(
+        '/in_vitro_system',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'classification': 'organoid',
+            'intended_cell_types': ['/invalid/term/path/'],
+            'status': 'current',
+        },
+        status=422
+    )

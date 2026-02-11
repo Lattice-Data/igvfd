@@ -1,4 +1,4 @@
 # Library Changelog
 
-- Add CRO_order.
+- Move CRO_order to SequenceFileSet.
 - Initial abstract schema definition.
