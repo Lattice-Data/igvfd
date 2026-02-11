@@ -11,7 +11,8 @@
     ],
     "identifyingProperties": [
         "uuid",
-        "aliases"
+        "aliases",
+        "term_id"
     ],
     "additionalProperties": false,
     "mixinProperties": [
