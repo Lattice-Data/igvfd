@@ -46,5 +46,5 @@ class SequencingRun(Item):
         if aliases:
             return aliases[0]
         if run_cardinality:
-            return f'{run_cardinality} run ({self.uuid[:8]})'
+            return f'{run_cardinality} run ({str(self.uuid)[:8]})'
         return self.uuid
