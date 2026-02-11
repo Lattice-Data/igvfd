@@ -1,6 +1,6 @@
 {
-    "hash": "7a428c286fe41dff6afd71c64d1e073f",
-    "index_name": "plate_based_library_7a428c28",
+    "hash": "a3abd8acedd69c9642392f25a8247b65",
+    "index_name": "plate_based_library_a3abd8ac",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -146,6 +146,9 @@
                     },
                     "@type": {
                         "copy_to": "_exact",
+                        "type": "keyword"
+                    },
+                    "CRO_order": {
                         "type": "keyword"
                     },
                     "aliases": {

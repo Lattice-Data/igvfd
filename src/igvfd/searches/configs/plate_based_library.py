@@ -51,6 +51,9 @@ def plate_based_library():
             'multiplexing_method': {
                 'title': 'Multiplexing Method'
             },
+            'CRO_order': {
+                'title': 'CRO Order'
+            },
             'lab': {
                 'title': 'Lab'
             },

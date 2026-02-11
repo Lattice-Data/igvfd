@@ -61,6 +61,16 @@
                 "genetic",
                 "sample barcodes"
             ]
+        },
+        "CRO_order": {
+            "title": "CRO Order",
+            "description": "The order identifier from a Contract Research Organization (CRO), such as Novogene or Psomagen.",
+            "type": "string",
+            "pattern": "^(AN0|NVUS)[A-Za-z0-9-]+$",
+            "submissionExample": {
+                "appscript": "AN00012345",
+                "igvf_utils": "AN00012345"
+            }
         }
     },
     "fuzzy_searchable_fields": [
