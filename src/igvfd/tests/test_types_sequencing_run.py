@@ -9,7 +9,7 @@ def test_sequencing_run_summary_with_aliases(testapp, sequencing_run_with_aliase
 def test_sequencing_run_summary_with_run_cardinality(testapp, sequencing_run_paired_end):
     res = testapp.get(sequencing_run_paired_end['@id'])
     uuid = res.json.get('uuid')
-    assert res.json.get('summary') == f"paired-end run ({uuid[:8]})"
+    assert res.json.get('summary') == f'paired-end run ({uuid[:8]})'
 
 
 def test_sequencing_run_summary_with_uuid(testapp, other_lab, sequence_file):

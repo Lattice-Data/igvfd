@@ -17,11 +17,11 @@ from .base import (
     }
 )
 class SequencingRun(Item):
-    """
+    '''
     Sequencing run representing a logical grouping of sequence files.
     Used primarily for Illumina platforms that generate multiple FASTQ files
     (reads and indices) that need to be grouped together.
-    """
+    '''
     item_type = 'sequencing_run'
     schema = load_schema('igvfd:schemas/sequencing_run.json')
     embedded_with_frame = [
@@ -46,5 +46,5 @@ class SequencingRun(Item):
         if aliases:
             return aliases[0]
         if run_cardinality:
-            return f"{run_cardinality} run ({self.uuid[:8]})"
+            return f'{run_cardinality} run ({self.uuid[:8]})'
         return self.uuid
