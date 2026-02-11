@@ -1,0 +1,57 @@
+{
+    "title": "Sequence File",
+    "$id": "/profiles/sequence_file.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A file containing sequencing data in FASTQ or CRAM format.",
+    "type": "object",
+    "required": [
+        "lab",
+        "md5sum",
+        "file_format"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "file.json#/properties"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "file_format": {
+            "title": "File Format",
+            "description": "The file format or extension of the file.",
+            "type": "string",
+            "enum": [
+                "fastq",
+                "cram"
+            ],
+            "submissionExample": {
+                "appscript": "fastq",
+                "igvf_utils": "fastq"
+            }
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/sequence_file.md"
+}

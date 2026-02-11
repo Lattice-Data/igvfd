@@ -1,6 +1,6 @@
 {
-    "hash": "e36925152782fbf3d10f1f61328f4580",
-    "index_name": "droplet_based_library_e3692515",
+    "hash": "092fc94c2b9d247f932f01d740318206",
+    "index_name": "droplet_based_library_092fc94c",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -290,6 +290,12 @@
                                 "type": "keyword"
                             },
                             "host": {
+                                "type": "keyword"
+                            },
+                            "host_tissue": {
+                                "type": "keyword"
+                            },
+                            "intended_cell_types": {
                                 "type": "keyword"
                             },
                             "lab": {

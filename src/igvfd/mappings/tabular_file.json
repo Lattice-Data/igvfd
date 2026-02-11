@@ -1,7 +1,7 @@
 {
-    "hash": "6d8c51252f055ff4b26398ebb3e07942",
-    "index_name": "plate_based_library_6d8c5125",
-    "item_type": "plate_based_library",
+    "hash": "d68488fd03df52d9ee15a7079ace3809",
+    "index_name": "tabular_file_d68488fd",
+    "item_type": "tabular_file",
     "mapping": {
         "dynamic_templates": [
             {
@@ -155,16 +155,19 @@
                     "creation_timestamp": {
                         "type": "date"
                     },
+                    "derived_from": {
+                        "type": "keyword"
+                    },
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
-                    "indexing_rounds": {
+                    "file_format": {
+                        "type": "keyword"
+                    },
+                    "file_size": {
                         "store": true,
                         "type": "long"
-                    },
-                    "kit_version": {
-                        "type": "keyword"
                     },
                     "lab": {
                         "properties": {
@@ -222,135 +225,11 @@
                         },
                         "type": "object"
                     },
-                    "multiplexing_method": {
+                    "md5sum": {
                         "type": "keyword"
                     },
                     "notes": {
                         "type": "text"
-                    },
-                    "samples": {
-                        "properties": {
-                            "@id": {
-                                "type": "keyword"
-                            },
-                            "@type": {
-                                "type": "keyword"
-                            },
-                            "aliases": {
-                                "type": "keyword"
-                            },
-                            "classification": {
-                                "type": "keyword"
-                            },
-                            "creation_timestamp": {
-                                "type": "date"
-                            },
-                            "date_obtained": {
-                                "type": "keyword"
-                            },
-                            "depleted_cell_types": {
-                                "type": "keyword"
-                            },
-                            "description": {
-                                "type": "text"
-                            },
-                            "donors": {
-                                "type": "keyword"
-                            },
-                            "enriched_cell_types": {
-                                "type": "keyword"
-                            },
-                            "enrichment_markers": {
-                                "properties": {
-                                    "expression_level": {
-                                        "type": "keyword"
-                                    },
-                                    "marker": {
-                                        "type": "keyword"
-                                    }
-                                },
-                                "type": "object"
-                            },
-                            "enrichment_method": {
-                                "type": "keyword"
-                            },
-                            "experimental_conditions": {
-                                "type": "keyword"
-                            },
-                            "genetic_modification": {
-                                "type": "keyword"
-                            },
-                            "host": {
-                                "type": "keyword"
-                            },
-                            "host_tissue": {
-                                "type": "keyword"
-                            },
-                            "intended_cell_types": {
-                                "type": "keyword"
-                            },
-                            "lab": {
-                                "type": "keyword"
-                            },
-                            "notes": {
-                                "type": "text"
-                            },
-                            "orientation": {
-                                "type": "keyword"
-                            },
-                            "passage_number": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "preservation_method": {
-                                "type": "keyword"
-                            },
-                            "sample_procurement_interval": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "sample_procurement_interval_units": {
-                                "type": "keyword"
-                            },
-                            "sample_terms": {
-                                "type": "keyword"
-                            },
-                            "schema_version": {
-                                "type": "keyword"
-                            },
-                            "spatial_information": {
-                                "type": "keyword"
-                            },
-                            "status": {
-                                "type": "keyword"
-                            },
-                            "submitted_by": {
-                                "type": "keyword"
-                            },
-                            "submitter_comment": {
-                                "type": "keyword"
-                            },
-                            "summary": {
-                                "type": "keyword"
-                            },
-                            "suspension_type": {
-                                "type": "keyword"
-                            },
-                            "thickness": {
-                                "store": true,
-                                "type": "float"
-                            },
-                            "thickness_units": {
-                                "type": "keyword"
-                            },
-                            "treatment": {
-                                "type": "keyword"
-                            },
-                            "uuid": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
                     },
                     "schema_version": {
                         "type": "keyword"

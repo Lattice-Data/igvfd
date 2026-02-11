@@ -1,0 +1,26 @@
+[
+    {
+        "lab": "teri-klein",
+        "md5sum": "74b87337454200d4d33f80c4663dc5e5",
+        "file_format": "fastq",
+        "uuid": "f1a2b3c4-d5e6-7890-abcd-1234567890ab",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sequence-file-fastq-001"
+        ],
+        "description": "Test FASTQ sequence file"
+    },
+    {
+        "lab": "teri-klein",
+        "md5sum": "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+        "file_format": "cram",
+        "uuid": "f2b3c4d5-e6f7-8901-bcde-234567890abc",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sequence-file-cram-001"
+        ],
+        "description": "Test CRAM sequence file"
+    }
+]

@@ -2,16 +2,13 @@ from snovault.elasticsearch.searches.configs import search_config
 
 
 @search_config(
-    name='InVivoSystem'
+    name='SequenceFile'
 )
-def in_vivo_system():
+def sequence_file():
     return {
         'facets': {
-            'classification': {
-                'title': 'Classification'
-            },
-            'host': {
-                'title': 'Host'
+            'file_format': {
+                'title': 'File Format'
             },
             'lab.title': {
                 'title': 'Lab'
@@ -39,23 +36,14 @@ def in_vivo_system():
             'aliases': {
                 'title': 'Aliases'
             },
-            'sample_terms': {
-                'title': 'Sample Terms'
+            'file_format': {
+                'title': 'File Format'
             },
-            'donors': {
-                'title': 'Donors'
+            'file_size': {
+                'title': 'File Size'
             },
-            'classification': {
-                'title': 'Classification'
-            },
-            'host': {
-                'title': 'Host'
-            },
-            'host_tissue': {
-                'title': 'Host Tissue'
-            },
-            'intended_cell_types': {
-                'title': 'Intended Cell Types'
+            'md5sum': {
+                'title': 'MD5sum'
             },
             'lab': {
                 'title': 'Lab'

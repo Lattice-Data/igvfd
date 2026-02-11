@@ -1,4 +1,4 @@
-## Changelog for file.json
+## Changelog for tabular_file.json
 
 ### Schema version 1
 

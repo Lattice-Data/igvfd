@@ -14,7 +14,10 @@
             "lattice:in-vitro-organoid"
         ],
         "description": "Test in vitro system sample 1",
-        "classification": "organoid"
+        "classification": "organoid",
+        "intended_cell_types": [
+            "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        ]
     },
     {
         "lab": "teri-klein",

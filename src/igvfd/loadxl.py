@@ -29,6 +29,9 @@ ORDER = [
     'in_vitro_system',
     'plate_based_library',
     'droplet_based_library',
+    'sequence_file',
+    'tabular_file',
+    'sequence_file_set',
 ]
 
 IS_ATTACHMENT = [
@@ -513,6 +516,15 @@ PHASE1_PIPELINES = {
     'droplet_based_library': [
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
+    'sequence_file': [
+        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format', 'derived_from'),
+    ],
+    'tabular_file': [
+        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+    ],
+    'sequence_file_set': [
+        skip_rows_missing_all_keys('lab', 'library', 'run_cardinality'),
+    ],
 }
 
 
@@ -547,6 +559,15 @@ PHASE2_PIPELINES = {
     ],
     'droplet_based_library': [
         skip_rows_missing_all_keys('lab', 'samples'),
+    ],
+    'sequence_file': [
+        skip_rows_missing_all_keys('derived_from'),
+    ],
+    'tabular_file': [
+        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+    ],
+    'sequence_file_set': [
+        skip_rows_missing_all_keys('lab', 'library', 'run_cardinality'),
     ],
 }
 
