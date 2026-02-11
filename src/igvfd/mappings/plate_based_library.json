@@ -1,6 +1,6 @@
 {
-    "hash": "e74d1ae9a66e7154de03e5f5ee12b7f3",
-    "index_name": "plate_based_library_e74d1ae9",
+    "hash": "6d8c51252f055ff4b26398ebb3e07942",
+    "index_name": "plate_based_library_6d8c5125",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -281,6 +281,9 @@
                                 "type": "keyword"
                             },
                             "host": {
+                                "type": "keyword"
+                            },
+                            "host_tissue": {
                                 "type": "keyword"
                             },
                             "intended_cell_types": {

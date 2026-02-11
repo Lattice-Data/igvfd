@@ -199,3 +199,33 @@ def test_in_vivo_system_intended_cell_types_linkto_validation(testapp, other_lab
         },
         status=422
     )
+
+
+def test_in_vivo_system_create_with_host_tissue(testapp, other_lab, human_donor,
+                                                controlled_term_brain, controlled_term):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'classification': 'xenograft',
+        'host_tissue': controlled_term['@id'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/in_vivo_system', item, status=201)
+    assert res.json['@graph'][0]['host_tissue'] == controlled_term['@id']
+
+
+def test_in_vivo_system_host_tissue_linkto_validation(testapp, other_lab, human_donor,
+                                                      controlled_term_brain):
+    testapp.post_json(
+        '/in_vivo_system',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'classification': 'xenograft',
+            'host_tissue': '/invalid/term/path/',
+            'status': 'current',
+        },
+        status=422
+    )

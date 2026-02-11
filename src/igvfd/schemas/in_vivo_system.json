@@ -48,6 +48,17 @@
             "type": "string",
             "linkTo": "Donor"
         },
+        "host_tissue": {
+            "title": "Host Tissue",
+            "description": "The host tissue used for xenotransplantation.",
+            "comment": "See controlled_term.json for available identifiers.",
+            "type": "string",
+            "linkTo": "ControlledTerm",
+            "submissionExample": {
+                "appscript": "lattice:term-brain",
+                "igvf_utils": "lattice:term-brain"
+            }
+        },
         "intended_cell_types": {
             "title": "Intended Cell Types",
             "description": "Cell types intended to be studied or captured in this sample.",
