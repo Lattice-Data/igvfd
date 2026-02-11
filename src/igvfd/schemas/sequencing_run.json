@@ -1,0 +1,162 @@
+{
+    "title": "Sequencing Run",
+    "$id": "/profiles/sequencing_run.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A sequencing run representing a logical grouping of sequence files (reads and indices) from Illumina platforms.",
+    "type": "object",
+    "required": [
+        "lab",
+        "run_cardinality",
+        "read1"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        }
+    ],
+    "dependentSchemas": {
+        "run_cardinality": {
+            "oneOf": [
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "single-end"
+                        }
+                    },
+                    "required": [
+                        "read1"
+                    ]
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "paired-end"
+                        }
+                    },
+                    "required": [
+                        "read1",
+                        "read2"
+                    ]
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "paired-end-with-index"
+                        }
+                    },
+                    "required": [
+                        "read1",
+                        "read2",
+                        "index1"
+                    ]
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "paired-end-with-dual-index"
+                        }
+                    },
+                    "required": [
+                        "read1",
+                        "read2",
+                        "index1",
+                        "index2"
+                    ]
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "triplet"
+                        }
+                    },
+                    "required": [
+                        "read1",
+                        "read2",
+                        "read3"
+                    ]
+                }
+            ]
+        }
+    },
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "run_cardinality": {
+            "title": "Run Cardinality",
+            "description": "The structure of reads in this sequencing run.",
+            "type": "string",
+            "enum": [
+                "single-end",
+                "paired-end",
+                "paired-end-with-index",
+                "paired-end-with-dual-index",
+                "triplet"
+            ]
+        },
+        "read1": {
+            "title": "Read 1",
+            "description": "Sequence file for read 1.",
+            "comment": "Each sequence file should only belong to one sequencing run.",
+            "type": "string",
+            "linkTo": "SequenceFile"
+        },
+        "read2": {
+            "title": "Read 2",
+            "description": "Sequence file for read 2.",
+            "comment": "Each sequence file should only belong to one sequencing run.",
+            "type": "string",
+            "linkTo": "SequenceFile"
+        },
+        "read3": {
+            "title": "Read 3",
+            "description": "Sequence file for read 3.",
+            "comment": "Each sequence file should only belong to one sequencing run.",
+            "type": "string",
+            "linkTo": "SequenceFile"
+        },
+        "index1": {
+            "title": "Index 1",
+            "description": "Sequence file for index 1 (i7 index).",
+            "comment": "Each sequence file should only belong to one sequencing run.",
+            "type": "string",
+            "linkTo": "SequenceFile"
+        },
+        "index2": {
+            "title": "Index 2",
+            "description": "Sequence file for index 2 (i5 index).",
+            "comment": "Each sequence file should only belong to one sequencing run.",
+            "type": "string",
+            "linkTo": "SequenceFile"
+        },
+        "sequencing_platform": {
+            "title": "Sequencing Platform",
+            "description": "The Illumina sequencing platform used for this run.",
+            "type": "string",
+            "enum": [
+                "Illumina HiSeq 2000",
+                "Illumina NextSeq 500",
+                "Illumina NextSeq 1000"
+            ]
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/sequencing_run.md"
+}

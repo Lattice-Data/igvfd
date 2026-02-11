@@ -31,6 +31,7 @@ ORDER = [
     'droplet_based_library',
     'sequence_file',
     'tabular_file',
+    'sequencing_run',
 ]
 
 IS_ATTACHMENT = [
@@ -521,6 +522,9 @@ PHASE1_PIPELINES = {
     'tabular_file': [
         skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
     ],
+    'sequencing_run': [
+        skip_rows_missing_all_keys('lab', 'run_cardinality', 'read1'),
+    ],
 }
 
 
@@ -561,6 +565,9 @@ PHASE2_PIPELINES = {
     ],
     'tabular_file': [
         skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+    ],
+    'sequencing_run': [
+        skip_rows_missing_all_keys('lab', 'run_cardinality', 'read1'),
     ],
 }
 
