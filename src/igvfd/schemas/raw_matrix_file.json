@@ -1,8 +1,8 @@
 {
-    "title": "Sequence File",
-    "$id": "/profiles/sequence_file.json",
+    "title": "Raw Matrix File",
+    "$id": "/profiles/raw_matrix_file.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "A file containing sequencing data in FASTQ or CRAM format.",
+    "description": "A file containing a raw matrix in H5 format.",
     "type": "object",
     "required": [
         "lab",
@@ -63,12 +63,11 @@
             "description": "The file format or extension of the file.",
             "type": "string",
             "enum": [
-                "fastq",
-                "cram"
+                "h5"
             ],
             "submissionExample": {
-                "appscript": "fastq",
-                "igvf_utils": "fastq"
+                "appscript": "h5",
+                "igvf_utils": "h5"
             }
         }
     },
@@ -79,5 +78,5 @@
     "exact_searchable_fields": [
         "@type"
     ],
-    "changelog": "/profiles/changelogs/sequence_file.md"
+    "changelog": "/profiles/changelogs/raw_matrix_file.md"
 }

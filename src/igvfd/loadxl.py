@@ -31,6 +31,8 @@ ORDER = [
     'droplet_based_library',
     'sequence_file',
     'tabular_file',
+    'raw_matrix_file',
+    'processed_matrix_file',
     'sequence_file_set',
 ]
 
@@ -522,6 +524,12 @@ PHASE1_PIPELINES = {
     'tabular_file': [
         skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
     ],
+    'raw_matrix_file': [
+        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+    ],
+    'processed_matrix_file': [
+        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+    ],
     'sequence_file_set': [
         skip_rows_missing_all_keys('lab', 'library', 'run_cardinality'),
     ],
@@ -564,6 +572,12 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('derived_from'),
     ],
     'tabular_file': [
+        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+    ],
+    'raw_matrix_file': [
+        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+    ],
+    'processed_matrix_file': [
         skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
     ],
     'sequence_file_set': [

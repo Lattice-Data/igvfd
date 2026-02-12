@@ -2,9 +2,9 @@ from snovault.elasticsearch.searches.configs import search_config
 
 
 @search_config(
-    name='TabularFile'
+    name='ProcessedMatrixFile'
 )
-def tabular_file():
+def processed_matrix_file():
     return {
         'facets': {
             'file_format': {

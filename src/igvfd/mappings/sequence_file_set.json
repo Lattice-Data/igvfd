@@ -1,6 +1,6 @@
 {
-    "hash": "c9cf40d74784ea63bbbb318d9db164ff",
-    "index_name": "sequence_file_set_c9cf40d7",
+    "hash": "26fa9693c18fccf4f2ba140ea6639a0e",
+    "index_name": "sequence_file_set_26fa9693",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -195,8 +195,15 @@
                             "md5sum": {
                                 "type": "keyword"
                             },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "notes": {
                                 "type": "text"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
                             },
                             "schema_version": {
                                 "type": "keyword"
@@ -252,8 +259,15 @@
                             "md5sum": {
                                 "type": "keyword"
                             },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "notes": {
                                 "type": "text"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
                             },
                             "schema_version": {
                                 "type": "keyword"
@@ -445,8 +459,15 @@
                             "md5sum": {
                                 "type": "keyword"
                             },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "notes": {
                                 "type": "text"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
                             },
                             "schema_version": {
                                 "type": "keyword"
@@ -502,8 +523,15 @@
                             "md5sum": {
                                 "type": "keyword"
                             },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "notes": {
                                 "type": "text"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
                             },
                             "schema_version": {
                                 "type": "keyword"
@@ -559,8 +587,15 @@
                             "md5sum": {
                                 "type": "keyword"
                             },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "notes": {
                                 "type": "text"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
                             },
                             "schema_version": {
                                 "type": "keyword"
@@ -702,8 +737,15 @@
                             "md5sum": {
                                 "type": "keyword"
                             },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "notes": {
                                 "type": "text"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
                             },
                             "schema_version": {
                                 "type": "keyword"
@@ -759,8 +801,15 @@
                             "md5sum": {
                                 "type": "keyword"
                             },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "notes": {
                                 "type": "text"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
                             },
                             "schema_version": {
                                 "type": "keyword"

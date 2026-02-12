@@ -25,6 +25,32 @@
             "$ref": "mixins.json#/shared_status"
         }
     ],
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "no_file_available": {
+                        "const": true
+                    }
+                },
+                "required": [
+                    "no_file_available"
+                ]
+            },
+            "then": {
+                "not": {
+                    "required": [
+                        "s3_uri"
+                    ]
+                }
+            },
+            "else": {
+                "required": [
+                    "s3_uri"
+                ]
+            }
+        }
+    ],
     "properties": {
         "schema_version": {
             "default": "1"
@@ -57,6 +83,22 @@
                 "appscript": "74b87337454200d4d33f80c4663dc5e5",
                 "igvf_utils": "74b87337454200d4d33f80c4663dc5e5"
             }
+        },
+        "s3_uri": {
+            "title": "S3 URI",
+            "description": "The S3 URI where the file is stored.",
+            "type": "string",
+            "pattern": "^s3://.+",
+            "submissionExample": {
+                "appscript": "s3://igvfd-bucket/path/to/file.fastq.gz",
+                "igvf_utils": "s3://igvfd-bucket/path/to/file.fastq.gz"
+            }
+        },
+        "no_file_available": {
+            "title": "No File Available",
+            "description": "Set to true when no file is available for this record.",
+            "type": "boolean",
+            "default": false
         },
         "derived_from": {
             "title": "Derived From",

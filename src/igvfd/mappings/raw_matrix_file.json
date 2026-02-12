@@ -1,7 +1,7 @@
 {
     "hash": "9dcbbd7da34cdc58f7ddba7c6ddccc2e",
-    "index_name": "sequence_file_9dcbbd7d",
-    "item_type": "sequence_file",
+    "index_name": "raw_matrix_file_9dcbbd7d",
+    "item_type": "raw_matrix_file",
     "mapping": {
         "dynamic_templates": [
             {

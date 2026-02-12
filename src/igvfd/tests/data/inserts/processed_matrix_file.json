@@ -1,0 +1,28 @@
+[
+    {
+        "lab": "teri-klein",
+        "md5sum": "9f86d081884c7d659a2feaa0c55ad015",
+        "file_format": "h5ad",
+        "s3_uri": "s3://lattice-test-data/matrix/processed-001.h5ad",
+        "uuid": "e7f8a9b0-c1d2-3456-ef01-789012345678",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:processed-matrix-file-001"
+        ],
+        "description": "Test processed matrix file"
+    },
+    {
+        "lab": "teri-klein",
+        "md5sum": "e4d909c290d0fb1ca068ffaddf22cbd0",
+        "file_format": "h5ad",
+        "no_file_available": true,
+        "uuid": "f8a9b0c1-d2e3-4567-f012-890123456789",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:processed-matrix-file-002"
+        ],
+        "description": "Test processed matrix file with no file available"
+    }
+]
