@@ -162,6 +162,7 @@ def test_tabular_file_requires_s3_uri_when_file_available(testapp, other_lab):
             'lab': other_lab['@id'],
             'md5sum': '11111111111111111111111111111111',
             'file_format': 'csv',
+            'no_file_available': False,
             'status': 'current',
         },
         status=422

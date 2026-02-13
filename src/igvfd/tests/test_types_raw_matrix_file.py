@@ -135,6 +135,7 @@ def test_raw_matrix_file_requires_s3_uri_when_file_available(testapp, other_lab)
             'lab': other_lab['@id'],
             'md5sum': 'cccccccccccccccccccccccccccccccc',
             'file_format': 'h5',
+            'no_file_available': False,
             'status': 'current',
         },
         status=422
