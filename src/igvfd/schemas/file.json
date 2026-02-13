@@ -58,8 +58,7 @@
             "comment": "This property is overwritten by the subclasses to define specific enum values.",
             "type": "string",
             "submissionExample": {
-                "appscript": "bam",
-                "igvf_utils": "bam"
+                "appscript": "bam"
             }
         },
         "file_size": {
@@ -77,8 +76,7 @@
             "maxLength": 32,
             "pattern": "[a-f\\d]{32}|[A-F\\d]{32}",
             "submissionExample": {
-                "appscript": "74b87337454200d4d33f80c4663dc5e5",
-                "igvf_utils": "74b87337454200d4d33f80c4663dc5e5"
+                "appscript": "74b87337454200d4d33f80c4663dc5e5"
             }
         },
         "s3_uri": {
@@ -87,8 +85,7 @@
             "type": "string",
             "pattern": "^s3://.+",
             "submissionExample": {
-                "appscript": "s3://igvfd-bucket/path/to/file.fastq.gz",
-                "igvf_utils": "s3://igvfd-bucket/path/to/file.fastq.gz"
+                "appscript": "s3://igvfd-bucket/path/to/file.fastq.gz"
             }
         },
         "no_file_available": {
@@ -110,8 +107,7 @@
                 "linkTo": "File"
             },
             "submissionExample": {
-                "appscript": "[\"IGVFFI1234ABCD\", \"john-doe:file01\"]",
-                "igvf_utils": "IGVFFI1234ABCD, john-doe:file01"
+                "appscript": "[\"IGVFFI1234ABCD\", \"john-doe:file01\"]"
             }
         }
     },

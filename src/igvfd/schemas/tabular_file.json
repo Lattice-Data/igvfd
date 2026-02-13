@@ -46,8 +46,7 @@
                 "tsv"
             ],
             "submissionExample": {
-                "appscript": "csv",
-                "igvf_utils": "csv"
+                "appscript": "csv"
             }
         }
     },

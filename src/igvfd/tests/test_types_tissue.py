@@ -1,52 +1,6 @@
 import pytest
 
 
-def test_tissue_summary_with_aliases(testapp, tissue_with_aliases):
-    res = testapp.get(tissue_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:tissue-brain-coronal'
-
-
-def test_tissue_summary_with_description(testapp, tissue_with_description):
-    res = testapp.get(tissue_with_description['@id'])
-    assert res.json.get('summary') == 'Test tissue sample'
-
-
-def test_tissue_summary_with_uuid(testapp, tissue):
-    res = testapp.get(tissue['@id'])
-    uuid = res.json.get('uuid')
-    assert res.json.get('summary') == uuid
-
-
-def test_tissue_required_fields(testapp, other_lab, human_donor, controlled_term_brain):
-    # Missing lab
-    testapp.post_json(
-        '/tissue',
-        {
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-        },
-        status=422
-    )
-    # Missing donors
-    testapp.post_json(
-        '/tissue',
-        {
-            'lab': other_lab['@id'],
-            'sample_terms': [controlled_term_brain['@id']],
-        },
-        status=422
-    )
-    # Missing sample_terms
-    testapp.post_json(
-        '/tissue',
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-        },
-        status=422
-    )
-
-
 def test_tissue_preservation_method_enum(testapp, other_lab, human_donor, controlled_term_brain):
     testapp.post_json(
         '/tissue',

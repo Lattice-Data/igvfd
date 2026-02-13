@@ -43,8 +43,7 @@
                 "type": "string"
             },
             "submissionExample": {
-                "appscript": "[\"EXP-2026-001\"]",
-                "igvf_utils": "EXP-2026-001"
+                "appscript": "[\"EXP-2026-001\"]"
             }
         },
         "raw_matrix_files": {
@@ -61,8 +60,7 @@
                 "linkTo": "RawMatrixFile"
             },
             "submissionExample": {
-                "appscript": "[\"john-doe:raw-matrix-001\"]",
-                "igvf_utils": "john-doe:raw-matrix-001"
+                "appscript": "[\"john-doe:raw-matrix-001\"]"
             }
         },
         "processed_matrix_files": {
@@ -79,8 +77,7 @@
                 "linkTo": "ProcessedMatrixFile"
             },
             "submissionExample": {
-                "appscript": "[\"john-doe:processed-matrix-001\"]",
-                "igvf_utils": "john-doe:processed-matrix-001"
+                "appscript": "[\"john-doe:processed-matrix-001\"]"
             }
         },
         "source_sequence_file_sets": {
@@ -97,8 +94,7 @@
                 "linkTo": "SequenceFileSet"
             },
             "submissionExample": {
-                "appscript": "[\"john-doe:sfs-001\"]",
-                "igvf_utils": "john-doe:sfs-001"
+                "appscript": "[\"john-doe:sfs-001\"]"
             }
         },
         "software": {
@@ -106,8 +102,7 @@
             "description": "Software used to generate the matrix files.",
             "type": "string",
             "submissionExample": {
-                "appscript": "Cell Ranger",
-                "igvf_utils": "Cell Ranger"
+                "appscript": "Cell Ranger"
             }
         },
         "software_version": {
@@ -115,8 +110,7 @@
             "description": "Version of the software used.",
             "type": "string",
             "submissionExample": {
-                "appscript": "7.1.0",
-                "igvf_utils": "7.1.0"
+                "appscript": "7.1.0"
             }
         },
         "genome_assembly": {
@@ -128,8 +122,7 @@
                 "GRCm39"
             ],
             "submissionExample": {
-                "appscript": "GRCh38",
-                "igvf_utils": "GRCh38"
+                "appscript": "GRCh38"
             }
         },
         "genome_annotation": {
@@ -137,8 +130,7 @@
             "description": "Genome annotation version used.",
             "type": "string",
             "submissionExample": {
-                "appscript": "GENCODE v44",
-                "igvf_utils": "GENCODE v44"
+                "appscript": "GENCODE v44"
             }
         }
     },

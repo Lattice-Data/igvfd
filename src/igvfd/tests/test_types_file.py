@@ -249,7 +249,7 @@ def test_file_requires_s3_uri_when_file_available(testapp, other_lab, file_type)
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': '11111111111111111111111111111111',
+            'md5sum': '6512bd43d9caa6e02c990b0a82652dca',
             'file_format': file_format,
             'no_file_available': False,
             'status': 'current',
@@ -268,7 +268,7 @@ def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, file_
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': '22222222222222222222222222222222',
+            'md5sum': 'c20ad4d76fe97759aa27a0c99bff6710',
             'file_format': file_format,
             'no_file_available': True,
             'status': 'current',
@@ -289,7 +289,7 @@ def test_file_rejects_s3_uri_when_no_file_available_true(testapp, other_lab, fil
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': '33333333333333333333333333333333',
+            'md5sum': 'c51ce410c124a10e0db5e4b97fc2af39',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/conflict.{file_format}',
             'no_file_available': True,
@@ -309,7 +309,7 @@ def test_file_rejects_non_s3_uri_prefix(testapp, other_lab, file_type):
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': '44444444444444444444444444444444',
+            'md5sum': 'aab3238922bcc25a6f606eb525ffdc56',
             'file_format': file_format,
             's3_uri': f'https://bucket/path/file.{file_format}',
             'status': 'current',
@@ -338,7 +338,7 @@ def test_file_rejects_invalid_s3_uri_prefix(testapp, other_lab, file_type, inval
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': 'ffffffffffffffffffffffffffffffff',
+            'md5sum': 'd3d9446802a44259755d38e6d163e820',
             'file_format': file_format,
             's3_uri': invalid_uri,
             'status': 'current',

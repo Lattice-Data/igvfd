@@ -48,8 +48,7 @@
                 "h5ad"
             ],
             "submissionExample": {
-                "appscript": "h5ad",
-                "igvf_utils": "h5ad"
+                "appscript": "h5ad"
             }
         }
     },

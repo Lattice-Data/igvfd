@@ -32,8 +32,7 @@
             "type": "string",
             "description": "The caption of the image.",
             "submissionExample": {
-                "appscript": "This is an image caption.",
-                "igvf_utils": "This is an image caption."
+                "appscript": "This is an image caption."
             }
         }
     },

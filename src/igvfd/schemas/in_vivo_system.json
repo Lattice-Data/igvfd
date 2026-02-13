@@ -55,8 +55,7 @@
             "type": "string",
             "linkTo": "ControlledTerm",
             "submissionExample": {
-                "appscript": "lattice:term-brain",
-                "igvf_utils": "lattice:term-brain"
+                "appscript": "lattice:term-brain"
             }
         }
     },

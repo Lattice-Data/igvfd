@@ -37,8 +37,7 @@
             "pattern": "^[a-z0-9\\-]+$",
             "uniqueKey": "lab:name",
             "submissionExample": {
-                "appscript": "john-doe",
-                "igvf_utils": "john-doe"
+                "appscript": "john-doe"
             }
         },
         "pi": {
@@ -48,8 +47,7 @@
             "type": "string",
             "linkTo": "User",
             "submissionExample": {
-                "appscript": "/users/ffc520df-7ed9-4769-a30d-143f0633cf5g/",
-                "igvf_utils": "/users/ffc520df-7ed9-4769-a30d-143f0633cf5g/"
+                "appscript": "/users/ffc520df-7ed9-4769-a30d-143f0633cf5g/"
             }
         },
         "institute_label": {
@@ -59,8 +57,7 @@
             "default": "",
             "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$|^$",
             "submissionExample": {
-                "appscript": "Stanford",
-                "igvf_utils": "Stanford"
+                "appscript": "Stanford"
             }
         }
     },

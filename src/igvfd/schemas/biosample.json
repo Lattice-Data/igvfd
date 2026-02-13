@@ -227,8 +227,7 @@
                 "linkTo": "ControlledTerm"
             },
             "submissionExample": {
-                "appscript": "[\"lattice:term-t-cell\"]",
-                "igvf_utils": "lattice:term-t-cell"
+                "appscript": "[\"lattice:term-t-cell\"]"
             }
         }
     },
