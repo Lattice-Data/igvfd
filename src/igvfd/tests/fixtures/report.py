@@ -11,7 +11,7 @@ def lookup_column_value_item():
         'award': {'project': 'Roadmap'},
         'status': 'current',
         '@id': '/experiments/ENCSR751ISO/',
-        '@type': ['Experiment', 'Dataset', 'Item'],
+        '@type': ['Experiment', 'FileSet', 'Item'],
         'biosample_ontology': {'term_name': 'midbrain'}
     }
     return item
@@ -26,6 +26,6 @@ def lookup_column_value_validate():
         'award.project': 'Roadmap',
         '@id': '/experiments/ENCSR751ISO/',
         'level.name': '',
-        '@type': 'Experiment,Dataset,Item'
+        '@type': 'Experiment,FileSet,Item'
     }
     return valid

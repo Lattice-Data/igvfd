@@ -154,7 +154,7 @@ class Item(snovault.Item):
         # antibody_lot
         'not pursued': ALLOW_CURRENT,
 
-        # dataset / experiment
+        # file_set / experiment
         'revoked': ALLOW_CURRENT,
 
         'archived': ALLOW_CURRENT,

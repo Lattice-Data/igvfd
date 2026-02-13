@@ -1,7 +1,7 @@
 {
-    "title": "Dataset",
-    "description": "Abstract schema for datasets.",
-    "$id": "/profiles/dataset.json",
+    "title": "File Set",
+    "description": "Abstract schema for file sets.",
+    "$id": "/profiles/file_set.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
     "required": [
@@ -35,5 +35,5 @@
     "exact_searchable_fields": [
         "@type"
     ],
-    "changelog": "/profiles/changelogs/dataset.md"
+    "changelog": "/profiles/changelogs/file_set.md"
 }

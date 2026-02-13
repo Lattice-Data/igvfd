@@ -34,6 +34,7 @@ ORDER = [
     'raw_matrix_file',
     'processed_matrix_file',
     'sequence_file_set',
+    'matrix_file_set',
 ]
 
 IS_ATTACHMENT = [
@@ -534,6 +535,9 @@ PHASE1_PIPELINES = {
     'sequence_file_set': [
         skip_rows_missing_all_keys('lab', 'library'),
     ],
+    'matrix_file_set': [
+        skip_rows_missing_all_keys('lab'),
+    ],
 }
 
 
@@ -580,6 +584,9 @@ PHASE2_PIPELINES = {
     ],
     'sequence_file_set': [
         skip_rows_missing_all_keys('lab', 'library'),
+    ],
+    'matrix_file_set': [
+        skip_rows_missing_all_keys('lab'),
     ],
 }
 
