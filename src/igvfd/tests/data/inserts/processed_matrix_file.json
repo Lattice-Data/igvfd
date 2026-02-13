@@ -4,6 +4,17 @@
         "md5sum": "9f86d081884c7d659a2feaa0c55ad015",
         "file_format": "h5ad",
         "s3_uri": "s3://lattice-test-data/matrix/processed-001.h5ad",
+        "feature_keys": [
+            "Ensembl gene ID",
+            "gene symbol"
+        ],
+        "observation_count": 11500,
+        "feature_counts": [
+            {
+                "feature_type": "gene",
+                "feature_count": 18000
+            }
+        ],
         "uuid": "e7f8a9b0-c1d2-3456-ef01-789012345678",
         "schema_version": "1",
         "status": "current",

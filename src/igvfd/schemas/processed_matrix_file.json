@@ -25,6 +25,9 @@
             "$ref": "mixins.json#/shared_status"
         },
         {
+            "$ref": "mixins.json#/matrix_shared"
+        },
+        {
             "$ref": "file.json#/properties"
         }
     ],

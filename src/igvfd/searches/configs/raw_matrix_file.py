@@ -10,6 +10,12 @@ def raw_matrix_file():
             'file_format': {
                 'title': 'File Format'
             },
+            'feature_keys': {
+                'title': 'Feature Keys'
+            },
+            'feature_counts.feature_type': {
+                'title': 'Feature Type'
+            },
             'no_file_available': {
                 'title': 'No File Available'
             },
@@ -41,6 +47,18 @@ def raw_matrix_file():
             },
             'file_format': {
                 'title': 'File Format'
+            },
+            'feature_keys': {
+                'title': 'Feature Keys'
+            },
+            'observation_count': {
+                'title': 'Observation Count'
+            },
+            'feature_counts.feature_type': {
+                'title': 'Feature Type'
+            },
+            'feature_counts.feature_count': {
+                'title': 'Feature Count'
             },
             's3_uri': {
                 'title': 'S3 URI'

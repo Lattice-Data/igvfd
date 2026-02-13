@@ -209,5 +209,62 @@
                 "igvf_utils": "john-doe:document01, /documents/ed53a041-bd66-4afc-938d-d75eeede26da/"
             }
         }
+    },
+    "matrix_shared": {
+        "feature_keys": {
+            "title": "Feature Keys",
+            "description": "The category of identifiers used as keys for matrix features.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Feature Key",
+                "type": "string",
+                "enum": [
+                    "Ensembl gene ID",
+                    "gene symbol",
+                    "antibody target",
+                    "genomic coordinates",
+                    "motif ID"
+                ]
+            }
+        },
+        "observation_count": {
+            "title": "Observation Count",
+            "description": "The number of observations in the matrix (for example, cell barcodes).",
+            "type": "integer",
+            "minimum": 0
+        },
+        "feature_counts": {
+            "title": "Feature Counts",
+            "description": "Count of features by feature type in the matrix.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Feature Count",
+                "type": "object",
+                "required": [
+                    "feature_type",
+                    "feature_count"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "feature_type": {
+                        "title": "Feature Type",
+                        "type": "string",
+                        "enum": [
+                            "gene",
+                            "peak",
+                            "transcription factor",
+                            "antibody capture"
+                        ]
+                    },
+                    "feature_count": {
+                        "title": "Feature Count",
+                        "type": "integer",
+                        "minimum": 0
+                    }
+                }
+            }
+        }
     }
 }

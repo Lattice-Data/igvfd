@@ -1,6 +1,6 @@
 {
-    "hash": "9dcbbd7da34cdc58f7ddba7c6ddccc2e",
-    "index_name": "processed_matrix_file_9dcbbd7d",
+    "hash": "013ecb22639753a072719dc8506f6c00",
+    "index_name": "processed_matrix_file_013ecb22",
     "item_type": "processed_matrix_file",
     "mapping": {
         "dynamic_templates": [
@@ -162,6 +162,21 @@
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
+                    "feature_counts": {
+                        "properties": {
+                            "feature_count": {
+                                "store": true,
+                                "type": "long"
+                            },
+                            "feature_type": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "feature_keys": {
+                        "type": "keyword"
+                    },
                     "file_format": {
                         "type": "keyword"
                     },
@@ -234,6 +249,10 @@
                     },
                     "notes": {
                         "type": "text"
+                    },
+                    "observation_count": {
+                        "store": true,
+                        "type": "long"
                     },
                     "s3_uri": {
                         "type": "keyword"
