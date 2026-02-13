@@ -1,0 +1,154 @@
+{
+    "title": "Matrix File Set",
+    "$id": "/profiles/matrix_file_set.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A set of matrix files produced from processing sequence data.",
+    "type": "object",
+    "required": [
+        "lab",
+        "experiment_ids"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "file_set.json#/properties"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "experiment_ids": {
+            "title": "Experiment IDs",
+            "description": "Lab-specific identifiers for the experiment(s) associated with this matrix file set.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Experiment ID",
+                "description": "A lab-specific experiment identifier.",
+                "type": "string"
+            },
+            "submissionExample": {
+                "appscript": "[\"EXP-2026-001\"]",
+                "igvf_utils": "EXP-2026-001"
+            }
+        },
+        "raw_matrix_files": {
+            "title": "Raw Matrix Files",
+            "description": "Raw matrix files in this set.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Raw Matrix File",
+                "description": "A raw matrix file.",
+                "comment": "See raw_matrix_file.json for available identifiers.",
+                "type": "string",
+                "linkTo": "RawMatrixFile"
+            },
+            "submissionExample": {
+                "appscript": "[\"john-doe:raw-matrix-001\"]",
+                "igvf_utils": "john-doe:raw-matrix-001"
+            }
+        },
+        "processed_matrix_files": {
+            "title": "Processed Matrix Files",
+            "description": "Processed matrix files in this set.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Processed Matrix File",
+                "description": "A processed matrix file.",
+                "comment": "See processed_matrix_file.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ProcessedMatrixFile"
+            },
+            "submissionExample": {
+                "appscript": "[\"john-doe:processed-matrix-001\"]",
+                "igvf_utils": "john-doe:processed-matrix-001"
+            }
+        },
+        "source_sequence_file_sets": {
+            "title": "Source Sequence File Sets",
+            "description": "The sequence file sets from which the matrix files in this set were derived.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Source Sequence File Set",
+                "description": "A sequence file set that is a source for this matrix file set.",
+                "comment": "See sequence_file_set.json for available identifiers.",
+                "type": "string",
+                "linkTo": "SequenceFileSet"
+            },
+            "submissionExample": {
+                "appscript": "[\"john-doe:sfs-001\"]",
+                "igvf_utils": "john-doe:sfs-001"
+            }
+        },
+        "software": {
+            "title": "Software",
+            "description": "Software used to generate the matrix files.",
+            "type": "string",
+            "submissionExample": {
+                "appscript": "Cell Ranger",
+                "igvf_utils": "Cell Ranger"
+            }
+        },
+        "software_version": {
+            "title": "Software Version",
+            "description": "Version of the software used.",
+            "type": "string",
+            "submissionExample": {
+                "appscript": "7.1.0",
+                "igvf_utils": "7.1.0"
+            }
+        },
+        "genome_assembly": {
+            "title": "Genome Assembly",
+            "description": "Genome assembly used for alignment.",
+            "type": "string",
+            "enum": [
+                "GRCh38",
+                "GRCm39"
+            ],
+            "submissionExample": {
+                "appscript": "GRCh38",
+                "igvf_utils": "GRCh38"
+            }
+        },
+        "genome_annotation": {
+            "title": "Genome Annotation",
+            "description": "Genome annotation version used.",
+            "type": "string",
+            "submissionExample": {
+                "appscript": "GENCODE v44",
+                "igvf_utils": "GENCODE v44"
+            }
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description",
+        "experiment_ids"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/matrix_file_set.md"
+}

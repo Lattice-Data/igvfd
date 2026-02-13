@@ -4,8 +4,8 @@ from snovault import (
     load_schema,
 )
 from snovault.util import Path
-from .base import (
-    Item,
+from .file_set import (
+    FileSet,
 )
 
 
@@ -16,7 +16,7 @@ from .base import (
         'description': 'Listing of sequence file sets',
     }
 )
-class SequenceFileSet(Item):
+class SequenceFileSet(FileSet):
     '''
     A set of sequence files produced from sequencing a library.
     Supports both Illumina multi-file layouts (read1/read2/read3/index1/index2)

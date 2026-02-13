@@ -10,6 +10,9 @@ def sequence_file():
             'file_format': {
                 'title': 'File Format'
             },
+            'no_file_available': {
+                'title': 'No File Available'
+            },
             'lab.title': {
                 'title': 'Lab'
             },
@@ -38,6 +41,12 @@ def sequence_file():
             },
             'file_format': {
                 'title': 'File Format'
+            },
+            's3_uri': {
+                'title': 'S3 URI'
+            },
+            'no_file_available': {
+                'title': 'No File Available'
             },
             'file_size': {
                 'title': 'File Size'

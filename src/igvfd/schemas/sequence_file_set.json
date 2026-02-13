@@ -23,6 +23,9 @@
         },
         {
             "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "file_set.json#/properties"
         }
     ],
     "dependentSchemas": {

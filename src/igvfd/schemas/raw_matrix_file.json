@@ -1,8 +1,8 @@
 {
-    "title": "Tabular File",
-    "$id": "/profiles/tabular_file.json",
+    "title": "Raw Matrix File",
+    "$id": "/profiles/raw_matrix_file.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "A file containing tabular data in CSV or TSV format.",
+    "description": "A file containing a raw matrix in H5 format.",
     "type": "object",
     "required": [
         "lab",
@@ -25,6 +25,9 @@
             "$ref": "mixins.json#/shared_status"
         },
         {
+            "$ref": "mixins.json#/matrix_shared"
+        },
+        {
             "$ref": "file.json#/properties"
         }
     ],
@@ -42,12 +45,11 @@
             "description": "The file format or extension of the file.",
             "type": "string",
             "enum": [
-                "csv",
-                "tsv"
+                "h5"
             ],
             "submissionExample": {
-                "appscript": "csv",
-                "igvf_utils": "csv"
+                "appscript": "h5",
+                "igvf_utils": "h5"
             }
         }
     },
@@ -58,5 +60,5 @@
     "exact_searchable_fields": [
         "@type"
     ],
-    "changelog": "/profiles/changelogs/tabular_file.md"
+    "changelog": "/profiles/changelogs/raw_matrix_file.md"
 }

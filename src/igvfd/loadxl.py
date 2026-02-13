@@ -31,7 +31,10 @@ ORDER = [
     'droplet_based_library',
     'sequence_file',
     'tabular_file',
+    'raw_matrix_file',
+    'processed_matrix_file',
     'sequence_file_set',
+    'matrix_file_set',
 ]
 
 IS_ATTACHMENT = [
@@ -495,9 +498,6 @@ PHASE1_PIPELINES = {
     'user': [
         remove_keys('lab', 'submits_for'),
     ],
-    'genetic_modification': [
-        skip_rows_missing_all_keys('modality'),
-    ],
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
@@ -517,13 +517,26 @@ PHASE1_PIPELINES = {
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
     'sequence_file': [
-        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format', 'derived_from'),
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
     ],
     'tabular_file': [
-        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
+    ],
+    'raw_matrix_file': [
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
+    ],
+    'processed_matrix_file': [
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
     ],
     'sequence_file_set': [
-        skip_rows_missing_all_keys('lab', 'library', 'run_cardinality'),
+        skip_rows_missing_all_keys('lab', 'library'),
+    ],
+    'matrix_file_set': [
+        skip_rows_missing_all_keys('lab'),
     ],
 }
 
@@ -538,9 +551,6 @@ PHASE1_PIPELINES = {
 PHASE2_PIPELINES = {
     'user': [
         skip_rows_missing_all_keys('lab', 'submits_for'),
-    ],
-    'genetic_modification': [
-        skip_rows_missing_all_keys('modality'),
     ],
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
@@ -564,10 +574,19 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('derived_from'),
     ],
     'tabular_file': [
-        skip_rows_missing_all_keys('lab', 'md5sum', 'file_format'),
+        skip_rows_missing_all_keys('derived_from'),
+    ],
+    'raw_matrix_file': [
+        skip_rows_missing_all_keys('derived_from'),
+    ],
+    'processed_matrix_file': [
+        skip_rows_missing_all_keys('derived_from'),
     ],
     'sequence_file_set': [
-        skip_rows_missing_all_keys('lab', 'library', 'run_cardinality'),
+        skip_rows_missing_all_keys('lab', 'library'),
+    ],
+    'matrix_file_set': [
+        skip_rows_missing_all_keys('lab'),
     ],
 }
 

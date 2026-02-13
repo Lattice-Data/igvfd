@@ -1,7 +1,7 @@
 {
-    "hash": "9dcbbd7da34cdc58f7ddba7c6ddccc2e",
-    "index_name": "sequence_file_9dcbbd7d",
-    "item_type": "sequence_file",
+    "hash": "ab59689fd98847a634d48702714e406e",
+    "index_name": "matrix_file_set_ab59689f",
+    "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
             {
@@ -155,19 +155,19 @@
                     "creation_timestamp": {
                         "type": "date"
                     },
-                    "derived_from": {
-                        "type": "keyword"
-                    },
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
-                    "file_format": {
+                    "experiment_ids": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
-                    "file_size": {
-                        "store": true,
-                        "type": "long"
+                    "genome_annotation": {
+                        "type": "keyword"
+                    },
+                    "genome_assembly": {
+                        "type": "keyword"
                     },
                     "lab": {
                         "properties": {
@@ -225,21 +225,260 @@
                         },
                         "type": "object"
                     },
-                    "md5sum": {
-                        "type": "keyword"
-                    },
-                    "no_file_available": {
-                        "store": true,
-                        "type": "boolean"
-                    },
                     "notes": {
                         "type": "text"
                     },
-                    "s3_uri": {
-                        "type": "keyword"
+                    "processed_matrix_files": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "derived_from": {
+                                "type": "keyword"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "feature_counts": {
+                                "properties": {
+                                    "feature_count": {
+                                        "store": true,
+                                        "type": "long"
+                                    },
+                                    "feature_type": {
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "feature_keys": {
+                                "type": "keyword"
+                            },
+                            "file_format": {
+                                "type": "keyword"
+                            },
+                            "file_size": {
+                                "store": true,
+                                "type": "long"
+                            },
+                            "lab": {
+                                "type": "keyword"
+                            },
+                            "md5sum": {
+                                "type": "keyword"
+                            },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "observation_count": {
+                                "store": true,
+                                "type": "long"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "raw_matrix_files": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "derived_from": {
+                                "type": "keyword"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "feature_counts": {
+                                "properties": {
+                                    "feature_count": {
+                                        "store": true,
+                                        "type": "long"
+                                    },
+                                    "feature_type": {
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "feature_keys": {
+                                "type": "keyword"
+                            },
+                            "file_format": {
+                                "type": "keyword"
+                            },
+                            "file_size": {
+                                "store": true,
+                                "type": "long"
+                            },
+                            "lab": {
+                                "type": "keyword"
+                            },
+                            "md5sum": {
+                                "type": "keyword"
+                            },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "observation_count": {
+                                "store": true,
+                                "type": "long"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "schema_version": {
                         "type": "keyword"
+                    },
+                    "software": {
+                        "type": "keyword"
+                    },
+                    "software_version": {
+                        "type": "keyword"
+                    },
+                    "source_sequence_file_sets": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "CRO_order": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "index1": {
+                                "type": "keyword"
+                            },
+                            "index2": {
+                                "type": "keyword"
+                            },
+                            "lab": {
+                                "type": "keyword"
+                            },
+                            "library": {
+                                "type": "keyword"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "read1": {
+                                "type": "keyword"
+                            },
+                            "read2": {
+                                "type": "keyword"
+                            },
+                            "read3": {
+                                "type": "keyword"
+                            },
+                            "run_cardinality": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sequencing_platform": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "trimmed_cram": {
+                                "type": "keyword"
+                            },
+                            "untrimmed_cram": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "status": {
                         "type": "keyword"

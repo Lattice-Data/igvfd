@@ -1,6 +1,6 @@
 {
-    "hash": "d68488fd03df52d9ee15a7079ace3809",
-    "index_name": "tabular_file_d68488fd",
+    "hash": "9dcbbd7da34cdc58f7ddba7c6ddccc2e",
+    "index_name": "tabular_file_9dcbbd7d",
     "item_type": "tabular_file",
     "mapping": {
         "dynamic_templates": [
@@ -228,8 +228,15 @@
                     "md5sum": {
                         "type": "keyword"
                     },
+                    "no_file_available": {
+                        "store": true,
+                        "type": "boolean"
+                    },
                     "notes": {
                         "type": "text"
+                    },
+                    "s3_uri": {
+                        "type": "keyword"
                     },
                     "schema_version": {
                         "type": "keyword"

@@ -32,7 +32,10 @@ pytest_plugins = [
     'igvfd.tests.fixtures.schemas.droplet_based_library',
     'igvfd.tests.fixtures.schemas.sequence_file',
     'igvfd.tests.fixtures.schemas.tabular_file',
+    'igvfd.tests.fixtures.schemas.raw_matrix_file',
+    'igvfd.tests.fixtures.schemas.processed_matrix_file',
     'igvfd.tests.fixtures.schemas.sequence_file_set',
+    'igvfd.tests.fixtures.schemas.matrix_file_set',
 ]
 
 

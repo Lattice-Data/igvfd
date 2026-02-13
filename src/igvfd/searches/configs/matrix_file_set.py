@@ -2,16 +2,19 @@ from snovault.elasticsearch.searches.configs import search_config
 
 
 @search_config(
-    name='TabularFile'
+    name='MatrixFileSet'
 )
-def tabular_file():
+def matrix_file_set():
     return {
         'facets': {
-            'file_format': {
-                'title': 'File Format'
+            'experiment_ids': {
+                'title': 'Experiment IDs'
             },
-            'no_file_available': {
-                'title': 'No File Available'
+            'software': {
+                'title': 'Software'
+            },
+            'genome_assembly': {
+                'title': 'Genome Assembly'
             },
             'lab.title': {
                 'title': 'Lab'
@@ -39,20 +42,29 @@ def tabular_file():
             'aliases': {
                 'title': 'Aliases'
             },
-            'file_format': {
-                'title': 'File Format'
+            'experiment_ids': {
+                'title': 'Experiment IDs'
             },
-            's3_uri': {
-                'title': 'S3 URI'
+            'raw_matrix_files': {
+                'title': 'Raw Matrix Files'
             },
-            'no_file_available': {
-                'title': 'No File Available'
+            'processed_matrix_files': {
+                'title': 'Processed Matrix Files'
             },
-            'file_size': {
-                'title': 'File Size'
+            'source_sequence_file_sets': {
+                'title': 'Source Sequence File Sets'
             },
-            'md5sum': {
-                'title': 'MD5sum'
+            'software': {
+                'title': 'Software'
+            },
+            'software_version': {
+                'title': 'Software Version'
+            },
+            'genome_assembly': {
+                'title': 'Genome Assembly'
+            },
+            'genome_annotation': {
+                'title': 'Genome Annotation'
             },
             'lab': {
                 'title': 'Lab'
