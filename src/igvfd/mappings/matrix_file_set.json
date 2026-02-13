@@ -1,6 +1,6 @@
 {
-    "hash": "88a24aa2dea76c3f83b8977df5dd1256",
-    "index_name": "matrix_file_set_88a24aa2",
+    "hash": "ab59689fd98847a634d48702714e406e",
+    "index_name": "matrix_file_set_ab59689f",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -158,6 +158,10 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "experiment_ids": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
                     },
                     "genome_annotation": {
                         "type": "keyword"

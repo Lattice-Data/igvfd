@@ -7,6 +7,9 @@ from snovault.elasticsearch.searches.configs import search_config
 def matrix_file_set():
     return {
         'facets': {
+            'experiment_ids': {
+                'title': 'Experiment IDs'
+            },
             'software': {
                 'title': 'Software'
             },
@@ -38,6 +41,9 @@ def matrix_file_set():
             },
             'aliases': {
                 'title': 'Aliases'
+            },
+            'experiment_ids': {
+                'title': 'Experiment IDs'
             },
             'raw_matrix_files': {
                 'title': 'Raw Matrix Files'

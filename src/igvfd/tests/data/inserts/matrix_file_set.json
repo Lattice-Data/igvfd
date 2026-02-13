@@ -1,6 +1,9 @@
 [
     {
         "lab": "teri-klein",
+        "experiment_ids": [
+            "EXP-2026-RAW-001"
+        ],
         "raw_matrix_files": [
             "c5d6e7f8-a9b0-1234-cdef-567890123456"
         ],
@@ -21,6 +24,10 @@
     },
     {
         "lab": "teri-klein",
+        "experiment_ids": [
+            "EXP-2026-PROC-001",
+            "EXP-2026-PROC-002"
+        ],
         "processed_matrix_files": [
             "e7f8a9b0-c1d2-3456-ef01-789012345678"
         ],

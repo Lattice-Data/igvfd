@@ -5,7 +5,8 @@
     "description": "A set of matrix files produced from processing sequence data.",
     "type": "object",
     "required": [
-        "lab"
+        "lab",
+        "experiment_ids"
     ],
     "identifyingProperties": [
         "uuid",
@@ -29,6 +30,22 @@
     "properties": {
         "schema_version": {
             "default": "1"
+        },
+        "experiment_ids": {
+            "title": "Experiment IDs",
+            "description": "Lab-specific identifiers for the experiment(s) associated with this matrix file set.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Experiment ID",
+                "description": "A lab-specific experiment identifier.",
+                "type": "string"
+            },
+            "submissionExample": {
+                "appscript": "[\"EXP-2026-001\"]",
+                "igvf_utils": "EXP-2026-001"
+            }
         },
         "raw_matrix_files": {
             "title": "Raw Matrix Files",
@@ -127,7 +144,8 @@
     },
     "fuzzy_searchable_fields": [
         "aliases",
-        "description"
+        "description",
+        "experiment_ids"
     ],
     "exact_searchable_fields": [
         "@type"
