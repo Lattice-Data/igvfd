@@ -44,8 +44,7 @@
                 "pattern": "^(?:teri-klein|lattice):[a-zA-Z\\d_$.+!*,()'-]+(?:\\s[a-zA-Z\\d_$.+!*,()'-]+)*$"
             },
             "submissionExample": {
-                "appscript": "[\"john-doe:aliases01\", \"john-doe:aliases02\"]",
-                "igvf_utils": "john-doe:aliases01, john-doe:aliases02"
+                "appscript": "[\"john-doe:aliases01\", \"john-doe:aliases02\"]"
             }
         },
         "creation_timestamp": {
@@ -74,8 +73,7 @@
             "type": "string",
             "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$",
             "submissionExample": {
-                "appscript": "this is a submitter comment",
-                "igvf_utils": "this is a submitter comment"
+                "appscript": "this is a submitter comment"
             }
         },
         "description": {
@@ -84,8 +82,7 @@
             "type": "string",
             "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$",
             "submissionExample": {
-                "appscript": "this is a description",
-                "igvf_utils": "this is a description"
+                "appscript": "this is a description"
             }
         }
     },
@@ -111,8 +108,7 @@
             "linkTo": "Lab",
             "linkSubmitsFor": true,
             "submissionExample": {
-                "appscript": "/labs/john-doe/",
-                "igvf_utils": "/labs/john-doe/"
+                "appscript": "/labs/john-doe/"
             }
         }
     },
@@ -171,9 +167,7 @@
                     "minimum": 0
                 }
             },
-            "submissionExample": {
-                "igvf_utils": "{\"path\":\"/path/to/attachment.pdf\"}"
-            }
+            "submissionExample": {}
         }
     },
     "url": {
@@ -185,8 +179,7 @@
             "type": "string",
             "format": "uri",
             "submissionExample": {
-                "appscript": "https://github.com/IGVF-DACC/igvfd",
-                "igvf_utils": "https://github.com/IGVF-DACC/igvfd"
+                "appscript": "https://github.com/IGVF-DACC/igvfd"
             }
         }
     },
@@ -205,8 +198,7 @@
                 "linkTo": "Document"
             },
             "submissionExample": {
-                "appscript": "[\"john-doe:document01\", \"/documents/ed53a041-bd66-4afc-938d-d75eeede26da/\"]",
-                "igvf_utils": "john-doe:document01, /documents/ed53a041-bd66-4afc-938d-d75eeede26da/"
+                "appscript": "[\"john-doe:document01\", \"/documents/ed53a041-bd66-4afc-938d-d75eeede26da/\"]"
             }
         }
     },
@@ -264,6 +256,25 @@
                         "minimum": 0
                     }
                 }
+            }
+        }
+    },
+    "intended_cell_types": {
+        "intended_cell_types": {
+            "title": "Intended Cell Types",
+            "description": "Cell types intended to be studied or captured in this sample.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Intended Cell Type",
+                "description": "An intended cell type.",
+                "comment": "See controlled_term.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ControlledTerm"
+            },
+            "submissionExample": {
+                "appscript": "[\"lattice:term-t-cell\"]"
             }
         }
     }

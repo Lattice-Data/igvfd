@@ -27,6 +27,9 @@
         },
         {
             "$ref": "biosample.json#/properties"
+        },
+        {
+            "$ref": "mixins.json#/intended_cell_types"
         }
     ],
     "properties": {
@@ -55,26 +58,7 @@
             "type": "string",
             "linkTo": "ControlledTerm",
             "submissionExample": {
-                "appscript": "lattice:term-brain",
-                "igvf_utils": "lattice:term-brain"
-            }
-        },
-        "intended_cell_types": {
-            "title": "Intended Cell Types",
-            "description": "Cell types intended to be studied or captured in this sample.",
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": {
-                "title": "Intended Cell Type",
-                "description": "An intended cell type.",
-                "comment": "See controlled_term.json for available identifiers.",
-                "type": "string",
-                "linkTo": "ControlledTerm"
-            },
-            "submissionExample": {
-                "appscript": "[\"lattice:term-t-cell\"]",
-                "igvf_utils": "lattice:term-t-cell"
+                "appscript": "lattice:term-brain"
             }
         }
     },

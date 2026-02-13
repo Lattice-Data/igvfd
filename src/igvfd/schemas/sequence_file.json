@@ -46,8 +46,7 @@
                 "cram"
             ],
             "submissionExample": {
-                "appscript": "fastq",
-                "igvf_utils": "fastq"
+                "appscript": "fastq"
             }
         }
     },

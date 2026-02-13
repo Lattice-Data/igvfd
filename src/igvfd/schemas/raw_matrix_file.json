@@ -48,8 +48,7 @@
                 "h5"
             ],
             "submissionExample": {
-                "appscript": "h5",
-                "igvf_utils": "h5"
+                "appscript": "h5"
             }
         }
     },
