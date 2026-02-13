@@ -25,17 +25,14 @@
             "$ref": "mixins.json#/shared_status"
         }
     ],
-    "allOf": [
-        {
+    "dependentSchemas": {
+        "no_file_available": {
             "if": {
                 "properties": {
                     "no_file_available": {
                         "const": true
                     }
-                },
-                "required": [
-                    "no_file_available"
-                ]
+                }
             },
             "then": {
                 "not": {
@@ -50,7 +47,7 @@
                 ]
             }
         }
-    ],
+    },
     "properties": {
         "schema_version": {
             "default": "1"

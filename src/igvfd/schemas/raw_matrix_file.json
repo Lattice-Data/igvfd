@@ -31,32 +31,11 @@
             "$ref": "file.json#/properties"
         }
     ],
-    "allOf": [
-        {
-            "if": {
-                "properties": {
-                    "no_file_available": {
-                        "const": true
-                    }
-                },
-                "required": [
-                    "no_file_available"
-                ]
-            },
-            "then": {
-                "not": {
-                    "required": [
-                        "s3_uri"
-                    ]
-                }
-            },
-            "else": {
-                "required": [
-                    "s3_uri"
-                ]
-            }
-        }
-    ],
+    "dependentSchemas": {
+        "$merge": [
+            "file.json#/dependentSchemas"
+        ]
+    },
     "properties": {
         "schema_version": {
             "default": "1"
