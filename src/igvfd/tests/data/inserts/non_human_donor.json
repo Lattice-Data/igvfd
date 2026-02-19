@@ -2,6 +2,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Alligator mississippiensis",
+        "sex": "female",
         "uuid": "e6ffa078-331a-41b3-8d1e-f4e2718bb1f2",
         "status": "current",
         "aliases": [
@@ -12,6 +13,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Anolis carolinensis",
+        "sex": "male",
         "uuid": "148b81d1-aaa6-4770-8dbb-1ec6ae66419b",
         "status": "current",
         "aliases": [
@@ -22,6 +24,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Beroe ovata",
+        "sex": "hermaphrodite",
         "uuid": "03321663-14fd-4406-aac6-e6bede12e8b4",
         "status": "current",
         "aliases": [
@@ -32,6 +35,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Biomphalaria glabrata",
+        "sex": "hermaphrodite",
         "uuid": "1df27816-af5c-4277-b4b6-bbabd9b8e612",
         "status": "current",
         "aliases": [
@@ -42,6 +46,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Chrysemys picta bellii",
+        "sex": "female",
         "uuid": "133e9512-83e0-41b9-be35-5489e180c2b5",
         "status": "current",
         "aliases": [
@@ -52,6 +57,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Ciona intestinalis",
+        "sex": "hermaphrodite",
         "uuid": "62c2c6fb-7d22-44db-bc1b-6b5008bee53d",
         "status": "current",
         "aliases": [
@@ -62,6 +68,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Coturnix japonica",
+        "sex": "female",
         "uuid": "4ec6aaae-cbf3-45d9-9b8d-12486ce77edb",
         "status": "current",
         "aliases": [
@@ -72,6 +79,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Danio rerio",
+        "sex": "male",
         "uuid": "18d07a81-70dd-46b0-ba86-761ed3107b0a",
         "status": "current",
         "aliases": [
@@ -82,6 +90,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Euprymna berryi",
+        "sex": "female",
         "uuid": "56fd9e93-34c7-4e9c-9075-93045c4c9964",
         "status": "current",
         "aliases": [
@@ -92,6 +101,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Hydroides elegans",
+        "sex": "hermaphrodite",
         "uuid": "1ba7e4b0-777b-4232-8a5d-430dee03ee3d",
         "status": "current",
         "aliases": [
@@ -102,6 +112,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Leucoraja erinaceus",
+        "sex": "male",
         "uuid": "79433b5d-bc8e-4159-98e0-f710335c6e17",
         "status": "current",
         "aliases": [
@@ -112,6 +123,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Limulus polyphemus",
+        "sex": "female",
         "uuid": "f44471e4-755b-4da3-99bc-3f2d0add0814",
         "status": "current",
         "aliases": [
@@ -122,6 +134,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Littorina littorea",
+        "sex": "male",
         "uuid": "f47998f6-5ce0-4a25-95c8-8fb510a9d7ad",
         "status": "current",
         "aliases": [
@@ -132,6 +145,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Mnemiopsis leidyi",
+        "sex": "hermaphrodite",
         "uuid": "cb5e1d4c-32cb-42f5-a474-e00a38fbfdc1",
         "status": "current",
         "aliases": [
@@ -142,6 +156,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Monodelphis domestica",
+        "sex": "female",
         "uuid": "21f901d8-a934-4304-8f3f-109ae5d13bda",
         "status": "current",
         "aliases": [
@@ -152,6 +167,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Mus musculus",
+        "sex": "male",
         "uuid": "f6a7b8c9-d0e1-2345-fa16-678901234567",
         "status": "current",
         "aliases": [
@@ -162,6 +178,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Myxine glutinosa",
+        "sex": "hermaphrodite",
         "uuid": "8e30b7ea-506a-4d5f-befd-2aa3f2b3ce33",
         "status": "current",
         "aliases": [
@@ -172,6 +189,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Nematostella vectensis",
+        "sex": "female",
         "uuid": "4156eca3-7e27-4cbb-b2db-c59646fbea1b",
         "status": "current",
         "aliases": [
@@ -182,6 +200,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Nothobranchius furzeri",
+        "sex": "male",
         "uuid": "b96277f0-05eb-4c55-8373-a4598b1aa6e4",
         "status": "current",
         "aliases": [
@@ -192,6 +211,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Octopus bimaculoides",
+        "sex": "female",
         "uuid": "0e347bd1-26a1-4aae-979b-d55d06e8f1f3",
         "status": "current",
         "aliases": [
@@ -202,6 +222,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Parhyale hawaiensis",
+        "sex": "male",
         "uuid": "80669816-9bb1-4a61-a4f3-ddb00c693194",
         "status": "current",
         "aliases": [
@@ -212,6 +233,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Patiria miniata",
+        "sex": "female",
         "uuid": "2975d16d-0037-49e4-a558-d742facfd34f",
         "status": "current",
         "aliases": [
@@ -222,6 +244,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Petromyzon marinus",
+        "sex": "male",
         "uuid": "fa79b903-f5e1-44b6-863a-bd7c3fe9116a",
         "status": "current",
         "aliases": [
@@ -232,6 +255,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Platynereis megalops",
+        "sex": "female",
         "uuid": "45214917-c5af-4910-988f-f6cfb0c385dc",
         "status": "current",
         "aliases": [
@@ -242,6 +266,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Ranitomeya imitator",
+        "sex": "male",
         "uuid": "78d62fa7-d858-4760-8e97-09cc88af0523",
         "status": "current",
         "aliases": [
@@ -252,6 +277,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Saccoglossus kowalevskii",
+        "sex": "female",
         "uuid": "7dc6eb37-ede3-49fa-92b0-185760a95130",
         "status": "current",
         "aliases": [
@@ -262,6 +288,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Sclerodactyla briareus",
+        "sex": "male",
         "uuid": "3314940d-556e-4f21-b1c1-433550bae1f8",
         "status": "current",
         "aliases": [
@@ -272,6 +299,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Sycon ciliatum",
+        "sex": "hermaphrodite",
         "uuid": "f46634f4-a5de-44bc-9c97-0f0f45d35c01",
         "status": "current",
         "aliases": [
@@ -282,6 +310,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Turritopsis dohrnii",
+        "sex": "female",
         "uuid": "0527a0b7-ae9b-4550-8558-aa002624a9f5",
         "status": "current",
         "aliases": [
@@ -292,6 +321,7 @@
     {
         "lab": "teri-klein",
         "taxa": "Xenopus tropicalis",
+        "sex": "male",
         "uuid": "440a16d2-0ede-48b0-aded-b9c981243c21",
         "status": "current",
         "aliases": [

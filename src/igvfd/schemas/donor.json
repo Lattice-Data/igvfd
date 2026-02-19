@@ -32,6 +32,11 @@
             "title": "Taxa",
             "description": "The species of the organism.",
             "type": "string"
+        },
+        "sex": {
+            "title": "Sex",
+            "description": "Biological sex of the donor.",
+            "type": "string"
         }
     },
     "fuzzy_searchable_fields": [

@@ -45,10 +45,10 @@
             "type": "string",
             "default": "unspecified",
             "enum": [
-                "male",
                 "female",
-                "unspecified",
-                "mixed"
+                "male",
+                "mixed",
+                "unspecified"
             ]
         },
         "ethnicity": {
