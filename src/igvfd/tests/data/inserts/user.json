@@ -147,5 +147,236 @@
         "aliases": [
             "lattice:user-jennifer-zamanian"
         ]
+    },
+    {
+        "email": "bwang@lattice.edu",
+        "first_name": "Bo",
+        "last_name": "Wang",
+        "lab": "/labs/bo-wang/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "48cffec9-caa9-4100-8f70-47ec14961526",
+        "aliases": [
+            "lattice:user-bo-wang"
+        ]
+    },
+    {
+        "email": "jchaffer@lattice.edu",
+        "first_name": "Jim",
+        "last_name": "Chaffer",
+        "lab": "/labs/teri-klein/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Lab Member",
+        "status": "current",
+        "uuid": "373c027a-53e8-45f3-852a-94ea5be43a69",
+        "aliases": [
+            "lattice:user-jim-chaffer"
+        ],
+        "submits_for": [
+            "/labs/teri-klein/"
+        ]
+    },
+    {
+        "email": "psims@lattice.edu",
+        "first_name": "Peter",
+        "last_name": "Sims",
+        "lab": "/labs/peter-sims/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "051a71e3-d8fb-48fd-8355-3b9ad0558ef6",
+        "aliases": [
+            "lattice:user-peter-sims"
+        ]
+    },
+    {
+        "email": "acalifano@lattice.edu",
+        "first_name": "Andrea",
+        "last_name": "Califano",
+        "lab": "/labs/andrea-califano/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "33b5a253-28fd-495c-bc9a-7d0314abe92c",
+        "aliases": [
+            "lattice:user-andrea-califano"
+        ]
+    },
+    {
+        "email": "hmarlow@lattice.edu",
+        "first_name": "Heather",
+        "last_name": "Marlow",
+        "lab": "/labs/heather-marlow/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "77229208-8015-411a-953c-797e4125eab5",
+        "aliases": [
+            "lattice:user-heather-marlow"
+        ]
+    },
+    {
+        "email": "agillis@lattice.edu",
+        "first_name": "Andrew",
+        "last_name": "Gillis",
+        "lab": "/labs/andrew-gillis/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "78dd4bb7-e0a9-4c3c-8365-00099136a09b",
+        "aliases": [
+            "lattice:user-andrew-gillis"
+        ]
+    },
+    {
+        "email": "rplatt@lattice.edu",
+        "first_name": "Randall",
+        "last_name": "Platt",
+        "lab": "/labs/randall-platt/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "f3d6e083-df14-4b16-a074-e02fb840135d",
+        "aliases": [
+            "lattice:user-randall-platt"
+        ]
+    },
+    {
+        "email": "jweissman@lattice.edu",
+        "first_name": "Jonathan",
+        "last_name": "Weissman",
+        "lab": "/labs/jonathan-weissman/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "4e7f868f-f0a4-4869-8cb7-0e184c941db0",
+        "aliases": [
+            "lattice:user-jonathan-weissman"
+        ]
+    },
+    {
+        "email": "nhamazaki@lattice.edu",
+        "first_name": "Nobuhiko",
+        "last_name": "Hamazaki",
+        "lab": "/labs/nobuhiko-hamazaki/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "36129503-15cd-4fdd-99d1-e5b8981d3faf",
+        "aliases": [
+            "lattice:user-nobuhiko-hamazaki"
+        ]
+    },
+    {
+        "email": "psingh@lattice.edu",
+        "first_name": "Param",
+        "last_name": "Singh",
+        "lab": "/labs/param-singh/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "41a22a18-597e-4c5f-ae04-87be78355c89",
+        "aliases": [
+            "lattice:user-param-singh"
+        ]
+    },
+    {
+        "email": "jshendure@lattice.edu",
+        "first_name": "Jay",
+        "last_name": "Shendure",
+        "lab": "/labs/jay-shendure/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "f3d4429a-9dd5-4a9d-9f39-762e82ef7038",
+        "aliases": [
+            "lattice:user-jay-shendure"
+        ]
+    },
+    {
+        "email": "mward@lattice.edu",
+        "first_name": "Michael",
+        "last_name": "Ward",
+        "lab": "/labs/michael-ward/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "47640909-85c0-475c-9cde-b5efa1200084",
+        "aliases": [
+            "lattice:user-michael-ward"
+        ],
+        "submits_for": [
+            "/labs/michael-ward/"
+        ]
+    },
+    {
+        "email": "amarson@lattice.edu",
+        "first_name": "Alex",
+        "last_name": "Marson",
+        "lab": "/labs/alex-marson/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "9be576c0-5b57-43d8-aa42-7e93bb17ac43",
+        "aliases": [
+            "lattice:user-alex-marson"
+        ]
+    },
+    {
+        "email": "ctrapnell@lattice.edu",
+        "first_name": "Cole",
+        "last_name": "Trapnell",
+        "lab": "/labs/cole-trapnell/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "fb8f8993-1ae4-434b-88c6-88da1ef4b68c",
+        "aliases": [
+            "lattice:user-cole-trapnell"
+        ]
+    },
+    {
+        "email": "jthiagarajah@lattice.edu",
+        "first_name": "Jay",
+        "last_name": "Thiagarajah",
+        "lab": "/labs/jay-thiagarajah/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "bf823a55-4cf6-4a81-943c-5d620f097d73",
+        "aliases": [
+            "lattice:user-jay-thiagarajah"
+        ]
     }
 ]
