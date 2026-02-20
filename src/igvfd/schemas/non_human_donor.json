@@ -27,6 +27,87 @@
             "$ref": "donor.json#/properties"
         }
     ],
+    "dependentSchemas": {
+        "taxa": {
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "taxa": {
+                                "enum": [
+                                    "Alligator mississippiensis",
+                                    "Anolis carolinensis",
+                                    "Chrysemys picta bellii",
+                                    "Coturnix japonica",
+                                    "Danio rerio",
+                                    "Euprymna berryi",
+                                    "Leucoraja erinaceus",
+                                    "Limulus polyphemus",
+                                    "Littorina littorea",
+                                    "Monodelphis domestica",
+                                    "Mus musculus",
+                                    "Nematostella vectensis",
+                                    "Nothobranchius furzeri",
+                                    "Octopus bimaculoides",
+                                    "Parhyale hawaiensis",
+                                    "Patiria miniata",
+                                    "Petromyzon marinus",
+                                    "Platynereis megalops",
+                                    "Ranitomeya imitator",
+                                    "Saccoglossus kowalevskii",
+                                    "Sclerodactyla briareus",
+                                    "Turritopsis dohrnii",
+                                    "Xenopus tropicalis"
+                                ]
+                            }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "sex": {
+                                "enum": [
+                                    "female",
+                                    "male",
+                                    "mixed",
+                                    "unspecified"
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "taxa": {
+                                "enum": [
+                                    "Beroe ovata",
+                                    "Biomphalaria glabrata",
+                                    "Ciona intestinalis",
+                                    "Hydroides elegans",
+                                    "Mnemiopsis leidyi",
+                                    "Myxine glutinosa",
+                                    "Sycon ciliatum"
+                                ]
+                            }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "sex": {
+                                "enum": [
+                                    "female",
+                                    "hermaphrodite",
+                                    "male",
+                                    "mixed",
+                                    "unspecified"
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
     "properties": {
         "schema_version": {
             "default": "1"
@@ -36,35 +117,50 @@
             "type": "string",
             "description": "The species of the organism.",
             "enum": [
-                "Mus musculus",
-                "Ciona intestinalis",
-                "Petromyzon marinus",
-                "Nematostella vectensis",
-                "Octopus bimaculoides",
-                "Patiria miniata",
-                "Leucoraja erinaceus",
-                "Sycon ciliatum",
-                "Saccoglossus kowalevskii",
-                "Biomphalaria glabrata",
-                "Limulus polyphemus",
-                "Beroe ovata",
-                "Mnemiopsis leidyi",
-                "Turritopsis dohrnii",
-                "Parhyale hawaiensis",
-                "Platynereis megalops",
-                "Hydroides elegans",
-                "Littorina littorea",
-                "Sclerodactyla briareus",
-                "Myxine glutinosa",
-                "Euprymna berryi",
-                "Xenopus tropicalis",
-                "Nothobranchius furzeri",
-                "Coturnix japonica",
-                "Anolis carolinensis",
                 "Alligator mississippiensis",
+                "Anolis carolinensis",
+                "Beroe ovata",
+                "Biomphalaria glabrata",
                 "Chrysemys picta bellii",
+                "Ciona intestinalis",
+                "Coturnix japonica",
+                "Danio rerio",
+                "Euprymna berryi",
+                "Hydroides elegans",
+                "Leucoraja erinaceus",
+                "Limulus polyphemus",
+                "Littorina littorea",
+                "Mnemiopsis leidyi",
+                "Monodelphis domestica",
+                "Mus musculus",
+                "Myxine glutinosa",
+                "Nematostella vectensis",
+                "Nothobranchius furzeri",
+                "Octopus bimaculoides",
+                "Parhyale hawaiensis",
+                "Patiria miniata",
+                "Petromyzon marinus",
+                "Platynereis megalops",
                 "Ranitomeya imitator",
-                "Monodelphis domestica"
+                "Saccoglossus kowalevskii",
+                "Sclerodactyla briareus",
+                "Sycon ciliatum",
+                "Turritopsis dohrnii",
+                "Xenopus tropicalis"
+            ]
+        },
+        "sex": {
+            "title": "Sex",
+            "description": "Biological sex of the donor.",
+            "type": "string",
+            "default": "unspecified",
+            "comment": "Allowed values depend on taxa. Gonochoristic species allow female, male, mixed, unspecified. Hermaphroditic species additionally allow hermaphrodite. This property is affected by dependencies. See dependentSchemas.",
+            "enum": [
+                "female",
+                "hermaphrodite",
+                "male",
+                "mixed",
+                "unspecified"
             ]
         }
     },
