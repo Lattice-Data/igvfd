@@ -1,6 +1,6 @@
 {
-    "hash": "00bcc24feebddce9855083209cf873a7",
-    "index_name": "tissue_00bcc24f",
+    "hash": "a21405499b252f5f8721eafd1c883dd9",
+    "index_name": "tissue_a2140549",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -465,9 +465,6 @@
                         "type": "float"
                     },
                     "thickness_units": {
-                        "type": "keyword"
-                    },
-                    "treatment": {
                         "type": "keyword"
                     },
                     "uuid": {

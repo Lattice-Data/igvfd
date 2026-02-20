@@ -1,0 +1,63 @@
+[
+    {
+        "lab": "teri-klein",
+        "condition": "temperature",
+        "value": 37,
+        "units": "celsius",
+        "uuid": "42dfbf07-39d8-43b5-8b14-d3b863162937",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-temp-37c"
+        ],
+        "description": "Standard mammalian culture temperature."
+    },
+    {
+        "lab": "teri-klein",
+        "condition": "pH",
+        "value": 7.4,
+        "units": "pH units",
+        "uuid": "ca5bdae0-3a17-4469-a95e-271d078e9476",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-ph-7.4"
+        ],
+        "description": "Physiological pH."
+    },
+    {
+        "lab": "teri-klein",
+        "condition": "oxygen level",
+        "value": 5,
+        "units": "percent",
+        "uuid": "ef5245ac-a1bc-41d9-bfb6-f0deca948a02",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-hypoxia-5pct"
+        ],
+        "description": "Hypoxic culture condition."
+    },
+    {
+        "lab": "teri-klein",
+        "condition": "diet",
+        "text_value": "high fat diet",
+        "uuid": "b4efe4b2-f580-46b4-8478-99f337db3116",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-high-fat-diet"
+        ]
+    },
+    {
+        "lab": "teri-klein",
+        "condition": "smoking status",
+        "text_value": "current smoker",
+        "uuid": "bfc9b35d-eb7d-40d0-87d9-8dc388519c6d",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-current-smoker"
+        ]
+    }
+]

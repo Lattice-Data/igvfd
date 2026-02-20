@@ -1,6 +1,6 @@
 {
-    "hash": "092fc94c2b9d247f932f01d740318206",
-    "index_name": "droplet_based_library_092fc94c",
+    "hash": "ac4ccb6d09e82face43453ee879f02f3",
+    "index_name": "droplet_based_library_ac4ccb6d",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -350,9 +350,6 @@
                                 "type": "float"
                             },
                             "thickness_units": {
-                                "type": "keyword"
-                            },
-                            "treatment": {
                                 "type": "keyword"
                             },
                             "uuid": {

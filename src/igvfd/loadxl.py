@@ -21,6 +21,7 @@ ORDER = [
     'access_key',
     'controlled_term',
     'genetic_modification',
+    'experimental_condition',
     'human_donor',
     'non_human_donor',
     'tissue',
@@ -498,6 +499,9 @@ PHASE1_PIPELINES = {
     'user': [
         remove_keys('lab', 'submits_for'),
     ],
+    'experimental_condition': [
+        skip_rows_missing_all_keys('lab', 'condition'),
+    ],
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
     ],
@@ -551,6 +555,9 @@ PHASE1_PIPELINES = {
 PHASE2_PIPELINES = {
     'user': [
         skip_rows_missing_all_keys('lab', 'submits_for'),
+    ],
+    'experimental_condition': [
+        skip_rows_missing_all_keys('lab', 'condition'),
     ],
     'tissue': [
         skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),

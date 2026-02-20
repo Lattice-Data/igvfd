@@ -96,13 +96,6 @@
                 "nucleus"
             ]
         },
-        "treatment": {
-            "title": "Treatment",
-            "description": "Treatment applied to this biosample.",
-            "comment": "See treatment.json for available identifiers.",
-            "type": "string",
-            "linkTo": "Treatment"
-        },
         "genetic_modification": {
             "title": "Genetic Modification",
             "description": "Genetic modification applied to this biosample.",

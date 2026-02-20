@@ -1,6 +1,6 @@
 {
-    "hash": "a547f24f0aa2dab49a9352a4193bd7b8",
-    "index_name": "in_vivo_system_a547f24f",
+    "hash": "a09777beae61270a6d17d8888bd98c30",
+    "index_name": "in_vivo_system_a09777be",
     "item_type": "in_vivo_system",
     "mapping": {
         "dynamic_templates": [
@@ -619,9 +619,6 @@
                         "type": "keyword"
                     },
                     "suspension_type": {
-                        "type": "keyword"
-                    },
-                    "treatment": {
                         "type": "keyword"
                     },
                     "uuid": {

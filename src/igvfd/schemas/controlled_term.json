@@ -2,7 +2,7 @@
     "title": "Controlled Term",
     "$id": "/profiles/controlled_term.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "A controlled vocabulary term from biological ontologies for sample classification, experimental conditions, and metadata annotation.",
+    "description": "A controlled vocabulary term from biological ontologies for sample classification and metadata annotation.",
     "type": "object",
     "required": [
         "term_id",
