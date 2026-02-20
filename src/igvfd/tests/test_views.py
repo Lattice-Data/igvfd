@@ -102,8 +102,13 @@ def test_json_basic_auth(anonhtmltestapp):
 def test_load_workbook(workbook, testapp, item_type, length):
     # testdata must come before testapp in the funcargs list for their
     # savepoints to be correctly ordered.
+    # Inserts under tests/data/inserts/*.json are loaded by the workbook fixture;
+    # this asserts each collection has the same number of items as in its insert file.
     res = testapp.get('/%s/?limit=all' % item_type).maybe_follow(status=200)
-    assert len(res.json['@graph']) == length
+    got = len(res.json['@graph'])
+    assert got == length, (
+        'Collection %r: expected %d items (from insert file), got %d' % (item_type, length, got)
+    )
 
 
 def test_collection_limit(workbook, testapp):
