@@ -28,5 +28,20 @@
             "lattice:sfs-ultima-untrimmed-001"
         ],
         "description": "Test Ultima single-end sequence file set"
+    },
+    {
+        "lab": "teri-klein",
+        "library": "6f708192-0314-2345-f012-666666666666",
+        "run_cardinality": "single-end",
+        "read1": "81920314-2536-4567-1234-888888888888",
+        "sequencing_platform": "Illumina NextSeq 1000",
+        "CRO_order": "AN00012346",
+        "uuid": "a1415264-7586-7890-4567-aaaaaaaaaaaa",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sfs-treated-tissue-library"
+        ],
+        "description": "Sequence file set from library on treated tissue (exercises sample→library→set chain)"
     }
 ]

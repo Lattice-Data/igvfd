@@ -90,3 +90,14 @@ def controlled_term_hancestro(testapp):
         'status': 'current',
     }
     return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def controlled_term_chebi(testapp):
+    item = {
+        'term_id': 'CHEBI:15377',
+        'term_name': 'water',
+        'ontology_source': 'CHEBI',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]

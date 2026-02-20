@@ -56,5 +56,30 @@
             "lattice:term-han-chinese",
             "lattice:term-hancestro-0000001"
         ]
+    },
+    {
+        "term_id": "CHEBI:27300",
+        "term_name": "dexamethasone",
+        "ontology_source": "CHEBI",
+        "definition": "A synthetic glucocorticoid used as anti-inflammatory agent.",
+        "uuid": "e4a5b6c7-d8e9-4012-bcde-567890123456",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-dexamethasone",
+            "lattice:term-chebi-27300"
+        ]
+    },
+    {
+        "term_id": "UniProt:P12345",
+        "term_name": "Example protein",
+        "ontology_source": "UniProt",
+        "definition": "Example UniProt entry for treatment reference.",
+        "uuid": "e5b6c7d8-e9f0-4123-cdef-678901234567",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-uniprot-example"
+        ]
     }
 ]

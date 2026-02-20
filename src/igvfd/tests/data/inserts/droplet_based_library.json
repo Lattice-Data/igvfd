@@ -72,5 +72,19 @@
             "TCR"
         ],
         "library_cardinality": "dual"
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "4d5e6f70-8192-0123-def0-444444444444"
+        ],
+        "uuid": "70819203-1425-3456-0123-777777777777",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-in-vitro-treated"
+        ],
+        "description": "Droplet library from in vitro system with treatments",
+        "library_cardinality": "single"
     }
 ]

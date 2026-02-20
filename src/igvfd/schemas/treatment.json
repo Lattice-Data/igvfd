@@ -1,0 +1,47 @@
+{
+    "title": "Treatment",
+    "$id": "/profiles/treatment.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Treatment applied to biological samples or systems. A single ChEBI or UniProt controlled term for the treatment agent (no concentration, duration, or order).",
+    "type": "object",
+    "required": [
+        "lab",
+        "ontological_term"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "ontological_term": {
+            "title": "Ontological Term",
+            "description": "ChEBI or UniProt controlled term for the treatment agent.",
+            "comment": "See controlled_term.json for available identifiers. Prefer terms with ontology_source 'CHEBI' or 'UniProt'.",
+            "type": "string",
+            "linkTo": "ControlledTerm"
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/treatment.md"
+}

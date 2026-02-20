@@ -209,6 +209,26 @@ This document outlines all the files that need to be created or updated when add
   }
   ```
 
+#### Loadxl update logic when adding linkTo
+
+The main issue is not “rows that don’t have the link” but **rows that do have the link while the linked object is not loaded yet**. To avoid broken references, use this pattern (same as `file` with optional `derived_from`):
+
+1. **Phase 1 (POST)**
+   For any type that has optional linkTo fields: **strip** those keys in Phase 1 with `remove_keys(...)` so the initial POST does not send them. That way you never reference an object that might not exist yet.
+   - Example: biosample concrete types use `remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS)` so `experimental_conditions` and `treatments` are not sent in Phase 1.
+
+2. **Phase 2 (PUT)**
+   Only process rows that **have** the optional linkTo so you can add it back: use `skip_rows_missing_all_keys(linkTo_key)` so rows **missing** that key are skipped. Phase 2 then only runs for rows that have the link; by then the linked type is already loaded (it appears earlier in `ORDER`), so the PUT is safe.
+   - Example: for files, Phase 2 uses `skip_rows_missing_all_keys('derived_from')` so only rows with `derived_from` are updated. For biosample types, Phase 2 uses `skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS)` so only rows that have at least one of `experimental_conditions` or `treatments` get a PUT that adds those links back.
+
+3. **ORDER (load order)**
+   The type that is linked to must appear in `ORDER` **before** any type that references it (e.g. add `'treatment'` before biosample concrete types). That ensures Phase 2 PUTs see the linked objects already in the DB.
+
+4. **New schema that is linked to**
+   Add the new schema to `PHASE1_PIPELINES` and `PHASE2_PIPELINES` with `skip_rows_missing_all_keys` for that schema’s **required** fields only.
+
+**Summary:** For optional linkTo: strip it in Phase 1 (`remove_keys`), then in Phase 2 only process rows that have it (`skip_rows_missing_all_keys(linkTo_key)`) and add it back via PUT. Put the referenced type earlier in `ORDER`.
+
 ### 10. **Update conftest.py** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/tests/conftest.py`
 - **Purpose**: Register test fixtures so pytest can discover and use them

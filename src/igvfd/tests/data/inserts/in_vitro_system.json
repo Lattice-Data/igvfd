@@ -37,5 +37,31 @@
         ],
         "description": "Test in vitro system sample 2",
         "classification": "gastruloid"
+    },
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "4d5e6f70-8192-0123-def0-444444444444",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:in-vitro-organoid-treated"
+        ],
+        "description": "In vitro organoid with experimental conditions and treatment",
+        "classification": "organoid",
+        "intended_cell_types": [
+            "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        ],
+        "experimental_conditions": [
+            "ef5245ac-a1bc-41d9-bfb6-f0deca948a02"
+        ],
+        "treatments": [
+            "f6c7d8e9-f0a1-4234-defa-789012345678"
+        ]
     }
 ]
