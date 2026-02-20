@@ -1,6 +1,6 @@
 {
-    "hash": "0f99dff0ccab22381fc9407d127d44d1",
-    "index_name": "plate_based_library_0f99dff0",
+    "hash": "0dc1f4f984192b1c325969c65b4fac73",
+    "index_name": "plate_based_library_0dc1f4f9",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -341,6 +341,9 @@
                                 "type": "float"
                             },
                             "thickness_units": {
+                                "type": "keyword"
+                            },
+                            "treatments": {
                                 "type": "keyword"
                             },
                             "uuid": {

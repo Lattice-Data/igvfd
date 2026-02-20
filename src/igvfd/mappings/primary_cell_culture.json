@@ -1,6 +1,6 @@
 {
-    "hash": "ec641045605741cff9b1495b821ad210",
-    "index_name": "primary_cell_culture_ec641045",
+    "hash": "88dba9d4d77ca3d3d5096cb95b8361f4",
+    "index_name": "primary_cell_culture_88dba9d4",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -453,6 +453,53 @@
                     },
                     "suspension_type": {
                         "type": "keyword"
+                    },
+                    "treatments": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "lab": {
+                                "type": "keyword"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "ontological_term": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "uuid": {
                         "type": "keyword"

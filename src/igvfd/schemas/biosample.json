@@ -205,6 +205,19 @@
                 "type": "string",
                 "linkTo": "ExperimentalCondition"
             }
+        },
+        "treatments": {
+            "title": "Treatments",
+            "description": "Treatments applied to this biosample (ChEBI/UniProt agents).",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Treatment",
+                "description": "Reference to treatment applied to this sample.",
+                "comment": "See treatment.json for available identifiers.",
+                "type": "string",
+                "linkTo": "Treatment"
+            }
         }
     },
     "fuzzy_searchable_fields": [
