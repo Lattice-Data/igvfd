@@ -35,5 +35,32 @@
             "lattice:processed-matrix-file-002"
         ],
         "description": "Test processed matrix file with no file available"
+    },
+    {
+        "lab": "teri-klein",
+        "md5sum": "b2c3d4e5f6a7890123456789abcdef02",
+        "file_format": "h5ad",
+        "s3_uri": "s3://lattice-test-data/matrix/processed-derived-001.h5ad",
+        "feature_keys": [
+            "Ensembl gene ID",
+            "gene symbol"
+        ],
+        "observation_count": 11000,
+        "feature_counts": [
+            {
+                "feature_type": "gene",
+                "feature_count": 19000
+            }
+        ],
+        "uuid": "92031425-3647-5678-2345-999999999999",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:processed-matrix-file-derived"
+        ],
+        "description": "Processed matrix derived from raw matrix (exercises derived_from link)",
+        "derived_from": [
+            "c5d6e7f8-a9b0-1234-cdef-567890123456"
+        ]
     }
 ]

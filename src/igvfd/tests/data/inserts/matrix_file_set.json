@@ -45,5 +45,32 @@
             "lattice:mfs-processed-001"
         ],
         "description": "Test matrix file set with processed matrix"
+    },
+    {
+        "lab": "teri-klein",
+        "experiment_ids": [
+            "EXP-2026-BOTH-001"
+        ],
+        "raw_matrix_files": [
+            "c5d6e7f8-a9b0-1234-cdef-567890123456"
+        ],
+        "processed_matrix_files": [
+            "e7f8a9b0-c1d2-3456-ef01-789012345678"
+        ],
+        "source_sequence_file_sets": [
+            "a1b2c3d4-e5f6-7890-abcd-111111111111",
+            "b2c3d4e5-f6a7-8901-bcde-222222222222"
+        ],
+        "software": "Cell Ranger",
+        "software_version": "7.1.0",
+        "genome_assembly": "GRCh38",
+        "genome_annotation": "GENCODE v44",
+        "uuid": "b2536475-8697-8901-5678-bbbbbbbbbbbb",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:mfs-raw-and-processed"
+        ],
+        "description": "Matrix file set with both raw and processed files and multiple source sequence file sets"
     }
 ]

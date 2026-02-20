@@ -9,5 +9,16 @@
             "lattice:treatment-dexamethasone"
         ],
         "description": "Dexamethasone treatment for anti-inflammatory response."
+    },
+    {
+        "lab": "teri-klein",
+        "ontological_term": "e5b6c7d8-e9f0-4123-cdef-678901234567",
+        "uuid": "1a2b3c4d-5e6f-7890-abcd-111111111111",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:treatment-uniprot-example"
+        ],
+        "description": "Example protein treatment (UniProt)."
     }
 ]
