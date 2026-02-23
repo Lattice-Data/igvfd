@@ -1,5 +1,8 @@
 # In Vivo System Changelog
 
+* Add host_tissue.
+* Add intended_cell_types.
+
 ## Schema version 1
 
 * Initial release

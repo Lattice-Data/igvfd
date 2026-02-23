@@ -45,6 +45,9 @@ def in_vitro_system():
             'classification': {
                 'title': 'Classification'
             },
+            'intended_cell_types': {
+                'title': 'Intended Cell Types'
+            },
             'lab': {
                 'title': 'Lab'
             },

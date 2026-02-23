@@ -7,5 +7,146 @@
         "aliases": [
             "lattice:lab-teri-klein"
         ]
+    },
+    {
+        "institute_label": "MBL",
+        "name": "andrew-gillis",
+        "pi": "78dd4bb7-e0a9-4c3c-8365-00099136a09b",
+        "uuid": "47b8634e-fcfe-4762-b5f4-d9f9e5d4d0a3",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-andrew-gillis"
+        ]
+    },
+    {
+        "institute_label": "UCSF",
+        "name": "param-singh",
+        "pi": "41a22a18-597e-4c5f-ae04-87be78355c89",
+        "uuid": "e2e40a92-2946-4cae-a851-233d5b3b907a",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-param-singh"
+        ]
+    },
+    {
+        "institute_label": "ETHZ",
+        "name": "randall-platt",
+        "pi": "f3d6e083-df14-4b16-a074-e02fb840135d",
+        "uuid": "6d1af4bc-f2d2-4bde-a519-1b5a36a0f288",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-randall-platt"
+        ]
+    },
+    {
+        "institute_label": "Columbia",
+        "name": "peter-sims",
+        "pi": "051a71e3-d8fb-48fd-8355-3b9ad0558ef6",
+        "uuid": "c4b3a9b8-8738-4835-9576-1a8347b8a4c1",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-peter-sims"
+        ]
+    },
+    {
+        "institute_label": "MIT",
+        "name": "jonathan-weissman",
+        "pi": "4e7f868f-f0a4-4869-8cb7-0e184c941db0",
+        "uuid": "2e5880b7-6a72-4eb5-8127-893a535e5d49",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-jonathan-weissman"
+        ]
+    },
+    {
+        "institute_label": "Stanford",
+        "name": "bo-wang",
+        "pi": "48cffec9-caa9-4100-8f70-47ec14961526",
+        "uuid": "eae9cb69-7faf-43e2-8cd9-ab77198c0c2e",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-bo-wang",
+            "lattice:laboratory-bo-wang"
+        ]
+    },
+    {
+        "institute_label": "Columbia",
+        "name": "andrea-califano",
+        "pi": "33b5a253-28fd-495c-bc9a-7d0314abe92c",
+        "uuid": "31b5ad30-8a65-49b9-9cd7-7620be473b79",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-andrea-califano"
+        ]
+    },
+    {
+        "institute_label": "UW",
+        "name": "nobuhiko-hamazaki",
+        "pi": "36129503-15cd-4fdd-99d1-e5b8981d3faf",
+        "uuid": "4df0423e-d049-4d5b-bed2-66e2dfb73e72",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-nobuhiko-hamazaki"
+        ]
+    },
+    {
+        "institute_label": "UCSF",
+        "name": "alex-marson",
+        "pi": "9be576c0-5b57-43d8-aa42-7e93bb17ac43",
+        "uuid": "1bb6b03b-05ab-4fd0-ab9d-c7b092e87d79",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-alex-marson"
+        ]
+    },
+    {
+        "institute_label": "Chicago",
+        "name": "heather-marlow",
+        "pi": "77229208-8015-411a-953c-797e4125eab5",
+        "uuid": "3b131f0e-98d6-452e-b81c-3dbc388d600e",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-heather-marlow"
+        ]
+    },
+    {
+        "institute_label": "UW",
+        "name": "jay-shendure",
+        "pi": "f3d4429a-9dd5-4a9d-9f39-762e82ef7038",
+        "uuid": "41395b98-c7be-4ab3-bed0-14e646a1d9de",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-jay-shendure"
+        ]
+    },
+    {
+        "institute_label": "UW",
+        "name": "cole-trapnell",
+        "pi": "fb8f8993-1ae4-434b-88c6-88da1ef4b68c",
+        "uuid": "bead235b-0345-45a6-8a59-9eb0d70fd1e5",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-cole-trapnell"
+        ]
+    },
+    {
+        "institute_label": "NIH",
+        "name": "michael-ward",
+        "pi": "47640909-85c0-475c-9cde-b5efa1200084",
+        "uuid": "985921f6-32ff-4eab-985b-2bcb12e807b5",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-michael-ward"
+        ]
+    },
+    {
+        "institute_label": "Harvard",
+        "name": "jay-thiagarajah",
+        "pi": "bf823a55-4cf6-4a81-943c-5d620f097d73",
+        "uuid": "aea4dba9-cf65-4e4f-812b-785c351da6b5",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-jay-thiagarajah"
+        ]
     }
 ]

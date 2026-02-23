@@ -42,8 +42,7 @@
                 "experimental protocol"
             ],
             "submissionExample": {
-                "appscript": "experimental protocol",
-                "igvf_utils": "experimental protocol"
+                "appscript": "experimental protocol"
             }
         },
         "urls": {
@@ -60,8 +59,7 @@
                 "format": "uri"
             },
             "submissionExample": {
-                "appscript": "[\"https://www.addgene.org/search/catalog/plasmids/?q=cas9\"]",
-                "igvf_utils": "https://www.addgene.org/search/catalog/plasmids/?q=cas9"
+                "appscript": "[\"https://www.addgene.org/search/catalog/plasmids/?q=cas9\"]"
             }
         }
     },

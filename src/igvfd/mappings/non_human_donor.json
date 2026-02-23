@@ -1,6 +1,6 @@
 {
-    "hash": "3ce7ebcfd74f7f60363e0e3239df674a",
-    "index_name": "non_human_donor_3ce7ebcf",
+    "hash": "d411f57a11d9fb8de2041ac45b827868",
+    "index_name": "non_human_donor_d411f57a",
     "item_type": "non_human_donor",
     "mapping": {
         "dynamic_templates": [
@@ -219,6 +219,9 @@
                         "type": "text"
                     },
                     "schema_version": {
+                        "type": "keyword"
+                    },
+                    "sex": {
                         "type": "keyword"
                     },
                     "status": {

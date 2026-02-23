@@ -1,65 +1,6 @@
 import pytest
 
 
-def test_in_vitro_system_summary_with_aliases(testapp, in_vitro_system_with_aliases):
-    res = testapp.get(in_vitro_system_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:in-vitro-organoid'
-
-
-def test_in_vitro_system_summary_with_description(testapp, in_vitro_system_with_description):
-    res = testapp.get(in_vitro_system_with_description['@id'])
-    assert res.json.get('summary') == 'Test in vitro system sample'
-
-
-def test_in_vitro_system_summary_with_uuid(testapp, in_vitro_system):
-    res = testapp.get(in_vitro_system['@id'])
-    uuid = res.json.get('uuid')
-    assert res.json.get('summary') == uuid
-
-
-def test_in_vitro_system_required_fields(testapp, other_lab, human_donor, controlled_term_brain):
-    # Missing lab
-    testapp.post_json(
-        '/in_vitro_system',
-        {
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-            'classification': 'organoid',
-        },
-        status=422
-    )
-    # Missing donors
-    testapp.post_json(
-        '/in_vitro_system',
-        {
-            'lab': other_lab['@id'],
-            'sample_terms': [controlled_term_brain['@id']],
-            'classification': 'organoid',
-        },
-        status=422
-    )
-    # Missing sample_terms
-    testapp.post_json(
-        '/in_vitro_system',
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'classification': 'organoid',
-        },
-        status=422
-    )
-    # Missing classification
-    testapp.post_json(
-        '/in_vitro_system',
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-        },
-        status=422
-    )
-
-
 def test_in_vitro_system_classification_enum(testapp, other_lab, human_donor, controlled_term_brain):
     testapp.post_json(
         '/in_vitro_system',

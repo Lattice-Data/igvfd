@@ -122,9 +122,12 @@ def test_search_views_search_view_values_invalid_advanced_query(workbook, testap
 
 
 def test_search_views_search_view_embedded_frame(workbook, testapp):
+    # Filter by lab so we get users that have submits_for in test inserts
     r = testapp.get(
-        '/search/?type=User&frame=embedded'
+        '/search/?type=User&frame=embedded&lab=/labs/teri-klein/'
     )
+    assert r.json['@graph'], 'expected users with lab teri-klein'
+    # Embedded frame includes submits_for; first hit is from insert data with submits_for
     assert r.json['@graph'][0]['submits_for']
 
 

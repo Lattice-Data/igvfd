@@ -51,6 +51,12 @@ def in_vivo_system():
             'host': {
                 'title': 'Host'
             },
+            'host_tissue': {
+                'title': 'Host Tissue'
+            },
+            'intended_cell_types': {
+                'title': 'Intended Cell Types'
+            },
             'lab': {
                 'title': 'Lab'
             },

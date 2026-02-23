@@ -40,5 +40,18 @@
         ],
         "kit_version": "sci-RNA-seq3",
         "indexing_rounds": 4
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "2b3c4d5e-6f70-8901-bcde-222222222222"
+        ],
+        "uuid": "6f708192-0314-2345-f012-666666666666",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:plate-library-treated-tissue"
+        ],
+        "description": "Plate library from tissue with treatments and experimental conditions"
     }
 ]

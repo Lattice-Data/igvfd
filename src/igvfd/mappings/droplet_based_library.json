@@ -1,6 +1,6 @@
 {
-    "hash": "e36925152782fbf3d10f1f61328f4580",
-    "index_name": "droplet_based_library_e3692515",
+    "hash": "ae997e286f5de0dc1c0313452de51c4f",
+    "index_name": "droplet_based_library_ae997e28",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -292,6 +292,12 @@
                             "host": {
                                 "type": "keyword"
                             },
+                            "host_tissue": {
+                                "type": "keyword"
+                            },
+                            "intended_cell_types": {
+                                "type": "keyword"
+                            },
                             "lab": {
                                 "type": "keyword"
                             },
@@ -346,7 +352,7 @@
                             "thickness_units": {
                                 "type": "keyword"
                             },
-                            "treatment": {
+                            "treatments": {
                                 "type": "keyword"
                             },
                             "uuid": {

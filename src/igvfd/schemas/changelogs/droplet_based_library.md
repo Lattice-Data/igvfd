@@ -1,5 +1,7 @@
 # Droplet Based Library Changelog
 
+* Move CRO_order to SequenceFileSet (inherited from Library).
+
 ## Schema version 1
 
 * Initial release

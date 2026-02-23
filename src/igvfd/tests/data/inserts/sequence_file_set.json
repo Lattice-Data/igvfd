@@ -1,0 +1,47 @@
+[
+    {
+        "lab": "teri-klein",
+        "library": "d1e2f3a4-b5c6-7890-def1-234567890abc",
+        "run_cardinality": "single-end",
+        "read1": "f1a2b3c4-d5e6-7890-abcd-1234567890ab",
+        "sequencing_platform": "Illumina NextSeq 1000",
+        "CRO_order": "AN00012345",
+        "uuid": "a1b2c3d4-e5f6-7890-abcd-111111111111",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sfs-illumina-single-end-001"
+        ],
+        "description": "Test Illumina single-end sequence file set"
+    },
+    {
+        "lab": "teri-klein",
+        "library": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
+        "run_cardinality": "single-end",
+        "untrimmed_cram": "f2b3c4d5-e6f7-8901-bcde-234567890abc",
+        "sequencing_platform": "Ultima Genomics UG 100",
+        "CRO_order": "NVUS123456789-01",
+        "uuid": "b2c3d4e5-f6a7-8901-bcde-222222222222",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sfs-ultima-untrimmed-001"
+        ],
+        "description": "Test Ultima single-end sequence file set"
+    },
+    {
+        "lab": "teri-klein",
+        "library": "6f708192-0314-2345-f012-666666666666",
+        "run_cardinality": "single-end",
+        "read1": "81920314-2536-4567-1234-888888888888",
+        "sequencing_platform": "Illumina NextSeq 1000",
+        "CRO_order": "AN00012346",
+        "uuid": "a1415264-7586-7890-4567-aaaaaaaaaaaa",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sfs-treated-tissue-library"
+        ],
+        "description": "Sequence file set from library on treated tissue (exercises sample→library→set chain)"
+    }
+]

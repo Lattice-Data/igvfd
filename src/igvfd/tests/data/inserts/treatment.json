@@ -1,0 +1,24 @@
+[
+    {
+        "lab": "teri-klein",
+        "ontological_term": "e4a5b6c7-d8e9-4012-bcde-567890123456",
+        "uuid": "f6c7d8e9-f0a1-4234-defa-789012345678",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:treatment-dexamethasone"
+        ],
+        "description": "Dexamethasone treatment for anti-inflammatory response."
+    },
+    {
+        "lab": "teri-klein",
+        "ontological_term": "e5b6c7d8-e9f0-4123-cdef-678901234567",
+        "uuid": "1a2b3c4d-5e6f-7890-abcd-111111111111",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:treatment-uniprot-example"
+        ],
+        "description": "Example protein treatment (UniProt)."
+    }
+]

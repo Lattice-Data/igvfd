@@ -1,6 +1,6 @@
 {
-    "hash": "7a428c286fe41dff6afd71c64d1e073f",
-    "index_name": "plate_based_library_7a428c28",
+    "hash": "0dc1f4f984192b1c325969c65b4fac73",
+    "index_name": "plate_based_library_0dc1f4f9",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -283,6 +283,12 @@
                             "host": {
                                 "type": "keyword"
                             },
+                            "host_tissue": {
+                                "type": "keyword"
+                            },
+                            "intended_cell_types": {
+                                "type": "keyword"
+                            },
                             "lab": {
                                 "type": "keyword"
                             },
@@ -337,7 +343,7 @@
                             "thickness_units": {
                                 "type": "keyword"
                             },
-                            "treatment": {
+                            "treatments": {
                                 "type": "keyword"
                             },
                             "uuid": {

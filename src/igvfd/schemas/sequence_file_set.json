@@ -1,0 +1,344 @@
+{
+    "title": "Sequence File Set",
+    "$id": "/profiles/sequence_file_set.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A set of sequence files produced from sequencing a library, supporting both Illumina multi-file layouts and single-file platforms like Ultima Genomics.",
+    "type": "object",
+    "required": [
+        "lab",
+        "library",
+        "run_cardinality"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "file_set.json#/properties"
+        }
+    ],
+    "dependentSchemas": {
+        "run_cardinality": {
+            "oneOf": [
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "single-end"
+                        }
+                    },
+                    "required": [
+                        "read1"
+                    ],
+                    "not": {
+                        "anyOf": [
+                            {
+                                "required": [
+                                    "untrimmed_cram"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "trimmed_cram"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "single-end"
+                        }
+                    },
+                    "anyOf": [
+                        {
+                            "required": [
+                                "untrimmed_cram"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "trimmed_cram"
+                            ]
+                        }
+                    ],
+                    "not": {
+                        "anyOf": [
+                            {
+                                "required": [
+                                    "read1"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "read2"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "read3"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "index1"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "index2"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "paired-end"
+                        }
+                    },
+                    "required": [
+                        "read1",
+                        "read2"
+                    ],
+                    "not": {
+                        "anyOf": [
+                            {
+                                "required": [
+                                    "untrimmed_cram"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "trimmed_cram"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "paired-end-with-index"
+                        }
+                    },
+                    "required": [
+                        "read1",
+                        "read2",
+                        "index1"
+                    ],
+                    "not": {
+                        "anyOf": [
+                            {
+                                "required": [
+                                    "untrimmed_cram"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "trimmed_cram"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "paired-end-with-dual-index"
+                        }
+                    },
+                    "required": [
+                        "read1",
+                        "read2",
+                        "index1",
+                        "index2"
+                    ],
+                    "not": {
+                        "anyOf": [
+                            {
+                                "required": [
+                                    "untrimmed_cram"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "trimmed_cram"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "properties": {
+                        "run_cardinality": {
+                            "const": "triplet"
+                        }
+                    },
+                    "required": [
+                        "read1",
+                        "read2",
+                        "read3"
+                    ],
+                    "not": {
+                        "anyOf": [
+                            {
+                                "required": [
+                                    "untrimmed_cram"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "trimmed_cram"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "library": {
+            "title": "Library",
+            "description": "The library that was sequenced to produce the files in this set.",
+            "comment": "See library.json for available identifiers.",
+            "type": "string",
+            "linkTo": "Library",
+            "submissionExample": {
+                "appscript": "john-doe:library01"
+            }
+        },
+        "run_cardinality": {
+            "title": "Run Cardinality",
+            "description": "The structure of reads in this sequence file set.",
+            "type": "string",
+            "enum": [
+                "single-end",
+                "paired-end",
+                "paired-end-with-index",
+                "paired-end-with-dual-index",
+                "triplet"
+            ],
+            "submissionExample": {
+                "appscript": "paired-end"
+            }
+        },
+        "CRO_order": {
+            "title": "CRO Order",
+            "description": "The order identifier from a Contract Research Organization (CRO), such as Novogene or Psomagen.",
+            "type": "string",
+            "pattern": "^(AN0|NVUS)[A-Za-z0-9-]+$",
+            "submissionExample": {
+                "appscript": "AN00012345"
+            }
+        },
+        "read1": {
+            "title": "Read 1",
+            "description": "Sequence file for read 1.",
+            "comment": "Each sequence file should only belong to one sequence file set. This property is affected by dependencies. Requires run_cardinality to use an Illumina-compatible value.",
+            "type": "string",
+            "linkTo": "SequenceFile",
+            "submissionExample": {
+                "appscript": "john-doe:seqfile01"
+            }
+        },
+        "read2": {
+            "title": "Read 2",
+            "description": "Sequence file for read 2.",
+            "comment": "Each sequence file should only belong to one sequence file set. This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "linkTo": "SequenceFile",
+            "submissionExample": {
+                "appscript": "john-doe:seqfile02"
+            }
+        },
+        "read3": {
+            "title": "Read 3",
+            "description": "Sequence file for read 3.",
+            "comment": "Each sequence file should only belong to one sequence file set. This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "linkTo": "SequenceFile",
+            "submissionExample": {
+                "appscript": "john-doe:seqfile03"
+            }
+        },
+        "index1": {
+            "title": "Index 1",
+            "description": "Sequence file for index 1 (i7 index).",
+            "comment": "Each sequence file should only belong to one sequence file set. This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "linkTo": "SequenceFile",
+            "submissionExample": {
+                "appscript": "john-doe:indexfile01"
+            }
+        },
+        "index2": {
+            "title": "Index 2",
+            "description": "Sequence file for index 2 (i5 index).",
+            "comment": "Each sequence file should only belong to one sequence file set. This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "linkTo": "SequenceFile",
+            "submissionExample": {
+                "appscript": "john-doe:indexfile02"
+            }
+        },
+        "untrimmed_cram": {
+            "title": "Untrimmed CRAM",
+            "description": "Untrimmed CRAM file from Ultima Genomics sequencing.",
+            "comment": "Each sequence file should only belong to one sequence file set. This property is affected by dependencies. Mutually exclusive with Illumina read/index slots.",
+            "type": "string",
+            "linkTo": "SequenceFile",
+            "submissionExample": {
+                "appscript": "john-doe:cramfile01"
+            }
+        },
+        "trimmed_cram": {
+            "title": "Trimmed CRAM",
+            "description": "Trimmed CRAM file from Ultima Genomics sequencing.",
+            "comment": "Each sequence file should only belong to one sequence file set. This property is affected by dependencies. Mutually exclusive with Illumina read/index slots.",
+            "type": "string",
+            "linkTo": "SequenceFile",
+            "submissionExample": {
+                "appscript": "john-doe:cramfile02"
+            }
+        },
+        "sequencing_platform": {
+            "title": "Sequencing Platform",
+            "description": "The sequencing platform used for this file set.",
+            "type": "string",
+            "enum": [
+                "Illumina HiSeq 2000",
+                "Illumina NextSeq 500",
+                "Illumina NextSeq 1000",
+                "Ultima Genomics UG 100"
+            ],
+            "submissionExample": {
+                "appscript": "Illumina NextSeq 1000"
+            }
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/sequence_file_set.md"
+}

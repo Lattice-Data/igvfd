@@ -1,0 +1,28 @@
+[
+    {
+        "lab": "teri-klein",
+        "md5sum": "74b87337454200d4d33f80c4663dc5e5",
+        "file_format": "csv",
+        "s3_uri": "s3://lattice-test-data/tabular/csv-001.csv",
+        "uuid": "a3b4c5d6-e7f8-9012-abcd-345678901234",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:tabular-file-csv-001"
+        ],
+        "description": "Test CSV tabular file"
+    },
+    {
+        "lab": "teri-klein",
+        "md5sum": "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+        "file_format": "tsv",
+        "s3_uri": "s3://lattice-test-data/tabular/tsv-001.tsv",
+        "uuid": "b4c5d6e7-f8a9-0123-bcde-456789012345",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:tabular-file-tsv-001"
+        ],
+        "description": "Test TSV tabular file"
+    }
+]

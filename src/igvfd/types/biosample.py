@@ -30,6 +30,7 @@ class Biosample(Item):
         Path('submitted_by', include=['@id', 'title']),
         Path('donors', include=['@id', 'title', 'aliases']),
         Path('sample_terms', include=['@id', 'term_name']),
+        Path('treatments', include=['@id', 'title', 'summary']),
     ]
 
 
@@ -101,6 +102,8 @@ class InVivoSystem(Biosample):
     schema = load_schema('igvfd:schemas/in_vivo_system.json')
     embedded_with_frame = Biosample.embedded_with_frame + [
         Path('host', include=['@id', 'title', 'aliases']),
+        Path('host_tissue', include=['@id', 'term_name']),
+        Path('intended_cell_types', include=['@id', 'term_name']),
     ]
 
     @calculated_property(
@@ -129,7 +132,9 @@ class InVivoSystem(Biosample):
 class InVitroSystem(Biosample):
     item_type = 'in_vitro_system'
     schema = load_schema('igvfd:schemas/in_vitro_system.json')
-    embedded_with_frame = Biosample.embedded_with_frame
+    embedded_with_frame = Biosample.embedded_with_frame + [
+        Path('intended_cell_types', include=['@id', 'term_name']),
+    ]
 
     @calculated_property(
         schema={

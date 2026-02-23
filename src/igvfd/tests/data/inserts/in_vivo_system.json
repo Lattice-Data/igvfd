@@ -15,6 +15,38 @@
         ],
         "description": "Test in vivo system sample 2 with host",
         "classification": "xenograft",
-        "host": "f6a7b8c9-d0e1-2345-fa16-678901234567"
+        "host": "f6a7b8c9-d0e1-2345-fa16-678901234567",
+        "host_tissue": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+        "intended_cell_types": [
+            "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        ]
+    },
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "5e6f7081-9203-1234-ef01-555555555555",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:in-vivo-diet-treated"
+        ],
+        "description": "In vivo system with diet condition and treatment",
+        "classification": "xenograft",
+        "host": "f6a7b8c9-d0e1-2345-fa16-678901234567",
+        "host_tissue": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+        "intended_cell_types": [
+            "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        ],
+        "experimental_conditions": [
+            "b4efe4b2-f580-46b4-8478-99f337db3116"
+        ],
+        "treatments": [
+            "f6c7d8e9-f0a1-4234-defa-789012345678"
+        ]
     }
 ]

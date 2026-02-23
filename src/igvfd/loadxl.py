@@ -21,6 +21,8 @@ ORDER = [
     'access_key',
     'controlled_term',
     'genetic_modification',
+    'experimental_condition',
+    'treatment',
     'human_donor',
     'non_human_donor',
     'tissue',
@@ -29,11 +31,23 @@ ORDER = [
     'in_vitro_system',
     'plate_based_library',
     'droplet_based_library',
+    'sequence_file',
+    'tabular_file',
+    'raw_matrix_file',
+    'processed_matrix_file',
+    'sequence_file_set',
+    'matrix_file_set',
 ]
 
 IS_ATTACHMENT = [
     'attachment',
 ]
+
+# Required keys for biosample concrete types (tissue, primary_cell_culture, in_vivo_system, in_vitro_system).
+# Optional linkTo arrays (experimental_conditions, treatments) are stripped in Phase 1 and added back in Phase 2
+# so linked objects are guaranteed to exist before we set the references (same pattern as file.derived_from).
+BIOSAMPLE_CONCRETE_REQUIRED_KEYS = ('lab', 'donors', 'sample_terms')
+BIOSAMPLE_OPTIONAL_LINKTO_KEYS = ('experimental_conditions', 'treatments')
 
 
 def _reset_log_level(log_level):
@@ -492,26 +506,55 @@ PHASE1_PIPELINES = {
     'user': [
         remove_keys('lab', 'submits_for'),
     ],
-    'genetic_modification': [
-        skip_rows_missing_all_keys('modality'),
+    'experimental_condition': [
+        skip_rows_missing_all_keys('lab', 'condition'),
+    ],
+    'treatment': [
+        skip_rows_missing_all_keys('lab', 'ontological_term'),
     ],
     'tissue': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+        remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
+        skip_rows_missing_all_keys(*BIOSAMPLE_CONCRETE_REQUIRED_KEYS),
     ],
     'primary_cell_culture': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+        remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
+        skip_rows_missing_all_keys(*BIOSAMPLE_CONCRETE_REQUIRED_KEYS),
     ],
     'in_vivo_system': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+        remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
+        skip_rows_missing_all_keys(*BIOSAMPLE_CONCRETE_REQUIRED_KEYS),
     ],
     'in_vitro_system': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+        remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
+        skip_rows_missing_all_keys(*BIOSAMPLE_CONCRETE_REQUIRED_KEYS),
     ],
     'plate_based_library': [
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
     'droplet_based_library': [
         skip_rows_missing_all_keys('lab', 'samples'),
+    ],
+    'sequence_file': [
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
+    ],
+    'tabular_file': [
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
+    ],
+    'raw_matrix_file': [
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
+    ],
+    'processed_matrix_file': [
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
+    ],
+    'sequence_file_set': [
+        skip_rows_missing_all_keys('lab', 'library'),
+    ],
+    'matrix_file_set': [
+        skip_rows_missing_all_keys('lab'),
     ],
 }
 
@@ -527,26 +570,47 @@ PHASE2_PIPELINES = {
     'user': [
         skip_rows_missing_all_keys('lab', 'submits_for'),
     ],
-    'genetic_modification': [
-        skip_rows_missing_all_keys('modality'),
+    'experimental_condition': [
+        skip_rows_missing_all_keys('lab', 'condition'),
+    ],
+    'treatment': [
+        skip_rows_missing_all_keys('lab', 'ontological_term'),
     ],
     'tissue': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+        skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
     ],
     'primary_cell_culture': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+        skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
     ],
     'in_vivo_system': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+        skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
     ],
     'in_vitro_system': [
-        skip_rows_missing_all_keys('lab', 'donors', 'sample_terms'),
+        skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
     ],
     'plate_based_library': [
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
     'droplet_based_library': [
         skip_rows_missing_all_keys('lab', 'samples'),
+    ],
+    'sequence_file': [
+        skip_rows_missing_all_keys('derived_from'),
+    ],
+    'tabular_file': [
+        skip_rows_missing_all_keys('derived_from'),
+    ],
+    'raw_matrix_file': [
+        skip_rows_missing_all_keys('derived_from'),
+    ],
+    'processed_matrix_file': [
+        skip_rows_missing_all_keys('derived_from'),
+    ],
+    'sequence_file_set': [
+        skip_rows_missing_all_keys('lab', 'library'),
+    ],
+    'matrix_file_set': [
+        skip_rows_missing_all_keys('lab'),
     ],
 }
 

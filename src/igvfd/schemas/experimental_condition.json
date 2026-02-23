@@ -1,0 +1,146 @@
+{
+    "title": "Experimental Condition",
+    "$id": "/profiles/experimental_condition.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Experimental conditions and environmental parameters that affect biological samples during culture or experimental procedures.",
+    "type": "object",
+    "required": [
+        "lab",
+        "condition"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        }
+    ],
+    "dependentSchemas": {
+        "condition": {
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "condition": {
+                                "enum": [
+                                    "humidity",
+                                    "osmolarity",
+                                    "oxygen level",
+                                    "pH",
+                                    "pressure",
+                                    "surface tension",
+                                    "temperature"
+                                ]
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "units",
+                            "value"
+                        ]
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "condition": {
+                                "enum": [
+                                    "diet",
+                                    "smoking status"
+                                ]
+                            }
+                        }
+                    },
+                    "then": {
+                        "required": [
+                            "text_value"
+                        ]
+                    }
+                }
+            ]
+        },
+        "value": {
+            "required": [
+                "units"
+            ]
+        },
+        "units": {
+            "required": [
+                "value"
+            ]
+        }
+    },
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "condition": {
+            "title": "Condition",
+            "description": "Type of experimental condition or parameter.",
+            "type": "string",
+            "enum": [
+                "diet",
+                "humidity",
+                "osmolarity",
+                "oxygen level",
+                "pH",
+                "pressure",
+                "smoking status",
+                "surface tension",
+                "temperature"
+            ]
+        },
+        "value": {
+            "title": "Value",
+            "description": "Numeric value of the condition.",
+            "comment": "Required for quantitative conditions. This property is affected by dependencies. See dependentSchemas.",
+            "type": "number"
+        },
+        "units": {
+            "title": "Units",
+            "description": "Units of measurement for the condition value.",
+            "comment": "Required for quantitative conditions. This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "enum": [
+                "celsius",
+                "dyn/cm",
+                "fahrenheit",
+                "kelvin",
+                "kPa",
+                "mN/m",
+                "mOsm/kg",
+                "mmHg",
+                "percent",
+                "pH units"
+            ]
+        },
+        "text_value": {
+            "title": "Text Value",
+            "description": "Text description of the condition for qualitative parameters.",
+            "comment": "Required for qualitative conditions (e.g. diet, smoking status). This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description",
+        "condition",
+        "text_value"
+    ],
+    "exact_searchable_fields": [
+        "@type",
+        "condition"
+    ],
+    "changelog": "/profiles/changelogs/experimental_condition.md"
+}

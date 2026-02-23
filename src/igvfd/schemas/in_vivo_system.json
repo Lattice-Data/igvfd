@@ -27,6 +27,9 @@
         },
         {
             "$ref": "biosample.json#/properties"
+        },
+        {
+            "$ref": "mixins.json#/intended_cell_types"
         }
     ],
     "properties": {
@@ -47,6 +50,16 @@
             "comment": "See Donor.json for available identifiers.",
             "type": "string",
             "linkTo": "Donor"
+        },
+        "host_tissue": {
+            "title": "Host Tissue",
+            "description": "The host tissue used for xenotransplantation.",
+            "comment": "See controlled_term.json for available identifiers.",
+            "type": "string",
+            "linkTo": "ControlledTerm",
+            "submissionExample": {
+                "appscript": "lattice:term-brain"
+            }
         }
     },
     "fuzzy_searchable_fields": [

@@ -23,6 +23,8 @@ pytest_plugins = [
     'igvfd.tests.fixtures.schemas.human_donor',
     'igvfd.tests.fixtures.schemas.controlled_term',
     'igvfd.tests.fixtures.schemas.genetic_modification',
+    'igvfd.tests.fixtures.schemas.experimental_condition',
+    'igvfd.tests.fixtures.schemas.treatment',
     'igvfd.tests.fixtures.schemas.non_human_donor',
     'igvfd.tests.fixtures.schemas.primary_cell_culture',
     'igvfd.tests.fixtures.schemas.tissue',
@@ -30,6 +32,12 @@ pytest_plugins = [
     'igvfd.tests.fixtures.schemas.in_vitro_system',
     'igvfd.tests.fixtures.schemas.plate_based_library',
     'igvfd.tests.fixtures.schemas.droplet_based_library',
+    'igvfd.tests.fixtures.schemas.sequence_file',
+    'igvfd.tests.fixtures.schemas.tabular_file',
+    'igvfd.tests.fixtures.schemas.raw_matrix_file',
+    'igvfd.tests.fixtures.schemas.processed_matrix_file',
+    'igvfd.tests.fixtures.schemas.sequence_file_set',
+    'igvfd.tests.fixtures.schemas.matrix_file_set',
 ]
 
 

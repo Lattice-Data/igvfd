@@ -96,13 +96,6 @@
                 "nucleus"
             ]
         },
-        "treatment": {
-            "title": "Treatment",
-            "description": "Treatment applied to this biosample.",
-            "comment": "See treatment.json for available identifiers.",
-            "type": "string",
-            "linkTo": "Treatment"
-        },
         "genetic_modification": {
             "title": "Genetic Modification",
             "description": "Genetic modification applied to this biosample.",
@@ -212,12 +205,25 @@
                 "type": "string",
                 "linkTo": "ExperimentalCondition"
             }
+        },
+        "treatments": {
+            "title": "Treatments",
+            "description": "Treatments applied to this biosample (ChEBI/UniProt agents).",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Treatment",
+                "description": "Reference to treatment applied to this sample.",
+                "comment": "See treatment.json for available identifiers.",
+                "type": "string",
+                "linkTo": "Treatment"
+            }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
-        "sample_terms"
+        "sample_terms.term_name"
     ],
     "exact_searchable_fields": [
         "@type"

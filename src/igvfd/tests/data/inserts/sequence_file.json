@@ -1,0 +1,44 @@
+[
+    {
+        "lab": "teri-klein",
+        "md5sum": "74b87337454200d4d33f80c4663dc5e5",
+        "file_format": "fastq",
+        "s3_uri": "s3://lattice-test-data/sequence/fastq-001.fastq.gz",
+        "uuid": "f1a2b3c4-d5e6-7890-abcd-1234567890ab",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sequence-file-fastq-001"
+        ],
+        "description": "Test FASTQ sequence file"
+    },
+    {
+        "lab": "teri-klein",
+        "md5sum": "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+        "file_format": "cram",
+        "s3_uri": "s3://lattice-test-data/sequence/cram-001.cram",
+        "uuid": "f2b3c4d5-e6f7-8901-bcde-234567890abc",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sequence-file-cram-001"
+        ],
+        "description": "Test CRAM sequence file"
+    },
+    {
+        "lab": "teri-klein",
+        "md5sum": "a1b2c3d4e5f6789012345678abcdef01",
+        "file_format": "cram",
+        "s3_uri": "s3://lattice-test-data/sequence/cram-derived-001.cram",
+        "uuid": "81920314-2536-4567-1234-888888888888",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:sequence-file-cram-derived"
+        ],
+        "description": "CRAM derived from FASTQ (exercises derived_from link)",
+        "derived_from": [
+            "f1a2b3c4-d5e6-7890-abcd-1234567890ab"
+        ]
+    }
+]
