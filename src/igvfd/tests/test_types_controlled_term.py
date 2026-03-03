@@ -116,3 +116,37 @@ def test_controlled_term_hancestro_create(testapp):
     res = testapp.post_json('/controlled_term', item, status=201)
     assert res.json['@graph'][0]['term_id'] == 'HANCESTRO:0000001'
     assert res.json['@graph'][0]['ontology_source'] == 'HANCESTRO'
+
+
+@pytest.mark.parametrize(
+    'prefix,term_id',
+    [
+        ('teri-klein', 'CL:1000000'),
+        ('andrew-gillis', 'CL:1000001'),
+        ('param-singh', 'CL:1000002'),
+        ('randall-platt', 'CL:1000003'),
+        ('peter-sims', 'CL:1000004'),
+        ('jonathan-weissman', 'CL:1000005'),
+        ('bo-wang', 'CL:1000006'),
+        ('andrea-califano', 'CL:1000007'),
+        ('nobuhiko-hamazaki', 'CL:1000008'),
+        ('alex-marson', 'CL:1000009'),
+        ('heather-marlow', 'CL:1000010'),
+        ('jay-shendure', 'CL:1000011'),
+        ('cole-trapnell', 'CL:1000012'),
+        ('michael-ward', 'CL:1000013'),
+        ('jay-thiagarajah', 'CL:1000014'),
+        ('merlin-lange', 'CL:1000016'),
+        ('lattice', 'CL:1000015'),
+    ],
+)
+def test_controlled_term_alias_prefixes_allowed(testapp, prefix, term_id):
+    item = {
+        'term_id': term_id,
+        'term_name': f'test term with alias prefix {prefix}',
+        'ontology_source': 'CL',
+        'aliases': [f'{prefix}:test-alias'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/controlled_term', item, status=201)
+    assert res.json['@graph'][0]['aliases'] == item['aliases']
