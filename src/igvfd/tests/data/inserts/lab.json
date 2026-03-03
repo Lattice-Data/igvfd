@@ -5,7 +5,8 @@
         "pi": "860c4750-8d3c-40f5-8f2c-90c5e5d19e89",
         "uuid": "ffdd233e-57b8-486c-9bb4-c33b8daf7b06",
         "aliases": [
-            "lattice:lab-teri-klein"
+            "lattice:lab-teri-klein",
+            "teri-klein:lab-teri-klein"
         ]
     },
     {
@@ -15,7 +16,8 @@
         "uuid": "47b8634e-fcfe-4762-b5f4-d9f9e5d4d0a3",
         "status": "current",
         "aliases": [
-            "lattice:lab-andrew-gillis"
+            "lattice:lab-andrew-gillis",
+            "andrew-gillis:lab-andrew-gillis"
         ]
     },
     {
@@ -25,7 +27,8 @@
         "uuid": "e2e40a92-2946-4cae-a851-233d5b3b907a",
         "status": "current",
         "aliases": [
-            "lattice:lab-param-singh"
+            "lattice:lab-param-singh",
+            "param-singh:lab-param-singh"
         ]
     },
     {
@@ -35,7 +38,8 @@
         "uuid": "6d1af4bc-f2d2-4bde-a519-1b5a36a0f288",
         "status": "current",
         "aliases": [
-            "lattice:lab-randall-platt"
+            "lattice:lab-randall-platt",
+            "randall-platt:lab-randall-platt"
         ]
     },
     {
@@ -45,7 +49,8 @@
         "uuid": "c4b3a9b8-8738-4835-9576-1a8347b8a4c1",
         "status": "current",
         "aliases": [
-            "lattice:lab-peter-sims"
+            "lattice:lab-peter-sims",
+            "peter-sims:lab-peter-sims"
         ]
     },
     {
@@ -55,7 +60,8 @@
         "uuid": "2e5880b7-6a72-4eb5-8127-893a535e5d49",
         "status": "current",
         "aliases": [
-            "lattice:lab-jonathan-weissman"
+            "lattice:lab-jonathan-weissman",
+            "jonathan-weissman:lab-jonathan-weissman"
         ]
     },
     {
@@ -66,7 +72,8 @@
         "status": "current",
         "aliases": [
             "lattice:lab-bo-wang",
-            "lattice:laboratory-bo-wang"
+            "lattice:laboratory-bo-wang",
+            "bo-wang:lab-bo-wang"
         ]
     },
     {
@@ -76,7 +83,8 @@
         "uuid": "31b5ad30-8a65-49b9-9cd7-7620be473b79",
         "status": "current",
         "aliases": [
-            "lattice:lab-andrea-califano"
+            "lattice:lab-andrea-califano",
+            "andrea-califano:lab-andrea-califano"
         ]
     },
     {
@@ -86,7 +94,8 @@
         "uuid": "4df0423e-d049-4d5b-bed2-66e2dfb73e72",
         "status": "current",
         "aliases": [
-            "lattice:lab-nobuhiko-hamazaki"
+            "lattice:lab-nobuhiko-hamazaki",
+            "nobuhiko-hamazaki:lab-nobuhiko-hamazaki"
         ]
     },
     {
@@ -96,7 +105,8 @@
         "uuid": "1bb6b03b-05ab-4fd0-ab9d-c7b092e87d79",
         "status": "current",
         "aliases": [
-            "lattice:lab-alex-marson"
+            "lattice:lab-alex-marson",
+            "alex-marson:lab-alex-marson"
         ]
     },
     {
@@ -106,7 +116,8 @@
         "uuid": "3b131f0e-98d6-452e-b81c-3dbc388d600e",
         "status": "current",
         "aliases": [
-            "lattice:lab-heather-marlow"
+            "lattice:lab-heather-marlow",
+            "heather-marlow:lab-heather-marlow"
         ]
     },
     {
@@ -116,7 +127,8 @@
         "uuid": "41395b98-c7be-4ab3-bed0-14e646a1d9de",
         "status": "current",
         "aliases": [
-            "lattice:lab-jay-shendure"
+            "lattice:lab-jay-shendure",
+            "jay-shendure:lab-jay-shendure"
         ]
     },
     {
@@ -126,7 +138,8 @@
         "uuid": "bead235b-0345-45a6-8a59-9eb0d70fd1e5",
         "status": "current",
         "aliases": [
-            "lattice:lab-cole-trapnell"
+            "lattice:lab-cole-trapnell",
+            "cole-trapnell:lab-cole-trapnell"
         ]
     },
     {
@@ -136,7 +149,8 @@
         "uuid": "985921f6-32ff-4eab-985b-2bcb12e807b5",
         "status": "current",
         "aliases": [
-            "lattice:lab-michael-ward"
+            "lattice:lab-michael-ward",
+            "michael-ward:lab-michael-ward"
         ]
     },
     {
@@ -146,7 +160,19 @@
         "uuid": "aea4dba9-cf65-4e4f-812b-785c351da6b5",
         "status": "current",
         "aliases": [
-            "lattice:lab-jay-thiagarajah"
+            "lattice:lab-jay-thiagarajah",
+            "jay-thiagarajah:lab-jay-thiagarajah"
+        ]
+    },
+    {
+        "institute_label": "EMBL",
+        "name": "merlin-lange",
+        "pi": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+        "uuid": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-merlin-lange",
+            "merlin-lange:lab-merlin-lange"
         ]
     }
 ]
