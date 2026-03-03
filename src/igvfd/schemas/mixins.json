@@ -22,8 +22,8 @@
         },
         "notes": {
             "title": "Notes",
-            "description": "DACC internal notes.",
-            "comment": "Do not submit. A place for the DACC to keep information that does not have a place in the schema.",
+            "description": "Lattice internal notes.",
+            "comment": "Do not submit. A place for the Lattice Team to keep information that does not have a place in the schema.",
             "type": "string",
             "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$",
             "permission": "admin_only"
