@@ -22,8 +22,8 @@
         },
         "notes": {
             "title": "Notes",
-            "description": "DACC internal notes.",
-            "comment": "Do not submit. A place for the DACC to keep information that does not have a place in the schema.",
+            "description": "Lattice internal notes.",
+            "comment": "Do not submit. A place for the Lattice Team to keep information that does not have a place in the schema.",
             "type": "string",
             "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$",
             "permission": "admin_only"
@@ -41,7 +41,7 @@
                 "description": "A lab specific identifier to reference an object.",
                 "comment": "Current convention is colon separated lab name and lab identifier. (e.g. john-doe:42).",
                 "type": "string",
-                "pattern": "^(?:teri-klein|lattice):[a-zA-Z\\d_$.+!*,()'-]+(?:\\s[a-zA-Z\\d_$.+!*,()'-]+)*$"
+                "pattern": "^(?:alex-marson|andrea-califano|andrew-gillis|bo-wang|cole-trapnell|heather-marlow|jay-shendure|jay-thiagarajah|jonathan-weissman|lattice|merlin-lange|michael-ward|nobuhiko-hamazaki|param-singh|peter-sims|randall-platt|teri-klein):[a-zA-Z\\d_$.+!*,()'-]+(?:\\s[a-zA-Z\\d_$.+!*,()'-]+)*$"
             },
             "submissionExample": {
                 "appscript": "[\"john-doe:aliases01\", \"john-doe:aliases02\"]"
