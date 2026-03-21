@@ -1,6 +1,6 @@
 {
-    "hash": "ae997e286f5de0dc1c0313452de51c4f",
-    "index_name": "droplet_based_library_ae997e28",
+    "hash": "fd911a7085e0b04d670a3e156a75d54e",
+    "index_name": "droplet_based_library_fd911a70",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -245,6 +245,9 @@
                             "@type": {
                                 "type": "keyword"
                             },
+                            "age_units": {
+                                "type": "keyword"
+                            },
                             "aliases": {
                                 "type": "keyword"
                             },
@@ -301,6 +304,10 @@
                             "lab": {
                                 "type": "keyword"
                             },
+                            "lower_bound_age": {
+                                "store": true,
+                                "type": "float"
+                            },
                             "notes": {
                                 "type": "text"
                             },
@@ -354,6 +361,10 @@
                             },
                             "treatments": {
                                 "type": "keyword"
+                            },
+                            "upper_bound_age": {
+                                "store": true,
+                                "type": "float"
                             },
                             "uuid": {
                                 "type": "keyword"

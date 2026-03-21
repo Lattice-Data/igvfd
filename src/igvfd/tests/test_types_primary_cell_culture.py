@@ -109,12 +109,79 @@ def test_primary_cell_culture_create_with_all_optional_fields(testapp, other_lab
         'passage_number': 3,
         'date_obtained': '2024-02-20',
         'description': 'Human primary cell culture',
+        'lower_bound_age': 5,
+        'upper_bound_age': 7,
+        'age_units': 'day',
         'status': 'current',
     }
     res = testapp.post_json('/primary_cell_culture', item, status=201)
     assert res.json['@graph'][0]['passage_number'] == 3
     assert res.json['@graph'][0]['date_obtained'] == '2024-02-20'
     assert res.json['@graph'][0]['description'] == 'Human primary cell culture'
+    assert res.json['@graph'][0]['lower_bound_age'] == 5
+    assert res.json['@graph'][0]['upper_bound_age'] == 7
+    assert res.json['@graph'][0]['age_units'] == 'day'
+
+
+def test_primary_cell_culture_age_dependency(testapp, other_lab, human_donor, controlled_term_brain):
+    testapp.post_json(
+        '/primary_cell_culture',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'upper_bound_age': 10,
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_primary_cell_culture_age_units_enum(testapp, other_lab, human_donor, controlled_term_brain):
+    testapp.post_json(
+        '/primary_cell_culture',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'lower_bound_age': 1,
+            'upper_bound_age': 2,
+            'age_units': 'eon',
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_primary_cell_culture_create_with_age_point_estimate(testapp, other_lab, human_donor, controlled_term_brain):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'lower_bound_age': 14,
+        'upper_bound_age': 14,
+        'age_units': 'day',
+        'status': 'current',
+    }
+    res = testapp.post_json('/primary_cell_culture', item, status=201)
+    assert res.json['@graph'][0]['lower_bound_age'] == 14
+    assert res.json['@graph'][0]['upper_bound_age'] == 14
+
+
+def test_primary_cell_culture_age_minimum(testapp, other_lab, human_donor, controlled_term_brain):
+    testapp.post_json(
+        '/primary_cell_culture',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'lower_bound_age': 0,
+            'upper_bound_age': -0.5,
+            'age_units': 'day',
+            'status': 'current',
+        },
+        status=422
+    )
 
 
 def test_primary_cell_culture_passage_number_zero(testapp, other_lab, human_donor, controlled_term_brain):

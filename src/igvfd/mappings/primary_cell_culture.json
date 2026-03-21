@@ -1,6 +1,6 @@
 {
-    "hash": "88dba9d4d77ca3d3d5096cb95b8361f4",
-    "index_name": "primary_cell_culture_88dba9d4",
+    "hash": "3790267e2551212cd8ee8d43c34df30e",
+    "index_name": "primary_cell_culture_3790267e",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -146,6 +146,9 @@
                     },
                     "@type": {
                         "copy_to": "_exact",
+                        "type": "keyword"
+                    },
+                    "age_units": {
                         "type": "keyword"
                     },
                     "aliases": {
@@ -296,6 +299,10 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "lower_bound_age": {
+                        "store": true,
+                        "type": "float"
                     },
                     "notes": {
                         "type": "text"
@@ -500,6 +507,10 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "upper_bound_age": {
+                        "store": true,
+                        "type": "float"
                     },
                     "uuid": {
                         "type": "keyword"
