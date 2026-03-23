@@ -26,8 +26,16 @@
         },
         {
             "$ref": "biosample.json#/properties"
+        },
+        {
+            "$ref": "mixins.json#/biosample_age_range"
         }
     ],
+    "dependentSchemas": {
+        "$merge": [
+            "biosample.json#/dependentSchemas"
+        ]
+    },
     "properties": {
         "schema_version": {
             "default": "1"

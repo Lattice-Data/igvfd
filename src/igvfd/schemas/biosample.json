@@ -35,6 +35,24 @@
             "required": [
                 "sample_procurement_interval"
             ]
+        },
+        "lower_bound_age": {
+            "required": [
+                "upper_bound_age",
+                "age_units"
+            ]
+        },
+        "upper_bound_age": {
+            "required": [
+                "lower_bound_age",
+                "age_units"
+            ]
+        },
+        "age_units": {
+            "required": [
+                "lower_bound_age",
+                "upper_bound_age"
+            ]
         }
     },
     "properties": {

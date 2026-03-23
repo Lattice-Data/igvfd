@@ -59,3 +59,31 @@ def tissue_with_thickness(testapp, other_lab, human_donor, controlled_term_brain
         'status': 'current',
     }
     return testapp.post_json('/tissue', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def tissue_with_age_range(testapp, other_lab, human_donor, controlled_term_brain):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'lower_bound_age': 40,
+        'upper_bound_age': 55,
+        'age_units': 'year',
+        'status': 'current',
+    }
+    return testapp.post_json('/tissue', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def tissue_with_age_point_estimate(testapp, other_lab, human_donor, controlled_term_brain):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'lower_bound_age': 42,
+        'upper_bound_age': 42,
+        'age_units': 'year',
+        'status': 'current',
+    }
+    return testapp.post_json('/tissue', item, status=201).json['@graph'][0]

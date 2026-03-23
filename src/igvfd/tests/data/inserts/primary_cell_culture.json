@@ -55,5 +55,25 @@
             "f6c7d8e9-f0a1-4234-defa-789012345678",
             "1a2b3c4d-5e6f-7890-abcd-111111111111"
         ]
+    },
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "a42495bb-c1b0-4583-9144-2fbe1490dcd4",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:primary-cell-with-age-point"
+        ],
+        "description": "Primary culture with single known sample age (bounds equal)",
+        "passage_number": 2,
+        "lower_bound_age": 21,
+        "upper_bound_age": 21,
+        "age_units": "day"
     }
 ]

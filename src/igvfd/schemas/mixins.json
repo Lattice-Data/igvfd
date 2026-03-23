@@ -277,5 +277,56 @@
                 "appscript": "[\"lattice:term-t-cell\"]"
             }
         }
+    },
+    "biosample_age_range": {
+        "lower_bound_age": {
+            "title": "Lower Bound Age",
+            "description": "Lower bound of the age range for this sample at the relevant time point (for example at collection), in the units given by age_units. When the age is known as a single value rather than an uncertain range, set this to the same number as upper_bound_age. lower_bound_age must be less than or equal to upper_bound_age.",
+            "type": "number",
+            "minimum": 0,
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "45"
+            }
+        },
+        "upper_bound_age": {
+            "title": "Upper Bound Age",
+            "description": "Upper bound of the age range for this sample at the relevant time point (for example at collection), in the units given by age_units. When the age is known as a single value rather than an uncertain range, set this to the same number as lower_bound_age. upper_bound_age must be greater than or equal to lower_bound_age.",
+            "type": "number",
+            "minimum": 0,
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "50"
+            }
+        },
+        "age_units": {
+            "title": "Age Units",
+            "description": "Units for lower_bound_age and upper_bound_age.",
+            "type": "string",
+            "enum": [
+                "minute",
+                "hour",
+                "day",
+                "week",
+                "month",
+                "year"
+            ],
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "\"year\""
+            }
+        }
+    },
+    "tissue_thickness_dependent_schemas": {
+        "thickness": {
+            "required": [
+                "thickness_units"
+            ]
+        },
+        "thickness_units": {
+            "required": [
+                "thickness"
+            ]
+        }
     }
 }

@@ -1,6 +1,6 @@
 {
-    "hash": "0dc1f4f984192b1c325969c65b4fac73",
-    "index_name": "plate_based_library_0dc1f4f9",
+    "hash": "accbef2f0082f7ad5ac5f8b0c587f7cd",
+    "index_name": "plate_based_library_accbef2f",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -236,6 +236,9 @@
                             "@type": {
                                 "type": "keyword"
                             },
+                            "age_units": {
+                                "type": "keyword"
+                            },
                             "aliases": {
                                 "type": "keyword"
                             },
@@ -292,6 +295,10 @@
                             "lab": {
                                 "type": "keyword"
                             },
+                            "lower_bound_age": {
+                                "store": true,
+                                "type": "float"
+                            },
                             "notes": {
                                 "type": "text"
                             },
@@ -345,6 +352,10 @@
                             },
                             "treatments": {
                                 "type": "keyword"
+                            },
+                            "upper_bound_age": {
+                                "store": true,
+                                "type": "float"
                             },
                             "uuid": {
                                 "type": "keyword"

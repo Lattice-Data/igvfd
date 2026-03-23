@@ -62,5 +62,25 @@
             "f6c7d8e9-f0a1-4234-defa-789012345678"
         ],
         "genetic_modification": "d1e2f3a4-b5c6-7890-abcd-123456789001"
+    },
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "a1a04974-a183-4fdf-9df0-eeab9bd9a2dc",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:tissue-with-age-range"
+        ],
+        "description": "Tissue sample with donor age range at collection",
+        "preservation_method": "frozen",
+        "lower_bound_age": 35,
+        "upper_bound_age": 48,
+        "age_units": "year"
     }
 ]

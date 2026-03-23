@@ -26,19 +26,16 @@
         },
         {
             "$ref": "biosample.json#/properties"
+        },
+        {
+            "$ref": "mixins.json#/biosample_age_range"
         }
     ],
     "dependentSchemas": {
-        "thickness": {
-            "required": [
-                "thickness_units"
-            ]
-        },
-        "thickness_units": {
-            "required": [
-                "thickness"
-            ]
-        }
+        "$merge": [
+            "biosample.json#/dependentSchemas",
+            "mixins.json#/tissue_thickness_dependent_schemas"
+        ]
     },
     "properties": {
         "schema_version": {

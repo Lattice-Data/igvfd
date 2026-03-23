@@ -46,3 +46,31 @@ def primary_cell_culture_with_passage_number(testapp, other_lab, human_donor, co
         'status': 'current',
     }
     return testapp.post_json('/primary_cell_culture', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def primary_cell_culture_with_age_range(testapp, other_lab, human_donor, controlled_term_brain):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'lower_bound_age': 1,
+        'upper_bound_age': 3,
+        'age_units': 'day',
+        'status': 'current',
+    }
+    return testapp.post_json('/primary_cell_culture', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def primary_cell_culture_with_age_point_estimate(testapp, other_lab, human_donor, controlled_term_brain):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'lower_bound_age': 14,
+        'upper_bound_age': 14,
+        'age_units': 'day',
+        'status': 'current',
+    }
+    return testapp.post_json('/primary_cell_culture', item, status=201).json['@graph'][0]
