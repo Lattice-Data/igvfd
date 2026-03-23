@@ -59,6 +59,21 @@ def test_human_donor_create(testapp, other_lab):
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
 
 
+def test_human_donor_author_metadata(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'taxa': 'Homo sapiens',
+        'author_metadata': {
+            'external_subject_id': 'HD-TEST-001',
+            'is_case': True,
+            'age_at_collection_days': 42,
+        },
+        'status': 'current',
+    }
+    res = testapp.post_json('/human_donor', item, status=201)
+    assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']
+
+
 @pytest.mark.parametrize('sex', ['male', 'female', 'unspecified', 'mixed'])
 def test_human_donor_sex_enum_valid(testapp, other_lab, sex):
     item = {

@@ -1,6 +1,6 @@
 {
-    "hash": "c108f040fd240dce0e57b070af0164f3",
-    "index_name": "in_vivo_system_c108f040",
+    "hash": "27921ec5e0a675db10845c021e68837d",
+    "index_name": "in_vivo_system_27921ec5",
     "item_type": "in_vivo_system",
     "mapping": {
         "dynamic_templates": [
@@ -176,6 +176,10 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "author_metadata": {
+                                "properties": {},
+                                "type": "object"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
@@ -251,6 +255,10 @@
                             },
                             "aliases": {
                                 "type": "keyword"
+                            },
+                            "author_metadata": {
+                                "properties": {},
+                                "type": "object"
                             },
                             "creation_timestamp": {
                                 "type": "date"

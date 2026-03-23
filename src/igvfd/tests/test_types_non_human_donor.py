@@ -64,6 +64,21 @@ def test_non_human_donor_create_with_enum_values(testapp, other_lab, taxa):
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
 
 
+def test_non_human_donor_author_metadata(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'taxa': 'Mus musculus',
+        'author_metadata': {
+            'source_colony': 'SPF',
+            'age_weeks': 12,
+            'paired_litter': False,
+        },
+        'status': 'current',
+    }
+    res = testapp.post_json('/non_human_donor', item, status=201)
+    assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']
+
+
 @pytest.mark.parametrize(
     'taxa,sex',
     [

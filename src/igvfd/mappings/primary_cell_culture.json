@@ -1,6 +1,6 @@
 {
-    "hash": "3790267e2551212cd8ee8d43c34df30e",
-    "index_name": "primary_cell_culture_3790267e",
+    "hash": "61cb71bbb25d3dfb1a7d907b8eaaada8",
+    "index_name": "primary_cell_culture_61cb71bb",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -178,6 +178,10 @@
                             },
                             "aliases": {
                                 "type": "keyword"
+                            },
+                            "author_metadata": {
+                                "properties": {},
+                                "type": "object"
                             },
                             "creation_timestamp": {
                                 "type": "date"

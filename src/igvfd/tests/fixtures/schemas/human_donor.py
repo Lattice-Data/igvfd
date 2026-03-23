@@ -7,6 +7,9 @@ def human_donor(testapp, other_lab):
         'lab': other_lab['@id'],
         'taxa': 'Homo sapiens',
         'sex': 'unspecified',
+        'author_metadata': {
+            'submitter_field': 'human donor fixture'
+        },
         'status': 'current',
     }
     return testapp.post_json('/human_donor', item, status=201).json['@graph'][0]

@@ -5,6 +5,10 @@
         "sex": "female",
         "uuid": "e6ffa078-331a-41b3-8d1e-f4e2718bb1f2",
         "status": "current",
+        "author_metadata": {
+            "source_colony": "wild-caught",
+            "tracking_id": "nhd001"
+        },
         "aliases": [
             "lattice:non-human-donor-alligator"
         ],

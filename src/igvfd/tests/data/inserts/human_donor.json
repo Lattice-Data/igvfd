@@ -6,6 +6,10 @@
         "uuid": "d4e5f6a7-b8c9-0123-def4-456789012345",
         "schema_version": "1",
         "status": "current",
+        "author_metadata": {
+            "external_subject_id": "hd001",
+            "submitter_note": "pilot cohort"
+        },
         "aliases": [
             "lattice:human-donor-basic"
         ],
