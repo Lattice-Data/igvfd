@@ -1,6 +1,6 @@
 ## Infrastructure
 
-Install Node.js 20 using `nvm` (Node Version Manager):
+Install Node.js 24 using `nvm` (Node Version Manager):
 
 ```
 # Install nvm.
