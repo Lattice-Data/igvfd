@@ -31,11 +31,29 @@
     "dependentSchemas": {
         "$merge": [
             "file.json#/dependentSchemas"
-        ]
+        ],
+        "read_count_when_file_available": {
+            "if": {
+                "required": [
+                    "no_file_available"
+                ],
+                "properties": {
+                    "no_file_available": {
+                        "const": true
+                    }
+                }
+            },
+            "then": {},
+            "else": {
+                "required": [
+                    "read_count"
+                ]
+            }
+        }
     },
     "properties": {
         "schema_version": {
-            "default": "1"
+            "default": "2"
         },
         "file_format": {
             "title": "File Format",

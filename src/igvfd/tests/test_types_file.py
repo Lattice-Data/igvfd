@@ -1,5 +1,18 @@
 import pytest
 
+SEQUENCE_FILE_READ_COUNT = 15_000_000
+
+
+def _file_post_body(file_type, item):
+    """Sequence files with an available file require read_count (see sequence_file dependentSchemas)."""
+    if (
+        file_type == 'sequence_file'
+        and 's3_uri' in item
+        and item.get('no_file_available') is not True
+    ):
+        return {**item, 'read_count': SEQUENCE_FILE_READ_COUNT}
+    return item
+
 
 # File type configurations
 FILE_TYPE_CONFIGS = {
@@ -70,31 +83,40 @@ def test_file_required_fields(testapp, other_lab, file_type):
     # Missing lab
     testapp.post_json(
         endpoint,
-        {
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/required-lab.{file_format}',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/required-lab.{file_format}',
+            },
+        ),
         status=422
     )
     # Missing md5sum
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/required-md5sum.{file_format}',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/required-md5sum.{file_format}',
+            },
+        ),
         status=422
     )
     # Missing file_format
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
-            's3_uri': f's3://lattice-test-data/{s3_path}/required-format.{file_format}',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+                's3_uri': f's3://lattice-test-data/{s3_path}/required-format.{file_format}',
+            },
+        ),
         status=422
     )
 
@@ -107,13 +129,16 @@ def test_file_file_format_enum(testapp, other_lab, file_type):
 
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
-            'file_format': 'invalid_format',
-            's3_uri': f's3://lattice-test-data/{s3_path}/invalid-format.dat',
-            'status': 'current',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+                'file_format': 'invalid_format',
+                's3_uri': f's3://lattice-test-data/{s3_path}/invalid-format.dat',
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -128,25 +153,31 @@ def test_file_md5sum_pattern(testapp, other_lab, file_type):
     # Invalid md5sum pattern (too short)
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'md5sum': 'abc123',
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/invalid-md5sum-short.{file_format}',
-            'status': 'current',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'md5sum': 'abc123',
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/invalid-md5sum-short.{file_format}',
+                'status': 'current',
+            },
+        ),
         status=422
     )
     # Invalid md5sum pattern (invalid characters)
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'md5sum': 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/invalid-md5sum-chars.{file_format}',
-            'status': 'current',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'md5sum': 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/invalid-md5sum-chars.{file_format}',
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -165,13 +196,16 @@ def test_file_create_with_file_format_enum_values(testapp, other_lab, file_type,
     endpoint = config['endpoint']
     s3_path = config['s3_path']
 
-    item = {
-        'lab': other_lab['@id'],
-        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
-        'file_format': file_format,
-        's3_uri': f's3://lattice-test-data/{s3_path}/enum-{file_format}.dat',
-        'status': 'current',
-    }
+    item = _file_post_body(
+        file_type,
+        {
+            'lab': other_lab['@id'],
+            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+            'file_format': file_format,
+            's3_uri': f's3://lattice-test-data/{s3_path}/enum-{file_format}.dat',
+            'status': 'current',
+        },
+    )
     res = testapp.post_json(endpoint, item, status=201)
     assert res.json['@graph'][0]['file_format'] == file_format
 
@@ -183,13 +217,16 @@ def test_file_create_success(testapp, other_lab, file_type):
     file_format = config['default_format']
     s3_path = config['s3_path']
 
-    item = {
-        'lab': other_lab['@id'],
-        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
-        'file_format': file_format,
-        's3_uri': f's3://lattice-test-data/{s3_path}/create-success.{file_format}',
-        'status': 'current',
-    }
+    item = _file_post_body(
+        file_type,
+        {
+            'lab': other_lab['@id'],
+            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+            'file_format': file_format,
+            's3_uri': f's3://lattice-test-data/{s3_path}/create-success.{file_format}',
+            'status': 'current',
+        },
+    )
     res = testapp.post_json(endpoint, item, status=201)
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
     assert res.json['@graph'][0]['md5sum'] == '74b87337454200d4d33f80c4663dc5e5'
@@ -204,15 +241,18 @@ def test_file_create_with_all_optional_fields(testapp, other_lab, file_type):
     file_format = config['default_format']
     s3_path = config['s3_path']
 
-    item = {
-        'lab': other_lab['@id'],
-        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
-        'file_format': file_format,
-        's3_uri': f's3://lattice-test-data/{s3_path}/all-optional.{file_format}',
-        'file_size': 1024000,
-        'description': f'Test {file_type.replace("_", " ")} with all fields',
-        'status': 'current',
-    }
+    item = _file_post_body(
+        file_type,
+        {
+            'lab': other_lab['@id'],
+            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+            'file_format': file_format,
+            's3_uri': f's3://lattice-test-data/{s3_path}/all-optional.{file_format}',
+            'file_size': 1024000,
+            'description': f'Test {file_type.replace("_", " ")} with all fields',
+            'status': 'current',
+        },
+    )
     res = testapp.post_json(endpoint, item, status=201)
     assert res.json['@graph'][0]['file_size'] == 1024000
     assert res.json['@graph'][0]['description'] == f'Test {file_type.replace("_", " ")} with all fields'
@@ -227,14 +267,17 @@ def test_file_file_size_minimum(testapp, other_lab, file_type):
 
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/invalid-filesize.{file_format}',
-            'file_size': -1,
-            'status': 'current',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/invalid-filesize.{file_format}',
+                'file_size': -1,
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -287,14 +330,17 @@ def test_file_rejects_s3_uri_when_no_file_available_true(testapp, other_lab, fil
 
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'md5sum': 'c51ce410c124a10e0db5e4b97fc2af39',
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/conflict.{file_format}',
-            'no_file_available': True,
-            'status': 'current',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'md5sum': 'c51ce410c124a10e0db5e4b97fc2af39',
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/conflict.{file_format}',
+                'no_file_available': True,
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -307,13 +353,16 @@ def test_file_rejects_non_s3_uri_prefix(testapp, other_lab, file_type):
 
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'md5sum': 'aab3238922bcc25a6f606eb525ffdc56',
-            'file_format': file_format,
-            's3_uri': f'https://bucket/path/file.{file_format}',
-            'status': 'current',
-        },
+        _file_post_body(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'md5sum': 'aab3238922bcc25a6f606eb525ffdc56',
+                'file_format': file_format,
+                's3_uri': f'https://bucket/path/file.{file_format}',
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -412,3 +461,65 @@ def test_matrix_file_rejects_invalid_feature_counts_shape(testapp, other_lab, fi
         },
         status=422
     )
+
+
+def test_sequence_file_requires_read_count_when_file_available(testapp, other_lab):
+    testapp.post_json(
+        '/sequence_file',
+        {
+            'lab': other_lab['@id'],
+            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+            'file_format': 'fastq',
+            's3_uri': 's3://lattice-test-data/sequence/missing-read-count.fastq.gz',
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_sequence_file_rejects_negative_read_count(testapp, other_lab):
+    testapp.post_json(
+        '/sequence_file',
+        {
+            'lab': other_lab['@id'],
+            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+            'file_format': 'fastq',
+            's3_uri': 's3://lattice-test-data/sequence/negative-read-count.fastq.gz',
+            'read_count': -1,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_tabular_file_omits_read_count(testapp, other_lab):
+    res = testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+            'file_format': 'csv',
+            's3_uri': 's3://lattice-test-data/tabular/no-read-count.csv',
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert 'read_count' not in res.json['@graph'][0]
+
+
+def test_raw_matrix_file_omits_read_count(testapp, other_lab):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'md5sum': '0123456789abcdef0123456789abcdef',
+            'file_format': 'h5',
+            's3_uri': 's3://lattice-test-data/matrix/no-read-count.h5',
+            'feature_keys': ['Ensembl gene ID', 'gene symbol'],
+            'observation_count': 1000,
+            'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert 'read_count' not in res.json['@graph'][0]

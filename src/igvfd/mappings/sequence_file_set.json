@@ -1,6 +1,6 @@
 {
-    "hash": "26fa9693c18fccf4f2ba140ea6639a0e",
-    "index_name": "sequence_file_set_26fa9693",
+    "hash": "45d45fbf57b84e0a2f2ad923d25265c7",
+    "index_name": "sequence_file_set_45d45fbf",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -202,6 +202,10 @@
                             "notes": {
                                 "type": "text"
                             },
+                            "read_count": {
+                                "store": true,
+                                "type": "long"
+                            },
                             "s3_uri": {
                                 "type": "keyword"
                             },
@@ -265,6 +269,10 @@
                             },
                             "notes": {
                                 "type": "text"
+                            },
+                            "read_count": {
+                                "store": true,
+                                "type": "long"
                             },
                             "s3_uri": {
                                 "type": "keyword"
@@ -466,6 +474,10 @@
                             "notes": {
                                 "type": "text"
                             },
+                            "read_count": {
+                                "store": true,
+                                "type": "long"
+                            },
                             "s3_uri": {
                                 "type": "keyword"
                             },
@@ -530,6 +542,10 @@
                             "notes": {
                                 "type": "text"
                             },
+                            "read_count": {
+                                "store": true,
+                                "type": "long"
+                            },
                             "s3_uri": {
                                 "type": "keyword"
                             },
@@ -593,6 +609,10 @@
                             },
                             "notes": {
                                 "type": "text"
+                            },
+                            "read_count": {
+                                "store": true,
+                                "type": "long"
                             },
                             "s3_uri": {
                                 "type": "keyword"
@@ -744,6 +764,10 @@
                             "notes": {
                                 "type": "text"
                             },
+                            "read_count": {
+                                "store": true,
+                                "type": "long"
+                            },
                             "s3_uri": {
                                 "type": "keyword"
                             },
@@ -807,6 +831,10 @@
                             },
                             "notes": {
                                 "type": "text"
+                            },
+                            "read_count": {
+                                "store": true,
+                                "type": "long"
                             },
                             "s3_uri": {
                                 "type": "keyword"
