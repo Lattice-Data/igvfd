@@ -2,6 +2,7 @@
 
 ### Minor changes since schema version 1
 
+* Add `author_metadata` field for submitter-provided key-value metadata.
 * Add sex with taxa-dependent validation via dependentSchemas.
 * Extend taxa enum list to include Danio rerio.
 * Sort taxa enum list lexicographically.

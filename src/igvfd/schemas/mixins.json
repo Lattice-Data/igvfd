@@ -112,6 +112,14 @@
             }
         }
     },
+    "author_metadata": {
+        "author_metadata": {
+            "title": "Author Metadata",
+            "description": "Custom metadata provided by the data submitter as key-value pairs",
+            "type": "object",
+            "additionalProperties": true
+        }
+    },
     "attachment": {
         "attachment": {
             "title": "Attachment",

@@ -1,6 +1,6 @@
 {
-    "hash": "d411f57a11d9fb8de2041ac45b827868",
-    "index_name": "non_human_donor_d411f57a",
+    "hash": "bccb793f81d89bd3bc4506892a3f5923",
+    "index_name": "non_human_donor_bccb793f",
     "item_type": "non_human_donor",
     "mapping": {
         "dynamic_templates": [
@@ -151,6 +151,10 @@
                     "aliases": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
+                    },
+                    "author_metadata": {
+                        "properties": {},
+                        "type": "object"
                     },
                     "creation_timestamp": {
                         "type": "date"

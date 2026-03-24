@@ -1,6 +1,6 @@
 {
-    "hash": "cf220bae0be35a4d6447a840972d4e14",
-    "index_name": "human_donor_cf220bae",
+    "hash": "1af0c8724b27c58754ed921b82d134da",
+    "index_name": "human_donor_1af0c872",
     "item_type": "human_donor",
     "mapping": {
         "dynamic_templates": [
@@ -151,6 +151,10 @@
                     "aliases": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
+                    },
+                    "author_metadata": {
+                        "properties": {},
+                        "type": "object"
                     },
                     "creation_timestamp": {
                         "type": "date"
