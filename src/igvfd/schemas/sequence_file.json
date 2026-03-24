@@ -32,19 +32,21 @@
         "$merge": [
             "file.json#/dependentSchemas"
         ],
-        "read_count_when_file_available": {
+        "s3_uri": {
+            "description": "When a file location is provided, read_count must also be submitted.",
+            "required": [
+                "read_count"
+            ]
+        },
+        "no_file_available": {
             "if": {
-                "required": [
-                    "no_file_available"
-                ],
                 "properties": {
                     "no_file_available": {
-                        "const": true
+                        "const": false
                     }
                 }
             },
-            "then": {},
-            "else": {
+            "then": {
                 "required": [
                     "read_count"
                 ]
