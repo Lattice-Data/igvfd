@@ -523,3 +523,18 @@ def test_raw_matrix_file_omits_read_count(testapp, other_lab):
         status=201,
     )
     assert 'read_count' not in res.json['@graph'][0]
+
+
+def test_tabular_file_rejects_read_count(testapp, other_lab):
+    testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+            'file_format': 'csv',
+            's3_uri': 's3://lattice-test-data/tabular/read-count-not-allowed.csv',
+            'read_count': 100,
+            'status': 'current',
+        },
+        status=422,
+    )

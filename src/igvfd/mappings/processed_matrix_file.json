@@ -1,6 +1,6 @@
 {
-    "hash": "ee41b62ab4862b230a745adb75a36771",
-    "index_name": "processed_matrix_file_ee41b62a",
+    "hash": "013ecb22639753a072719dc8506f6c00",
+    "index_name": "processed_matrix_file_013ecb22",
     "item_type": "processed_matrix_file",
     "mapping": {
         "dynamic_templates": [
@@ -251,10 +251,6 @@
                         "type": "text"
                     },
                     "observation_count": {
-                        "store": true,
-                        "type": "long"
-                    },
-                    "read_count": {
                         "store": true,
                         "type": "long"
                     },

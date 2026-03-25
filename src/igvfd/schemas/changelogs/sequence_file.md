@@ -2,8 +2,8 @@
 
 ### Schema version 2
 
-* Add `read_count` (from file mixin).
-* Require `read_count` when `no_file_available` is not true (`read_count_when_file_available` in `dependentSchemas`).
+* Add `read_count` as a sequence-file-only property.
+* Require `read_count` when `no_file_available` is `false` (`dependentSchemas.no_file_available`).
 
 ### Minor changes since schema version 1
 

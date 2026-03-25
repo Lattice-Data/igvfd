@@ -32,12 +32,6 @@
         "$merge": [
             "file.json#/dependentSchemas"
         ],
-        "s3_uri": {
-            "description": "When a file location is provided, read_count must also be submitted.",
-            "required": [
-                "read_count"
-            ]
-        },
         "no_file_available": {
             "if": {
                 "properties": {
@@ -67,6 +61,16 @@
             ],
             "submissionExample": {
                 "appscript": "fastq"
+            }
+        },
+        "read_count": {
+            "title": "Read Count",
+            "description": "Number of sequencing reads in the file.",
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "type": "integer",
+            "minimum": 0,
+            "submissionExample": {
+                "appscript": "15000000"
             }
         }
     },

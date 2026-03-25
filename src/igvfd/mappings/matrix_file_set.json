@@ -1,6 +1,6 @@
 {
-    "hash": "419362c2c3cd810676f263daf5b05a88",
-    "index_name": "matrix_file_set_419362c2",
+    "hash": "ab59689fd98847a634d48702714e406e",
+    "index_name": "matrix_file_set_ab59689f",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -287,10 +287,6 @@
                                 "store": true,
                                 "type": "long"
                             },
-                            "read_count": {
-                                "store": true,
-                                "type": "long"
-                            },
                             "s3_uri": {
                                 "type": "keyword"
                             },
@@ -371,10 +367,6 @@
                                 "type": "text"
                             },
                             "observation_count": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "read_count": {
                                 "store": true,
                                 "type": "long"
                             },
