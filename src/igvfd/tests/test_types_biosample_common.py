@@ -169,3 +169,41 @@ def test_biosample_intended_cell_types_linkto_validation(testapp, other_lab, hum
         },
         status=422
     )
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture'],
+)
+def test_biosample_author_metadata(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    if biosample_type == 'primary_cell_culture':
+        endpoint = '/primary_cell_culture'
+        item = {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'author_metadata': {
+                'batch_id': 'B-001',
+                'prep_notes': 'test',
+            },
+            'status': 'current',
+        }
+    else:
+        config = BIOSAMPLE_CONFIGS[biosample_type]
+        endpoint = config['endpoint']
+        item = {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'author_metadata': {
+                'batch_id': 'B-001',
+                'prep_notes': 'test',
+            },
+            'status': 'current',
+        }
+        if config['has_classification']:
+            item['classification'] = config['classification_value']
+    res = testapp.post_json(endpoint, item, status=201)
+    assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']

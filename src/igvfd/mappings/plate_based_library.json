@@ -1,6 +1,6 @@
 {
-    "hash": "accbef2f0082f7ad5ac5f8b0c587f7cd",
-    "index_name": "plate_based_library_accbef2f",
+    "hash": "baacb0128f5ffc6221ca9aea7efcfcdb",
+    "index_name": "plate_based_library_baacb012",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -152,6 +152,10 @@
                         "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
+                    "author_metadata": {
+                        "properties": {},
+                        "type": "object"
+                    },
                     "creation_timestamp": {
                         "type": "date"
                     },
@@ -241,6 +245,10 @@
                             },
                             "aliases": {
                                 "type": "keyword"
+                            },
+                            "author_metadata": {
+                                "properties": {},
+                                "type": "object"
                             },
                             "classification": {
                                 "type": "keyword"

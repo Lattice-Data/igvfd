@@ -1,6 +1,6 @@
 {
-    "hash": "42e177cdb5693ea775565ed3f2c909fd",
-    "index_name": "tissue_42e177cd",
+    "hash": "a4153ca3766f340df81e64650e602f92",
+    "index_name": "tissue_a4153ca3",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -154,6 +154,10 @@
                     "aliases": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
+                    },
+                    "author_metadata": {
+                        "properties": {},
+                        "type": "object"
                     },
                     "creation_timestamp": {
                         "type": "date"
