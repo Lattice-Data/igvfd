@@ -260,6 +260,21 @@ def test_droplet_based_library_create_success(testapp, other_lab, tissue):
     assert res.json['@graph'][0]['library_cardinality'] == 'single'
 
 
+def test_droplet_based_library_author_metadata(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'author_metadata': {
+            'run_id': 'DR-009',
+            'lane': 'L2',
+        },
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']
+
+
 def test_droplet_based_library_create_with_all_optional_fields(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],

@@ -1,6 +1,6 @@
 {
-    "hash": "27921ec5e0a675db10845c021e68837d",
-    "index_name": "in_vivo_system_27921ec5",
+    "hash": "68b185a97e5311c81afd879f2d82c568",
+    "index_name": "in_vivo_system_68b185a9",
     "item_type": "in_vivo_system",
     "mapping": {
         "dynamic_templates": [
@@ -151,6 +151,10 @@
                     "aliases": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
+                    },
+                    "author_metadata": {
+                        "properties": {},
+                        "type": "object"
                     },
                     "classification": {
                         "type": "keyword"

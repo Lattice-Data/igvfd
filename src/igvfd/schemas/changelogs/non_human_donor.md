@@ -2,7 +2,7 @@
 
 ### Minor changes since schema version 1
 
-* Add `author_metadata` field for submitter-provided key-value metadata.
+* Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract donor profile).
 * Add sex with taxa-dependent validation via dependentSchemas.
 * Extend taxa enum list to include Danio rerio.
 * Sort taxa enum list lexicographically.
