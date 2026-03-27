@@ -32,19 +32,10 @@
         "$merge": [
             "file.json#/dependentSchemas"
         ],
-        "no_file_available": {
-            "if": {
-                "properties": {
-                    "no_file_available": {
-                        "const": false
-                    }
-                }
-            },
-            "then": {
-                "required": [
-                    "read_count"
-                ]
-            }
+        "s3_uri": {
+            "required": [
+                "read_count"
+            ]
         }
     },
     "properties": {
