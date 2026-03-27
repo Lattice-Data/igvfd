@@ -9,6 +9,7 @@ LATE = 10
 
 
 def includeme(config):
+    from . import sequence_file  # noqa: F401
     config.scan(categories=None)
 
     def callback():

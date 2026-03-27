@@ -54,6 +54,9 @@ def sequence_file():
             'md5sum': {
                 'title': 'MD5sum'
             },
+            'read_count': {
+                'title': 'Read Count'
+            },
             'lab': {
                 'title': 'Lab'
             },

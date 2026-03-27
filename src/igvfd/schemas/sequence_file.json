@@ -31,11 +31,16 @@
     "dependentSchemas": {
         "$merge": [
             "file.json#/dependentSchemas"
-        ]
+        ],
+        "s3_uri": {
+            "required": [
+                "read_count"
+            ]
+        }
     },
     "properties": {
         "schema_version": {
-            "default": "1"
+            "default": "2"
         },
         "file_format": {
             "title": "File Format",
@@ -47,6 +52,16 @@
             ],
             "submissionExample": {
                 "appscript": "fastq"
+            }
+        },
+        "read_count": {
+            "title": "Read Count",
+            "description": "Number of sequencing reads in the file.",
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "type": "integer",
+            "minimum": 0,
+            "submissionExample": {
+                "appscript": "15000000"
             }
         }
     },
