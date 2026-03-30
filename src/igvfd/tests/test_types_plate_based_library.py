@@ -134,3 +134,17 @@ def test_plate_based_library_create_with_all_optional_fields(testapp, other_lab,
     assert res.json['@graph'][0]['indexing_rounds'] == 3
     assert res.json['@graph'][0]['multiplexing_method'] == 'cell hashing'
     assert res.json['@graph'][0]['description'] == 'Complete plate-based library'
+
+
+def test_plate_based_library_author_metadata(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'author_metadata': {
+            'library_batch': 'PL-42',
+            'plate_id': 'P001',
+        },
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']

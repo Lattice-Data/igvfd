@@ -1,5 +1,6 @@
 # In Vivo System Changelog
 
+* Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract biosample profile).
 * Add host_tissue.
 * Add intended_cell_types.
 

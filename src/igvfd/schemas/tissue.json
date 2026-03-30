@@ -25,6 +25,9 @@
             "$ref": "mixins.json#/shared_status"
         },
         {
+            "$ref": "mixins.json#/author_metadata"
+        },
+        {
             "$ref": "biosample.json#/properties"
         },
         {

@@ -1,6 +1,6 @@
 {
-    "hash": "fd911a7085e0b04d670a3e156a75d54e",
-    "index_name": "droplet_based_library_fd911a70",
+    "hash": "efb8158fd4f452e38b2eff3a251e0660",
+    "index_name": "droplet_based_library_efb8158f",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -152,6 +152,10 @@
                         "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
+                    "author_metadata": {
+                        "properties": {},
+                        "type": "object"
+                    },
                     "cell_barcode_length": {
                         "store": true,
                         "type": "long"
@@ -250,6 +254,10 @@
                             },
                             "aliases": {
                                 "type": "keyword"
+                            },
+                            "author_metadata": {
+                                "properties": {},
+                                "type": "object"
                             },
                             "classification": {
                                 "type": "keyword"

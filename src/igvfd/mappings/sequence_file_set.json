@@ -1,6 +1,6 @@
 {
-    "hash": "45d45fbf57b84e0a2f2ad923d25265c7",
-    "index_name": "sequence_file_set_45d45fbf",
+    "hash": "e1e1234f30c4b7643c9f5b85217c0025",
+    "index_name": "sequence_file_set_e1e1234f",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -364,6 +364,10 @@
                             },
                             "aliases": {
                                 "type": "keyword"
+                            },
+                            "author_metadata": {
+                                "properties": {},
+                                "type": "object"
                             },
                             "cell_barcode_length": {
                                 "store": true,

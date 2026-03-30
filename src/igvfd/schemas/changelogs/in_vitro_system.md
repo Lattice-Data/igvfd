@@ -1,5 +1,6 @@
 # In Vitro System Changelog
 
+* Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract biosample profile).
 * Add intended_cell_types.
 
 ## Schema version 1

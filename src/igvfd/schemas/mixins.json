@@ -117,6 +117,7 @@
             "title": "Author Metadata",
             "description": "Custom metadata provided by the data submitter as key-value pairs",
             "type": "object",
+            "permission": "admin_only",
             "additionalProperties": true
         }
     },
