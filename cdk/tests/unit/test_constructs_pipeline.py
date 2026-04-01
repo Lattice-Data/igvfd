@@ -1,5 +1,6 @@
 import pytest
 
+from aws_cdk.assertions import Match
 from aws_cdk.assertions import Template
 
 
@@ -691,6 +692,30 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                             'RoleArn': {
                                 'Fn::GetAtt': [
                                     'TestContinuousDeploymentPipelineCodePipelineCodeBuildActionRole25F1910E',
+                                    'Arn'
+                                ]
+                            },
+                            'RunOrder': 1
+                        },
+                        {
+                            'ActionTypeId': {
+                                'Category': 'Build',
+                                'Owner': 'AWS',
+                                'Provider': 'CodeBuild',
+                                'Version': '1'
+                            },
+                            'Configuration': {
+                                'ProjectName': Match.any_value()
+                            },
+                            'InputArtifacts': [
+                                {
+                                    'Name': 'SynthStep_Output'
+                                }
+                            ],
+                            'Name': 'Postgres_LatestSnapshotFromDB_GetLatestRDSSnapshotID_Code',
+                            'RoleArn': {
+                                'Fn::GetAtt': [
+                                    'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
                                     'Arn'
                                 ]
                             },
