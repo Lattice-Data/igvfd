@@ -697,30 +697,7 @@ def test_constructs_pipeline_initialize_continuous_deployment_pipeline_construct
                             },
                             'RunOrder': 1
                         },
-                        {
-                            'ActionTypeId': {
-                                'Category': 'Build',
-                                'Owner': 'AWS',
-                                'Provider': 'CodeBuild',
-                                'Version': '1'
-                            },
-                            'Configuration': {
-                                'ProjectName': Match.any_value()
-                            },
-                            'InputArtifacts': [
-                                {
-                                    'Name': 'SynthStep_Output'
-                                }
-                            ],
-                            'Name': 'Postgres_LatestSnapshotFromDB_GetLatestRDSSnapshotID_Code',
-                            'RoleArn': {
-                                'Fn::GetAtt': [
-                                    'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
-                                    'Arn'
-                                ]
-                            },
-                            'RunOrder': 1
-                        }
+
                     ],
                     'Name': 'Assets'
                 },
@@ -1381,6 +1358,30 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                 }
                             ],
                             'Name': 'Backend_UpdateMapping_MappingFolder',
+                            'RoleArn': {
+                                'Fn::GetAtt': [
+                                    'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
+                                    'Arn'
+                                ]
+                            },
+                            'RunOrder': 1
+                        },
+                        {
+                            'ActionTypeId': {
+                                'Category': 'Build',
+                                'Owner': 'AWS',
+                                'Provider': 'CodeBuild',
+                                'Version': '1'
+                            },
+                            'Configuration': {
+                                'ProjectName': Match.any_value()
+                            },
+                            'InputArtifacts': [
+                                {
+                                    'Name': 'SynthStep_Output'
+                                }
+                            ],
+                            'Name': 'Postgres_LatestSnapshotFromDB_GetLatestRDSSnapshotID_Code',
                             'RoleArn': {
                                 'Fn::GetAtt': [
                                     'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
