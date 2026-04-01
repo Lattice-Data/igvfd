@@ -75,7 +75,7 @@ def test_config_pipeline_config_dataclass():
 
 def test_config_build_config_from_name():
     from infrastructure.config import build_config_from_name
-    from infrastructure.constants import DEV_DATABASE_IDENTIFIER
+    from infrastructure.constants import PROD_DATABASE_IDENTIFIER
     config = build_config_from_name(
         'demo',
         branch='my-branch',
@@ -114,10 +114,11 @@ def test_config_build_config_from_name():
         ('some', 'override')
     ]
     postgres_instance_props = config.postgres['instances'][0]['props']
-    # assert (
-#        'snapshot_source_db_identifier' not in postgres_instance_props
-#        and 'snapshot_arn' in postgres_instance_props
-#    )
+    assert (
+        'snapshot_source_db_identifier' in postgres_instance_props
+        and postgres_instance_props['snapshot_source_db_identifier'] == PROD_DATABASE_IDENTIFIER
+    )
+    assert 'snapshot_arn' not in postgres_instance_props
     assert 'engine_version' in postgres_instance_props
     opensearch_instance_props = config.opensearch['clusters'][0]['props']
     assert 'capacity' in opensearch_instance_props
@@ -132,6 +133,18 @@ def test_config_build_config_from_name():
     assert 'max_scaling_capacity' in config.indexing_service
     assert config.branch == 'my-branch'
     assert config.name == 'dev'
+    config = build_config_from_name(
+        'sandbox',
+        branch='my-branch',
+    )
+    postgres_instance_props = config.postgres['instances'][0]['props']
+    assert (
+        'snapshot_source_db_identifier' in postgres_instance_props
+        and postgres_instance_props['snapshot_source_db_identifier'] == PROD_DATABASE_IDENTIFIER
+    )
+    assert 'snapshot_arn' not in postgres_instance_props
+    assert config.branch == 'my-branch'
+    assert config.name == 'sandbox'
 
 
 def test_config_build_pipeline_config_from_name():
