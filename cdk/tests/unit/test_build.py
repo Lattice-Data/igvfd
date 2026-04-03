@@ -136,14 +136,6 @@ def test_synth_add_deploy_pipeline_stack_to_app():
                     'Key': 'project',
                     'Value': 'igvfd'
                 },
-                {
-                    'Key': 'time-to-live-hours',
-                    'Value': '60'
-                },
-                {
-                    'Key': 'turn-off-on-friday-night',
-                    'Value': 'yes'
-                }
             ]
         }
     )

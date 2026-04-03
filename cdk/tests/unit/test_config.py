@@ -158,7 +158,7 @@ def test_config_build_pipeline_config_from_name():
     )
     assert config.common.organization_name == 'lattice-data'
     assert config.common.project_name == 'igvfd'
-    assert ('time-to-live-hours', '60') in config.tags
+    assert config.tags == []
     assert config.branch == 'my-branch'
     assert config.pipeline == 'my-pipeline'
     assert config.name == 'demo'
@@ -168,6 +168,7 @@ def test_config_build_pipeline_config_from_name():
     )
     assert config.common.organization_name == 'lattice-data'
     assert config.common.project_name == 'igvfd'
+    assert config.tags == []
     assert config.pipeline == 'ContinuousDeploymentPipelineStack'
     assert config.name == 'dev'
     assert isinstance(config.account_and_region, Environment)

@@ -33,19 +33,13 @@ config: Dict[str, Any] = {
             'pipeline': 'DemoDeploymentPipelineStack',
             'existing_resources_class': igvf_dev.Resources,
             'account_and_region': igvf_dev.US_WEST_2,
-            'tags': [
-                ('time-to-live-hours', '60'),
-                ('turn-off-on-friday-night', 'yes'),
-            ],
+            'tags': [],
         },
         'dev': {
             'pipeline': 'ContinuousDeploymentPipelineStack',
             'existing_resources_class': igvf_dev.Resources,
             'account_and_region': igvf_dev.US_WEST_2,
-            'tags': [
-                ('time-to-live-hours', '60'),
-                ('turn-off-on-friday-night', 'yes'),
-            ],
+            'tags': [],
         },
         'production': {
             'pipeline': 'ProductionDeploymentPipelineStack',
@@ -123,10 +117,7 @@ config: Dict[str, Any] = {
                 'enabled': True,
                 'arn': 'arn:aws:wafv2:us-west-2:159466469043:regional/webacl/Lattice2ApiDemoWaf-Wi9CUpMXmj0O/9db3bb63-c6b5-4963-961e-2d4f628f8ce0',
             },
-            'tags': [
-                ('time-to-live-hours', '60'),
-                ('turn-off-on-friday-night', 'yes'),
-            ],
+            'tags': [],
         },
         'dev': {
             'postgres': {
@@ -193,10 +184,7 @@ config: Dict[str, Any] = {
                 'enabled': True,
                 'arn': 'arn:aws:wafv2:us-west-2:159466469043:regional/webacl/Lattice2ApiDemoWaf-Wi9CUpMXmj0O/9db3bb63-c6b5-4963-961e-2d4f628f8ce0',
             },
-            'tags': [
-                ('time-to-live-hours', '60'),
-                ('turn-off-on-friday-night', 'yes'),
-            ]
+            'tags': [],
         },
         'staging': {
             'postgres': {
