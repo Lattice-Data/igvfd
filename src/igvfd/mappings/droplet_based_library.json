@@ -1,6 +1,6 @@
 {
-    "hash": "efb8158fd4f452e38b2eff3a251e0660",
-    "index_name": "droplet_based_library_efb8158f",
+    "hash": "af3bfc879d85200adb9e0d579ad71f71",
+    "index_name": "droplet_based_library_af3bfc87",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -148,6 +148,9 @@
                         "copy_to": "_exact",
                         "type": "keyword"
                     },
+                    "CRO_group_identifier": {
+                        "type": "keyword"
+                    },
                     "aliases": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
@@ -260,6 +263,9 @@
                                 "type": "object"
                             },
                             "classification": {
+                                "type": "keyword"
+                            },
+                            "collection_location": {
                                 "type": "keyword"
                             },
                             "creation_timestamp": {

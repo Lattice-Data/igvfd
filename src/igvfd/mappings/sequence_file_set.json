@@ -1,6 +1,6 @@
 {
-    "hash": "e1e1234f30c4b7643c9f5b85217c0025",
-    "index_name": "sequence_file_set_e1e1234f",
+    "hash": "f65fb800e9a2403fce9452b1fb6dcac2",
+    "index_name": "sequence_file_set_f65fb800",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -360,6 +360,9 @@
                                 "type": "keyword"
                             },
                             "@type": {
+                                "type": "keyword"
+                            },
+                            "CRO_group_identifier": {
                                 "type": "keyword"
                             },
                             "aliases": {

@@ -32,6 +32,9 @@
         },
         {
             "$ref": "mixins.json#/biosample_age_range"
+        },
+        {
+            "$ref": "mixins.json#/biosample_collection_location"
         }
     ],
     "dependentSchemas": {

@@ -2,6 +2,7 @@
 
 ## Minor changes since schema version 1
 
+* Add `collection_location` via `mixins.json#/biosample_collection_location`.
 * Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract biosample profile).
 * Add lower_bound_age.
 * Add upper_bound_age.

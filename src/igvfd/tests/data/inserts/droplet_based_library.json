@@ -11,7 +11,8 @@
             "lattice:droplet-library-basic"
         ],
         "description": "Test droplet-based library 1",
-        "library_cardinality": "single"
+        "library_cardinality": "single",
+        "CRO_group_identifier": "INSERT-DROPLET-CRO-GROUP-1"
     },
     {
         "lab": "teri-klein",

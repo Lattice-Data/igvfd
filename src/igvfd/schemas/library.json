@@ -61,6 +61,16 @@
                 "genetic",
                 "sample barcodes"
             ]
+        },
+        "CRO_group_identifier": {
+            "title": "CRO Group Identifier",
+            "description": "An identifier grouping related work from a Contract Research Organization (CRO), such as a batch or project code.",
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^ \\t](?:[\\s\\S]*[^ \\t])?$",
+            "submissionExample": {
+                "appscript": "CRO-BATCH-2024-01"
+            }
         }
     },
     "fuzzy_searchable_fields": [

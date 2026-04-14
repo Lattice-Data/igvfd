@@ -133,6 +133,39 @@ def test_tissue_create_with_orientation_enum_values(testapp, other_lab, human_do
     assert res.json['@graph'][0]['orientation'] == orientation
 
 
+def test_tissue_collection_location_enum(testapp, other_lab, human_donor, controlled_term_brain):
+    testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'collection_location': 'Asia',
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+@pytest.mark.parametrize(
+    'collection_location',
+    [
+        'USA',
+        'Europe',
+    ]
+)
+def test_tissue_create_with_collection_location_enum_values(testapp, other_lab, human_donor, controlled_term_brain, collection_location):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'collection_location': collection_location,
+        'status': 'current',
+    }
+    res = testapp.post_json('/tissue', item, status=201)
+    assert res.json['@graph'][0]['collection_location'] == collection_location
+
+
 def test_tissue_create_success(testapp, other_lab, human_donor, controlled_term_brain):
     item = {
         'lab': other_lab['@id'],
@@ -157,6 +190,7 @@ def test_tissue_create_with_all_optional_fields(testapp, other_lab, human_donor,
         'thickness_units': 'mm',
         'date_obtained': '2024-01-15',
         'orientation': 'coronal',
+        'collection_location': 'USA',
         'lower_bound_age': 30,
         'upper_bound_age': 45,
         'age_units': 'year',
@@ -169,6 +203,7 @@ def test_tissue_create_with_all_optional_fields(testapp, other_lab, human_donor,
     assert res.json['@graph'][0]['thickness_units'] == 'mm'
     assert res.json['@graph'][0]['date_obtained'] == '2024-01-15'
     assert res.json['@graph'][0]['orientation'] == 'coronal'
+    assert res.json['@graph'][0]['collection_location'] == 'USA'
     assert res.json['@graph'][0]['lower_bound_age'] == 30
     assert res.json['@graph'][0]['upper_bound_age'] == 45
     assert res.json['@graph'][0]['age_units'] == 'year'
