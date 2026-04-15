@@ -6,9 +6,9 @@
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:treatment-dexamethasone"
+            "lattice:treatment-vitamin-D"
         ],
-        "description": "Dexamethasone treatment for anti-inflammatory response."
+        "description": "Vitamin D treatment for low Vitamin D levels."
     },
     {
         "lab": "teri-klein",
