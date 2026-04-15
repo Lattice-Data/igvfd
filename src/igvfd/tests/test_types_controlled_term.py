@@ -118,14 +118,12 @@ def test_controlled_term_with_all_fields(testapp):
         'term_id': 'CL:0000005',
         'term_name': 'complete test term',
         'ontology_source': 'CL',
-        'definition': 'A complete definition.',
-        'synonyms': ['syn1', 'syn2'],
         'dbxrefs': ['PMID:12345678', 'DOI:10.1234/test'],
         'status': 'current',
     }
     res = testapp.post_json('/controlled_term', item, status=201)
-    assert res.json['@graph'][0]['definition'] == 'A complete definition.'
-    assert res.json['@graph'][0]['synonyms'] == ['syn1', 'syn2']
+    assert res.json['@graph'][0]['definition'] == 'Any fibroblast that is derived from the neural crest.'
+    assert res.json['@graph'][0]['synonyms'] == ['fibroblast neural crest derived']
     assert res.json['@graph'][0]['dbxrefs'] == ['PMID:12345678', 'DOI:10.1234/test']
 
 

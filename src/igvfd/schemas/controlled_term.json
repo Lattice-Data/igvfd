@@ -64,20 +64,6 @@
                 "UniProt"
             ]
         },
-        "definition": {
-            "title": "Definition",
-            "description": "The formal definition of this term from the source ontology.",
-            "type": "string"
-        },
-        "synonyms": {
-            "title": "Synonyms",
-            "description": "Alternative names or synonyms for this term.",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-                "type": "string"
-            }
-        },
         "dbxrefs": {
             "title": "External References",
             "description": "External identifiers for this ontology term.",
