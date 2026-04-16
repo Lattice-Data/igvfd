@@ -47,8 +47,8 @@ class ControlledTerm(Item):
     )
     def term_name(self, registry, term_id):
         # uniprot terms can be "anti-{term_id}" for antibodies
-        term_prefix = "anti-" if term_id.startswith("anti-") else ""
-        term_to_lookup = term_id[len(term_prefix) : ]
+        term_prefix = 'anti-' if term_id.startswith('anti-') else ''
+        term_to_lookup = term_id[len(term_prefix):]
         name = self._get_ontology_string(registry, term_to_lookup, 'label')
         return term_prefix + name
 
@@ -63,10 +63,10 @@ class ControlledTerm(Item):
     )
     def definition(self, registry, term_id):
         # uniprot terms can be "anti-{term_id}" for antibodies
-        term_prefix = "anti-" if term_id.startswith("anti-") else ""
-        term_to_lookup = term_id[len(term_prefix) : ]
+        term_prefix = 'anti-' if term_id.startswith('anti-') else ''
+        term_to_lookup = term_id[len(term_prefix):]
         description = self._get_ontology_string(registry, term_to_lookup, 'description')
-        return term_prefix + description if description else ""
+        return term_prefix + description if description else ''
 
     @calculated_property(
         condition='term_id',
