@@ -65,5 +65,15 @@
         "aliases": [
             "lattice:term-uniprot-insulin"
         ]
+    },
+    {
+        "term_id": "anti-uniprot:P01308",
+        "ontology_source": "UniProt",
+        "uuid": "227438bd-e550-4971-9305-f22eb69f0052",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-anti-uniprot-insulin"
+        ]
     }
 ]
