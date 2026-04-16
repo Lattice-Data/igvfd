@@ -6,7 +6,6 @@
     "type": "object",
     "required": [
         "term_id",
-        "term_name",
         "ontology_source"
     ],
     "identifyingProperties": [
@@ -33,12 +32,6 @@
             "type": "string",
             "uniqueKey": "controlled_term:term_id",
             "pattern": "^(CL|EFO|MONDO|UBERON|HANCESTRO|HsapDv|MmusDv|PATO|NCBITaxon|FBbt|FBdv|ZFA|WBbt|WBls|CVCL|CHEBI|UniProt)[:_][A-Za-z0-9_]+$"
-        },
-        "term_name": {
-            "title": "Term Name",
-            "description": "Human-readable name of the ontology term.",
-            "type": "string",
-            "pattern": "^(?![\\s\"'])[\\S|\\s]*[^\\s\"']$"
         },
         "ontology_source": {
             "title": "Ontology Source",

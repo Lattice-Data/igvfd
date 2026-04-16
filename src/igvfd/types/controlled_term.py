@@ -39,6 +39,18 @@ class ControlledTerm(Item):
     @calculated_property(
         condition='term_id',
         schema={
+            'title': 'Term Name',
+            'type': 'string',
+            'description': 'Human readable name for the ontology term',
+            'notSubmittable': True,
+        }
+    )
+    def term_name(self, registry, term_id):
+        return self._get_ontology_string(registry, term_id, 'label')
+
+    @calculated_property(
+        condition='term_id',
+        schema={
             'title': 'Definition',
             'type': 'string',
             'description': 'Definition for the term that was recorded in an ontology.',
