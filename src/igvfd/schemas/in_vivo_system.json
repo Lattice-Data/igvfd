@@ -2,7 +2,7 @@
     "title": "In Vivo System",
     "$id": "/profiles/in_vivo_system.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "A concrete in vivo biological system schema inheriting from abstract Biosample class.",
+    "description": "A concrete in vivo biological system schema inheriting from abstract Biosample class. Deprecated, use cell_line for new submissions.",
     "type": "object",
     "required": [
         "lab",

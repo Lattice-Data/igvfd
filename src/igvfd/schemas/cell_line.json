@@ -1,14 +1,13 @@
 {
-    "title": "In Vitro System",
-    "$id": "/profiles/in_vitro_system.json",
+    "title": "Cell Line",
+    "$id": "/profiles/cell_line.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "A concrete in vitro biological system schema inheriting from abstract Biosample class. Deprecated, use organoid or cell_line for new submissions.",
+    "description": "A concrete cell line schema inheriting from abstract Biosample class.",
     "type": "object",
     "required": [
         "lab",
         "donors",
-        "sample_terms",
-        "classification"
+        "sample_terms"
     ],
     "identifyingProperties": [
         "uuid",
@@ -39,16 +38,22 @@
         "schema_version": {
             "default": "1"
         },
-        "classification": {
-            "title": "Classification",
-            "description": "The type of in vitro biological system.",
+        "host": {
+            "title": "Host",
+            "description": "The host organism for cell line transplantation scenarios.",
+            "comment": "See donor.json for available identifiers.",
             "type": "string",
-            "enum": [
-                "organoid",
-                "gastruloid",
-                "embryoid",
-                "immortalized cell line"
-            ]
+            "linkTo": "Donor"
+        },
+        "host_tissue": {
+            "title": "Host Tissue",
+            "description": "The host tissue used for xenotransplantation.",
+            "comment": "See controlled_term.json for available identifiers.",
+            "type": "string",
+            "linkTo": "ControlledTerm",
+            "submissionExample": {
+                "appscript": "lattice:term-brain"
+            }
         }
     },
     "fuzzy_searchable_fields": [
@@ -59,5 +64,5 @@
     "exact_searchable_fields": [
         "@type"
     ],
-    "changelog": "/profiles/changelogs/in_vitro_system.md"
+    "changelog": "/profiles/changelogs/cell_line.md"
 }

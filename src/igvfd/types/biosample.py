@@ -20,7 +20,8 @@ from .base import (
 class Biosample(Item):
     """
     Abstract base class for biosamples.
-    Concrete implementations are Tissue, PrimaryCellCulture, InVivoSystem, and InVitroSystem.
+    Concrete implementations are Tissue, PrimaryCellCulture, Organoid, CellLine,
+    InVivoSystem, and InVitroSystem.
     """
     item_type = 'biosample'
     base_types = ['Biosample'] + Item.base_types
@@ -79,6 +80,68 @@ class PrimaryCellCulture(Biosample):
             'title': 'Summary',
             'type': 'string',
             'description': 'A summary of the primary cell culture sample.',
+            'notSubmittable': True,
+        }
+    )
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
+        if description:
+            return description
+        return self.uuid
+
+
+@collection(
+    name='organoids',
+    properties={
+        'title': 'Organoids',
+        'description': 'Listing of organoid samples',
+    }
+)
+class Organoid(Biosample):
+    item_type = 'organoid'
+    schema = load_schema('igvfd:schemas/organoid.json')
+    embedded_with_frame = Biosample.embedded_with_frame + [
+        Path('intended_cell_types', include=['@id', 'term_name']),
+    ]
+
+    @calculated_property(
+        schema={
+            'title': 'Summary',
+            'type': 'string',
+            'description': 'A summary of the organoid.',
+            'notSubmittable': True,
+        }
+    )
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
+        if description:
+            return description
+        return self.uuid
+
+
+@collection(
+    name='cell_lines',
+    properties={
+        'title': 'Cell Lines',
+        'description': 'Listing of cell line samples',
+    }
+)
+class CellLine(Biosample):
+    item_type = 'cell_line'
+    schema = load_schema('igvfd:schemas/cell_line.json')
+    embedded_with_frame = Biosample.embedded_with_frame + [
+        Path('host', include=['@id', 'title', 'aliases']),
+        Path('host_tissue', include=['@id', 'term_name']),
+        Path('intended_cell_types', include=['@id', 'term_name']),
+    ]
+
+    @calculated_property(
+        schema={
+            'title': 'Summary',
+            'type': 'string',
+            'description': 'A summary of the cell line.',
             'notSubmittable': True,
         }
     )

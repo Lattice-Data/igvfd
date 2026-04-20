@@ -26,10 +26,24 @@ BIOSAMPLE_CONFIGS = {
         'classification_value': 'xenograft',
         'has_intended_cell_types': True,
     },
+    'organoid': {
+        'endpoint': '/organoid',
+        'fixture_alias': 'lattice:organoid-brain-model',
+        'fixture_description': 'Test organoid sample',
+        'has_classification': False,
+        'has_intended_cell_types': True,
+    },
+    'cell_line': {
+        'endpoint': '/cell_line',
+        'fixture_alias': 'lattice:cell-line-immortalized',
+        'fixture_description': 'Test cell line sample',
+        'has_classification': False,
+        'has_intended_cell_types': True,
+    },
 }
 
 
-@pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system'])
+@pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_summary_with_aliases(testapp, biosample_type, request):
     config = BIOSAMPLE_CONFIGS[biosample_type]
     fixture = request.getfixturevalue(f'{biosample_type}_with_aliases')
@@ -37,7 +51,7 @@ def test_biosample_summary_with_aliases(testapp, biosample_type, request):
     assert res.json.get('summary') == config['fixture_alias']
 
 
-@pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system'])
+@pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_summary_with_description(testapp, biosample_type, request):
     config = BIOSAMPLE_CONFIGS[biosample_type]
     fixture = request.getfixturevalue(f'{biosample_type}_with_description')
@@ -45,7 +59,7 @@ def test_biosample_summary_with_description(testapp, biosample_type, request):
     assert res.json.get('summary') == config['fixture_description']
 
 
-@pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system'])
+@pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_summary_with_uuid(testapp, biosample_type, request):
     config = BIOSAMPLE_CONFIGS[biosample_type]
     fixture = request.getfixturevalue(biosample_type)
@@ -54,7 +68,7 @@ def test_biosample_summary_with_uuid(testapp, biosample_type, request):
     assert res.json.get('summary') == uuid
 
 
-@pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system'])
+@pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_required_fields(testapp, other_lab, human_donor, controlled_term_brain, biosample_type):
     config = BIOSAMPLE_CONFIGS[biosample_type]
     endpoint = config['endpoint']
@@ -93,7 +107,7 @@ def test_biosample_required_fields(testapp, other_lab, human_donor, controlled_t
         testapp.post_json(endpoint, payload, status=422)
 
 
-@pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system'])
+@pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_create_with_intended_cell_types(testapp, other_lab, human_donor,
                                                    controlled_term_brain, controlled_term, biosample_type):
     config = BIOSAMPLE_CONFIGS[biosample_type]
@@ -111,7 +125,7 @@ def test_biosample_create_with_intended_cell_types(testapp, other_lab, human_don
     assert res.json['@graph'][0]['intended_cell_types'] == [controlled_term['@id']]
 
 
-@pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system'])
+@pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_intended_cell_types_min_items(testapp, other_lab, human_donor,
                                                  controlled_term_brain, biosample_type):
     config = BIOSAMPLE_CONFIGS[biosample_type]
@@ -131,7 +145,7 @@ def test_biosample_intended_cell_types_min_items(testapp, other_lab, human_donor
     )
 
 
-@pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system'])
+@pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_intended_cell_types_unique_items(testapp, other_lab, human_donor,
                                                     controlled_term_brain, controlled_term, biosample_type):
     config = BIOSAMPLE_CONFIGS[biosample_type]
@@ -151,7 +165,7 @@ def test_biosample_intended_cell_types_unique_items(testapp, other_lab, human_do
     )
 
 
-@pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system'])
+@pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_intended_cell_types_linkto_validation(testapp, other_lab, human_donor,
                                                          controlled_term_brain, biosample_type):
     config = BIOSAMPLE_CONFIGS[biosample_type]
@@ -173,7 +187,7 @@ def test_biosample_intended_cell_types_linkto_validation(testapp, other_lab, hum
 
 @pytest.mark.parametrize(
     'biosample_type',
-    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture'],
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
 def test_biosample_author_metadata(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type
