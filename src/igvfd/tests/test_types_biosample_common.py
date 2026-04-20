@@ -117,10 +117,11 @@ def test_biosample_create_with_intended_cell_types(testapp, other_lab, human_don
         'lab': other_lab['@id'],
         'donors': [human_donor['@id']],
         'sample_terms': [controlled_term_brain['@id']],
-        'classification': config['classification_value'],
         'intended_cell_types': [controlled_term['@id']],
         'status': 'current',
     }
+    if config['has_classification']:
+        item['classification'] = config['classification_value']
     res = testapp.post_json(endpoint, item, status=201)
     assert res.json['@graph'][0]['intended_cell_types'] == [controlled_term['@id']]
 
@@ -131,18 +132,16 @@ def test_biosample_intended_cell_types_min_items(testapp, other_lab, human_donor
     config = BIOSAMPLE_CONFIGS[biosample_type]
     endpoint = config['endpoint']
 
-    testapp.post_json(
-        endpoint,
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-            'classification': config['classification_value'],
-            'intended_cell_types': [],
-            'status': 'current',
-        },
-        status=422
-    )
+    payload = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'intended_cell_types': [],
+        'status': 'current',
+    }
+    if config['has_classification']:
+        payload['classification'] = config['classification_value']
+    testapp.post_json(endpoint, payload, status=422)
 
 
 @pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
@@ -151,18 +150,16 @@ def test_biosample_intended_cell_types_unique_items(testapp, other_lab, human_do
     config = BIOSAMPLE_CONFIGS[biosample_type]
     endpoint = config['endpoint']
 
-    testapp.post_json(
-        endpoint,
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-            'classification': config['classification_value'],
-            'intended_cell_types': [controlled_term['@id'], controlled_term['@id']],
-            'status': 'current',
-        },
-        status=422
-    )
+    payload = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'intended_cell_types': [controlled_term['@id'], controlled_term['@id']],
+        'status': 'current',
+    }
+    if config['has_classification']:
+        payload['classification'] = config['classification_value']
+    testapp.post_json(endpoint, payload, status=422)
 
 
 @pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
@@ -171,18 +168,16 @@ def test_biosample_intended_cell_types_linkto_validation(testapp, other_lab, hum
     config = BIOSAMPLE_CONFIGS[biosample_type]
     endpoint = config['endpoint']
 
-    testapp.post_json(
-        endpoint,
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-            'classification': config['classification_value'],
-            'intended_cell_types': ['/invalid/term/path/'],
-            'status': 'current',
-        },
-        status=422
-    )
+    payload = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'intended_cell_types': ['/invalid/term/path/'],
+        'status': 'current',
+    }
+    if config['has_classification']:
+        payload['classification'] = config['classification_value']
+    testapp.post_json(endpoint, payload, status=422)
 
 
 @pytest.mark.parametrize(
