@@ -63,6 +63,22 @@
             "submissionExample": {
                 "appscript": "15000000"
             }
+        },
+        "derived_from": {
+            "title": "Derived From",
+            "description": "The libraries used to produce this sequence file.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Library",
+                "comment": "See library.json for a list of available identifiers.",
+                "type": "string",
+                "linkTo": "Library"
+        },
+            "submissionExample": {
+            "appscript": "[\"IGVFLI1234ABCD\", \"john-doe:library01\"]"
+            }
         }
     },
     "fuzzy_searchable_fields": [
