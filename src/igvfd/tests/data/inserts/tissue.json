@@ -14,8 +14,7 @@
             "lattice:tissue-frozen-basic"
         ],
         "description": "Test tissue sample 1",
-        "preservation_method": "frozen",
-        "collection_location": "USA"
+        "preservation_method": "frozen"
     },
     {
         "lab": "teri-klein",

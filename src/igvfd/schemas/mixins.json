@@ -326,20 +326,6 @@
             }
         }
     },
-    "biosample_collection_location": {
-        "collection_location": {
-            "title": "Collection Location",
-            "description": "The geographic region where the biological sample was collected.",
-            "type": "string",
-            "enum": [
-                "USA",
-                "Europe"
-            ],
-            "submissionExample": {
-                "appscript": "USA"
-            }
-        }
-    },
     "tissue_thickness_dependent_schemas": {
         "thickness": {
             "required": [

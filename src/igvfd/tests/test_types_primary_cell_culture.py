@@ -1,41 +1,6 @@
 import pytest
 
 
-def test_primary_cell_culture_collection_location_enum(testapp, other_lab, human_donor, controlled_term_brain):
-    testapp.post_json(
-        '/primary_cell_culture',
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-            'collection_location': 'Canada',
-            'status': 'current',
-        },
-        status=422,
-    )
-
-
-@pytest.mark.parametrize(
-    'collection_location',
-    [
-        'USA',
-        'Europe',
-    ]
-)
-def test_primary_cell_culture_create_with_collection_location_enum_values(
-    testapp, other_lab, human_donor, controlled_term_brain, collection_location
-):
-    item = {
-        'lab': other_lab['@id'],
-        'donors': [human_donor['@id']],
-        'sample_terms': [controlled_term_brain['@id']],
-        'collection_location': collection_location,
-        'status': 'current',
-    }
-    res = testapp.post_json('/primary_cell_culture', item, status=201)
-    assert res.json['@graph'][0]['collection_location'] == collection_location
-
-
 def test_primary_cell_culture_summary_with_aliases(testapp, primary_cell_culture_with_aliases):
     res = testapp.get(primary_cell_culture_with_aliases['@id'])
     assert res.json.get('summary') == 'lattice:primary-cell-passage-3'
@@ -147,7 +112,6 @@ def test_primary_cell_culture_create_with_all_optional_fields(testapp, other_lab
         'lower_bound_age': 5,
         'upper_bound_age': 7,
         'age_units': 'day',
-        'collection_location': 'Europe',
         'status': 'current',
     }
     res = testapp.post_json('/primary_cell_culture', item, status=201)
@@ -157,7 +121,6 @@ def test_primary_cell_culture_create_with_all_optional_fields(testapp, other_lab
     assert res.json['@graph'][0]['lower_bound_age'] == 5
     assert res.json['@graph'][0]['upper_bound_age'] == 7
     assert res.json['@graph'][0]['age_units'] == 'day'
-    assert res.json['@graph'][0]['collection_location'] == 'Europe'
 
 
 def test_primary_cell_culture_age_dependency(testapp, other_lab, human_donor, controlled_term_brain):

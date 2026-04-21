@@ -256,9 +256,6 @@
                             "classification": {
                                 "type": "keyword"
                             },
-                            "collection_location": {
-                                "type": "keyword"
-                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },

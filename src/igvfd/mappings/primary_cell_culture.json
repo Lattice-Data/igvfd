@@ -159,9 +159,6 @@
                         "properties": {},
                         "type": "object"
                     },
-                    "collection_location": {
-                        "type": "keyword"
-                    },
                     "creation_timestamp": {
                         "type": "date"
                     },

@@ -13,8 +13,7 @@
         "aliases": [
             "lattice:primary-cell-basic"
         ],
-        "description": "Test primary cell culture sample 1",
-        "collection_location": "Europe"
+        "description": "Test primary cell culture sample 1"
     },
     {
         "lab": "teri-klein",
