@@ -85,16 +85,13 @@ class ControlledTerm(Item):
         return self._get_ontology_slims(registry, term_id, 'synonyms')
 
     @calculated_property(
+        condition='term_id',
         schema={
             'title': 'Summary',
             'type': 'string',
-            'description': 'A summary of the controlled term.',
+            'description': 'The ontology term identifier (same as term_id).',
             'notSubmittable': True,
         }
     )
-    def summary(self, term_name=None, aliases=None):
-        if term_name:
-            return term_name
-        if aliases:
-            return aliases[0]
-        return self.uuid
+    def summary(self, term_id):
+        return term_id

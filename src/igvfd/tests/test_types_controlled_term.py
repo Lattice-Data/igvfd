@@ -1,63 +1,70 @@
 import pytest
 
 
-def test_controlled_term_summary_with_term_name(testapp, controlled_term):
+def test_controlled_term_summary_is_term_id(testapp, controlled_term):
     res = testapp.get(controlled_term['@id'])
-    assert res.json.get('summary') == 'test cell type'
+    assert res.json.get('term_name')
+    assert res.json.get('summary') == controlled_term['term_id'] == 'CL:0000005'
 
 
 def test_controlled_term_summary_with_aliases(testapp, controlled_term_with_aliases):
     res = testapp.get(controlled_term_with_aliases['@id'])
-    # Summary prioritizes term_name over aliases, so it returns term_name
-    assert res.json.get('summary') == 'test cell type with aliases'
+    assert not res.json.get('term_name')
+    assert res.json.get('summary') == 'CL:9000000'
 
 
-def test_controlled_term_summary_with_uuid(testapp, controlled_term):
-    res = testapp.get(controlled_term['@id'])
-    uuid = res.json.get('uuid')
-    # When term_name is present, it should be used instead of UUID
-    assert res.json.get('summary') == 'test cell type'
-    # If term_name were missing, UUID would be used
-    assert uuid is not None
+def test_controlled_term_summary_without_ontology_label(testapp, controlled_term_uuid_summary):
+    res = testapp.get(controlled_term_uuid_summary['@id'])
+    assert res.json.get('uuid')
+    assert not res.json.get('term_name')
+    assert res.json.get('aliases') in (None, [])
+    assert res.json.get('summary') == 'CL:9000001'
 
 
 def test_controlled_term_required_fields(testapp):
-    # Test that term_id is required
     testapp.post_json(
         '/controlled_term',
         {
-            'term_name': 'test term',
             'ontology_source': 'CL',
         },
         status=422
     )
-    # Test that term_name is required
+    testapp.post_json(
+        '/controlled_term',
+        {
+            'term_id': 'CL:0000000',
+        },
+        status=422
+    )
     testapp.post_json(
         '/controlled_term',
         {
             'term_id': 'CL:0000000',
             'ontology_source': 'CL',
+            'status': 'current',
         },
-        status=422
+        status=201,
     )
-    # Test that ontology_source is required
+
+
+def test_controlled_term_submitted_calculated_fields_rejected(testapp):
     testapp.post_json(
         '/controlled_term',
         {
             'term_id': 'CL:0000000',
-            'term_name': 'test term',
+            'ontology_source': 'CL',
+            'term_name': 'disallowed',
+            'status': 'current',
         },
-        status=422
+        status=422,
     )
 
 
 def test_controlled_term_ontology_source_enum(testapp):
-    # Test that only valid ontology sources are allowed
     testapp.post_json(
         '/controlled_term',
         {
             'term_id': 'INVALID:0000000',
-            'term_name': 'test term',
             'ontology_source': 'INVALID',
         },
         status=422
@@ -65,12 +72,10 @@ def test_controlled_term_ontology_source_enum(testapp):
 
 
 def test_controlled_term_term_id_pattern(testapp):
-    # Test that term_id must match pattern
     testapp.post_json(
         '/controlled_term',
         {
             'term_id': 'invalid-format',
-            'term_name': 'test term',
             'ontology_source': 'CL',
         },
         status=422
@@ -80,14 +85,14 @@ def test_controlled_term_term_id_pattern(testapp):
 def test_controlled_term_create(testapp):
     item = {
         'term_id': 'CL:0000004',
-        'term_name': 'test cell type',
         'ontology_source': 'CL',
         'status': 'current',
     }
     res = testapp.post_json('/controlled_term', item, status=201)
-    assert res.json['@graph'][0]['term_id'] == 'CL:0000004'
-    assert res.json['@graph'][0]['term_name'] == 'test cell type'
-    assert res.json['@graph'][0]['ontology_source'] == 'CL'
+    graph = res.json['@graph'][0]
+    assert graph['term_id'] == 'CL:0000004'
+    assert graph['term_name'] == 'obsolete cell by organism'
+    assert graph['ontology_source'] == 'CL'
 
 
 def test_controlled_term_lookup_by_term_id(testapp):
@@ -116,27 +121,29 @@ def test_controlled_term_term_id_unique_conflict(testapp):
 def test_controlled_term_with_all_fields(testapp):
     item = {
         'term_id': 'CL:0000005',
-        'term_name': 'complete test term',
         'ontology_source': 'CL',
         'dbxrefs': ['PMID:12345678', 'DOI:10.1234/test'],
         'status': 'current',
     }
     res = testapp.post_json('/controlled_term', item, status=201)
-    assert res.json['@graph'][0]['definition'] == 'Any fibroblast that is derived from the neural crest.'
+    assert res.json['@graph'][0]['definition'] == (
+        'Any fibroblast that is derived from the neural crest.'
+    )
     assert res.json['@graph'][0]['synonyms'] == ['fibroblast neural crest derived']
     assert res.json['@graph'][0]['dbxrefs'] == ['PMID:12345678', 'DOI:10.1234/test']
 
 
 def test_controlled_term_hancestro_create(testapp):
     item = {
-        'term_id': 'HANCESTRO:0000001',
-        'term_name': 'Han Chinese',
+        'term_id': 'HANCESTRO:0304',
         'ontology_source': 'HANCESTRO',
         'status': 'current',
     }
     res = testapp.post_json('/controlled_term', item, status=201)
-    assert res.json['@graph'][0]['term_id'] == 'HANCESTRO:0000001'
-    assert res.json['@graph'][0]['ontology_source'] == 'HANCESTRO'
+    graph = res.json['@graph'][0]
+    assert graph['term_id'] == 'HANCESTRO:0304'
+    assert graph['ontology_source'] == 'HANCESTRO'
+    assert graph['term_name'] == 'ancestry status'
 
 
 @pytest.mark.parametrize(
@@ -164,7 +171,6 @@ def test_controlled_term_hancestro_create(testapp):
 def test_controlled_term_alias_prefixes_allowed(testapp, prefix, term_id):
     item = {
         'term_id': term_id,
-        'term_name': f'test term with alias prefix {prefix}',
         'ontology_source': 'CL',
         'aliases': [f'{prefix}:test-alias'],
         'status': 'current',
