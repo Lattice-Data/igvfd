@@ -1,6 +1,6 @@
 {
-    "hash": "ab59689fd98847a634d48702714e406e",
-    "index_name": "matrix_file_set_ab59689f",
+    "hash": "aa96866759f0e19645b0e795918df8cb",
+    "index_name": "matrix_file_set_aa968667",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -273,6 +273,9 @@
                             "lab": {
                                 "type": "keyword"
                             },
+                            "matrix_file_sets": {
+                                "type": "keyword"
+                            },
                             "md5sum": {
                                 "type": "keyword"
                             },
@@ -354,6 +357,9 @@
                                 "type": "long"
                             },
                             "lab": {
+                                "type": "keyword"
+                            },
+                            "matrix_file_sets": {
                                 "type": "keyword"
                             },
                             "md5sum": {
