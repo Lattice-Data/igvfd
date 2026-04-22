@@ -2,6 +2,7 @@
 
 ### Minor changes since schema version 1
 
+* Add calculated property `matrix_file_sets`.
 * Add shared matrix metadata fields via `mixins.json#/matrix_shared`.
 * Add `feature_keys`.
 * Add `observation_count`.

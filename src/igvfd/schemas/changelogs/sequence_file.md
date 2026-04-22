@@ -1,5 +1,9 @@
 ## Changelog for sequence_file.json
 
+### Minor changes since schema version 2
+
+* Add calculated property `sequence_file_sets`.
+
 ### Schema version 2
 
 * Add `read_count` as a sequence-file-only property.
