@@ -18,6 +18,7 @@ from .base import (
 )
 class ControlledTerm(Item):
     item_type = 'controlled_term'
+    name_key = 'term_id'
     schema = load_schema('igvfd:schemas/controlled_term.json')
 
     @calculated_property(

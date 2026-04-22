@@ -43,8 +43,6 @@ config: Dict[str, Any] = {
             'existing_resources_class': igvf_dev.Resources,
             'account_and_region': igvf_dev.US_WEST_2,
             'tags': [
-                ('time-to-live-hours', '60'),
-                ('turn-off-on-friday-night', 'yes'),
             ],
         },
         'production': {
@@ -194,8 +192,6 @@ config: Dict[str, Any] = {
                 'arn': 'arn:aws:wafv2:us-west-2:159466469043:regional/webacl/Lattice2ApiDemoWaf-Wi9CUpMXmj0O/9db3bb63-c6b5-4963-961e-2d4f628f8ce0',
             },
             'tags': [
-                ('time-to-live-hours', '60'),
-                ('turn-off-on-friday-night', 'yes'),
             ]
         },
         'staging': {
@@ -335,6 +331,8 @@ config: Dict[str, Any] = {
                 'arn': 'arn:aws:wafv2:us-west-2:555476105356:regional/webacl/Lattice2ApiSandboxWaf-Cz1c6CFXjZpX/8bcc1ee6-b2bd-4edc-acb7-16bbbf1ac93d',
             },
             'tags': [
+                ('time-to-live-hours', '60'),
+                ('turn-off-on-friday-night', 'yes'),
             ],
             'url_prefix': 'api',
         },

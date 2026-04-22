@@ -102,6 +102,37 @@ def test_synth_add_deploy_pipeline_stack_to_app():
         for child in app.node.children
     ]
     assert 'igvfd-my-branch-DemoDeploymentPipelineStack' in child_paths
+    stack = app.node.find_child(
+        'igvfd-my-branch-DemoDeploymentPipelineStack'
+    )
+    template = Template.from_stack(stack)
+    template.has_resource_properties(
+        'AWS::CodePipeline::Pipeline',
+        {
+            'Tags': [
+                {
+                    'Key': 'branch',
+                    'Value': 'my-branch'
+                },
+                {
+                    'Key': 'environment',
+                    'Value': 'demo'
+                },
+                {
+                    'Key': 'project',
+                    'Value': 'igvfd'
+                },
+                {
+                    'Key': 'time-to-live-hours',
+                    'Value': '60'
+                },
+                {
+                    'Key': 'turn-off-on-friday-night',
+                    'Value': 'yes'
+                }
+            ]
+        }
+    )
     app = App()
     app = App(
         context={
@@ -135,14 +166,6 @@ def test_synth_add_deploy_pipeline_stack_to_app():
                 {
                     'Key': 'project',
                     'Value': 'igvfd'
-                },
-                {
-                    'Key': 'time-to-live-hours',
-                    'Value': '60'
-                },
-                {
-                    'Key': 'turn-off-on-friday-night',
-                    'Value': 'yes'
                 }
             ]
         }
