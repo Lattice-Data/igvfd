@@ -10,6 +10,7 @@ from .base import (
 
 @collection(
     name='controlled_terms',
+    unique_key='controlled_term:term_id',
     properties={
         'title': 'Controlled Terms',
         'description': 'Listing of controlled vocabulary terms from biological ontologies',

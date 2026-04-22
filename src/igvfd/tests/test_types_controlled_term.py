@@ -90,6 +90,29 @@ def test_controlled_term_create(testapp):
     assert res.json['@graph'][0]['ontology_source'] == 'CL'
 
 
+def test_controlled_term_lookup_by_term_id(testapp):
+    item = {
+        'term_id': 'CL:0000099',
+        'term_name': 'lookup term',
+        'ontology_source': 'CL',
+        'status': 'current',
+    }
+    testapp.post_json('/controlled_term', item, status=201)
+    res = testapp.get('/controlled_terms/CL:0000099/', status=200)
+    assert res.json['term_id'] == 'CL:0000099'
+
+
+def test_controlled_term_term_id_unique_conflict(testapp):
+    item = {
+        'term_id': 'CL:0000100',
+        'term_name': 'unique term',
+        'ontology_source': 'CL',
+        'status': 'current',
+    }
+    testapp.post_json('/controlled_term', item, status=201)
+    testapp.post_json('/controlled_term', item, status=409)
+
+
 def test_controlled_term_with_all_fields(testapp):
     item = {
         'term_id': 'CL:0000005',

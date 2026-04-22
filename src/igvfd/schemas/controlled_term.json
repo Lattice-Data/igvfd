@@ -31,6 +31,7 @@
             "title": "Term ID",
             "description": "An ontology identifier from the specified ontology source.",
             "type": "string",
+            "uniqueKey": "controlled_term:term_id",
             "pattern": "^(CL|EFO|UBERON|CHEBI|UniProt|Cellosaurus|HANCESTRO):[A-Za-z0-9_]+$"
         },
         "term_name": {
