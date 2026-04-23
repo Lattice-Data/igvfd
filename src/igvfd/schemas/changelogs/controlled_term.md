@@ -1,5 +1,9 @@
 # Controlled Term Changelog
 
+### Schema version 2
+
+* Remove `term_name` from stored properties; `term_name` is a calculated property only.
+
 ### Minor changes since schema version 1
 
 * Update description to remove reference to experimental conditions.
