@@ -1,6 +1,6 @@
 {
-    "hash": "04de37ce1874a880b71c0b50c7b9f17c",
-    "index_name": "in_vivo_system_04de37ce",
+    "hash": "43a7a00b4a47b53ef9756bd153f71e50",
+    "index_name": "in_vivo_system_43a7a00b",
     "item_type": "in_vivo_system",
     "mapping": {
         "dynamic_templates": [
@@ -157,6 +157,9 @@
                         "type": "object"
                     },
                     "classification": {
+                        "type": "keyword"
+                    },
+                    "collection_geographical_location": {
                         "type": "keyword"
                     },
                     "creation_timestamp": {

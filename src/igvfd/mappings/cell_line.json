@@ -1,6 +1,6 @@
 {
-    "hash": "fda11a3e7adc97f0376c51edaa3483c2",
-    "index_name": "cell_line_fda11a3e",
+    "hash": "e299ed94e7302e49cbaed79ed053dba9",
+    "index_name": "cell_line_e299ed94",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -155,6 +155,9 @@
                     "author_metadata": {
                         "properties": {},
                         "type": "object"
+                    },
+                    "collection_geographical_location": {
+                        "type": "keyword"
                     },
                     "creation_timestamp": {
                         "type": "date"

@@ -1,6 +1,6 @@
 {
-    "hash": "302f6149066566fb6f6782b27e76f664",
-    "index_name": "organoid_302f6149",
+    "hash": "56a4d2449230213a2337256cbbafbeb2",
+    "index_name": "organoid_56a4d244",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -155,6 +155,9 @@
                     "author_metadata": {
                         "properties": {},
                         "type": "object"
+                    },
+                    "collection_geographical_location": {
+                        "type": "keyword"
                     },
                     "creation_timestamp": {
                         "type": "date"

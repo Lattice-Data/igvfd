@@ -3,7 +3,7 @@ import pytest
 
 def test_primary_cell_culture_summary_with_aliases(testapp, primary_cell_culture_with_aliases):
     res = testapp.get(primary_cell_culture_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:primary-cell-passage-3'
+    assert res.json.get('summary') == 'lattice:primary-cell-passage-3-fixture'
 
 
 def test_primary_cell_culture_summary_with_description(testapp, primary_cell_culture_with_description):

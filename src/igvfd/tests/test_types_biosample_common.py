@@ -153,6 +153,47 @@ def test_biosample_date_obtained_rejects_invalid_format(
     testapp.post_json(endpoint, payload, status=422)
 
 
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_collection_geographical_location_accepts_valid_enum(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['collection_geographical_location'] = 'Canada'
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['collection_geographical_location'] == 'Canada'
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_collection_geographical_location_rejects_invalid_enum(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['collection_geographical_location'] = 'Atlantis'
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_collection_fields_are_optional(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0].get('date_obtained') is None
+    assert res.json['@graph'][0].get('collection_geographical_location') is None
+
+
 @pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_create_with_intended_cell_types(testapp, other_lab, human_donor,
                                                    controlled_term_brain, controlled_term, biosample_type):

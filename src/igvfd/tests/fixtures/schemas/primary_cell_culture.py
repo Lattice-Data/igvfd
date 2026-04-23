@@ -30,7 +30,7 @@ def primary_cell_culture_with_aliases(testapp, other_lab, human_donor, controlle
         'lab': other_lab['@id'],
         'donors': [human_donor['@id']],
         'sample_terms': [controlled_term_brain['@id']],
-        'aliases': ['lattice:primary-cell-passage-3'],
+        'aliases': ['lattice:primary-cell-passage-3-fixture'],
         'status': 'current',
     }
     return testapp.post_json('/primary_cell_culture', item, status=201).json['@graph'][0]
