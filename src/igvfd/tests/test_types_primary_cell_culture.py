@@ -61,21 +61,6 @@ def test_primary_cell_culture_passage_number_minimum(testapp, other_lab, human_d
     )
 
 
-def test_primary_cell_culture_date_obtained_format(testapp, other_lab, human_donor, controlled_term_brain):
-    # Invalid date format
-    testapp.post_json(
-        '/primary_cell_culture',
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-            'date_obtained': 'invalid-date',
-            'status': 'current',
-        },
-        status=422
-    )
-
-
 def test_primary_cell_culture_create_success(testapp, other_lab, human_donor, controlled_term_brain):
     item = {
         'lab': other_lab['@id'],

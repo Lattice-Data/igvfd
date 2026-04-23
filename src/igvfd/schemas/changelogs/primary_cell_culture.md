@@ -2,6 +2,7 @@
 
 ## Minor changes since schema version 1
 
+* Use inherited `date_obtained` from abstract biosample profile.
 * Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract biosample profile).
 * Add lower_bound_age.
 * Add upper_bound_age.

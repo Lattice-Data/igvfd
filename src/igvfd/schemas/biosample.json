@@ -105,6 +105,12 @@
                 "week"
             ]
         },
+        "date_obtained": {
+            "title": "Date Obtained",
+            "description": "The date the sample was collected.",
+            "type": "string",
+            "format": "date"
+        },
         "suspension_type": {
             "title": "Suspension Type",
             "description": "Type of suspension - single cells or single nuclei.",

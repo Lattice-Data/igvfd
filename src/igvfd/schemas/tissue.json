@@ -80,12 +80,6 @@
                 "cm"
             ]
         },
-        "date_obtained": {
-            "title": "Date Obtained",
-            "description": "The date the tissue sample was collected.",
-            "type": "string",
-            "format": "date"
-        },
         "orientation": {
             "title": "Orientation",
             "description": "The orientation of the tissue sample.",

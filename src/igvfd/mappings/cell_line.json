@@ -1,6 +1,6 @@
 {
-    "hash": "3696af68e0b2ad14d991464733cb3406",
-    "index_name": "cell_line_3696af68",
+    "hash": "fda11a3e7adc97f0376c51edaa3483c2",
+    "index_name": "cell_line_fda11a3e",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -158,6 +158,9 @@
                     },
                     "creation_timestamp": {
                         "type": "date"
+                    },
+                    "date_obtained": {
+                        "type": "keyword"
                     },
                     "depleted_cell_types": {
                         "type": "keyword"
