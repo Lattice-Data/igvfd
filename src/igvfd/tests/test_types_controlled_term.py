@@ -3,7 +3,6 @@ import pytest
 
 def test_controlled_term_summary_is_term_id(testapp, controlled_term):
     res = testapp.get(controlled_term['@id'])
-    assert res.json.get('term_name')
     assert res.json.get('summary') == controlled_term['term_id'] == 'CL:0000005'
 
 
@@ -91,14 +90,12 @@ def test_controlled_term_create(testapp):
     res = testapp.post_json('/controlled_term', item, status=201)
     graph = res.json['@graph'][0]
     assert graph['term_id'] == 'CL:0000004'
-    assert graph['term_name'] == 'obsolete cell by organism'
     assert graph['ontology_source'] == 'CL'
 
 
 def test_controlled_term_lookup_by_term_id(testapp):
     item = {
         'term_id': 'CL:0000099',
-        'term_name': 'lookup term',
         'ontology_source': 'CL',
         'status': 'current',
     }
@@ -110,7 +107,6 @@ def test_controlled_term_lookup_by_term_id(testapp):
 def test_controlled_term_term_id_unique_conflict(testapp):
     item = {
         'term_id': 'CL:0000100',
-        'term_name': 'unique term',
         'ontology_source': 'CL',
         'status': 'current',
     }
@@ -126,10 +122,6 @@ def test_controlled_term_with_all_fields(testapp):
         'status': 'current',
     }
     res = testapp.post_json('/controlled_term', item, status=201)
-    assert res.json['@graph'][0]['definition'] == (
-        'Any fibroblast that is derived from the neural crest.'
-    )
-    assert res.json['@graph'][0]['synonyms'] == ['fibroblast neural crest derived']
     assert res.json['@graph'][0]['dbxrefs'] == ['PMID:12345678', 'DOI:10.1234/test']
 
 
@@ -143,7 +135,6 @@ def test_controlled_term_hancestro_create(testapp):
     graph = res.json['@graph'][0]
     assert graph['term_id'] == 'HANCESTRO:0304'
     assert graph['ontology_source'] == 'HANCESTRO'
-    assert graph['term_name'] == 'ancestry status'
 
 
 @pytest.mark.parametrize(
