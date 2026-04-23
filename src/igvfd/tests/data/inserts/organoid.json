@@ -1,0 +1,21 @@
+[
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "71f2bbec-5b91-4782-82bb-f1e8c92a7f01",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:organoid-brain"
+        ],
+        "description": "Test organoid sample",
+        "intended_cell_types": [
+            "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        ]
+    }
+]

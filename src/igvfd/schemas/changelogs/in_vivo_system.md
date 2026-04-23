@@ -1,5 +1,6 @@
 # In Vivo System Changelog
 
+* Add deprecation notice to use cell_line for new submissions.
 * Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract biosample profile).
 * Add host_tissue.
 * Add intended_cell_types.

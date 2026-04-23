@@ -93,7 +93,7 @@
                             {
                                 "Ref": "AWS::Region"
                             },
-                            "\",\"metrics\":[[\"some-branch\",\"AccessKeyIndexing\",{\"label\":\"AccessKey\"}],[\"some-branch\",\"AlignmentFileIndexing\",{\"label\":\"AlignmentFile\"}],[\"some-branch\",\"AnalysisSetIndexing\",{\"label\":\"AnalysisSet\"}],[\"some-branch\",\"AnalysisStepIndexing\",{\"label\":\"AnalysisStep\"}],[\"some-branch\",\"AnalysisStepVersionIndexing\",{\"label\":\"AnalysisStepVersion\"}],[\"some-branch\",\"AssayTermIndexing\",{\"label\":\"AssayTerm\"}],[\"some-branch\",\"AuxiliarySetIndexing\",{\"label\":\"AuxiliarySet\"}],[\"some-branch\",\"AwardIndexing\",{\"label\":\"Award\"}],[\"some-branch\",\"BiomarkerIndexing\",{\"label\":\"Biomarker\"}],[\"some-branch\",\"ConfigurationFileIndexing\",{\"label\":\"ConfigurationFile\"}],[\"some-branch\",\"ConstructLibrarySetIndexing\",{\"label\":\"ConstructLibrarySet\"}],[\"some-branch\",\"CrisprModificationIndexing\",{\"label\":\"CrisprModification\"}],[\"some-branch\",\"CuratedSetIndexing\",{\"label\":\"CuratedSet\"}],[\"some-branch\",\"DegronModificationIndexing\",{\"label\":\"DegronModification\"}],[\"some-branch\",\"DocumentIndexing\",{\"label\":\"Document\"}],[\"some-branch\",\"GeneIndexing\",{\"label\":\"Gene\"}],[\"some-branch\",\"GenomeBrowserAnnotationFileIndexing\",{\"label\":\"GenomeBrowserAnnotationFile\"}],[\"some-branch\",\"HumanDonorIndexing\",{\"label\":\"HumanDonor\"}],[\"some-branch\",\"ImageIndexing\",{\"label\":\"Image\"}],[\"some-branch\",\"ImageFileIndexing\",{\"label\":\"ImageFile\"}],[\"some-branch\",\"InVitroSystemIndexing\",{\"label\":\"InVitroSystem\"}],[\"some-branch\",\"IndexFileIndexing\",{\"label\":\"IndexFile\"}],[\"some-branch\",\"InstitutionalCertificateIndexing\",{\"label\":\"InstitutionalCertificate\"}],[\"some-branch\",\"LabIndexing\",{\"label\":\"Lab\"}],[\"some-branch\",\"MatrixFileIndexing\",{\"label\":\"MatrixFile\"}],[\"some-branch\",\"MeasurementSetIndexing\",{\"label\":\"MeasurementSet\"}],[\"some-branch\",\"ModelFileIndexing\",{\"label\":\"ModelFile\"}],[\"some-branch\",\"ModelSetIndexing\",{\"label\":\"ModelSet\"}],[\"some-branch\",\"MpraQualityMetricIndexing\",{\"label\":\"MpraQualityMetric\"}],[\"some-branch\",\"MultiplexedSampleIndexing\",{\"label\":\"MultiplexedSample\"}],[\"some-branch\",\"OpenReadingFrameIndexing\",{\"label\":\"OpenReadingFrame\"}],[\"some-branch\",\"PageIndexing\",{\"label\":\"Page\"}],[\"some-branch\",\"PerturbSeqQualityMetricIndexing\",{\"label\":\"PerturbSeqQualityMetric\"}],[\"some-branch\",\"PhenotypeTermIndexing\",{\"label\":\"PhenotypeTerm\"}],[\"some-branch\",\"PhenotypicFeatureIndexing\",{\"label\":\"PhenotypicFeature\"}],[\"some-branch\",\"PlatformTermIndexing\",{\"label\":\"PlatformTerm\"}],[\"some-branch\",\"PredictionSetIndexing\",{\"label\":\"PredictionSet\"}],[\"some-branch\",\"PrimaryCellIndexing\",{\"label\":\"PrimaryCell\"}],[\"some-branch\",\"PublicationIndexing\",{\"label\":\"Publication\"}],[\"some-branch\",\"ReferenceFileIndexing\",{\"label\":\"ReferenceFile\"}],[\"some-branch\",\"RodentDonorIndexing\",{\"label\":\"RodentDonor\"}],[\"some-branch\",\"SampleTermIndexing\",{\"label\":\"SampleTerm\"}],[\"some-branch\",\"SequenceFileIndexing\",{\"label\":\"SequenceFile\"}],[\"some-branch\",\"SignalFileIndexing\",{\"label\":\"SignalFile\"}],[\"some-branch\",\"SingleCellAtacSeqQualityMetricIndexing\",{\"label\":\"SingleCellAtacSeqQualityMetric\"}],[\"some-branch\",\"SingleCellRnaSeqQualityMetricIndexing\",{\"label\":\"SingleCellRnaSeqQualityMetric\"}],[\"some-branch\",\"SoftwareIndexing\",{\"label\":\"Software\"}],[\"some-branch\",\"SoftwareVersionIndexing\",{\"label\":\"SoftwareVersion\"}],[\"some-branch\",\"SourceIndexing\",{\"label\":\"Source\"}],[\"some-branch\",\"StarrSeqQualityMetricIndexing\",{\"label\":\"StarrSeqQualityMetric\"}],[\"some-branch\",\"TabularFileIndexing\",{\"label\":\"TabularFile\"}],[\"some-branch\",\"TechnicalSampleIndexing\",{\"label\":\"TechnicalSample\"}],[\"some-branch\",\"TissueIndexing\",{\"label\":\"Tissue\"}],[\"some-branch\",\"TreatmentIndexing\",{\"label\":\"Treatment\"}],[\"some-branch\",\"UserIndexing\",{\"label\":\"User\"}],[\"some-branch\",\"WholeOrganismIndexing\",{\"label\":\"WholeOrganism\"}],[\"some-branch\",\"WorkflowIndexing\",{\"label\":\"Workflow\"}]],\"yAxis\":{\"left\":{\"showUnits\":false}},\"period\":60}}]}"
+                            "\",\"metrics\":[[\"some-branch\",\"AccessKeyIndexing\",{\"label\":\"AccessKey\"}],[\"some-branch\",\"CellLineIndexing\",{\"label\":\"CellLine\"}],[\"some-branch\",\"ControlledTermIndexing\",{\"label\":\"ControlledTerm\"}],[\"some-branch\",\"DocumentIndexing\",{\"label\":\"Document\"}],[\"some-branch\",\"DropletBasedLibraryIndexing\",{\"label\":\"DropletBasedLibrary\"}],[\"some-branch\",\"ExperimentalConditionIndexing\",{\"label\":\"ExperimentalCondition\"}],[\"some-branch\",\"GeneticModificationIndexing\",{\"label\":\"GeneticModification\"}],[\"some-branch\",\"HumanDonorIndexing\",{\"label\":\"HumanDonor\"}],[\"some-branch\",\"ImageIndexing\",{\"label\":\"Image\"}],[\"some-branch\",\"InVitroSystemIndexing\",{\"label\":\"InVitroSystem\"}],[\"some-branch\",\"InVivoSystemIndexing\",{\"label\":\"InVivoSystem\"}],[\"some-branch\",\"LabIndexing\",{\"label\":\"Lab\"}],[\"some-branch\",\"MatrixFileSetIndexing\",{\"label\":\"MatrixFileSet\"}],[\"some-branch\",\"NonHumanDonorIndexing\",{\"label\":\"NonHumanDonor\"}],[\"some-branch\",\"OrganoidIndexing\",{\"label\":\"Organoid\"}],[\"some-branch\",\"PageIndexing\",{\"label\":\"Page\"}],[\"some-branch\",\"PlateBasedLibraryIndexing\",{\"label\":\"PlateBasedLibrary\"}],[\"some-branch\",\"PrimaryCellCultureIndexing\",{\"label\":\"PrimaryCellCulture\"}],[\"some-branch\",\"ProcessedMatrixFileIndexing\",{\"label\":\"ProcessedMatrixFile\"}],[\"some-branch\",\"RawMatrixFileIndexing\",{\"label\":\"RawMatrixFile\"}],[\"some-branch\",\"SequenceFileIndexing\",{\"label\":\"SequenceFile\"}],[\"some-branch\",\"SequenceFileSetIndexing\",{\"label\":\"SequenceFileSet\"}],[\"some-branch\",\"TabularFileIndexing\",{\"label\":\"TabularFile\"}],[\"some-branch\",\"TissueIndexing\",{\"label\":\"Tissue\"}],[\"some-branch\",\"TreatmentIndexing\",{\"label\":\"Treatment\"}],[\"some-branch\",\"UserIndexing\",{\"label\":\"User\"}]],\"yAxis\":{\"left\":{\"showUnits\":false}},\"period\":60}}]}"
                         ]
                     ]
                 },
@@ -181,15 +181,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardalignmentfileIndexingMetricFilter4031AF70": {
+        "TestDashboardcelllineIndexingMetricFilter1B735A6B": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"alignment_file\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"cell_line\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "AlignmentFileIndexing",
+                        "MetricName": "CellLineIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -197,191 +197,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardanalysissetIndexingMetricFilter99E8F428": {
+        "TestDashboardcontrolledtermIndexingMetricFilterD76CF791": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"analysis_set\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"controlled_term\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "AnalysisSetIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardanalysisstepIndexingMetricFilterAC20F95E": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"analysis_step\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "AnalysisStepIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardanalysisstepversionIndexingMetricFilter0F289980": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"analysis_step_version\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "AnalysisStepVersionIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardassaytermIndexingMetricFilter10132E19": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"assay_term\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "AssayTermIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardauxiliarysetIndexingMetricFilter934CDB9F": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"auxiliary_set\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "AuxiliarySetIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardawardIndexingMetricFilterEEFC0C8D": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"award\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "AwardIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardbiomarkerIndexingMetricFilter91203E51": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"biomarker\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "BiomarkerIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardconfigurationfileIndexingMetricFilter7B8B6E6D": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"configuration_file\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "ConfigurationFileIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardconstructlibrarysetIndexingMetricFilterEBCBD0E8": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"construct_library_set\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "ConstructLibrarySetIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardcrisprmodificationIndexingMetricFilterA3A8EDFA": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"crispr_modification\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "CrisprModificationIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardcuratedsetIndexingMetricFilter2B232FC2": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"curated_set\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "CuratedSetIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboarddegronmodificationIndexingMetricFilter376B97A9": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"degron_modification\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "DegronModificationIndexing",
+                        "MetricName": "ControlledTermIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -405,15 +229,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardgeneIndexingMetricFilter2D7B3FD5": {
+        "TestDashboarddropletbasedlibraryIndexingMetricFilter962C1B3E": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"gene\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"droplet_based_library\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "GeneIndexing",
+                        "MetricName": "DropletBasedLibraryIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -421,15 +245,31 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardgenomebrowserannotationfileIndexingMetricFilterFF67CD67": {
+        "TestDashboardexperimentalconditionIndexingMetricFilter8E415620": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"genome_browser_annotation_file\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"experimental_condition\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "GenomeBrowserAnnotationFileIndexing",
+                        "MetricName": "ExperimentalConditionIndexing",
+                        "MetricNamespace": "some-branch",
+                        "MetricValue": "$.wsgi_time"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "TestDashboardgeneticmodificationIndexingMetricFilter97E5BC51": {
+            "Properties": {
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"genetic_modification\") }",
+                "LogGroupName": {
+                    "Ref": "TestLogGroup4EEF7AD4"
+                },
+                "MetricTransformations": [
+                    {
+                        "MetricName": "GeneticModificationIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -469,54 +309,6 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardimagefileIndexingMetricFilter9CC16EEE": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"image_file\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "ImageFileIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardindexfileIndexingMetricFilterB633DA22": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"index_file\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "IndexFileIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardinstitutionalcertificateIndexingMetricFilter3A7BAC09": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"institutional_certificate\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "InstitutionalCertificateIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
         "TestDashboardinvitrosystemIndexingMetricFilter6E4AF6D9": {
             "Properties": {
                 "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"in_vitro_system\") }",
@@ -526,6 +318,22 @@
                 "MetricTransformations": [
                     {
                         "MetricName": "InVitroSystemIndexing",
+                        "MetricNamespace": "some-branch",
+                        "MetricValue": "$.wsgi_time"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "TestDashboardinvivosystemIndexingMetricFilterFB60C21E": {
+            "Properties": {
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"in_vivo_system\") }",
+                "LogGroupName": {
+                    "Ref": "TestLogGroup4EEF7AD4"
+                },
+                "MetricTransformations": [
+                    {
+                        "MetricName": "InVivoSystemIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -549,15 +357,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardmatrixfileIndexingMetricFilterF87053D1": {
+        "TestDashboardmatrixfilesetIndexingMetricFilter06F4AD1D": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"matrix_file\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"matrix_file_set\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "MatrixFileIndexing",
+                        "MetricName": "MatrixFileSetIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -565,15 +373,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardmeasurementsetIndexingMetricFilter0D3AD374": {
+        "TestDashboardnonhumandonorIndexingMetricFilter331D4E92": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"measurement_set\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"non_human_donor\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "MeasurementSetIndexing",
+                        "MetricName": "NonHumanDonorIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -581,79 +389,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardmodelfileIndexingMetricFilter697D4B83": {
+        "TestDashboardorganoidIndexingMetricFilter429DCF5E": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"model_file\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"organoid\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "ModelFileIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardmodelsetIndexingMetricFilter34DE3AAD": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"model_set\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "ModelSetIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardmpraqualitymetricIndexingMetricFilter65B5322A": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"mpra_quality_metric\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "MpraQualityMetricIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardmultiplexedsampleIndexingMetricFilter2237FC6F": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"multiplexed_sample\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "MultiplexedSampleIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardopenreadingframeIndexingMetricFilter5F40BAF5": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"open_reading_frame\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "OpenReadingFrameIndexing",
+                        "MetricName": "OrganoidIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -677,15 +421,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardperturbseqqualitymetricIndexingMetricFilter8AA47A75": {
+        "TestDashboardplatebasedlibraryIndexingMetricFilter5EBF7EF8": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"perturb_seq_quality_metric\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"plate_based_library\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "PerturbSeqQualityMetricIndexing",
+                        "MetricName": "PlateBasedLibraryIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -693,15 +437,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardphenotypetermIndexingMetricFilterE75073F9": {
+        "TestDashboardprimarycellcultureIndexingMetricFilter4FD75134": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"phenotype_term\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"primary_cell_culture\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "PhenotypeTermIndexing",
+                        "MetricName": "PrimaryCellCultureIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -709,15 +453,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardphenotypicfeatureIndexingMetricFilterFC86E80F": {
+        "TestDashboardprocessedmatrixfileIndexingMetricFilter1F86B38F": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"phenotypic_feature\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"processed_matrix_file\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "PhenotypicFeatureIndexing",
+                        "MetricName": "ProcessedMatrixFileIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -725,111 +469,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardplatformtermIndexingMetricFilter3AB9C9A0": {
+        "TestDashboardrawmatrixfileIndexingMetricFilter0EA6D8F2": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"platform_term\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"raw_matrix_file\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "PlatformTermIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardpredictionsetIndexingMetricFilterAAC70933": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"prediction_set\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "PredictionSetIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardprimarycellIndexingMetricFilterDC0B09A1": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"primary_cell\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "PrimaryCellIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardpublicationIndexingMetricFilter71A606DA": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"publication\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "PublicationIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardreferencefileIndexingMetricFilterFB60C341": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"reference_file\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "ReferenceFileIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardrodentdonorIndexingMetricFilterD0A9DD59": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"rodent_donor\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "RodentDonorIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardsampletermIndexingMetricFilter5826EF8E": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"sample_term\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "SampleTermIndexing",
+                        "MetricName": "RawMatrixFileIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -853,111 +501,15 @@
             },
             "Type": "AWS::Logs::MetricFilter"
         },
-        "TestDashboardsignalfileIndexingMetricFilter010DAA55": {
+        "TestDashboardsequencefilesetIndexingMetricFilter4D031A04": {
             "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"signal_file\") }",
+                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"sequence_file_set\") }",
                 "LogGroupName": {
                     "Ref": "TestLogGroup4EEF7AD4"
                 },
                 "MetricTransformations": [
                     {
-                        "MetricName": "SignalFileIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardsinglecellatacseqqualitymetricIndexingMetricFilter088AB6D7": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"single_cell_atac_seq_quality_metric\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "SingleCellAtacSeqQualityMetricIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardsinglecellrnaseqqualitymetricIndexingMetricFilter3637DDB5": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"single_cell_rna_seq_quality_metric\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "SingleCellRnaSeqQualityMetricIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardsoftwareIndexingMetricFilter59AA6FBF": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"software\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "SoftwareIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardsoftwareversionIndexingMetricFilter87C534BC": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"software_version\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "SoftwareVersionIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardsourceIndexingMetricFilter08E2E50D": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"source\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "SourceIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardstarrseqqualitymetricIndexingMetricFilterF75F8F57": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"starr_seq_quality_metric\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "StarrSeqQualityMetricIndexing",
+                        "MetricName": "SequenceFileSetIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -974,22 +526,6 @@
                 "MetricTransformations": [
                     {
                         "MetricName": "TabularFileIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardtechnicalsampleIndexingMetricFilterC5C3258B": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"technical_sample\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "TechnicalSampleIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }
@@ -1038,38 +574,6 @@
                 "MetricTransformations": [
                     {
                         "MetricName": "UserIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardwholeorganismIndexingMetricFilter171B8BB9": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"whole_organism\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "WholeOrganismIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardworkflowIndexingMetricFilter4DAD6F44": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"workflow\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "WorkflowIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }

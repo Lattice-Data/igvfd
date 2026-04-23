@@ -28,6 +28,8 @@ pytest_plugins = [
     'igvfd.tests.fixtures.schemas.non_human_donor',
     'igvfd.tests.fixtures.schemas.primary_cell_culture',
     'igvfd.tests.fixtures.schemas.tissue',
+    'igvfd.tests.fixtures.schemas.organoid',
+    'igvfd.tests.fixtures.schemas.cell_line',
     'igvfd.tests.fixtures.schemas.in_vivo_system',
     'igvfd.tests.fixtures.schemas.in_vitro_system',
     'igvfd.tests.fixtures.schemas.plate_based_library',
