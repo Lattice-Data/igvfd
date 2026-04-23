@@ -50,6 +50,17 @@
             "submissionExample": {
                 "appscript": "h5ad"
             }
+        },
+        "matrix_file_sets": {
+            "title": "Matrix File Sets",
+            "description": "Matrix file sets that include this processed matrix file.",
+            "type": "array",
+            "items": {
+                "title": "Matrix File Set",
+                "type": "string",
+                "linkFrom": "MatrixFileSet.processed_matrix_files"
+            },
+            "notSubmittable": true
         }
     },
     "fuzzy_searchable_fields": [

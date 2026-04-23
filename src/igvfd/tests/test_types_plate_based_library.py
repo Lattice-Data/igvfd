@@ -119,6 +119,45 @@ def test_plate_based_library_create_success(testapp, other_lab, tissue):
     assert res.json['@graph'][0]['samples'] == [tissue['@id']]
 
 
+@pytest.mark.parametrize(
+    'cro_group_identifier',
+    [
+        'CRO-BATCH-2024-01',
+        'x',
+        'group_A-1',
+    ]
+)
+def test_plate_based_library_cro_group_identifier_valid(testapp, other_lab, tissue, cro_group_identifier):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'CRO_group_identifier': cro_group_identifier,
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    assert res.json['@graph'][0]['CRO_group_identifier'] == cro_group_identifier
+
+
+@pytest.mark.parametrize(
+    'cro_group_identifier',
+    [
+        '',
+        ' padded ',
+    ]
+)
+def test_plate_based_library_cro_group_identifier_invalid(testapp, other_lab, tissue, cro_group_identifier):
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'CRO_group_identifier': cro_group_identifier,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
 def test_plate_based_library_create_with_all_optional_fields(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
@@ -127,6 +166,7 @@ def test_plate_based_library_create_with_all_optional_fields(testapp, other_lab,
         'indexing_rounds': 3,
         'multiplexing_method': 'cell hashing',
         'description': 'Complete plate-based library',
+        'CRO_group_identifier': 'PLATE-CRO-42',
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
@@ -134,6 +174,7 @@ def test_plate_based_library_create_with_all_optional_fields(testapp, other_lab,
     assert res.json['@graph'][0]['indexing_rounds'] == 3
     assert res.json['@graph'][0]['multiplexing_method'] == 'cell hashing'
     assert res.json['@graph'][0]['description'] == 'Complete plate-based library'
+    assert res.json['@graph'][0]['CRO_group_identifier'] == 'PLATE-CRO-42'
 
 
 def test_plate_based_library_author_metadata(testapp, other_lab, tissue):

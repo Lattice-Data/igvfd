@@ -1,4 +1,5 @@
 from snovault import (
+    CONNECTION,
     abstract_collection,
     calculated_property,
     collection,
@@ -31,6 +32,10 @@ class File(Item):
     ]
 
 
+def _reverse_link_paths(request, uuids):
+    return [request.embed('/', str(uuid), '@@object')['@id'] for uuid in uuids]
+
+
 @collection(
     name='sequence_files',
     properties={
@@ -57,6 +62,34 @@ class SequenceFile(File):
         if description:
             return description
         return self.uuid
+
+    @calculated_property(
+        schema={
+            'title': 'Sequence File Sets',
+            'type': 'array',
+            'description': 'Sequence file sets that include this sequence file.',
+            'items': {
+                'title': 'Sequence File Set',
+                'type': 'string',
+            },
+            'notSubmittable': True,
+        }
+    )
+    def sequence_file_sets(self, request):
+        connection = self.registry[CONNECTION]
+        file_set_fields = (
+            'read1',
+            'read2',
+            'read3',
+            'index1',
+            'index2',
+            'untrimmed_cram',
+            'trimmed_cram',
+        )
+        uuids = set()
+        for field in file_set_fields:
+            uuids.update(connection.get_rev_links(self.model, field, 'SequenceFileSet'))
+        return _reverse_link_paths(request, sorted(uuids))
 
 
 @collection(
@@ -114,6 +147,23 @@ class RawMatrixFile(File):
             return description
         return self.uuid
 
+    @calculated_property(
+        schema={
+            'title': 'Matrix File Sets',
+            'type': 'array',
+            'description': 'Matrix file sets that include this raw matrix file.',
+            'items': {
+                'title': 'Matrix File Set',
+                'type': 'string',
+                'linkFrom': 'MatrixFileSet.raw_matrix_files',
+                'notSubmittable': True,
+            },
+        }
+    )
+    def matrix_file_sets(self, request):
+        uuids = self.registry[CONNECTION].get_rev_links(self.model, 'raw_matrix_files', 'MatrixFileSet')
+        return _reverse_link_paths(request, sorted(uuids))
+
 
 @collection(
     name='processed_matrix_files',
@@ -141,3 +191,20 @@ class ProcessedMatrixFile(File):
         if description:
             return description
         return self.uuid
+
+    @calculated_property(
+        schema={
+            'title': 'Matrix File Sets',
+            'type': 'array',
+            'description': 'Matrix file sets that include this processed matrix file.',
+            'items': {
+                'title': 'Matrix File Set',
+                'type': 'string',
+                'linkFrom': 'MatrixFileSet.processed_matrix_files',
+                'notSubmittable': True,
+            },
+        }
+    )
+    def matrix_file_sets(self, request):
+        uuids = self.registry[CONNECTION].get_rev_links(self.model, 'processed_matrix_files', 'MatrixFileSet')
+        return _reverse_link_paths(request, sorted(uuids))

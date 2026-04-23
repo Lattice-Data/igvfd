@@ -10,6 +10,7 @@ from .base import (
 
 @collection(
     name='controlled_terms',
+    unique_key='controlled_term:term_id',
     properties={
         'title': 'Controlled Terms',
         'description': 'Listing of controlled vocabulary terms from biological ontologies',
@@ -17,6 +18,7 @@ from .base import (
 )
 class ControlledTerm(Item):
     item_type = 'controlled_term'
+    name_key = 'term_id'
     schema = load_schema('igvfd:schemas/controlled_term.json')
 
     @calculated_property(

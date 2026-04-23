@@ -1,6 +1,6 @@
 {
-    "hash": "e1e1234f30c4b7643c9f5b85217c0025",
-    "index_name": "sequence_file_set_e1e1234f",
+    "hash": "25eeb0239a1d91d3cc234c7117daccf5",
+    "index_name": "sequence_file_set_25eeb023",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -212,6 +212,9 @@
                             "schema_version": {
                                 "type": "keyword"
                             },
+                            "sequence_file_sets": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -278,6 +281,9 @@
                                 "type": "keyword"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sequence_file_sets": {
                                 "type": "keyword"
                             },
                             "status": {
@@ -360,6 +366,9 @@
                                 "type": "keyword"
                             },
                             "@type": {
+                                "type": "keyword"
+                            },
+                            "CRO_group_identifier": {
                                 "type": "keyword"
                             },
                             "aliases": {
@@ -488,6 +497,9 @@
                             "schema_version": {
                                 "type": "keyword"
                             },
+                            "sequence_file_sets": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -556,6 +568,9 @@
                             "schema_version": {
                                 "type": "keyword"
                             },
+                            "sequence_file_sets": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -622,6 +637,9 @@
                                 "type": "keyword"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sequence_file_sets": {
                                 "type": "keyword"
                             },
                             "status": {
@@ -778,6 +796,9 @@
                             "schema_version": {
                                 "type": "keyword"
                             },
+                            "sequence_file_sets": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -844,6 +865,9 @@
                                 "type": "keyword"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sequence_file_sets": {
                                 "type": "keyword"
                             },
                             "status": {

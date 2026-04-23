@@ -538,3 +538,78 @@ def test_tabular_file_rejects_read_count(testapp, other_lab):
         },
         status=422,
     )
+
+
+def test_sequence_file_reverse_links_include_read_and_index_slots(
+    testapp,
+    other_lab,
+    sequence_file,
+    sequence_file_with_aliases,
+    sequence_file_with_description,
+    droplet_based_library,
+):
+    read_set = testapp.post_json(
+        '/sequence_file_set',
+        {
+            'lab': other_lab['@id'],
+            'library': droplet_based_library['@id'],
+            'run_cardinality': 'single-end',
+            'read1': sequence_file['@id'],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+
+    index_set = testapp.post_json(
+        '/sequence_file_set',
+        {
+            'lab': other_lab['@id'],
+            'library': droplet_based_library['@id'],
+            'run_cardinality': 'paired-end-with-index',
+            'read1': sequence_file_with_description['@id'],
+            'read2': sequence_file['@id'],
+            'index1': sequence_file_with_aliases['@id'],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+
+    sequence_file_res = testapp.get(sequence_file['@id']).json
+    assert read_set['@id'] in sequence_file_res['sequence_file_sets']
+    assert index_set['@id'] in sequence_file_res['sequence_file_sets']
+
+    index_file_res = testapp.get(sequence_file_with_aliases['@id']).json
+    assert index_set['@id'] in index_file_res['sequence_file_sets']
+
+
+def test_sequence_file_reverse_links_include_cram_slots(
+    testapp,
+    other_lab,
+    sequence_file_cram,
+    droplet_based_library,
+):
+    cram_set = testapp.post_json(
+        '/sequence_file_set',
+        {
+            'lab': other_lab['@id'],
+            'library': droplet_based_library['@id'],
+            'run_cardinality': 'single-end',
+            'untrimmed_cram': sequence_file_cram['@id'],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+
+    sequence_file_res = testapp.get(sequence_file_cram['@id']).json
+    assert cram_set['@id'] in sequence_file_res['sequence_file_sets']
+
+
+def test_matrix_files_reverse_links(testapp, matrix_file_set, matrix_file_set_with_processed):
+    raw_file = matrix_file_set['raw_matrix_files'][0]
+    processed_file = matrix_file_set_with_processed['processed_matrix_files'][0]
+
+    raw_res = testapp.get(raw_file).json
+    assert matrix_file_set['@id'] in raw_res['matrix_file_sets']
+
+    processed_res = testapp.get(processed_file).json
+    assert matrix_file_set_with_processed['@id'] in processed_res['matrix_file_sets']

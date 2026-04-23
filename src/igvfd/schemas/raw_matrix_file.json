@@ -50,6 +50,17 @@
             "submissionExample": {
                 "appscript": "h5"
             }
+        },
+        "matrix_file_sets": {
+            "title": "Matrix File Sets",
+            "description": "Matrix file sets that include this raw matrix file.",
+            "type": "array",
+            "items": {
+                "title": "Matrix File Set",
+                "type": "string",
+                "linkFrom": "MatrixFileSet.raw_matrix_files"
+            },
+            "notSubmittable": true
         }
     },
     "fuzzy_searchable_fields": [

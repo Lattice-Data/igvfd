@@ -260,6 +260,53 @@ def test_droplet_based_library_create_success(testapp, other_lab, tissue):
     assert res.json['@graph'][0]['library_cardinality'] == 'single'
 
 
+@pytest.mark.parametrize(
+    'cro_group_identifier',
+    [
+        'CRO-BATCH-2024-01',
+        'x',
+        'group_A-1',
+        'a\nb',
+    ]
+)
+def test_droplet_based_library_cro_group_identifier_valid(testapp, other_lab, tissue, cro_group_identifier):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'CRO_group_identifier': cro_group_identifier,
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['CRO_group_identifier'] == cro_group_identifier
+
+
+@pytest.mark.parametrize(
+    'cro_group_identifier',
+    [
+        '',
+        ' ',
+        '  ',
+        ' leading',
+        'trailing ',
+        '\tleading-tab',
+        'trailing-tab\t',
+    ]
+)
+def test_droplet_based_library_cro_group_identifier_invalid(testapp, other_lab, tissue, cro_group_identifier):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
+            'CRO_group_identifier': cro_group_identifier,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
 def test_droplet_based_library_author_metadata(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
@@ -286,6 +333,7 @@ def test_droplet_based_library_create_with_all_optional_fields(testapp, other_la
         'feature_types': ['Gene Expression', 'ATAC'],
         'multiplexing_method': 'cell hashing',
         'description': 'Complete droplet-based library',
+        'CRO_group_identifier': 'CRO-GROUP-001',
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
@@ -296,6 +344,7 @@ def test_droplet_based_library_create_with_all_optional_fields(testapp, other_la
     assert res.json['@graph'][0]['feature_types'] == ['Gene Expression', 'ATAC']
     assert res.json['@graph'][0]['multiplexing_method'] == 'cell hashing'
     assert res.json['@graph'][0]['description'] == 'Complete droplet-based library'
+    assert res.json['@graph'][0]['CRO_group_identifier'] == 'CRO-GROUP-001'
 
 
 def test_droplet_based_library_linked_libraries_min_items(testapp, other_lab, tissue):

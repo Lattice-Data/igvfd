@@ -10,7 +10,8 @@
         "aliases": [
             "lattice:plate-library-basic"
         ],
-        "description": "Test plate-based library 1"
+        "description": "Test plate-based library 1",
+        "CRO_group_identifier": "INSERT-PLATE-CRO-GROUP-1"
     },
     {
         "lab": "teri-klein",
