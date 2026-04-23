@@ -6,7 +6,6 @@
     "type": "object",
     "required": [
         "term_id",
-        "term_name",
         "ontology_source"
     ],
     "identifyingProperties": [
@@ -32,13 +31,7 @@
             "description": "An ontology identifier from the specified ontology source.",
             "type": "string",
             "uniqueKey": "controlled_term:term_id",
-            "pattern": "^(CL|EFO|UBERON|CHEBI|UniProt|Cellosaurus|HANCESTRO):[A-Za-z0-9_]+$"
-        },
-        "term_name": {
-            "title": "Term Name",
-            "description": "Human-readable name of the ontology term.",
-            "type": "string",
-            "pattern": "^(?![\\s\"'])[\\S|\\s]*[^\\s\"']$"
+            "pattern": "^(CL|EFO|MONDO|UBERON|HANCESTRO|HsapDv|MmusDv|PATO|NCBITaxon|FBbt|FBdv|ZFA|WBbt|WBls|CVCL|CHEBI|uniprot|anti-uniprot)[:_][A-Za-z0-9_]+$"
         },
         "ontology_source": {
             "title": "Ontology Source",
@@ -47,26 +40,22 @@
             "enum": [
                 "CL",
                 "EFO",
+                "MONDO",
                 "UBERON",
+                "HANCESTRO",
+                "HsapDv",
+                "MmusDv",
+                "PATO",
+                "NCBITaxon",
+                "FBbt",
+                "FBdv",
+                "ZFA",
+                "WBbt",
+                "WBls",
+                "CVCL",
                 "CHEBI",
-                "UniProt",
-                "Cellosaurus",
-                "HANCESTRO"
+                "UniProt"
             ]
-        },
-        "definition": {
-            "title": "Definition",
-            "description": "The formal definition of this term from the source ontology.",
-            "type": "string"
-        },
-        "synonyms": {
-            "title": "Synonyms",
-            "description": "Alternative names or synonyms for this term.",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-                "type": "string"
-            }
         },
         "dbxrefs": {
             "title": "External References",

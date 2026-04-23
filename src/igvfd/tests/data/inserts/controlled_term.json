@@ -1,85 +1,169 @@
 [
     {
         "term_id": "CL:0000001",
-        "term_name": "T cell",
         "ontology_source": "CL",
-        "definition": "A type of lymphocyte whose defining characteristic is the expression of a T-cell receptor complex.",
-        "synonyms": [
-            "T lymphocyte",
-            "T-lymphocyte"
-        ],
         "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:term-t-cell",
+            "lattice:term-primary-cultured-cell",
             "lattice:term-cl-0000001",
-            "lattice:term-t-lymphocyte"
+            "lattice:term-primary-cell-culture-cell"
         ]
     },
     {
-        "term_id": "EFO:0000001",
-        "term_name": "European",
+        "term_id": "EFO:0022606",
         "ontology_source": "EFO",
-        "definition": "A person of European descent.",
         "uuid": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:term-european-ethnicity",
-            "lattice:term-efo-0000001"
+            "lattice:term-10x-flex",
+            "lattice:term-efo-0022606"
         ]
     },
     {
-        "term_id": "UBERON:0000001",
-        "term_name": "brain",
+        "term_id": "UBERON:0000002",
         "ontology_source": "UBERON",
-        "definition": "The brain is an organ that serves as the center of the nervous system.",
         "uuid": "c3d4e5f6-a7b8-9012-cdef-345678901234",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:term-brain",
-            "lattice:term-uberon-0000001",
-            "lattice:term-brain-tissue"
+            "lattice:term-uterine-cervix",
+            "lattice:term-uberon-0000002",
+            "lattice:term-cervix-tissue"
         ]
     },
     {
-        "term_id": "HANCESTRO:0000001",
-        "term_name": "Han Chinese",
+        "term_id": "HANCESTRO:0026",
         "ontology_source": "HANCESTRO",
-        "definition": "An ancestry group term from the Human Ancestry Ontology.",
         "uuid": "f2d9b9aa-4b22-4c8a-9d9b-3a4e2b7b5c10",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:term-han-chinese",
-            "lattice:term-hancestro-0000001"
+            "lattice:term-hong-kong-chinese",
+            "lattice:term-hancestro-0026"
         ]
     },
     {
         "term_id": "CHEBI:27300",
-        "term_name": "dexamethasone",
         "ontology_source": "CHEBI",
-        "definition": "A synthetic glucocorticoid used as anti-inflammatory agent.",
         "uuid": "e4a5b6c7-d8e9-4012-bcde-567890123456",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:term-dexamethasone",
+            "lattice:term-vitamin-D",
             "lattice:term-chebi-27300"
         ]
     },
     {
-        "term_id": "UniProt:P12345",
-        "term_name": "Example protein",
+        "term_id": "uniprot:P01308",
         "ontology_source": "UniProt",
-        "definition": "Example UniProt entry for treatment reference.",
         "uuid": "e5b6c7d8-e9f0-4123-cdef-678901234567",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:term-uniprot-example"
+            "lattice:term-uniprot-insulin"
+        ]
+    },
+    {
+        "term_id": "anti-uniprot:P01308",
+        "ontology_source": "UniProt",
+        "uuid": "227438bd-e550-4971-9305-f22eb69f0052",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-anti-uniprot-insulin"
+        ]
+    },
+    {
+        "term_id": "HsapDv:0000002",
+        "ontology_source": "HsapDv",
+        "uuid": "c2de111f-900d-460d-91d3-6a735002b45c",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-dev-stage-human-embryonic"
+        ]
+    },
+    {
+        "term_id": "MmusDv:0000002",
+        "ontology_source": "MmusDv",
+        "uuid": "60cc5824-2ef4-4c9d-b83b-a1df9d893350",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-dev-stage-mouse-embryonic"
+        ]
+    },
+    {
+        "term_id": "PATO:0000383",
+        "ontology_source": "PATO",
+        "uuid": "2425a6d0-0385-4762-a0f5-63b753401fe8",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-sex-female"
+        ]
+    },
+    {
+        "term_id": "FBbt:00053322",
+        "ontology_source": "FBbt",
+        "uuid": "5ca5514f-5bb4-4d0b-b00f-3ec98db15ddb",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-fly-embryonic-pole-cell"
+        ]
+    },
+    {
+        "term_id": "FBdv:00007075",
+        "ontology_source": "FBdv",
+        "uuid": "64faa6c1-6f7a-4ea2-b6dd-c46b49776779",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-dev-stage-fly-day-0-adult"
+        ]
+    },
+    {
+        "term_id": "ZFA:0009095",
+        "ontology_source": "ZFA",
+        "uuid": "cae14508-b1fd-4e20-8600-01c09098a9b4",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-cell-zebrafish-acid-secreting-cell"
+        ]
+    },
+    {
+        "term_id": "WBbt:0006796",
+        "ontology_source": "WBbt",
+        "uuid": "acc4254b-183f-440d-a8f3-bd106d02de69",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-cell-worm-germ-cell"
+        ]
+    },
+    {
+        "term_id": "WBls:0000532",
+        "ontology_source": "WBls",
+        "uuid": "786856c4-1ecf-4a1d-8e12-c4433cfe87b6",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-dev-stage-worm-421-min"
+        ]
+    },
+    {
+        "term_id": "CVCL_0001",
+        "ontology_source": "CVCL",
+        "uuid": "3ff6858b-be37-4b0f-aef9-8a215256fb6d",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:term-cell-line-HEL"
         ]
     }
 ]
