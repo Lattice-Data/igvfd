@@ -206,4 +206,4 @@ def test_plate_based_library_create_with_library_construction_technology(
     testapp, plate_based_library_with_library_construction_technology, controlled_term_efo
 ):
     res = testapp.get(plate_based_library_with_library_construction_technology['@id'])
-    assert res.json['library_construction_technology'] == controlled_term_efo['@id']
+    assert res.json['library_construction_technology']['@id'] == controlled_term_efo['@id']
