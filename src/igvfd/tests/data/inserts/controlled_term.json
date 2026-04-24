@@ -3,7 +3,7 @@
         "term_id": "CL:0000001",
         "ontology_source": "CL",
         "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-primary-cultured-cell",
@@ -15,7 +15,7 @@
         "term_id": "EFO:0022606",
         "ontology_source": "EFO",
         "uuid": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-10x-flex",
@@ -26,7 +26,7 @@
         "term_id": "UBERON:0000002",
         "ontology_source": "UBERON",
         "uuid": "c3d4e5f6-a7b8-9012-cdef-345678901234",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-uterine-cervix",
@@ -38,7 +38,7 @@
         "term_id": "HANCESTRO:0026",
         "ontology_source": "HANCESTRO",
         "uuid": "f2d9b9aa-4b22-4c8a-9d9b-3a4e2b7b5c10",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-hong-kong-chinese",
@@ -49,7 +49,7 @@
         "term_id": "CHEBI:27300",
         "ontology_source": "CHEBI",
         "uuid": "e4a5b6c7-d8e9-4012-bcde-567890123456",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-vitamin-D",
@@ -60,7 +60,7 @@
         "term_id": "uniprot:P01308",
         "ontology_source": "UniProt",
         "uuid": "e5b6c7d8-e9f0-4123-cdef-678901234567",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-uniprot-insulin"
@@ -70,7 +70,7 @@
         "term_id": "anti-uniprot:P01308",
         "ontology_source": "UniProt",
         "uuid": "227438bd-e550-4971-9305-f22eb69f0052",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-anti-uniprot-insulin"
@@ -80,7 +80,7 @@
         "term_id": "HsapDv:0000002",
         "ontology_source": "HsapDv",
         "uuid": "c2de111f-900d-460d-91d3-6a735002b45c",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-dev-stage-human-embryonic"
@@ -90,7 +90,7 @@
         "term_id": "MmusDv:0000002",
         "ontology_source": "MmusDv",
         "uuid": "60cc5824-2ef4-4c9d-b83b-a1df9d893350",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-dev-stage-mouse-embryonic"
@@ -100,7 +100,7 @@
         "term_id": "PATO:0000383",
         "ontology_source": "PATO",
         "uuid": "2425a6d0-0385-4762-a0f5-63b753401fe8",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-sex-female"
@@ -110,7 +110,7 @@
         "term_id": "FBbt:00053322",
         "ontology_source": "FBbt",
         "uuid": "5ca5514f-5bb4-4d0b-b00f-3ec98db15ddb",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-fly-embryonic-pole-cell"
@@ -120,7 +120,7 @@
         "term_id": "FBdv:00007075",
         "ontology_source": "FBdv",
         "uuid": "64faa6c1-6f7a-4ea2-b6dd-c46b49776779",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-dev-stage-fly-day-0-adult"
@@ -130,7 +130,7 @@
         "term_id": "ZFA:0009095",
         "ontology_source": "ZFA",
         "uuid": "cae14508-b1fd-4e20-8600-01c09098a9b4",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-cell-zebrafish-acid-secreting-cell"
@@ -140,7 +140,7 @@
         "term_id": "WBbt:0006796",
         "ontology_source": "WBbt",
         "uuid": "acc4254b-183f-440d-a8f3-bd106d02de69",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-cell-worm-germ-cell"
@@ -150,7 +150,7 @@
         "term_id": "WBls:0000532",
         "ontology_source": "WBls",
         "uuid": "786856c4-1ecf-4a1d-8e12-c4433cfe87b6",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-dev-stage-worm-421-min"
@@ -160,7 +160,7 @@
         "term_id": "CVCL_0001",
         "ontology_source": "CVCL",
         "uuid": "3ff6858b-be37-4b0f-aef9-8a215256fb6d",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:term-cell-line-HEL"
