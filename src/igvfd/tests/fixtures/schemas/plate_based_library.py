@@ -53,3 +53,14 @@ def plate_based_library_with_indexing_rounds(testapp, other_lab, tissue):
         'status': 'current',
     }
     return testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def plate_based_library_with_library_construction_technology(testapp, other_lab, tissue, controlled_term_efo):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_construction_technology': controlled_term_efo['@id'],
+        'status': 'current',
+    }
+    return testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]

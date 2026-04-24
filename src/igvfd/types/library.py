@@ -29,6 +29,7 @@ class Library(Item):
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
         Path('samples', include=['@id', 'aliases']),
+        Path('library_construction_technology', include=['@id', 'term_name']),
     ]
 
 

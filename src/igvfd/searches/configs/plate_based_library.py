@@ -10,6 +10,9 @@ def plate_based_library():
             'kit_version': {
                 'title': 'Kit Version'
             },
+            'library_construction_technology.term_id': {
+                'title': 'Library Construction Technology'
+            },
             'indexing_rounds': {
                 'title': 'Indexing Rounds'
             },
@@ -44,6 +47,9 @@ def plate_based_library():
             },
             'kit_version': {
                 'title': 'Kit Version'
+            },
+            'library_construction_technology': {
+                'title': 'Library Construction Technology'
             },
             'indexing_rounds': {
                 'title': 'Indexing Rounds'

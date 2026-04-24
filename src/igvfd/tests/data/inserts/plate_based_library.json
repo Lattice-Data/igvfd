@@ -26,6 +26,7 @@
             "lattice:plate-lib-002"
         ],
         "kit_version": "QuantumScale Single Cell RNA",
+        "library_construction_technology": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
         "indexing_rounds": 3
     },
     {

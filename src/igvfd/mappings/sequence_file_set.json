@@ -1,6 +1,6 @@
 {
-    "hash": "25eeb0239a1d91d3cc234c7117daccf5",
-    "index_name": "sequence_file_set_25eeb023",
+    "hash": "36da715d009d6a5debe1d0eb9f22cfca",
+    "index_name": "sequence_file_set_36da715d",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -405,6 +405,9 @@
                                 "type": "keyword"
                             },
                             "library_cardinality": {
+                                "type": "keyword"
+                            },
+                            "library_construction_technology": {
                                 "type": "keyword"
                             },
                             "linked_libraries": {

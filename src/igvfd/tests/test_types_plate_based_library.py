@@ -189,3 +189,21 @@ def test_plate_based_library_author_metadata(testapp, other_lab, tissue):
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
     assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']
+
+
+def test_plate_based_library_patch_library_construction_technology(
+    testapp, plate_based_library, controlled_term_efo
+):
+    res = testapp.patch_json(
+        plate_based_library['@id'],
+        {'library_construction_technology': controlled_term_efo['@id']},
+        status=200,
+    )
+    assert res.json['@graph'][0]['library_construction_technology'] == controlled_term_efo['@id']
+
+
+def test_plate_based_library_create_with_library_construction_technology(
+    testapp, plate_based_library_with_library_construction_technology, controlled_term_efo
+):
+    res = testapp.get(plate_based_library_with_library_construction_technology['@id'])
+    assert res.json['library_construction_technology'] == controlled_term_efo['@id']

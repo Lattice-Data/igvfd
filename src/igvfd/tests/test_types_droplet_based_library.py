@@ -458,3 +458,21 @@ def test_droplet_based_library_single_cardinality_without_linked_libraries_succe
     res = testapp.post_json('/droplet_based_library', item, status=201)
     assert res.json['@graph'][0]['library_cardinality'] == 'single'
     assert 'linked_libraries' not in res.json['@graph'][0] or res.json['@graph'][0].get('linked_libraries') is None
+
+
+def test_droplet_based_library_patch_library_construction_technology(
+    testapp, droplet_based_library, controlled_term_efo
+):
+    res = testapp.patch_json(
+        droplet_based_library['@id'],
+        {'library_construction_technology': controlled_term_efo['@id']},
+        status=200,
+    )
+    assert res.json['@graph'][0]['library_construction_technology'] == controlled_term_efo['@id']
+
+
+def test_droplet_based_library_create_with_library_construction_technology(
+    testapp, droplet_based_library_with_library_construction_technology, controlled_term_efo
+):
+    res = testapp.get(droplet_based_library_with_library_construction_technology['@id'])
+    assert res.json['library_construction_technology'] == controlled_term_efo['@id']
