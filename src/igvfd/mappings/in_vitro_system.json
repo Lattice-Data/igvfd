@@ -1,6 +1,6 @@
 {
-    "hash": "53bf74e498ca529e04a4fa9ab11af689",
-    "index_name": "in_vitro_system_53bf74e4",
+    "hash": "03532d39642c6c2e5cec7d69045754fa",
+    "index_name": "in_vitro_system_03532d39",
     "item_type": "in_vitro_system",
     "mapping": {
         "dynamic_templates": [
@@ -442,6 +442,62 @@
                     },
                     "schema_version": {
                         "type": "keyword"
+                    },
+                    "sources": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "institute_label": {
+                                "type": "keyword"
+                            },
+                            "name": {
+                                "type": "keyword"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "pi": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "title": {
+                                "type": "keyword"
+                            },
+                            "url": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "status": {
                         "type": "keyword"

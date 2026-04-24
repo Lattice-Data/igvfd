@@ -1,0 +1,15 @@
+[
+    {
+        "uuid": "d868fcd6-2a52-48f1-a3de-a4df82c4da7a",
+        "name": "sigma",
+        "title": "Sigma-Aldrich",
+        "status": "current"
+    },
+    {
+        "uuid": "92c01c77-ddc4-4a2a-8d51-ef560df3c4d9",
+        "name": "abcam",
+        "title": "Abcam",
+        "status": "current",
+        "url": "https://www.abcam.com"
+    }
+]
