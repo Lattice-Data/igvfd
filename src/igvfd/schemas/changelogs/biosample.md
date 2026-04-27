@@ -1,5 +1,6 @@
 # Biosample Changelog
 
+- Add optional `diseases` (linkTo ControlledTerm) to capture diseases relevant to the measurement context.
 - Add optional `date_obtained`.
 - Add optional `collection_geographical_location`.
 - Remove `author_metadata` from abstract biosample profile; concrete biosample types use `mixins.json#/author_metadata`.

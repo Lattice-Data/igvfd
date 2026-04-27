@@ -1,6 +1,6 @@
 {
-    "hash": "22995e30af4926a8085e91c4de98cb97",
-    "index_name": "cell_line_22995e30",
+    "hash": "5e9ba66d401db59f5d00b6622295d46c",
+    "index_name": "cell_line_5e9ba66d",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -171,6 +171,9 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "diseases": {
+                        "type": "keyword"
                     },
                     "donors": {
                         "properties": {

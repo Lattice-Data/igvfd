@@ -194,6 +194,33 @@ def test_biosample_collection_fields_are_optional(
     assert res.json['@graph'][0].get('collection_geographical_location') is None
 
 
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_diseases_accepts_controlled_term_links(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['diseases'] = [controlled_term_brain['@id']]
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['diseases'] == [controlled_term_brain['@id']]
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_diseases_rejects_duplicate_values(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['diseases'] = [controlled_term_brain['@id'], controlled_term_brain['@id']]
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
 @pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_create_with_intended_cell_types(testapp, other_lab, human_donor,
                                                    controlled_term_brain, controlled_term, biosample_type):

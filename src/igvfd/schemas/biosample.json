@@ -87,6 +87,19 @@
                 "linkTo": "ControlledTerm"
             }
         },
+        "diseases": {
+            "title": "Diseases",
+            "description": "Known diseases thought to, or being tested to, impact the measurement being taken, and not necessarily diseases of the donor from which the sample was obtained.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Disease",
+                "description": "Reference to a disease ontology term.",
+                "comment": "See controlled_term.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ControlledTerm"
+            }
+        },
         "sample_procurement_interval": {
             "title": "Sample Procurement Interval",
             "description": "Time passing from the moment of sample collection till the freezing or initiation of the experiment with the sample.",

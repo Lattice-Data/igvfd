@@ -1,6 +1,6 @@
 {
-    "hash": "a65ac7f0d8b7899d7f490eda079df6d4",
-    "index_name": "tissue_a65ac7f0",
+    "hash": "d230a32e099b1871ee71e1f0777cd39c",
+    "index_name": "tissue_d230a32e",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -174,6 +174,9 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "diseases": {
+                        "type": "keyword"
                     },
                     "donors": {
                         "properties": {

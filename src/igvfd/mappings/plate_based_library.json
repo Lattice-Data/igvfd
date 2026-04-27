@@ -1,6 +1,6 @@
 {
-    "hash": "4ad927ac4c97e4ebacb26170acd59b76",
-    "index_name": "plate_based_library_4ad927ac",
+    "hash": "4dcbe826e454ce187ea8c172933b0960",
+    "index_name": "plate_based_library_4dcbe826",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -329,6 +329,9 @@
                             },
                             "description": {
                                 "type": "text"
+                            },
+                            "diseases": {
+                                "type": "keyword"
                             },
                             "donors": {
                                 "type": "keyword"

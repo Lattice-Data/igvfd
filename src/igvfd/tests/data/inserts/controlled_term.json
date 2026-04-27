@@ -1,5 +1,15 @@
 [
     {
+        "term_id": "MONDO:0005148",
+        "ontology_source": "MONDO",
+        "uuid": "9f1a7660-0baa-47e6-87d5-e7138d0409f3",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:term-mondo-type2-diabetes"
+        ]
+    },
+    {
         "term_id": "CL:0000001",
         "ontology_source": "CL",
         "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",

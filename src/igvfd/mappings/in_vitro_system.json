@@ -1,6 +1,6 @@
 {
-    "hash": "03532d39642c6c2e5cec7d69045754fa",
-    "index_name": "in_vitro_system_03532d39",
+    "hash": "eddd021349d82554e5040ed0c688db8e",
+    "index_name": "in_vitro_system_eddd0213",
     "item_type": "in_vitro_system",
     "mapping": {
         "dynamic_templates": [
@@ -174,6 +174,9 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "diseases": {
+                        "type": "keyword"
                     },
                     "donors": {
                         "properties": {

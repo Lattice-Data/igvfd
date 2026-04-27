@@ -1,6 +1,6 @@
 {
-    "hash": "d93fabfb46ae7ded88461624d364ce8c",
-    "index_name": "droplet_based_library_d93fabfb",
+    "hash": "be4a6171cc2a036f7cf00f15fc700458",
+    "index_name": "droplet_based_library_be4a6171",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -338,6 +338,9 @@
                             },
                             "description": {
                                 "type": "text"
+                            },
+                            "diseases": {
+                                "type": "keyword"
                             },
                             "donors": {
                                 "type": "keyword"

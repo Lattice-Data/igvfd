@@ -1,6 +1,6 @@
 {
-    "hash": "11aff22342927cb7b4785bd999992343",
-    "index_name": "organoid_11aff223",
+    "hash": "0978eaff69e541970bdd092908933194",
+    "index_name": "organoid_0978eaff",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -171,6 +171,9 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "diseases": {
+                        "type": "keyword"
                     },
                     "donors": {
                         "properties": {
