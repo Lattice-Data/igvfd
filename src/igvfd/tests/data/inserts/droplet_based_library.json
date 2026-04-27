@@ -27,6 +27,7 @@
             "lattice:droplet-lib-002"
         ],
         "chemistry_version": "3' v3",
+        "library_construction_technology": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
         "cell_barcode_length": 16,
         "umi_length": 12,
         "feature_types": [

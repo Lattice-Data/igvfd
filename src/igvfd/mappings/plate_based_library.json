@@ -1,6 +1,6 @@
 {
-    "hash": "029818d63dffb66c58839b6236876acc",
-    "index_name": "plate_based_library_029818d6",
+    "hash": "4dcbe826e454ce187ea8c172933b0960",
+    "index_name": "plate_based_library_4dcbe826",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -229,6 +229,65 @@
                         },
                         "type": "object"
                     },
+                    "library_construction_technology": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "dbxrefs": {
+                                "type": "keyword"
+                            },
+                            "definition": {
+                                "type": "keyword"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "ontology_source": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "synonyms": {
+                                "type": "keyword"
+                            },
+                            "term_id": {
+                                "type": "keyword"
+                            },
+                            "term_name": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
+                    },
                     "multiplexing_method": {
                         "type": "keyword"
                     },
@@ -256,6 +315,9 @@
                             "classification": {
                                 "type": "keyword"
                             },
+                            "collection_geographical_location": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
@@ -267,6 +329,9 @@
                             },
                             "description": {
                                 "type": "text"
+                            },
+                            "diseases": {
+                                "type": "keyword"
                             },
                             "donors": {
                                 "type": "keyword"
@@ -334,6 +399,9 @@
                                 "type": "keyword"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "sources": {
                                 "type": "keyword"
                             },
                             "spatial_information": {

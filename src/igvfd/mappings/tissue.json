@@ -1,6 +1,6 @@
 {
-    "hash": "a4153ca3766f340df81e64650e602f92",
-    "index_name": "tissue_a4153ca3",
+    "hash": "d230a32e099b1871ee71e1f0777cd39c",
+    "index_name": "tissue_d230a32e",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -159,6 +159,9 @@
                         "properties": {},
                         "type": "object"
                     },
+                    "collection_geographical_location": {
+                        "type": "keyword"
+                    },
                     "creation_timestamp": {
                         "type": "date"
                     },
@@ -171,6 +174,9 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "diseases": {
+                        "type": "keyword"
                     },
                     "donors": {
                         "properties": {
@@ -390,6 +396,62 @@
                     },
                     "schema_version": {
                         "type": "keyword"
+                    },
+                    "sources": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "institute_label": {
+                                "type": "keyword"
+                            },
+                            "name": {
+                                "type": "keyword"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "pi": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "title": {
+                                "type": "keyword"
+                            },
+                            "url": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "spatial_information": {
                         "copy_to": "_fuzzy",

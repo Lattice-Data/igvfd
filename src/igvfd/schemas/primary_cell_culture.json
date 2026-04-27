@@ -48,12 +48,6 @@
             "description": "Number of passages including the passages from the source.",
             "type": "integer",
             "minimum": 0
-        },
-        "date_obtained": {
-            "title": "Date Obtained",
-            "description": "The date the primary cell culture sample was collected.",
-            "type": "string",
-            "format": "date"
         }
     },
     "fuzzy_searchable_fields": [

@@ -58,3 +58,15 @@ def droplet_based_library_with_feature_types(testapp, other_lab, tissue):
         'status': 'current',
     }
     return testapp.post_json('/droplet_based_library', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def droplet_based_library_with_library_construction_technology(testapp, other_lab, tissue, controlled_term_efo):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'library_construction_technology': controlled_term_efo['@id'],
+        'status': 'current',
+    }
+    return testapp.post_json('/droplet_based_library', item, status=201).json['@graph'][0]

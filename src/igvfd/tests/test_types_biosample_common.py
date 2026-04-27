@@ -43,6 +43,25 @@ BIOSAMPLE_CONFIGS = {
 }
 
 
+def _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type):
+    if biosample_type == 'primary_cell_culture':
+        return '/primary_cell_culture', {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+        }
+
+    config = BIOSAMPLE_CONFIGS[biosample_type]
+    payload = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+    }
+    if config['has_classification']:
+        payload['classification'] = config['classification_value']
+    return config['endpoint'], payload
+
+
 @pytest.mark.parametrize('biosample_type', ['tissue', 'in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])
 def test_biosample_summary_with_aliases(testapp, biosample_type, request):
     config = BIOSAMPLE_CONFIGS[biosample_type]
@@ -105,6 +124,101 @@ def test_biosample_required_fields(testapp, other_lab, human_donor, controlled_t
             'sample_terms': [controlled_term_brain['@id']],
         }
         testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_date_obtained_accepts_valid_date(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['date_obtained'] = '2024-03-01'
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['date_obtained'] == '2024-03-01'
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_date_obtained_rejects_invalid_format(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['date_obtained'] = 'invalid-date'
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_collection_geographical_location_accepts_valid_enum(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['collection_geographical_location'] = 'Canada'
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['collection_geographical_location'] == 'Canada'
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_collection_geographical_location_rejects_invalid_enum(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['collection_geographical_location'] = 'Atlantis'
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_collection_fields_are_optional(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0].get('date_obtained') is None
+    assert res.json['@graph'][0].get('collection_geographical_location') is None
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_diseases_accepts_controlled_term_links(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['diseases'] = [controlled_term_brain['@id']]
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['diseases'] == [controlled_term_brain['@id']]
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'in_vitro_system', 'in_vivo_system', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_diseases_rejects_duplicate_values(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['diseases'] = [controlled_term_brain['@id'], controlled_term_brain['@id']]
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
 
 
 @pytest.mark.parametrize('biosample_type', ['in_vitro_system', 'in_vivo_system', 'organoid', 'cell_line'])

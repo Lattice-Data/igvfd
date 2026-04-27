@@ -71,6 +71,16 @@
             "submissionExample": {
                 "appscript": "CRO-BATCH-2024-01"
             }
+        },
+        "library_construction_technology": {
+            "title": "Library Construction Technology",
+            "description": "The ontology term describing the library construction technology used.",
+            "comment": "See controlled_term.json for available identifiers. Prefer EFO terms for library construction technologies.",
+            "type": "string",
+            "linkTo": "ControlledTerm",
+            "submissionExample": {
+                "appscript": "lattice:term-10x-flex"
+            }
         }
     },
     "fuzzy_searchable_fields": [

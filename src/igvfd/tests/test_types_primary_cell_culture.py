@@ -3,7 +3,7 @@ import pytest
 
 def test_primary_cell_culture_summary_with_aliases(testapp, primary_cell_culture_with_aliases):
     res = testapp.get(primary_cell_culture_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:primary-cell-passage-3'
+    assert res.json.get('summary') == 'lattice:primary-cell-passage-3-fixture'
 
 
 def test_primary_cell_culture_summary_with_description(testapp, primary_cell_culture_with_description):
@@ -55,21 +55,6 @@ def test_primary_cell_culture_passage_number_minimum(testapp, other_lab, human_d
             'donors': [human_donor['@id']],
             'sample_terms': [controlled_term_brain['@id']],
             'passage_number': -1,
-            'status': 'current',
-        },
-        status=422
-    )
-
-
-def test_primary_cell_culture_date_obtained_format(testapp, other_lab, human_donor, controlled_term_brain):
-    # Invalid date format
-    testapp.post_json(
-        '/primary_cell_culture',
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-            'date_obtained': 'invalid-date',
             'status': 'current',
         },
         status=422

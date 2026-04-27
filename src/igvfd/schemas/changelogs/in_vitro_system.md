@@ -1,5 +1,7 @@
 # In Vitro System Changelog
 
+* Use inherited `date_obtained` from abstract biosample profile.
+* Use inherited `collection_geographical_location` from abstract biosample profile.
 * Add deprecation notice to use organoid or cell_line for new submissions.
 * Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract biosample profile).
 * Add intended_cell_types.

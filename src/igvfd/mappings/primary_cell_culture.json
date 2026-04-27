@@ -1,6 +1,6 @@
 {
-    "hash": "d2820295ab32d1508f3fc484a3d8cd10",
-    "index_name": "primary_cell_culture_d2820295",
+    "hash": "2b0d4a545a1d74a0b4ead6bac81494cf",
+    "index_name": "primary_cell_culture_2b0d4a54",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -159,6 +159,9 @@
                         "properties": {},
                         "type": "object"
                     },
+                    "collection_geographical_location": {
+                        "type": "keyword"
+                    },
                     "creation_timestamp": {
                         "type": "date"
                     },
@@ -171,6 +174,9 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "diseases": {
+                        "type": "keyword"
                     },
                     "donors": {
                         "properties": {
@@ -388,6 +394,62 @@
                     },
                     "schema_version": {
                         "type": "keyword"
+                    },
+                    "sources": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "institute_label": {
+                                "type": "keyword"
+                            },
+                            "name": {
+                                "type": "keyword"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "pi": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "title": {
+                                "type": "keyword"
+                            },
+                            "url": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "status": {
                         "type": "keyword"

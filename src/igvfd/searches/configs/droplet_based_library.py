@@ -10,6 +10,9 @@ def droplet_based_library():
             'chemistry_version': {
                 'title': 'Chemistry Version'
             },
+            'library_construction_technology.term_id': {
+                'title': 'Library Construction Technology'
+            },
             'cell_barcode_length': {
                 'title': 'Cell Barcode Length'
             },
@@ -53,6 +56,9 @@ def droplet_based_library():
             },
             'chemistry_version': {
                 'title': 'Chemistry Version'
+            },
+            'library_construction_technology': {
+                'title': 'Library Construction Technology'
             },
             'cell_barcode_length': {
                 'title': 'Cell Barcode Length'

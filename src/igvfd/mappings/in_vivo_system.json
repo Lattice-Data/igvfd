@@ -1,6 +1,6 @@
 {
-    "hash": "68b185a97e5311c81afd879f2d82c568",
-    "index_name": "in_vivo_system_68b185a9",
+    "hash": "fa695924dc8ea2149ee1bb527f4a74b8",
+    "index_name": "in_vivo_system_fa695924",
     "item_type": "in_vivo_system",
     "mapping": {
         "dynamic_templates": [
@@ -159,8 +159,14 @@
                     "classification": {
                         "type": "keyword"
                     },
+                    "collection_geographical_location": {
+                        "type": "keyword"
+                    },
                     "creation_timestamp": {
                         "type": "date"
+                    },
+                    "date_obtained": {
+                        "type": "keyword"
                     },
                     "depleted_cell_types": {
                         "type": "keyword"
@@ -168,6 +174,9 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "diseases": {
+                        "type": "keyword"
                     },
                     "donors": {
                         "properties": {
@@ -552,6 +561,62 @@
                     },
                     "schema_version": {
                         "type": "keyword"
+                    },
+                    "sources": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "institute_label": {
+                                "type": "keyword"
+                            },
+                            "name": {
+                                "type": "keyword"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "pi": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "title": {
+                                "type": "keyword"
+                            },
+                            "url": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "status": {
                         "type": "keyword"

@@ -23,6 +23,7 @@ ORDER = [
     'genetic_modification',
     'experimental_condition',
     'treatment',
+    'source',
     'human_donor',
     'non_human_donor',
     'tissue',
@@ -47,10 +48,10 @@ IS_ATTACHMENT = [
 
 # Required keys for biosample concrete types (tissue, primary_cell_culture, organoid, cell_line,
 # in_vivo_system, in_vitro_system).
-# Optional linkTo arrays (experimental_conditions, treatments) are stripped in Phase 1 and added back in Phase 2
+# Optional linkTo arrays (experimental_conditions, treatments, diseases, sources) are stripped in Phase 1 and added back in Phase 2
 # so linked objects are guaranteed to exist before we set the references (same pattern as file.derived_from).
 BIOSAMPLE_CONCRETE_REQUIRED_KEYS = ('lab', 'donors', 'sample_terms')
-BIOSAMPLE_OPTIONAL_LINKTO_KEYS = ('experimental_conditions', 'treatments')
+BIOSAMPLE_OPTIONAL_LINKTO_KEYS = ('experimental_conditions', 'treatments', 'diseases', 'sources')
 
 
 def _reset_log_level(log_level):
@@ -515,6 +516,9 @@ PHASE1_PIPELINES = {
     'treatment': [
         skip_rows_missing_all_keys('lab', 'ontological_term'),
     ],
+    'source': [
+        skip_rows_missing_all_keys('name', 'title'),
+    ],
     'tissue': [
         remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
         skip_rows_missing_all_keys(*BIOSAMPLE_CONCRETE_REQUIRED_KEYS),
@@ -586,6 +590,9 @@ PHASE2_PIPELINES = {
     ],
     'treatment': [
         skip_rows_missing_all_keys('lab', 'ontological_term'),
+    ],
+    'source': [
+        skip_rows_missing_all_keys('name', 'title'),
     ],
     'tissue': [
         skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
