@@ -11,8 +11,6 @@ ITEM_TYPES: List[str] = [
     'genetic_modification',
     'human_donor',
     'image',
-    'in_vitro_system',
-    'in_vivo_system',
     'lab',
     'matrix_file_set',
     'non_human_donor',

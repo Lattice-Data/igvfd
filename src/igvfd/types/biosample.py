@@ -20,8 +20,7 @@ from .base import (
 class Biosample(Item):
     """
     Abstract base class for biosamples.
-    Concrete implementations are Tissue, PrimaryCellCulture, Organoid, CellLine,
-    InVivoSystem, and InVitroSystem.
+    Concrete implementations are Tissue, PrimaryCellCulture, Organoid, and CellLine.
     """
     item_type = 'biosample'
     base_types = ['Biosample'] + Item.base_types
@@ -143,68 +142,6 @@ class CellLine(Biosample):
             'title': 'Summary',
             'type': 'string',
             'description': 'A summary of the cell line.',
-            'notSubmittable': True,
-        }
-    )
-    def summary(self, aliases=None, description=None):
-        if aliases:
-            return aliases[0]
-        if description:
-            return description
-        return self.uuid
-
-
-@collection(
-    name='in_vivo_systems',
-    properties={
-        'title': 'In Vivo Systems',
-        'description': 'Listing of in vivo biological systems',
-    }
-)
-class InVivoSystem(Biosample):
-    item_type = 'in_vivo_system'
-    schema = load_schema('igvfd:schemas/in_vivo_system.json')
-    embedded_with_frame = Biosample.embedded_with_frame + [
-        Path('host', include=['@id', 'title', 'aliases']),
-        Path('host_tissue', include=['@id', 'term_name']),
-        Path('intended_cell_types', include=['@id', 'term_name']),
-    ]
-
-    @calculated_property(
-        schema={
-            'title': 'Summary',
-            'type': 'string',
-            'description': 'A summary of the in vivo system.',
-            'notSubmittable': True,
-        }
-    )
-    def summary(self, aliases=None, description=None):
-        if aliases:
-            return aliases[0]
-        if description:
-            return description
-        return self.uuid
-
-
-@collection(
-    name='in_vitro_systems',
-    properties={
-        'title': 'In Vitro Systems',
-        'description': 'Listing of in vitro biological systems',
-    }
-)
-class InVitroSystem(Biosample):
-    item_type = 'in_vitro_system'
-    schema = load_schema('igvfd:schemas/in_vitro_system.json')
-    embedded_with_frame = Biosample.embedded_with_frame + [
-        Path('intended_cell_types', include=['@id', 'term_name']),
-    ]
-
-    @calculated_property(
-        schema={
-            'title': 'Summary',
-            'type': 'string',
-            'description': 'A summary of the in vitro system.',
             'notSubmittable': True,
         }
     )
