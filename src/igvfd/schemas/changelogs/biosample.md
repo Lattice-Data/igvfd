@@ -14,6 +14,7 @@
 
 During upgrade from schema version 1, enrichment_markers expression_level values low and high map to CD{n}+ alongside positive and intermediate.
 
+- Add optional `dbxrefs` for external biosample identifiers (EGA, BioSample, SRA, ENA).
 - Remove concrete profiles `in_vitro_system` and `in_vivo_system`.
 - Add optional `diseases` (linkTo ControlledTerm) to capture diseases relevant to the measurement context.
 - Add optional `date_obtained`.

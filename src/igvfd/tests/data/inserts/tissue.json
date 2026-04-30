@@ -13,6 +13,9 @@
         "aliases": [
             "lattice:tissue-frozen-basic"
         ],
+        "dbxrefs": [
+            "SRA:SRS12345"
+        ],
         "description": "Test tissue sample 1",
         "preservation_method": "frozen"
     },

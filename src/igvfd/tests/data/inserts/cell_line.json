@@ -13,6 +13,9 @@
         "aliases": [
             "lattice:cell-line-reference"
         ],
+        "dbxrefs": [
+            "BioSample:SAMEA1234567"
+        ],
         "description": "Test cell line sample",
         "host": "f6a7b8c9-d0e1-2345-fa16-678901234567",
         "host_tissue": "c3d4e5f6-a7b8-9012-cdef-345678901234",

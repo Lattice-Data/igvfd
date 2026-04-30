@@ -10,6 +10,9 @@
         "aliases": [
             "lattice:droplet-library-basic"
         ],
+        "dbxrefs": [
+            "EGA:EGAX12345"
+        ],
         "description": "Test droplet-based library 1",
         "library_cardinality": "single",
         "CRO_group_identifier": "INSERT-DROPLET-CRO-GROUP-1"

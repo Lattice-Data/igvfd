@@ -105,6 +105,33 @@ def test_biosample_required_fields(testapp, other_lab, human_donor, controlled_t
     'biosample_type',
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
+def test_biosample_dbxrefs_accepts_valid_values(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['dbxrefs'] = ['BioSample:SAMEA1234567', 'SRA:SRS12345']
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['dbxrefs'] == ['BioSample:SAMEA1234567', 'SRA:SRS12345']
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_dbxrefs_rejects_invalid_values(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['dbxrefs'] = ['GEO:GSM12345']
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
 def test_biosample_date_obtained_accepts_valid_date(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type
 ):

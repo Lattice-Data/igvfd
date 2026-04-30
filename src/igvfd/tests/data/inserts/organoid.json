@@ -13,6 +13,9 @@
         "aliases": [
             "lattice:organoid-brain"
         ],
+        "dbxrefs": [
+            "ENA:ERS12345"
+        ],
         "description": "Test organoid sample",
         "intended_cell_types": [
             "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
