@@ -93,7 +93,7 @@
                             {
                                 "Ref": "AWS::Region"
                             },
-                            "\",\"metrics\":[[\"some-branch\",\"AccessKeyIndexing\",{\"label\":\"AccessKey\"}],[\"some-branch\",\"CellLineIndexing\",{\"label\":\"CellLine\"}],[\"some-branch\",\"ControlledTermIndexing\",{\"label\":\"ControlledTerm\"}],[\"some-branch\",\"DocumentIndexing\",{\"label\":\"Document\"}],[\"some-branch\",\"DropletBasedLibraryIndexing\",{\"label\":\"DropletBasedLibrary\"}],[\"some-branch\",\"ExperimentalConditionIndexing\",{\"label\":\"ExperimentalCondition\"}],[\"some-branch\",\"GeneticModificationIndexing\",{\"label\":\"GeneticModification\"}],[\"some-branch\",\"HumanDonorIndexing\",{\"label\":\"HumanDonor\"}],[\"some-branch\",\"ImageIndexing\",{\"label\":\"Image\"}],[\"some-branch\",\"InVitroSystemIndexing\",{\"label\":\"InVitroSystem\"}],[\"some-branch\",\"InVivoSystemIndexing\",{\"label\":\"InVivoSystem\"}],[\"some-branch\",\"LabIndexing\",{\"label\":\"Lab\"}],[\"some-branch\",\"MatrixFileSetIndexing\",{\"label\":\"MatrixFileSet\"}],[\"some-branch\",\"NonHumanDonorIndexing\",{\"label\":\"NonHumanDonor\"}],[\"some-branch\",\"OrganoidIndexing\",{\"label\":\"Organoid\"}],[\"some-branch\",\"PageIndexing\",{\"label\":\"Page\"}],[\"some-branch\",\"PlateBasedLibraryIndexing\",{\"label\":\"PlateBasedLibrary\"}],[\"some-branch\",\"PrimaryCellCultureIndexing\",{\"label\":\"PrimaryCellCulture\"}],[\"some-branch\",\"ProcessedMatrixFileIndexing\",{\"label\":\"ProcessedMatrixFile\"}],[\"some-branch\",\"RawMatrixFileIndexing\",{\"label\":\"RawMatrixFile\"}],[\"some-branch\",\"SequenceFileIndexing\",{\"label\":\"SequenceFile\"}],[\"some-branch\",\"SequenceFileSetIndexing\",{\"label\":\"SequenceFileSet\"}],[\"some-branch\",\"TabularFileIndexing\",{\"label\":\"TabularFile\"}],[\"some-branch\",\"TissueIndexing\",{\"label\":\"Tissue\"}],[\"some-branch\",\"TreatmentIndexing\",{\"label\":\"Treatment\"}],[\"some-branch\",\"UserIndexing\",{\"label\":\"User\"}]],\"yAxis\":{\"left\":{\"showUnits\":false}},\"period\":60}}]}"
+                            "\",\"metrics\":[[\"some-branch\",\"AccessKeyIndexing\",{\"label\":\"AccessKey\"}],[\"some-branch\",\"CellLineIndexing\",{\"label\":\"CellLine\"}],[\"some-branch\",\"ControlledTermIndexing\",{\"label\":\"ControlledTerm\"}],[\"some-branch\",\"DocumentIndexing\",{\"label\":\"Document\"}],[\"some-branch\",\"DropletBasedLibraryIndexing\",{\"label\":\"DropletBasedLibrary\"}],[\"some-branch\",\"ExperimentalConditionIndexing\",{\"label\":\"ExperimentalCondition\"}],[\"some-branch\",\"GeneticModificationIndexing\",{\"label\":\"GeneticModification\"}],[\"some-branch\",\"HumanDonorIndexing\",{\"label\":\"HumanDonor\"}],[\"some-branch\",\"ImageIndexing\",{\"label\":\"Image\"}],[\"some-branch\",\"LabIndexing\",{\"label\":\"Lab\"}],[\"some-branch\",\"MatrixFileSetIndexing\",{\"label\":\"MatrixFileSet\"}],[\"some-branch\",\"NonHumanDonorIndexing\",{\"label\":\"NonHumanDonor\"}],[\"some-branch\",\"OrganoidIndexing\",{\"label\":\"Organoid\"}],[\"some-branch\",\"PageIndexing\",{\"label\":\"Page\"}],[\"some-branch\",\"PlateBasedLibraryIndexing\",{\"label\":\"PlateBasedLibrary\"}],[\"some-branch\",\"PrimaryCellCultureIndexing\",{\"label\":\"PrimaryCellCulture\"}],[\"some-branch\",\"ProcessedMatrixFileIndexing\",{\"label\":\"ProcessedMatrixFile\"}],[\"some-branch\",\"RawMatrixFileIndexing\",{\"label\":\"RawMatrixFile\"}],[\"some-branch\",\"SequenceFileIndexing\",{\"label\":\"SequenceFile\"}],[\"some-branch\",\"SequenceFileSetIndexing\",{\"label\":\"SequenceFileSet\"}],[\"some-branch\",\"TabularFileIndexing\",{\"label\":\"TabularFile\"}],[\"some-branch\",\"TissueIndexing\",{\"label\":\"Tissue\"}],[\"some-branch\",\"TreatmentIndexing\",{\"label\":\"Treatment\"}],[\"some-branch\",\"UserIndexing\",{\"label\":\"User\"}]],\"yAxis\":{\"left\":{\"showUnits\":false}},\"period\":60}}]}"
                         ]
                     ]
                 },
@@ -302,38 +302,6 @@
                 "MetricTransformations": [
                     {
                         "MetricName": "ImageIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardinvitrosystemIndexingMetricFilter6E4AF6D9": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"in_vitro_system\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "InVitroSystemIndexing",
-                        "MetricNamespace": "some-branch",
-                        "MetricValue": "$.wsgi_time"
-                    }
-                ]
-            },
-            "Type": "AWS::Logs::MetricFilter"
-        },
-        "TestDashboardinvivosystemIndexingMetricFilterFB60C21E": {
-            "Properties": {
-                "FilterPattern": "{ ($.statusline = \"*@@index-data-external*\") && ($.item_type = \"in_vivo_system\") }",
-                "LogGroupName": {
-                    "Ref": "TestLogGroup4EEF7AD4"
-                },
-                "MetricTransformations": [
-                    {
-                        "MetricName": "InVivoSystemIndexing",
                         "MetricNamespace": "some-branch",
                         "MetricValue": "$.wsgi_time"
                     }

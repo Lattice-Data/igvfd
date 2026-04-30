@@ -1,6 +1,6 @@
 {
-    "hash": "4dcbe826e454ce187ea8c172933b0960",
-    "index_name": "plate_based_library_4dcbe826",
+    "hash": "7f5b5fed2a7ce6830764dd39d68982dc",
+    "index_name": "plate_based_library_7f5b5fed",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -311,9 +311,6 @@
                             "author_metadata": {
                                 "properties": {},
                                 "type": "object"
-                            },
-                            "classification": {
-                                "type": "keyword"
                             },
                             "collection_geographical_location": {
                                 "type": "keyword"

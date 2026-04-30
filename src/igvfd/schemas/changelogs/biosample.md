@@ -1,5 +1,6 @@
 # Biosample Changelog
 
+- Remove concrete profiles `in_vitro_system` and `in_vivo_system`.
 - Add optional `diseases` (linkTo ControlledTerm) to capture diseases relevant to the measurement context.
 - Add optional `date_obtained`.
 - Add optional `collection_geographical_location`.
