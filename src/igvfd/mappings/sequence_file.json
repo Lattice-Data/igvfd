@@ -1,6 +1,6 @@
 {
-    "hash": "553590e2c5b3507287e35550438ed7a5",
-    "index_name": "sequence_file_553590e2",
+    "hash": "540877202332e5bd95b207ea2a868b6a",
+    "index_name": "sequence_file_54087720",
     "item_type": "sequence_file",
     "mapping": {
         "dynamic_templates": [
@@ -150,6 +150,9 @@
                     },
                     "aliases": {
                         "copy_to": "_fuzzy",
+                        "type": "keyword"
+                    },
+                    "crc64nvme_base64": {
                         "type": "keyword"
                     },
                     "creation_timestamp": {

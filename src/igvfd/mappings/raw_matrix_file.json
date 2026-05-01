@@ -1,6 +1,6 @@
 {
-    "hash": "152817135bc78b3a4af05f690f83cda3",
-    "index_name": "raw_matrix_file_15281713",
+    "hash": "ff7e43a689beecd2aa0eb7b67b3096fd",
+    "index_name": "raw_matrix_file_ff7e43a6",
     "item_type": "raw_matrix_file",
     "mapping": {
         "dynamic_templates": [
@@ -150,6 +150,9 @@
                     },
                     "aliases": {
                         "copy_to": "_fuzzy",
+                        "type": "keyword"
+                    },
+                    "crc64nvme_base64": {
                         "type": "keyword"
                     },
                     "creation_timestamp": {

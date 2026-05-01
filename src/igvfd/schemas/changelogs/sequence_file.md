@@ -1,5 +1,11 @@
 ## Changelog for sequence_file.json
 
+### Minor changes since schema version 3
+
+### Schema version 3
+
+* Bump schema version for inherited `crc64nvme_base64` requirement from file profile when file is available.
+
 ### Minor changes since schema version 2
 
 * Add calculated property `sequence_file_sets`.

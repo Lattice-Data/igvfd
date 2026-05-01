@@ -1,6 +1,6 @@
 {
-    "hash": "aa96866759f0e19645b0e795918df8cb",
-    "index_name": "matrix_file_set_aa968667",
+    "hash": "f03e70a34b3d97289614180354b5fbc1",
+    "index_name": "matrix_file_set_f03e70a3",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -239,6 +239,9 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "crc64nvme_base64": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
@@ -323,6 +326,9 @@
                                 "type": "keyword"
                             },
                             "aliases": {
+                                "type": "keyword"
+                            },
+                            "crc64nvme_base64": {
                                 "type": "keyword"
                             },
                             "creation_timestamp": {
