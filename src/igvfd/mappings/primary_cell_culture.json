@@ -1,6 +1,6 @@
 {
-    "hash": "2b0d4a545a1d74a0b4ead6bac81494cf",
-    "index_name": "primary_cell_culture_2b0d4a54",
+    "hash": "cab2f2dc086263549007b3560fbead7e",
+    "index_name": "primary_cell_culture_cab2f2dc",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -238,20 +238,6 @@
                     "enriched_cell_types": {
                         "type": "keyword"
                     },
-                    "enrichment_markers": {
-                        "properties": {
-                            "expression_level": {
-                                "type": "keyword"
-                            },
-                            "marker": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "enrichment_method": {
-                        "type": "keyword"
-                    },
                     "experimental_conditions": {
                         "type": "keyword"
                     },
@@ -393,6 +379,15 @@
                         "type": "object"
                     },
                     "schema_version": {
+                        "type": "keyword"
+                    },
+                    "selection_kits": {
+                        "type": "keyword"
+                    },
+                    "selection_markers": {
+                        "type": "keyword"
+                    },
+                    "selection_methods": {
                         "type": "keyword"
                     },
                     "sources": {

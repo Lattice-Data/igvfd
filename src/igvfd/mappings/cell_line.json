@@ -1,6 +1,6 @@
 {
-    "hash": "5e9ba66d401db59f5d00b6622295d46c",
-    "index_name": "cell_line_5e9ba66d",
+    "hash": "068440ecca7dcad7327f6ccd504775f2",
+    "index_name": "cell_line_068440ec",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -233,20 +233,6 @@
                         "type": "object"
                     },
                     "enriched_cell_types": {
-                        "type": "keyword"
-                    },
-                    "enrichment_markers": {
-                        "properties": {
-                            "expression_level": {
-                                "type": "keyword"
-                            },
-                            "marker": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "enrichment_method": {
                         "type": "keyword"
                     },
                     "experimental_conditions": {
@@ -557,6 +543,15 @@
                         "type": "object"
                     },
                     "schema_version": {
+                        "type": "keyword"
+                    },
+                    "selection_kits": {
+                        "type": "keyword"
+                    },
+                    "selection_markers": {
+                        "type": "keyword"
+                    },
+                    "selection_methods": {
                         "type": "keyword"
                     },
                     "sources": {

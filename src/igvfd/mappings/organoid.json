@@ -1,6 +1,6 @@
 {
-    "hash": "0978eaff69e541970bdd092908933194",
-    "index_name": "organoid_0978eaff",
+    "hash": "69cab8ea01fccfb2bb172023df297bda",
+    "index_name": "organoid_69cab8ea",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -235,20 +235,6 @@
                     "enriched_cell_types": {
                         "type": "keyword"
                     },
-                    "enrichment_markers": {
-                        "properties": {
-                            "expression_level": {
-                                "type": "keyword"
-                            },
-                            "marker": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "enrichment_method": {
-                        "type": "keyword"
-                    },
                     "experimental_conditions": {
                         "type": "keyword"
                     },
@@ -441,6 +427,15 @@
                         "type": "object"
                     },
                     "schema_version": {
+                        "type": "keyword"
+                    },
+                    "selection_kits": {
+                        "type": "keyword"
+                    },
+                    "selection_markers": {
+                        "type": "keyword"
+                    },
+                    "selection_methods": {
                         "type": "keyword"
                     },
                     "sources": {

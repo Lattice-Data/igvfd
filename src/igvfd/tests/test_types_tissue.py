@@ -284,3 +284,94 @@ def test_tissue_age_minimum(testapp, other_lab, human_donor, controlled_term_bra
         },
         status=422
     )
+
+
+def test_tissue_selection_methods_length(testapp, other_lab, human_donor, controlled_term_brain):
+    testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'selection_methods': ['FACS', 'MACS'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_tissue_selection_methods_invalid_enum(testapp, other_lab, human_donor, controlled_term_brain):
+    testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'selection_methods': ['not-a-method'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_tissue_selection_markers_min_items(testapp, other_lab, human_donor, controlled_term_brain):
+    testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'selection_markers': [],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_tissue_selection_markers_invalid_enum(testapp, other_lab, human_donor, controlled_term_brain):
+    testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'selection_markers': ['CD999+'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_tissue_selection_kits_length(testapp, other_lab, human_donor, controlled_term_brain):
+    kits = [
+        'EasySep™ Human Naïve CD4+ T Cell Isolation Kit II',
+        'EasySep™ Human Monocyte Enrichment Kit without CD16 Depletion',
+    ]
+    testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'selection_kits': kits,
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_tissue_create_with_selection_fields(testapp, other_lab, human_donor, controlled_term_brain):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'selection_methods': ['selection kit'],
+        'selection_markers': ['CD4+', 'small size'],
+        'selection_kits': ['EasySep™ Human Naïve CD4+ T Cell Isolation Kit II'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/tissue', item, status=201)
+    row = res.json['@graph'][0]
+    assert row['selection_methods'] == ['selection kit']
+    assert row['selection_markers'] == ['CD4+', 'small size']
+    assert row['selection_kits'] == ['EasySep™ Human Naïve CD4+ T Cell Isolation Kit II']
