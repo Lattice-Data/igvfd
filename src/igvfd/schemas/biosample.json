@@ -430,7 +430,7 @@
         "selection_kits": {
             "title": "Selection Kits",
             "description": "Commercial kit(s) used for isolation or sorting when that workflow applies.",
-            "comment": "Optional. Omit unless selection was driven by a defined catalog kit.",
+            "comment": "Optional. Omit unless selection was driven by a defined catalog kit. Enum values use plain ASCII (no trademark symbol; Naive without diacritic) for easier submission; they correspond to the EasySep product names.",
             "type": "array",
             "minItems": 1,
             "maxItems": 1,
@@ -440,13 +440,13 @@
                 "description": "Commercial kit used for isolation or sorting.",
                 "type": "string",
                 "enum": [
-                    "EasySep™ Human Naïve CD4+ T Cell Isolation Kit II",
-                    "EasySep™ Human CD4+CD127lowCD25+ Regulatory T Cell Isolation Kit",
-                    "EasySep™ Human Monocyte Enrichment Kit without CD16 Depletion"
+                    "EasySep Human Naive CD4+ T Cell Isolation Kit II",
+                    "EasySep Human CD4+CD127lowCD25+ Regulatory T Cell Isolation Kit",
+                    "EasySep Human Monocyte Enrichment Kit without CD16 Depletion"
                 ]
             },
             "submissionExample": {
-                "appscript": "[\"EasySep™ Human Naïve CD4+ T Cell Isolation Kit II\"]"
+                "appscript": "[\"EasySep Human Naive CD4+ T Cell Isolation Kit II\"]"
             }
         },
         "selection_methods": {
@@ -472,8 +472,7 @@
                 ]
             },
             "submissionExample": {
-                "appscript": "[\"FACS\"]",
-                "igvf_utils": "FACS"
+                "appscript": "[\"FACS\"]"
             }
         },
         "selection_markers": {
@@ -600,8 +599,7 @@
                 ]
             },
             "submissionExample": {
-                "appscript": "[\"/labs/john-doe/\", \"/sources/abcam/\"]",
-                "igvf_utils": "/labs/john-doe/, /sources/abcam/"
+                "appscript": "[\"/labs/john-doe/\", \"/sources/abcam/\"]"
             }
         }
     },

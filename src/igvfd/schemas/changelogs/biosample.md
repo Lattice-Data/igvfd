@@ -2,6 +2,8 @@
 
 ## Schema version 2
 
+* Remove igvf_utils from submissionExample for selection_kits, selection_methods, and sources.
+* Adjust selection_kits enum list to use ASCII-friendly strings (EasySep without trademark symbol; Naive without diacritic).
 * Remove enrichment_method.
 * Remove enrichment_markers.
 * Add selection_kits.

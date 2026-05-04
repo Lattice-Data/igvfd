@@ -344,8 +344,8 @@ def test_tissue_selection_markers_invalid_enum(testapp, other_lab, human_donor, 
 
 def test_tissue_selection_kits_length(testapp, other_lab, human_donor, controlled_term_brain):
     kits = [
-        'EasySep™ Human Naïve CD4+ T Cell Isolation Kit II',
-        'EasySep™ Human Monocyte Enrichment Kit without CD16 Depletion',
+        'EasySep Human Naive CD4+ T Cell Isolation Kit II',
+        'EasySep Human Monocyte Enrichment Kit without CD16 Depletion',
     ]
     testapp.post_json(
         '/tissue',
@@ -367,11 +367,11 @@ def test_tissue_create_with_selection_fields(testapp, other_lab, human_donor, co
         'sample_terms': [controlled_term_brain['@id']],
         'selection_methods': ['selection kit'],
         'selection_markers': ['CD4+', 'small size'],
-        'selection_kits': ['EasySep™ Human Naïve CD4+ T Cell Isolation Kit II'],
+        'selection_kits': ['EasySep Human Naive CD4+ T Cell Isolation Kit II'],
         'status': 'current',
     }
     res = testapp.post_json('/tissue', item, status=201)
     row = res.json['@graph'][0]
     assert row['selection_methods'] == ['selection kit']
     assert row['selection_markers'] == ['CD4+', 'small size']
-    assert row['selection_kits'] == ['EasySep™ Human Naïve CD4+ T Cell Isolation Kit II']
+    assert row['selection_kits'] == ['EasySep Human Naive CD4+ T Cell Isolation Kit II']
