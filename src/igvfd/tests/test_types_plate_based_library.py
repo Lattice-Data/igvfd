@@ -119,6 +119,27 @@ def test_plate_based_library_create_success(testapp, other_lab, tissue):
     assert res.json['@graph'][0]['samples'] == [tissue['@id']]
 
 
+def test_plate_based_library_dbxrefs_valid(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'dbxrefs': ['EGA:EGAX12345', 'GEO:GSM67890'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    assert res.json['@graph'][0]['dbxrefs'] == ['EGA:EGAX12345', 'GEO:GSM67890']
+
+
+def test_plate_based_library_dbxrefs_invalid(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'dbxrefs': ['BioSample:SAMEA1234567'],
+        'status': 'current',
+    }
+    testapp.post_json('/plate_based_library', item, status=422)
+
+
 @pytest.mark.parametrize(
     'cro_group_identifier',
     [

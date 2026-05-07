@@ -1,6 +1,6 @@
 {
-    "hash": "88d446ecf0cfe9faac9551699320f562",
-    "index_name": "droplet_based_library_88d446ec",
+    "hash": "86df9bea077eba28587584bc52af3cf5",
+    "index_name": "droplet_based_library_86df9bea",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -169,6 +169,9 @@
                     "creation_timestamp": {
                         "type": "date"
                     },
+                    "dbxrefs": {
+                        "type": "keyword"
+                    },
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
@@ -328,6 +331,9 @@
                                 "type": "date"
                             },
                             "date_obtained": {
+                                "type": "keyword"
+                            },
+                            "dbxrefs": {
                                 "type": "keyword"
                             },
                             "depleted_cell_types": {

@@ -1,6 +1,6 @@
 {
-    "hash": "945193a9a10270674d39d7d8b2a45c04",
-    "index_name": "sequence_file_set_945193a9",
+    "hash": "3bcb67f39705f075751191104e39eb21",
+    "index_name": "sequence_file_set_3bcb67f3",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -393,6 +393,9 @@
                             },
                             "creation_timestamp": {
                                 "type": "date"
+                            },
+                            "dbxrefs": {
+                                "type": "keyword"
                             },
                             "description": {
                                 "type": "text"

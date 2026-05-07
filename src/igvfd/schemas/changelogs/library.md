@@ -2,6 +2,7 @@
 
 ### Minor changes since schema version 1
 
+- Add optional `dbxrefs` for external library identifiers (EGA, GEO, SRA, ENA).
 * Add `library_construction_technology`.
 
 - Add `CRO_group_identifier`.

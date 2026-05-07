@@ -1,6 +1,6 @@
 {
-    "hash": "cab2f2dc086263549007b3560fbead7e",
-    "index_name": "primary_cell_culture_cab2f2dc",
+    "hash": "9811e1770fd21f00a05d6e0dbdbee896",
+    "index_name": "primary_cell_culture_9811e177",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -166,6 +166,9 @@
                         "type": "date"
                     },
                     "date_obtained": {
+                        "type": "keyword"
+                    },
+                    "dbxrefs": {
                         "type": "keyword"
                     },
                     "depleted_cell_types": {

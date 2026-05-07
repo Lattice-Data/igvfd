@@ -1,6 +1,6 @@
 {
-    "hash": "8bfdc345551f95a3bf4f3eccc6a287a8",
-    "index_name": "plate_based_library_8bfdc345",
+    "hash": "f574bdd661bbeaec094bea65e28d23ea",
+    "index_name": "plate_based_library_f574bdd6",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -162,6 +162,9 @@
                     "creation_timestamp": {
                         "type": "date"
                     },
+                    "dbxrefs": {
+                        "type": "keyword"
+                    },
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
@@ -319,6 +322,9 @@
                                 "type": "date"
                             },
                             "date_obtained": {
+                                "type": "keyword"
+                            },
+                            "dbxrefs": {
                                 "type": "keyword"
                             },
                             "depleted_cell_types": {

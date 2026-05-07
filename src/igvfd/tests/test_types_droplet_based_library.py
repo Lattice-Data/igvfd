@@ -260,6 +260,29 @@ def test_droplet_based_library_create_success(testapp, other_lab, tissue):
     assert res.json['@graph'][0]['library_cardinality'] == 'single'
 
 
+def test_droplet_based_library_dbxrefs_valid(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'dbxrefs': ['ENA:ERX12345', 'SRA:SRX67890'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['dbxrefs'] == ['ENA:ERX12345', 'SRA:SRX67890']
+
+
+def test_droplet_based_library_dbxrefs_invalid(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'dbxrefs': ['EGA:EGAN12345'],
+        'status': 'current',
+    }
+    testapp.post_json('/droplet_based_library', item, status=422)
+
+
 @pytest.mark.parametrize(
     'cro_group_identifier',
     [
