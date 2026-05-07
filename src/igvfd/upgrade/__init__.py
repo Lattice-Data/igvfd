@@ -10,7 +10,10 @@ LATE = 10
 
 def includeme(config):
     from . import controlled_term  # noqa: F401
+    from . import processed_matrix_file  # noqa: F401
+    from . import raw_matrix_file  # noqa: F401
     from . import sequence_file  # noqa: F401
+    from . import tabular_file  # noqa: F401
     config.scan(categories=None)
 
     def callback():

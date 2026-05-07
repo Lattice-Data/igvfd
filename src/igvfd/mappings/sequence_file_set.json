@@ -1,6 +1,6 @@
 {
-    "hash": "36da715d009d6a5debe1d0eb9f22cfca",
-    "index_name": "sequence_file_set_36da715d",
+    "hash": "945193a9a10270674d39d7d8b2a45c04",
+    "index_name": "sequence_file_set_945193a9",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -173,6 +173,9 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "crc64nvme_base64": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
@@ -242,6 +245,9 @@
                                 "type": "keyword"
                             },
                             "aliases": {
+                                "type": "keyword"
+                            },
+                            "crc64nvme_base64": {
                                 "type": "keyword"
                             },
                             "creation_timestamp": {
@@ -461,6 +467,9 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "crc64nvme_base64": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
@@ -532,6 +541,9 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "crc64nvme_base64": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
@@ -601,6 +613,9 @@
                                 "type": "keyword"
                             },
                             "aliases": {
+                                "type": "keyword"
+                            },
+                            "crc64nvme_base64": {
                                 "type": "keyword"
                             },
                             "creation_timestamp": {
@@ -760,6 +775,9 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "crc64nvme_base64": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
@@ -829,6 +847,9 @@
                                 "type": "keyword"
                             },
                             "aliases": {
+                                "type": "keyword"
+                            },
+                            "crc64nvme_base64": {
                                 "type": "keyword"
                             },
                             "creation_timestamp": {

@@ -25,9 +25,12 @@
             "$ref": "mixins.json#/shared_status"
         }
     ],
-    "dependentSchemas": {
-        "no_file_available": {
+    "allOf": [
+        {
             "if": {
+                "required": [
+                    "no_file_available"
+                ],
                 "properties": {
                     "no_file_available": {
                         "const": true
@@ -36,18 +39,28 @@
             },
             "then": {
                 "not": {
-                    "required": [
-                        "s3_uri"
+                    "anyOf": [
+                        {
+                            "required": [
+                                "s3_uri"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "crc64nvme_base64"
+                            ]
+                        }
                     ]
                 }
             },
             "else": {
                 "required": [
-                    "s3_uri"
+                    "s3_uri",
+                    "crc64nvme_base64"
                 ]
             }
         }
-    },
+    ],
     "properties": {
         "schema_version": {
             "default": "1"
@@ -86,6 +99,16 @@
             "pattern": "^s3://.+",
             "submissionExample": {
                 "appscript": "s3://igvfd-bucket/path/to/file.fastq.gz"
+            }
+        },
+        "crc64nvme_base64": {
+            "title": "CRC64NVME checksum (Base64)",
+            "description": "Base64-encoded CRC64NVME checksum as reported by AWS S3.",
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9+/]{11}={0,2}$",
+            "submissionExample": {
+                "appscript": "AAAAAAAAAAA"
             }
         },
         "no_file_available": {

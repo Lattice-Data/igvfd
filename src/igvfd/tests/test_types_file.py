@@ -1,17 +1,21 @@
 import pytest
 
 SEQUENCE_FILE_READ_COUNT = 15_000_000
+CRC64NVME_BASE64_VALID = 'AAAAAAAAAAA'
 
 
 def _file_post_body(file_type, item):
-    """Sequence files with an available file require read_count (see sequence_file dependentSchemas)."""
+    """Augment POST bodies for sequence_file read_count and file-available crc64nvme_base64."""
+    out = dict(item)
     if (
         file_type == 'sequence_file'
-        and 's3_uri' in item
-        and item.get('no_file_available') is not True
+        and 's3_uri' in out
+        and out.get('no_file_available') is not True
     ):
-        return {**item, 'read_count': SEQUENCE_FILE_READ_COUNT}
-    return item
+        out['read_count'] = SEQUENCE_FILE_READ_COUNT
+    if 's3_uri' in out and out.get('no_file_available') is not True:
+        out.setdefault('crc64nvme_base64', CRC64NVME_BASE64_VALID)
+    return out
 
 
 # File type configurations
@@ -319,6 +323,109 @@ def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, file_
         status=201
     )
     assert res.json['@graph'][0]['no_file_available'] is True
+    assert 'crc64nvme_base64' not in res.json['@graph'][0]
+
+
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('no_file_available', [None, False, True])
+def test_file_create_success_no_file_available_modes(testapp, other_lab, file_type, no_file_available):
+    config = FILE_TYPE_CONFIGS[file_type]
+    endpoint = config['endpoint']
+    file_format = config['default_format']
+    s3_path = config['s3_path']
+
+    item = {
+        'lab': other_lab['@id'],
+        'md5sum': 'a87ff679a2f3e71d9181a67b7542122c',
+        'file_format': file_format,
+        'status': 'current',
+    }
+
+    if no_file_available is True:
+        item['no_file_available'] = True
+    else:
+        item['s3_uri'] = (
+            f's3://lattice-test-data/{s3_path}/create-mode-'
+            f'{str(no_file_available).lower()}.{file_format}'
+        )
+        item['crc64nvme_base64'] = CRC64NVME_BASE64_VALID
+        if no_file_available is False:
+            item['no_file_available'] = False
+        if file_type == 'sequence_file':
+            item['read_count'] = SEQUENCE_FILE_READ_COUNT
+        if config['has_matrix_fields']:
+            item['feature_keys'] = ['Ensembl gene ID', 'gene symbol']
+            item['observation_count'] = 1000
+            item['feature_counts'] = [{'feature_type': 'gene', 'feature_count': 14000}]
+
+    res = testapp.post_json(endpoint, item, status=201)
+    posted = res.json['@graph'][0]
+    if no_file_available is True:
+        assert posted['no_file_available'] is True
+        assert 's3_uri' not in posted
+        assert 'crc64nvme_base64' not in posted
+    else:
+        assert posted['s3_uri'] == item['s3_uri']
+        assert posted['crc64nvme_base64'] == CRC64NVME_BASE64_VALID
+
+
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+def test_file_requires_crc64nvme_when_file_available(testapp, other_lab, file_type):
+    config = FILE_TYPE_CONFIGS[file_type]
+    endpoint = config['endpoint']
+    file_format = config['default_format']
+    s3_path = config['s3_path']
+
+    item = {
+        'lab': other_lab['@id'],
+        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+        'file_format': file_format,
+        's3_uri': f's3://lattice-test-data/{s3_path}/missing-crc.{file_format}',
+        'no_file_available': False,
+        'status': 'current',
+    }
+    if file_type == 'sequence_file':
+        item['read_count'] = SEQUENCE_FILE_READ_COUNT
+    if config['has_matrix_fields']:
+        item['feature_keys'] = ['Ensembl gene ID', 'gene symbol']
+        item['observation_count'] = 1000
+        item['feature_counts'] = [{'feature_type': 'gene', 'feature_count': 14000}]
+    testapp.post_json(endpoint, item, status=422)
+
+
+@pytest.mark.parametrize(
+    'file_type,invalid_crc',
+    [
+        ('sequence_file', 'AAAAAAAAAA'),
+        ('sequence_file', 'AAAAAAAAAAA!'),
+        ('sequence_file', 'AAAAAAAAAAAA'),
+        ('tabular_file', 'AAAAAAAAAA'),
+        ('raw_matrix_file', 'AAAAAAAAAAA==='),
+        ('processed_matrix_file', 'not-base64!!'),
+    ],
+)
+def test_file_rejects_invalid_crc64nvme_base64(testapp, other_lab, file_type, invalid_crc):
+    config = FILE_TYPE_CONFIGS[file_type]
+    endpoint = config['endpoint']
+    file_format = config['default_format']
+    s3_path = config['s3_path']
+
+    item = {
+        'lab': other_lab['@id'],
+        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+        'file_format': file_format,
+        's3_uri': f's3://lattice-test-data/{s3_path}/bad-crc.{file_format}',
+        'no_file_available': False,
+        'crc64nvme_base64': invalid_crc,
+        'status': 'current',
+    }
+    if file_type == 'sequence_file':
+        item['read_count'] = SEQUENCE_FILE_READ_COUNT
+    if config['has_matrix_fields']:
+        item['feature_keys'] = ['Ensembl gene ID', 'gene symbol']
+        item['observation_count'] = 1000
+        item['feature_counts'] = [{'feature_type': 'gene', 'feature_count': 14000}]
+    testapp.post_json(endpoint, item, status=422)
 
 
 @pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
@@ -390,6 +497,10 @@ def test_file_rejects_invalid_s3_uri_prefix(testapp, other_lab, file_type, inval
             'md5sum': 'd3d9446802a44259755d38e6d163e820',
             'file_format': file_format,
             's3_uri': invalid_uri,
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'feature_keys': ['Ensembl gene ID', 'gene symbol'],
+            'observation_count': 1000,
+            'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
             'status': 'current',
         },
         status=422
@@ -410,6 +521,7 @@ def test_matrix_file_create_with_shared_matrix_fields(testapp, other_lab, file_t
             'md5sum': '0123456789abcdef0123456789abcdef',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/create-shared-fields.{file_format}',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'feature_keys': ['Ensembl gene ID', 'gene symbol'],
             'observation_count': 1000,
             'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
@@ -435,7 +547,10 @@ def test_matrix_file_rejects_invalid_feature_key(testapp, other_lab, file_type):
             'md5sum': '89abcdef0123456789abcdef01234567',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/invalid-feature-key.{file_format}',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'feature_keys': ['invalid feature key'],
+            'observation_count': 1000,
+            'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
             'status': 'current',
         },
         status=422
@@ -456,6 +571,9 @@ def test_matrix_file_rejects_invalid_feature_counts_shape(testapp, other_lab, fi
             'md5sum': 'fedcba9876543210fedcba9876543210',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/invalid-feature-counts.{file_format}',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'feature_keys': ['Ensembl gene ID', 'gene symbol'],
+            'observation_count': 1000,
             'feature_counts': [{'feature_type': 'gene'}],
             'status': 'current',
         },
@@ -471,6 +589,7 @@ def test_sequence_file_requires_read_count_when_file_available(testapp, other_la
             'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': 'fastq',
             's3_uri': 's3://lattice-test-data/sequence/missing-read-count.fastq.gz',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'status': 'current',
         },
         status=422,
@@ -485,6 +604,7 @@ def test_sequence_file_rejects_negative_read_count(testapp, other_lab):
             'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': 'fastq',
             's3_uri': 's3://lattice-test-data/sequence/negative-read-count.fastq.gz',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'read_count': -1,
             'status': 'current',
         },
@@ -500,6 +620,7 @@ def test_tabular_file_omits_read_count(testapp, other_lab):
             'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': 'csv',
             's3_uri': 's3://lattice-test-data/tabular/no-read-count.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'status': 'current',
         },
         status=201,
@@ -515,6 +636,7 @@ def test_raw_matrix_file_omits_read_count(testapp, other_lab):
             'md5sum': '0123456789abcdef0123456789abcdef',
             'file_format': 'h5',
             's3_uri': 's3://lattice-test-data/matrix/no-read-count.h5',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'feature_keys': ['Ensembl gene ID', 'gene symbol'],
             'observation_count': 1000,
             'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
@@ -533,6 +655,7 @@ def test_tabular_file_rejects_read_count(testapp, other_lab):
             'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': 'csv',
             's3_uri': 's3://lattice-test-data/tabular/read-count-not-allowed.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'read_count': 100,
             'status': 'current',
         },
