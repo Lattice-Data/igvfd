@@ -35,8 +35,7 @@
             "type": "string",
             "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$",
             "submissionExample": {
-                "appscript": "Sigma-Aldrich",
-                "igvf_utils": "Sigma-Aldrich"
+                "appscript": "Sigma-Aldrich"
             }
         },
         "name": {
@@ -47,8 +46,7 @@
             "pattern": "^[a-z0-9\\-]+$",
             "uniqueKey": "source:name",
             "submissionExample": {
-                "appscript": "sigma-aldrich",
-                "igvf_utils": "sigma-aldrich"
+                "appscript": "sigma-aldrich"
             }
         }
     },

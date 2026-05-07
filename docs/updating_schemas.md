@@ -59,7 +59,7 @@ Below are the required and optional components divided according the property's 
 The following are properties categorized by the feasibility to submit. These properties must follow the preceding guidelines according to their `type` in addition to the guidelines below.
 * Submittable properties:
     * `comment`: Instructions for submitters explaining details of how to submit the property. If there is a dependency defined for the property, the comment must include: "This property is affected by dependencies. See \[link\]."
-    * `submissionExample`: Required. An example of how to specify the property using appscript and igvf_utils tools.
+    * `submissionExample`: Required. An example of how to specify the property (for example using appscript).
 * Admin only properties:
     * `permission`: Required. A string property which is always `admin_only`. Must not be present for any property that can be modified by any submitter.
 * Calculated properties:

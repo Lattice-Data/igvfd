@@ -1,5 +1,14 @@
 # Changelog for organoid.json
 
+## Schema version 2
+
+* Bump schema_version default to 2.
+* Inherit selection_kits from abstract biosample profile.
+* Inherit selection_methods from abstract biosample profile.
+* Inherit selection_markers from abstract biosample profile.
+* Remove inherited enrichment_method.
+* Remove inherited enrichment_markers.
+
 * Use inherited `date_obtained` from abstract biosample profile.
 * Use inherited `collection_geographical_location` from abstract biosample profile.
 

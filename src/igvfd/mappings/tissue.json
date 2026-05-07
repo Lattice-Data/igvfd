@@ -1,6 +1,6 @@
 {
-    "hash": "d230a32e099b1871ee71e1f0777cd39c",
-    "index_name": "tissue_d230a32e",
+    "hash": "82d3d8656f6a8c9f1c8456d3d11a4ad1",
+    "index_name": "tissue_82d3d865",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -238,20 +238,6 @@
                     "enriched_cell_types": {
                         "type": "keyword"
                     },
-                    "enrichment_markers": {
-                        "properties": {
-                            "expression_level": {
-                                "type": "keyword"
-                            },
-                            "marker": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "enrichment_method": {
-                        "type": "keyword"
-                    },
                     "experimental_conditions": {
                         "type": "keyword"
                     },
@@ -395,6 +381,15 @@
                         "type": "object"
                     },
                     "schema_version": {
+                        "type": "keyword"
+                    },
+                    "selection_kits": {
+                        "type": "keyword"
+                    },
+                    "selection_markers": {
+                        "type": "keyword"
+                    },
+                    "selection_methods": {
                         "type": "keyword"
                     },
                     "sources": {

@@ -1,5 +1,14 @@
 # Tissue Changelog
 
+## Schema version 2
+
+* Bump schema_version default to 2.
+* Inherit selection_kits from abstract biosample profile.
+* Inherit selection_methods from abstract biosample profile.
+* Inherit selection_markers from abstract biosample profile.
+* Remove inherited enrichment_method.
+* Remove inherited enrichment_markers.
+
 ## Minor changes since schema version 1
 
 * Use inherited `date_obtained` from abstract biosample profile.

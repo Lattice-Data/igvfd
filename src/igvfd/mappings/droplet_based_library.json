@@ -1,6 +1,6 @@
 {
-    "hash": "8ce4a3401e632a91f693d1e070fcc0fe",
-    "index_name": "droplet_based_library_8ce4a340",
+    "hash": "88d446ecf0cfe9faac9551699320f562",
+    "index_name": "droplet_based_library_88d446ec",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -345,20 +345,6 @@
                             "enriched_cell_types": {
                                 "type": "keyword"
                             },
-                            "enrichment_markers": {
-                                "properties": {
-                                    "expression_level": {
-                                        "type": "keyword"
-                                    },
-                                    "marker": {
-                                        "type": "keyword"
-                                    }
-                                },
-                                "type": "object"
-                            },
-                            "enrichment_method": {
-                                "type": "keyword"
-                            },
                             "experimental_conditions": {
                                 "type": "keyword"
                             },
@@ -405,6 +391,15 @@
                                 "type": "keyword"
                             },
                             "schema_version": {
+                                "type": "keyword"
+                            },
+                            "selection_kits": {
+                                "type": "keyword"
+                            },
+                            "selection_markers": {
+                                "type": "keyword"
+                            },
+                            "selection_methods": {
                                 "type": "keyword"
                             },
                             "sources": {

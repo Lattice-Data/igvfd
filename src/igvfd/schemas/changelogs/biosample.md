@@ -1,5 +1,19 @@
 # Biosample Changelog
 
+## Schema version 2
+
+* Remove igvf_utils from submissionExample for selection_kits, selection_methods, and sources.
+* Adjust selection_kits enum list to use ASCII-friendly strings (EasySep without trademark symbol; Naive without diacritic).
+* Remove enrichment_method.
+* Remove enrichment_markers.
+* Add selection_kits.
+* Add selection_methods.
+* Add selection_markers.
+* Update enriched_cell_types description.
+* Update depleted_cell_types description.
+
+During upgrade from schema version 1, enrichment_markers expression_level values low and high map to CD{n}+ alongside positive and intermediate.
+
 - Remove concrete profiles `in_vitro_system` and `in_vivo_system`.
 - Add optional `diseases` (linkTo ControlledTerm) to capture diseases relevant to the measurement context.
 - Add optional `date_obtained`.
