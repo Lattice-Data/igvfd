@@ -25,9 +25,12 @@
             "$ref": "mixins.json#/shared_status"
         }
     ],
-    "dependentSchemas": {
-        "no_file_available": {
+    "allOf": [
+        {
             "if": {
+                "required": [
+                    "no_file_available"
+                ],
                 "properties": {
                     "no_file_available": {
                         "const": true
@@ -36,8 +39,17 @@
             },
             "then": {
                 "not": {
-                    "required": [
-                        "s3_uri"
+                    "anyOf": [
+                        {
+                            "required": [
+                                "s3_uri"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "crc64nvme_base64"
+                            ]
+                        }
                     ]
                 }
             },
@@ -48,7 +60,7 @@
                 ]
             }
         }
-    },
+    ],
     "properties": {
         "schema_version": {
             "default": "1"

@@ -327,6 +327,49 @@ def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, file_
 
 
 @pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('no_file_available', [None, False, True])
+def test_file_create_success_no_file_available_modes(testapp, other_lab, file_type, no_file_available):
+    config = FILE_TYPE_CONFIGS[file_type]
+    endpoint = config['endpoint']
+    file_format = config['default_format']
+    s3_path = config['s3_path']
+
+    item = {
+        'lab': other_lab['@id'],
+        'md5sum': 'a87ff679a2f3e71d9181a67b7542122c',
+        'file_format': file_format,
+        'status': 'current',
+    }
+
+    if no_file_available is True:
+        item['no_file_available'] = True
+    else:
+        item['s3_uri'] = (
+            f's3://lattice-test-data/{s3_path}/create-mode-'
+            f'{str(no_file_available).lower()}.{file_format}'
+        )
+        item['crc64nvme_base64'] = CRC64NVME_BASE64_VALID
+        if no_file_available is False:
+            item['no_file_available'] = False
+        if file_type == 'sequence_file':
+            item['read_count'] = SEQUENCE_FILE_READ_COUNT
+        if config['has_matrix_fields']:
+            item['feature_keys'] = ['Ensembl gene ID', 'gene symbol']
+            item['observation_count'] = 1000
+            item['feature_counts'] = [{'feature_type': 'gene', 'feature_count': 14000}]
+
+    res = testapp.post_json(endpoint, item, status=201)
+    posted = res.json['@graph'][0]
+    if no_file_available is True:
+        assert posted['no_file_available'] is True
+        assert 's3_uri' not in posted
+        assert 'crc64nvme_base64' not in posted
+    else:
+        assert posted['s3_uri'] == item['s3_uri']
+        assert posted['crc64nvme_base64'] == CRC64NVME_BASE64_VALID
+
+
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_requires_crc64nvme_when_file_available(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']

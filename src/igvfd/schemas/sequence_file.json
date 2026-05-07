@@ -28,10 +28,14 @@
             "$ref": "file.json#/properties"
         }
     ],
+    "allOf": [
+        {
+            "$merge": [
+                "file.json#/allOf/0"
+            ]
+        }
+    ],
     "dependentSchemas": {
-        "$merge": [
-            "file.json#/dependentSchemas"
-        ],
         "s3_uri": {
             "required": [
                 "read_count"
