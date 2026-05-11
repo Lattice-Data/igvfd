@@ -1,6 +1,6 @@
 {
-    "hash": "fa4f9398c47697947a9dc36e194005c0",
-    "index_name": "organoid_fa4f9398",
+    "hash": "29a1d9e88e658783ae6fe119bbd9e4c0",
+    "index_name": "organoid_29a1d9e8",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -195,6 +195,9 @@
                             },
                             "creation_timestamp": {
                                 "type": "date"
+                            },
+                            "cxg_donor_id": {
+                                "type": "keyword"
                             },
                             "description": {
                                 "type": "text"

@@ -41,7 +41,7 @@ def processed_matrix_file_with_aliases(testapp, other_lab):
         'file_format': 'h5ad',
         's3_uri': 's3://lattice-test-data/matrix/fixture-processed-003.h5ad',
         'crc64nvme_base64': 'AAAAAAAAAAA',
-        'aliases': ['lattice:processed-matrix-file-001'],
+        'aliases': ['lattice:pytest-processed-matrix-file-001'],
         'status': 'current',
     }
     return testapp.post_json('/processed_matrix_file', item, status=201).json['@graph'][0]

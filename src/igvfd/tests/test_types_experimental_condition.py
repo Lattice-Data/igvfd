@@ -3,7 +3,7 @@ import pytest
 
 def test_experimental_condition_summary_with_aliases(testapp, experimental_condition_with_aliases):
     res = testapp.get(experimental_condition_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:ec-hypoxia-5pct'
+    assert res.json.get('summary') == 'lattice:pytest-ec-hypoxia-5pct'
 
 
 def test_experimental_condition_summary_with_description(testapp, experimental_condition_with_description):

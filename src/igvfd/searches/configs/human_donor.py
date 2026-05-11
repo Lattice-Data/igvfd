@@ -13,6 +13,9 @@ def human_donor():
             'ethnicity.term_name': {
                 'title': 'Ethnicity'
             },
+            'cxg_donor_id': {
+                'title': 'Cell x Gene Donor Identifier'
+            },
             'lab.title': {
                 'title': 'Lab'
             },
@@ -41,6 +44,9 @@ def human_donor():
             },
             'taxa': {
                 'title': 'Taxa'
+            },
+            'cxg_donor_id': {
+                'title': 'Cell x Gene Donor Identifier'
             },
             'ethnicity': {
                 'title': 'Ethnicity'

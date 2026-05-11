@@ -1,6 +1,6 @@
 {
-    "hash": "bccb793f81d89bd3bc4506892a3f5923",
-    "index_name": "non_human_donor_bccb793f",
+    "hash": "f339f68ff3b5a47a63bab16a96e25fdd",
+    "index_name": "non_human_donor_f339f68f",
     "item_type": "non_human_donor",
     "mapping": {
         "dynamic_templates": [
@@ -158,6 +158,10 @@
                     },
                     "creation_timestamp": {
                         "type": "date"
+                    },
+                    "cxg_donor_id": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
                     },
                     "description": {
                         "copy_to": "_fuzzy",

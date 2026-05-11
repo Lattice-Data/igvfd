@@ -3,7 +3,7 @@ import pytest
 
 def test_plate_based_library_summary_with_aliases(testapp, plate_based_library_with_aliases):
     res = testapp.get(plate_based_library_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:plate-library-basic'
+    assert res.json.get('summary') == 'lattice:pytest-plate-library-basic'
 
 
 def test_plate_based_library_summary_with_description(testapp, plate_based_library_with_description):

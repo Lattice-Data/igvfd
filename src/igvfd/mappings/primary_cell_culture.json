@@ -1,6 +1,6 @@
 {
-    "hash": "9811e1770fd21f00a05d6e0dbdbee896",
-    "index_name": "primary_cell_culture_9811e177",
+    "hash": "bca38a55ccb3bc2c0cc1d599092a55f8",
+    "index_name": "primary_cell_culture_bca38a55",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -198,6 +198,9 @@
                             },
                             "creation_timestamp": {
                                 "type": "date"
+                            },
+                            "cxg_donor_id": {
+                                "type": "keyword"
                             },
                             "description": {
                                 "type": "text"

@@ -10,6 +10,9 @@ def non_human_donor():
             'taxa': {
                 'title': 'Taxa'
             },
+            'cxg_donor_id': {
+                'title': 'Cell x Gene Donor Identifier'
+            },
             'lab.title': {
                 'title': 'Lab'
             },
@@ -38,6 +41,9 @@ def non_human_donor():
             },
             'taxa': {
                 'title': 'Taxa'
+            },
+            'cxg_donor_id': {
+                'title': 'Cell x Gene Donor Identifier'
             },
             'lab': {
                 'title': 'Lab'

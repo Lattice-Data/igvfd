@@ -53,10 +53,17 @@ FILE_TYPE_CONFIGS = {
 
 @pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_summary_with_aliases(testapp, file_type, request):
-    config = FILE_TYPE_CONFIGS[file_type]
     fixture = request.getfixturevalue(f'{file_type}_with_aliases')
     res = testapp.get(fixture['@id'])
-    assert res.json.get('summary') == f'lattice:{file_type.replace("_", "-")}-001'
+    alias_summaries = {
+        'raw_matrix_file': 'lattice:pytest-raw-matrix-file-001',
+        'processed_matrix_file': 'lattice:pytest-processed-matrix-file-001',
+    }
+    expected = alias_summaries.get(
+        file_type,
+        f'lattice:{file_type.replace("_", "-")}-001',
+    )
+    assert res.json.get('summary') == expected
 
 
 @pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])

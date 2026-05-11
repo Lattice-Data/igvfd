@@ -516,6 +516,12 @@ PHASE1_PIPELINES = {
     'source': [
         skip_rows_missing_all_keys('name', 'title'),
     ],
+    'human_donor': [
+        skip_rows_missing_all_keys('lab', 'taxa', 'cxg_donor_id'),
+    ],
+    'non_human_donor': [
+        skip_rows_missing_all_keys('lab', 'taxa', 'cxg_donor_id'),
+    ],
     'tissue': [
         remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
         skip_rows_missing_all_keys(*BIOSAMPLE_CONCRETE_REQUIRED_KEYS),
@@ -582,6 +588,12 @@ PHASE2_PIPELINES = {
     ],
     'source': [
         skip_rows_missing_all_keys('name', 'title'),
+    ],
+    'human_donor': [
+        skip_rows_missing_all_keys('lab', 'taxa', 'cxg_donor_id'),
+    ],
+    'non_human_donor': [
+        skip_rows_missing_all_keys('lab', 'taxa', 'cxg_donor_id'),
     ],
     'tissue': [
         skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
