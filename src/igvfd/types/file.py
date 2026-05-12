@@ -1,5 +1,4 @@
 from snovault import (
-    CONNECTION,
     abstract_collection,
     calculated_property,
     collection,
@@ -47,6 +46,15 @@ class SequenceFile(File):
     item_type = 'sequence_file'
     schema = load_schema('igvfd:schemas/sequence_file.json')
     embedded_with_frame = File.embedded_with_frame
+    rev = {
+        'read1': ('SequenceFileSet', 'read1'),
+        'read2': ('SequenceFileSet', 'read2'),
+        'read3': ('SequenceFileSet', 'read3'),
+        'index1': ('SequenceFileSet', 'index1'),
+        'index2': ('SequenceFileSet', 'index2'),
+        'untrimmed_cram': ('SequenceFileSet', 'untrimmed_cram'),
+        'trimmed_cram': ('SequenceFileSet', 'trimmed_cram'),
+    }
 
     @calculated_property(
         schema={
@@ -76,19 +84,9 @@ class SequenceFile(File):
         }
     )
     def sequence_file_sets(self, request):
-        connection = self.registry[CONNECTION]
-        file_set_fields = (
-            'read1',
-            'read2',
-            'read3',
-            'index1',
-            'index2',
-            'untrimmed_cram',
-            'trimmed_cram',
-        )
         uuids = set()
-        for field in file_set_fields:
-            uuids.update(connection.get_rev_links(self.model, field, 'SequenceFileSet'))
+        for rev_key in self.rev:
+            uuids.update(self.get_rev_links(rev_key))
         return _reverse_link_paths(request, sorted(uuids))
 
 
@@ -131,6 +129,9 @@ class RawMatrixFile(File):
     item_type = 'raw_matrix_file'
     schema = load_schema('igvfd:schemas/raw_matrix_file.json')
     embedded_with_frame = File.embedded_with_frame
+    rev = {
+        'matrix_file_sets': ('MatrixFileSet', 'raw_matrix_files'),
+    }
 
     @calculated_property(
         schema={
@@ -161,7 +162,7 @@ class RawMatrixFile(File):
         }
     )
     def matrix_file_sets(self, request):
-        uuids = self.registry[CONNECTION].get_rev_links(self.model, 'raw_matrix_files', 'MatrixFileSet')
+        uuids = self.get_rev_links('matrix_file_sets')
         return _reverse_link_paths(request, sorted(uuids))
 
 
@@ -176,6 +177,9 @@ class ProcessedMatrixFile(File):
     item_type = 'processed_matrix_file'
     schema = load_schema('igvfd:schemas/processed_matrix_file.json')
     embedded_with_frame = File.embedded_with_frame
+    rev = {
+        'matrix_file_sets': ('MatrixFileSet', 'processed_matrix_files'),
+    }
 
     @calculated_property(
         schema={
@@ -206,5 +210,5 @@ class ProcessedMatrixFile(File):
         }
     )
     def matrix_file_sets(self, request):
-        uuids = self.registry[CONNECTION].get_rev_links(self.model, 'processed_matrix_files', 'MatrixFileSet')
+        uuids = self.get_rev_links('matrix_file_sets')
         return _reverse_link_paths(request, sorted(uuids))
