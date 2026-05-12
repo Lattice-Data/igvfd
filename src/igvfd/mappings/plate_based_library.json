@@ -1,6 +1,6 @@
 {
-    "hash": "f574bdd661bbeaec094bea65e28d23ea",
-    "index_name": "plate_based_library_f574bdd6",
+    "hash": "579dee270acc4a8bcf56a08d2b8bfa07",
+    "index_name": "plate_based_library_579dee27",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -368,6 +368,9 @@
                                 "type": "text"
                             },
                             "orientation": {
+                                "type": "keyword"
+                            },
+                            "origin_cell_types": {
                                 "type": "keyword"
                             },
                             "passage_number": {
