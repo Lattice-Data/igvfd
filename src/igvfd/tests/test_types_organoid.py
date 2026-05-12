@@ -35,6 +35,18 @@ def test_organoid_create_with_intended_cell_types(testapp, other_lab, human_dono
     assert res.json['@graph'][0]['intended_cell_types'] == [controlled_term['@id']]
 
 
+def test_organoid_create_with_origin_cell_types(testapp, other_lab, human_donor, controlled_term_brain, controlled_term):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'origin_cell_types': [controlled_term['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/organoid', item, status=201)
+    assert res.json['@graph'][0]['origin_cell_types'] == [controlled_term['@id']]
+
+
 def test_organoid_rejects_classification_field(testapp, other_lab, human_donor, controlled_term_brain):
     testapp.post_json(
         '/organoid',

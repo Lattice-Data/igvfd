@@ -37,12 +37,30 @@
     "properties": {
         "schema_version": {
             "default": "2"
+        },
+        "origin_cell_types": {
+            "title": "Origin Cell Types",
+            "description": "Cell types from which this organoid was derived or that describe its cellular origin.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Origin Cell Type",
+                "description": "An origin cell type.",
+                "comment": "See controlled_term.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ControlledTerm"
+            },
+            "submissionExample": {
+                "appscript": "[\"lattice:term-t-cell\"]"
+            }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
-        "sample_terms.term_name"
+        "sample_terms.term_name",
+        "origin_cell_types.term_name"
     ],
     "exact_searchable_fields": [
         "@type"

@@ -63,7 +63,7 @@ def test_source_name_required(testapp):
 
 def test_source_name_unique_key(testapp, source):
     item = {
-        'name': 'sigma',
+        'name': 'pytest-fixture-vendor-sigma',
         'title': 'Sigma-Aldrich Duplicate',
     }
     testapp.post_json('/source', item, status=409)
