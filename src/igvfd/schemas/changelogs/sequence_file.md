@@ -2,6 +2,8 @@
 
 ### Minor changes since schema version 3
 
+* Remove duplicate `sequence_file_sets` definition from the JSON profile; calculated property unchanged on the type class.
+
 ### Schema version 3
 
 * Bump schema version for inherited `crc64nvme_base64` requirement from file profile when file is available.

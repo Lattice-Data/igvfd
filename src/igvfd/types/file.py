@@ -152,11 +152,11 @@ class RawMatrixFile(File):
             'title': 'Matrix File Sets',
             'type': 'array',
             'description': 'Matrix file sets that include this raw matrix file.',
+            'notSubmittable': True,
             'items': {
                 'title': 'Matrix File Set',
                 'type': 'string',
                 'linkFrom': 'MatrixFileSet.raw_matrix_files',
-                'notSubmittable': True,
             },
         }
     )
@@ -197,11 +197,11 @@ class ProcessedMatrixFile(File):
             'title': 'Matrix File Sets',
             'type': 'array',
             'description': 'Matrix file sets that include this processed matrix file.',
+            'notSubmittable': True,
             'items': {
                 'title': 'Matrix File Set',
                 'type': 'string',
                 'linkFrom': 'MatrixFileSet.processed_matrix_files',
-                'notSubmittable': True,
             },
         }
     )

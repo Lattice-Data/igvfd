@@ -67,16 +67,6 @@
             "submissionExample": {
                 "appscript": "15000000"
             }
-        },
-        "sequence_file_sets": {
-            "title": "Sequence File Sets",
-            "description": "Sequence file sets that include this sequence file.",
-            "type": "array",
-            "items": {
-                "title": "Sequence File Set",
-                "type": "string"
-            },
-            "notSubmittable": true
         }
     },
     "fuzzy_searchable_fields": [
