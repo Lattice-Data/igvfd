@@ -6,7 +6,6 @@
     "type": "object",
     "required": [
         "lab",
-        "md5sum",
         "file_format"
     ],
     "identifyingProperties": [
@@ -44,7 +43,7 @@
     },
     "properties": {
         "schema_version": {
-            "default": "3"
+            "default": "4"
         },
         "file_format": {
             "title": "File Format",

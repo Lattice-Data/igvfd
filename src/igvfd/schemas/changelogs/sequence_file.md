@@ -1,5 +1,9 @@
 ## Changelog for sequence_file.json
 
+### Schema version 4
+
+* Remove md5sum.
+
 ### Minor changes since schema version 3
 
 * Remove duplicate `sequence_file_sets` definition from the JSON profile; calculated property unchanged on the type class.

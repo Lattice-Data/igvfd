@@ -1,6 +1,6 @@
 {
-    "hash": "567a08eb0bd793a9efd61533511afb85",
-    "index_name": "tabular_file_567a08eb",
+    "hash": "a9c05b8595fd180129a2e9a0217133eb",
+    "index_name": "tabular_file_a9c05b85",
     "item_type": "tabular_file",
     "mapping": {
         "dynamic_templates": [
@@ -227,9 +227,6 @@
                             }
                         },
                         "type": "object"
-                    },
-                    "md5sum": {
-                        "type": "keyword"
                     },
                     "no_file_available": {
                         "store": true,

@@ -97,22 +97,8 @@ def test_file_required_fields(testapp, other_lab, file_type):
         _file_post_body(
             file_type,
             {
-                'md5sum': '74b87337454200d4d33f80c4663dc5e5',
                 'file_format': file_format,
                 's3_uri': f's3://lattice-test-data/{s3_path}/required-lab.{file_format}',
-            },
-        ),
-        status=422
-    )
-    # Missing md5sum
-    testapp.post_json(
-        endpoint,
-        _file_post_body(
-            file_type,
-            {
-                'lab': other_lab['@id'],
-                'file_format': file_format,
-                's3_uri': f's3://lattice-test-data/{s3_path}/required-md5sum.{file_format}',
             },
         ),
         status=422
@@ -124,7 +110,6 @@ def test_file_required_fields(testapp, other_lab, file_type):
             file_type,
             {
                 'lab': other_lab['@id'],
-                'md5sum': '74b87337454200d4d33f80c4663dc5e5',
                 's3_uri': f's3://lattice-test-data/{s3_path}/required-format.{file_format}',
             },
         ),
@@ -144,48 +129,8 @@ def test_file_file_format_enum(testapp, other_lab, file_type):
             file_type,
             {
                 'lab': other_lab['@id'],
-                'md5sum': '74b87337454200d4d33f80c4663dc5e5',
                 'file_format': 'invalid_format',
                 's3_uri': f's3://lattice-test-data/{s3_path}/invalid-format.dat',
-                'status': 'current',
-            },
-        ),
-        status=422
-    )
-
-
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file'])
-def test_file_md5sum_pattern(testapp, other_lab, file_type):
-    config = FILE_TYPE_CONFIGS[file_type]
-    endpoint = config['endpoint']
-    file_format = config['default_format']
-    s3_path = config['s3_path']
-
-    # Invalid md5sum pattern (too short)
-    testapp.post_json(
-        endpoint,
-        _file_post_body(
-            file_type,
-            {
-                'lab': other_lab['@id'],
-                'md5sum': 'abc123',
-                'file_format': file_format,
-                's3_uri': f's3://lattice-test-data/{s3_path}/invalid-md5sum-short.{file_format}',
-                'status': 'current',
-            },
-        ),
-        status=422
-    )
-    # Invalid md5sum pattern (invalid characters)
-    testapp.post_json(
-        endpoint,
-        _file_post_body(
-            file_type,
-            {
-                'lab': other_lab['@id'],
-                'md5sum': 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
-                'file_format': file_format,
-                's3_uri': f's3://lattice-test-data/{s3_path}/invalid-md5sum-chars.{file_format}',
                 'status': 'current',
             },
         ),
@@ -211,7 +156,6 @@ def test_file_create_with_file_format_enum_values(testapp, other_lab, file_type,
         file_type,
         {
             'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/enum-{file_format}.dat',
             'status': 'current',
@@ -232,7 +176,6 @@ def test_file_create_success(testapp, other_lab, file_type):
         file_type,
         {
             'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/create-success.{file_format}',
             'status': 'current',
@@ -240,7 +183,6 @@ def test_file_create_success(testapp, other_lab, file_type):
     )
     res = testapp.post_json(endpoint, item, status=201)
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
-    assert res.json['@graph'][0]['md5sum'] == '74b87337454200d4d33f80c4663dc5e5'
     assert res.json['@graph'][0]['file_format'] == file_format
     assert res.json['@graph'][0]['s3_uri'] == f's3://lattice-test-data/{s3_path}/create-success.{file_format}'
 
@@ -256,7 +198,6 @@ def test_file_create_with_all_optional_fields(testapp, other_lab, file_type):
         file_type,
         {
             'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/all-optional.{file_format}',
             'file_size': 1024000,
@@ -282,7 +223,6 @@ def test_file_file_size_minimum(testapp, other_lab, file_type):
             file_type,
             {
                 'lab': other_lab['@id'],
-                'md5sum': '74b87337454200d4d33f80c4663dc5e5',
                 'file_format': file_format,
                 's3_uri': f's3://lattice-test-data/{s3_path}/invalid-filesize.{file_format}',
                 'file_size': -1,
@@ -303,7 +243,6 @@ def test_file_requires_s3_uri_when_file_available(testapp, other_lab, file_type)
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': '6512bd43d9caa6e02c990b0a82652dca',
             'file_format': file_format,
             'no_file_available': False,
             'status': 'current',
@@ -322,7 +261,6 @@ def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, file_
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': 'c20ad4d76fe97759aa27a0c99bff6710',
             'file_format': file_format,
             'no_file_available': True,
             'status': 'current',
@@ -343,7 +281,6 @@ def test_file_create_success_no_file_available_modes(testapp, other_lab, file_ty
 
     item = {
         'lab': other_lab['@id'],
-        'md5sum': 'a87ff679a2f3e71d9181a67b7542122c',
         'file_format': file_format,
         'status': 'current',
     }
@@ -385,7 +322,6 @@ def test_file_requires_crc64nvme_when_file_available(testapp, other_lab, file_ty
 
     item = {
         'lab': other_lab['@id'],
-        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
         'file_format': file_format,
         's3_uri': f's3://lattice-test-data/{s3_path}/missing-crc.{file_format}',
         'no_file_available': False,
@@ -419,7 +355,6 @@ def test_file_rejects_invalid_crc64nvme_base64(testapp, other_lab, file_type, in
 
     item = {
         'lab': other_lab['@id'],
-        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
         'file_format': file_format,
         's3_uri': f's3://lattice-test-data/{s3_path}/bad-crc.{file_format}',
         'no_file_available': False,
@@ -448,7 +383,6 @@ def test_file_rejects_s3_uri_when_no_file_available_true(testapp, other_lab, fil
             file_type,
             {
                 'lab': other_lab['@id'],
-                'md5sum': 'c51ce410c124a10e0db5e4b97fc2af39',
                 'file_format': file_format,
                 's3_uri': f's3://lattice-test-data/{s3_path}/conflict.{file_format}',
                 'no_file_available': True,
@@ -471,7 +405,6 @@ def test_file_rejects_non_s3_uri_prefix(testapp, other_lab, file_type):
             file_type,
             {
                 'lab': other_lab['@id'],
-                'md5sum': 'aab3238922bcc25a6f606eb525ffdc56',
                 'file_format': file_format,
                 's3_uri': f'https://bucket/path/file.{file_format}',
                 'status': 'current',
@@ -501,7 +434,6 @@ def test_file_rejects_invalid_s3_uri_prefix(testapp, other_lab, file_type, inval
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': 'd3d9446802a44259755d38e6d163e820',
             'file_format': file_format,
             's3_uri': invalid_uri,
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -525,7 +457,6 @@ def test_matrix_file_create_with_shared_matrix_fields(testapp, other_lab, file_t
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': '0123456789abcdef0123456789abcdef',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/create-shared-fields.{file_format}',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -551,7 +482,6 @@ def test_matrix_file_rejects_invalid_feature_key(testapp, other_lab, file_type):
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': '89abcdef0123456789abcdef01234567',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/invalid-feature-key.{file_format}',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -575,7 +505,6 @@ def test_matrix_file_rejects_invalid_feature_counts_shape(testapp, other_lab, fi
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': 'fedcba9876543210fedcba9876543210',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/invalid-feature-counts.{file_format}',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -593,7 +522,6 @@ def test_sequence_file_requires_read_count_when_file_available(testapp, other_la
         '/sequence_file',
         {
             'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': 'fastq',
             's3_uri': 's3://lattice-test-data/sequence/missing-read-count.fastq.gz',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -608,7 +536,6 @@ def test_sequence_file_rejects_negative_read_count(testapp, other_lab):
         '/sequence_file',
         {
             'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': 'fastq',
             's3_uri': 's3://lattice-test-data/sequence/negative-read-count.fastq.gz',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -624,7 +551,6 @@ def test_tabular_file_omits_read_count(testapp, other_lab):
         '/tabular_file',
         {
             'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': 'csv',
             's3_uri': 's3://lattice-test-data/tabular/no-read-count.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -640,7 +566,6 @@ def test_raw_matrix_file_omits_read_count(testapp, other_lab):
         '/raw_matrix_file',
         {
             'lab': other_lab['@id'],
-            'md5sum': '0123456789abcdef0123456789abcdef',
             'file_format': 'h5',
             's3_uri': 's3://lattice-test-data/matrix/no-read-count.h5',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -659,7 +584,6 @@ def test_tabular_file_rejects_read_count(testapp, other_lab):
         '/tabular_file',
         {
             'lab': other_lab['@id'],
-            'md5sum': '74b87337454200d4d33f80c4663dc5e5',
             'file_format': 'csv',
             's3_uri': 's3://lattice-test-data/tabular/read-count-not-allowed.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,

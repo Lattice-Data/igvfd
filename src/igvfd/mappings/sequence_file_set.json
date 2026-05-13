@@ -1,6 +1,6 @@
 {
-    "hash": "3bcb67f39705f075751191104e39eb21",
-    "index_name": "sequence_file_set_3bcb67f3",
+    "hash": "544b8e0b777c2cb90300a18bd0ea3852",
+    "index_name": "sequence_file_set_544b8e0b",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -195,9 +195,6 @@
                             "lab": {
                                 "type": "keyword"
                             },
-                            "md5sum": {
-                                "type": "keyword"
-                            },
                             "no_file_available": {
                                 "store": true,
                                 "type": "boolean"
@@ -267,9 +264,6 @@
                                 "type": "long"
                             },
                             "lab": {
-                                "type": "keyword"
-                            },
-                            "md5sum": {
                                 "type": "keyword"
                             },
                             "no_file_available": {
@@ -492,9 +486,6 @@
                             "lab": {
                                 "type": "keyword"
                             },
-                            "md5sum": {
-                                "type": "keyword"
-                            },
                             "no_file_available": {
                                 "store": true,
                                 "type": "boolean"
@@ -566,9 +557,6 @@
                             "lab": {
                                 "type": "keyword"
                             },
-                            "md5sum": {
-                                "type": "keyword"
-                            },
                             "no_file_available": {
                                 "store": true,
                                 "type": "boolean"
@@ -638,9 +626,6 @@
                                 "type": "long"
                             },
                             "lab": {
-                                "type": "keyword"
-                            },
-                            "md5sum": {
                                 "type": "keyword"
                             },
                             "no_file_available": {
@@ -800,9 +785,6 @@
                             "lab": {
                                 "type": "keyword"
                             },
-                            "md5sum": {
-                                "type": "keyword"
-                            },
                             "no_file_available": {
                                 "store": true,
                                 "type": "boolean"
@@ -872,9 +854,6 @@
                                 "type": "long"
                             },
                             "lab": {
-                                "type": "keyword"
-                            },
-                            "md5sum": {
                                 "type": "keyword"
                             },
                             "no_file_available": {

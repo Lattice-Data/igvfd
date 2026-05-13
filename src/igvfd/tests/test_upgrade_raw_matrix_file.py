@@ -42,3 +42,34 @@ def test_raw_matrix_file_upgrade_1_2_preserves_existing_crc(upgrader):
     )
     assert result['schema_version'] == '2'
     assert result['crc64nvme_base64'] == 'BBBBBBBBBBB'
+
+
+def test_raw_matrix_file_upgrade_2_3_removes_md5sum(upgrader):
+    value = {
+        'schema_version': '2',
+        'lab': '/labs/test/',
+        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+        'file_format': 'h5',
+        's3_uri': 's3://bucket/path.h5',
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+    }
+    result = upgrader.upgrade(
+        'raw_matrix_file', value, current_version='2', target_version='3'
+    )
+    assert result['schema_version'] == '3'
+    assert 'md5sum' not in result
+
+
+def test_raw_matrix_file_upgrade_2_3_handles_missing_md5sum(upgrader):
+    value = {
+        'schema_version': '2',
+        'lab': '/labs/test/',
+        'file_format': 'h5',
+        's3_uri': 's3://bucket/path.h5',
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+    }
+    result = upgrader.upgrade(
+        'raw_matrix_file', value, current_version='2', target_version='3'
+    )
+    assert result['schema_version'] == '3'
+    assert 'md5sum' not in result

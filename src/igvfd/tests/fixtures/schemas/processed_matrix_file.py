@@ -5,7 +5,6 @@ import pytest
 def processed_matrix_file(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
-        'md5sum': 'a87ff679a2f3e71d9181a67b7542122c',
         'file_format': 'h5ad',
         's3_uri': 's3://lattice-test-data/matrix/fixture-processed-001.h5ad',
         'crc64nvme_base64': 'AAAAAAAAAAA',
@@ -18,7 +17,6 @@ def processed_matrix_file(testapp, other_lab):
 def processed_matrix_file_with_description(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
-        'md5sum': 'e4da3b7fbbce2345d7772b0674a318d5',
         'file_format': 'h5ad',
         's3_uri': 's3://lattice-test-data/matrix/fixture-processed-002.h5ad',
         'crc64nvme_base64': 'AAAAAAAAAAA',
@@ -56,7 +54,6 @@ def processed_matrix_file_with_samples(testapp, other_lab, tissue):
 def processed_matrix_file_with_aliases(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
-        'md5sum': '1679091c5a880faf6fb5e6087eb1b2dc',
         'file_format': 'h5ad',
         's3_uri': 's3://lattice-test-data/matrix/fixture-processed-003.h5ad',
         'crc64nvme_base64': 'AAAAAAAAAAA',
