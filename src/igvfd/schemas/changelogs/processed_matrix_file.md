@@ -2,6 +2,9 @@
 
 ### Minor changes since schema version 2
 
+* Remove duplicate `matrix_file_sets` definition from the JSON profile.
+* Update `matrix_file_sets` calculated property schema metadata on the type class.
+
 ### Schema version 2
 
 * Bump schema version for inherited `crc64nvme_base64` requirement from file profile when file is available.
