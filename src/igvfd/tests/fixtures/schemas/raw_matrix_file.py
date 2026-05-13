@@ -41,7 +41,7 @@ def raw_matrix_file_with_aliases(testapp, other_lab):
         'file_format': 'h5',
         's3_uri': 's3://lattice-test-data/matrix/fixture-raw-003.h5',
         'crc64nvme_base64': 'AAAAAAAAAAA',
-        'aliases': ['lattice:raw-matrix-file-001'],
+        'aliases': ['lattice:pytest-raw-matrix-file-001'],
         'status': 'current',
     }
     return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]

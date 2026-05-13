@@ -43,7 +43,7 @@ def experimental_condition_with_aliases(testapp, other_lab):
         'condition': 'oxygen level',
         'value': 5,
         'units': 'percent',
-        'aliases': ['lattice:ec-hypoxia-5pct'],
+        'aliases': ['lattice:pytest-ec-hypoxia-5pct'],
         'status': 'current',
     }
     return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]

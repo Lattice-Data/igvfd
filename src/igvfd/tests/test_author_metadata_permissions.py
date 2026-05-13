@@ -37,6 +37,7 @@ def _human_donor_item(lab_id, **extra):
     item = {
         'lab': lab_id,
         'taxa': 'Homo sapiens',
+        'cxg_donor_id': 'lattice:test-cxg-human-perm',
         'status': 'current',
     }
     item.update(extra)

@@ -42,6 +42,9 @@ def organoid():
             'intended_cell_types': {
                 'title': 'Intended Cell Types'
             },
+            'origin_cell_types': {
+                'title': 'Origin Cell Types'
+            },
             'lab': {
                 'title': 'Lab'
             },

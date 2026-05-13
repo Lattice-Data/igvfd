@@ -1,6 +1,6 @@
 {
-    "hash": "74493d462d5a3f0cff975fc34d817280",
-    "index_name": "cell_line_74493d46",
+    "hash": "48c890728b91a036ca790badbf9d8379",
+    "index_name": "cell_line_48c89072",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -196,6 +196,9 @@
                             "creation_timestamp": {
                                 "type": "date"
                             },
+                            "cxg_donor_id": {
+                                "type": "keyword"
+                            },
                             "description": {
                                 "type": "text"
                             },
@@ -261,6 +264,9 @@
                             },
                             "creation_timestamp": {
                                 "type": "date"
+                            },
+                            "cxg_donor_id": {
+                                "type": "keyword"
                             },
                             "description": {
                                 "type": "text"

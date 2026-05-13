@@ -6,7 +6,8 @@
     "type": "object",
     "required": [
         "lab",
-        "taxa"
+        "taxa",
+        "cxg_donor_id"
     ],
     "identifyingProperties": [
         "uuid",
@@ -37,10 +38,21 @@
             "title": "Sex",
             "description": "Biological sex of the donor.",
             "type": "string"
+        },
+        "cxg_donor_id": {
+            "title": "Cell x Gene Donor Identifier",
+            "description": "Donor identifier required for deposition to Cell x Gene. Must not be NA, N/A, null, unknown, unspecified, or similar placeholders. Submitters should replace migration placeholders with the real Cell x Gene donor identifier when available.",
+            "comment": "Validation rejects common placeholder phrases as the entire value (case insensitive). Upgraded legacy objects may use a fixed placeholder phrase until curated.",
+            "type": "string",
+            "pattern": "^(?!(?:([Nn][Aa])|([Nn]/[Aa])|([Nn]\\.[Aa]\\.)|([Nn][Uu][Ll][Ll])|([Uu][Nn][Kk][Nn][Oo][Ww][Nn])|([Uu][Nn][Ss][Pp][Ee][Cc][Ii][Ff][Ii][Ee][Dd])|([Nn][Oo][Nn][Ee])|([Tt][Bb][Dd])|([Nn][Oo][Tt] [Aa][Pp][Pp][Ll][Ii][Cc][Aa][Bb][Ll][Ee]))$)(\\S+(?:\\s|\\S)*\\S+|\\S)$",
+            "submissionExample": {
+                "appscript": "CXG_DONOR_01AB"
+            }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
+        "cxg_donor_id",
         "description",
         "taxa"
     ],

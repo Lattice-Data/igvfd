@@ -1,6 +1,6 @@
 {
-    "hash": "86df9bea077eba28587584bc52af3cf5",
-    "index_name": "droplet_based_library_86df9bea",
+    "hash": "a825bfc42814f578db0e5d23225d767d",
+    "index_name": "droplet_based_library_a825bfc4",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -377,6 +377,9 @@
                                 "type": "text"
                             },
                             "orientation": {
+                                "type": "keyword"
+                            },
+                            "origin_cell_types": {
                                 "type": "keyword"
                             },
                             "passage_number": {

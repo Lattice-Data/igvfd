@@ -35,9 +35,12 @@ def content(testapp):
 
 def test_links_add(content, session):
     from snovault.storage import Link
+
+    source_ids = {src['uuid'] for src in sources}
     links = sorted([
         (str(link.source_rid), link.rel, str(link.target_rid))
         for link in session.query(Link).all()
+        if str(link.source_rid) in source_ids
     ])
     expected = sorted([
         (sources[0]['uuid'], u'target', targets[0]['uuid']),
@@ -49,6 +52,8 @@ def test_links_add(content, session):
 def test_links_update(content, testapp, session):
     from snovault.storage import Link
 
+    source_ids = {src['uuid'] for src in sources}
+
     url = '/testing-link-sources/' + sources[1]['uuid']
     new_item = {'name': 'B updated', 'target': targets[0]['name']}
     testapp.put_json(url, new_item, status=200)
@@ -56,6 +61,7 @@ def test_links_update(content, testapp, session):
     links = sorted([
         (str(link.source_rid), link.rel, str(link.target_rid))
         for link in session.query(Link).all()
+        if str(link.source_rid) in source_ids
     ])
     expected = sorted([
         (sources[0]['uuid'], u'target', targets[0]['uuid']),

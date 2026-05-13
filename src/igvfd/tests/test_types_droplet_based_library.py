@@ -3,7 +3,7 @@ import pytest
 
 def test_droplet_based_library_summary_with_aliases(testapp, droplet_based_library_with_aliases):
     res = testapp.get(droplet_based_library_with_aliases['@id'])
-    assert res.json.get('summary') == 'lattice:droplet-library-basic'
+    assert res.json.get('summary') == 'lattice:pytest-droplet-library-basic'
 
 
 def test_droplet_based_library_summary_with_description(testapp, droplet_based_library_with_description):

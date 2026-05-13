@@ -1,6 +1,6 @@
 {
-    "hash": "cf88ba8ea5a68bd2e4669b8c5dd59a44",
-    "index_name": "tissue_cf88ba8e",
+    "hash": "273a0bf5d426fa9d27f713a936a6898c",
+    "index_name": "tissue_273a0bf5",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -198,6 +198,9 @@
                             },
                             "creation_timestamp": {
                                 "type": "date"
+                            },
+                            "cxg_donor_id": {
+                                "type": "keyword"
                             },
                             "description": {
                                 "type": "text"

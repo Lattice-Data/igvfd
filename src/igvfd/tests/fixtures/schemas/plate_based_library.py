@@ -27,7 +27,7 @@ def plate_based_library_with_aliases(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
-        'aliases': ['lattice:plate-library-basic'],
+        'aliases': ['lattice:pytest-plate-library-basic'],
         'status': 'current',
     }
     return testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]

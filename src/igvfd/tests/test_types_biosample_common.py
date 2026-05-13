@@ -5,7 +5,7 @@ import pytest
 BIOSAMPLE_CONFIGS = {
     'tissue': {
         'endpoint': '/tissue',
-        'fixture_alias': 'lattice:tissue-brain-coronal',
+        'fixture_alias': 'lattice:pytest-tissue-brain-coronal-fixture',
         'fixture_description': 'Test tissue sample',
         'has_classification': False,
         'has_intended_cell_types': False,

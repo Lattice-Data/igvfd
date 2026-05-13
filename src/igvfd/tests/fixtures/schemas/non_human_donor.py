@@ -6,6 +6,7 @@ def non_human_donor(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
         'taxa': 'Mus musculus',
+        'cxg_donor_id': 'lattice:test-cxg-nhd-mouse-001',
         'author_metadata': {
             'submitter_field': 'non human donor fixture'
         },
@@ -19,6 +20,7 @@ def non_human_donor_with_description(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
         'taxa': 'Mus musculus',
+        'cxg_donor_id': 'lattice:test-cxg-nhd-mouse-002',
         'description': 'Test non human donor',
         'status': 'current',
     }
@@ -31,6 +33,7 @@ def non_human_donor_with_aliases(testapp, other_lab):
         'lab': other_lab['@id'],
         'taxa': 'Mus musculus',
         'aliases': ['lattice:test-non-human-donor-1', 'lattice:test-non-human-donor-alias'],
+        'cxg_donor_id': 'lattice:test-cxg-nhd-mouse-003',
         'status': 'current',
     }
     return testapp.post_json('/non_human_donor', item, status=201).json['@graph'][0]

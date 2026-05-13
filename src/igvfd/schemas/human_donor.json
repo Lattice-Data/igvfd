@@ -6,7 +6,8 @@
     "type": "object",
     "required": [
         "lab",
-        "taxa"
+        "taxa",
+        "cxg_donor_id"
     ],
     "identifyingProperties": [
         "uuid",
@@ -32,7 +33,7 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "1"
+            "default": "2"
         },
         "taxa": {
             "title": "Taxa",
@@ -64,6 +65,7 @@
     },
     "fuzzy_searchable_fields": [
         "aliases",
+        "cxg_donor_id",
         "description",
         "taxa",
         "ethnicity"

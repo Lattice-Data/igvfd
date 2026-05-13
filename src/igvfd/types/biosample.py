@@ -103,6 +103,7 @@ class Organoid(Biosample):
     schema = load_schema('igvfd:schemas/organoid.json')
     embedded_with_frame = Biosample.embedded_with_frame + [
         Path('intended_cell_types', include=['@id', 'term_name']),
+        Path('origin_cell_types', include=['@id', 'term_name']),
     ]
 
     @calculated_property(

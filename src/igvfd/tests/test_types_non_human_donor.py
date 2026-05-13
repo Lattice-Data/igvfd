@@ -18,10 +18,12 @@ def test_non_human_donor_summary_with_uuid(testapp, non_human_donor):
 
 
 def test_non_human_donor_required_fields(testapp, other_lab):
+    cxg = 'lattice:test-cxg-nhd-req-base'
     testapp.post_json(
         '/non_human_donor',
         {
             'lab': other_lab['@id'],
+            'cxg_donor_id': cxg,
         },
         status=422
     )
@@ -29,8 +31,17 @@ def test_non_human_donor_required_fields(testapp, other_lab):
         '/non_human_donor',
         {
             'taxa': 'Mus musculus',
+            'cxg_donor_id': cxg,
         },
         status=422
+    )
+    testapp.post_json(
+        '/non_human_donor',
+        {
+            'lab': other_lab['@id'],
+            'taxa': 'Mus musculus',
+        },
+        status=422,
     )
 
 
@@ -40,8 +51,32 @@ def test_non_human_donor_taxa_enum(testapp, other_lab):
         {
             'lab': other_lab['@id'],
             'taxa': 'Homo sapiens',
+            'cxg_donor_id': 'CXG-nhd-taxa-reject',
+            'status': 'current',
         },
         status=422
+    )
+
+
+@pytest.mark.parametrize(
+    'invalid_cxg',
+    [
+        '',
+        'na',
+        'Unknown',
+        'unspecified',
+    ]
+)
+def test_non_human_donor_cxg_id_pattern_invalid(testapp, other_lab, invalid_cxg):
+    testapp.post_json(
+        '/non_human_donor',
+        {
+            'lab': other_lab['@id'],
+            'taxa': 'Mus musculus',
+            'cxg_donor_id': invalid_cxg,
+            'status': 'current',
+        },
+        status=422,
     )
 
 
@@ -54,9 +89,11 @@ def test_non_human_donor_taxa_enum(testapp, other_lab):
     ]
 )
 def test_non_human_donor_create_with_enum_values(testapp, other_lab, taxa):
+    slug = taxa.replace(' ', '-').lower()
     item = {
         'lab': other_lab['@id'],
         'taxa': taxa,
+        'cxg_donor_id': f'lattice:test-cxg-nhd-{slug}',
         'status': 'current',
     }
     res = testapp.post_json('/non_human_donor', item, status=201)
@@ -68,6 +105,7 @@ def test_non_human_donor_author_metadata(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
         'taxa': 'Mus musculus',
+        'cxg_donor_id': 'CXG-nhd-author-meta',
         'author_metadata': {
             'source_colony': 'SPF',
             'age_weeks': 12,
@@ -91,10 +129,13 @@ def test_non_human_donor_author_metadata(testapp, other_lab):
     ]
 )
 def test_non_human_donor_sex_valid_gonochoristic(testapp, other_lab, taxa, sex):
+    slug = taxa.replace(' ', '-').lower()
+    cxg = 'lattice:test-cxg-gon-{0}-{1}'.format(slug, sex.replace(' ', '_'))
     item = {
         'lab': other_lab['@id'],
         'taxa': taxa,
         'sex': sex,
+        'cxg_donor_id': cxg,
         'status': 'current',
     }
     res = testapp.post_json('/non_human_donor', item, status=201)
@@ -115,10 +156,13 @@ def test_non_human_donor_sex_valid_gonochoristic(testapp, other_lab, taxa, sex):
     ]
 )
 def test_non_human_donor_sex_valid_hermaphroditic(testapp, other_lab, taxa, sex):
+    slug = taxa.replace(' ', '-').lower()
+    cxg = 'lattice:test-cxg-herm-{0}-{1}'.format(slug, sex.replace(' ', '_'))
     item = {
         'lab': other_lab['@id'],
         'taxa': taxa,
         'sex': sex,
+        'cxg_donor_id': cxg,
         'status': 'current',
     }
     res = testapp.post_json('/non_human_donor', item, status=201)
@@ -140,6 +184,7 @@ def test_non_human_donor_sex_invalid_hermaphrodite_on_gonochoristic(testapp, oth
             'lab': other_lab['@id'],
             'taxa': taxa,
             'sex': sex,
+            'cxg_donor_id': 'CXG-nhd-invalid-herm',
             'status': 'current',
         },
         status=422,
@@ -153,6 +198,7 @@ def test_non_human_donor_sex_invalid_value(testapp, other_lab):
             'lab': other_lab['@id'],
             'taxa': 'Mus musculus',
             'sex': 'not-a-real-sex',
+            'cxg_donor_id': 'CXG-nhd-invalid-sex',
             'status': 'current',
         },
         status=422,
@@ -163,6 +209,7 @@ def test_non_human_donor_sex_default(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
         'taxa': 'Mus musculus',
+        'cxg_donor_id': 'CXG-nhd-default-sex',
         'status': 'current',
     }
     res = testapp.post_json('/non_human_donor', item, status=201)

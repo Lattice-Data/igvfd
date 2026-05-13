@@ -3,7 +3,7 @@ import pytest
 
 def test_source_summary(testapp, source):
     res = testapp.get(source['@id'])
-    assert res.json.get('summary') == 'Sigma-Aldrich'
+    assert res.json.get('summary') == 'Sigma-Aldrich Fixture'
 
 
 def test_source_summary_matches_title(testapp):
@@ -19,7 +19,7 @@ def test_source_summary_matches_title(testapp):
 def test_source_with_url(testapp, source_with_url):
     res = testapp.get(source_with_url['@id'])
     assert res.json.get('url') == 'https://www.abcam.com'
-    assert res.json.get('summary') == 'Abcam'
+    assert res.json.get('summary') == 'Abcam Fixture'
 
 
 def test_source_name_pattern_valid(testapp):
@@ -63,7 +63,7 @@ def test_source_name_required(testapp):
 
 def test_source_name_unique_key(testapp, source):
     item = {
-        'name': 'sigma',
+        'name': 'pytest-fixture-vendor-sigma',
         'title': 'Sigma-Aldrich Duplicate',
     }
     testapp.post_json('/source', item, status=409)
