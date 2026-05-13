@@ -7,14 +7,22 @@
         "crc64nvme_base64": "AAAAAAAAAAA",
         "feature_keys": [
             "Ensembl gene ID",
-            "gene symbol"
+            "gene symbol",
+            "crispr guide ID"
         ],
         "observation_count": 12000,
         "feature_counts": [
             {
                 "feature_type": "gene",
                 "feature_count": 20000
+            },
+            {
+                "feature_type": "guide capture",
+                "feature_count": 5000
             }
+        ],
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
         ],
         "uuid": "c5d6e7f8-a9b0-1234-cdef-567890123456",
         "schema_version": "2",

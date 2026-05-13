@@ -34,6 +34,25 @@ def raw_matrix_file_with_description(testapp, other_lab):
 
 
 @pytest.fixture
+def raw_matrix_file_with_samples(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'md5sum': 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6',
+        'file_format': 'h5',
+        's3_uri': 's3://lattice-test-data/matrix/fixture-raw-004.h5',
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+        'feature_keys': ['crispr guide ID', 'hash oligo'],
+        'observation_count': 7000,
+        'feature_counts': [
+            {'feature_type': 'guide capture', 'feature_count': 4000},
+        ],
+        'samples': [tissue['@id']],
+        'status': 'current',
+    }
+    return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
 def raw_matrix_file_with_aliases(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],

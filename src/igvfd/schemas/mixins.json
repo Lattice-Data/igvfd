@@ -231,9 +231,9 @@
                 "title": "Feature Key",
                 "type": "string",
                 "enum": [
+                    "antibody target",
                     "Ensembl gene ID",
                     "gene symbol",
-                    "antibody target",
                     "genomic coordinates",
                     "motif ID"
                 ]
@@ -263,10 +263,11 @@
                         "title": "Feature Type",
                         "type": "string",
                         "enum": [
+                            "antibody capture",
                             "gene",
+                            "guide capture",
                             "peak",
-                            "transcription factor",
-                            "antibody capture"
+                            "transcription factor"
                         ]
                     },
                     "feature_count": {
@@ -275,6 +276,23 @@
                         "minimum": 0
                     }
                 }
+            }
+        },
+        "samples": {
+            "title": "Samples",
+            "description": "Biological sample(s) associated with this matrix file.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Sample",
+                "description": "Biological sample.",
+                "comment": "See biosample.json for available identifiers.",
+                "type": "string",
+                "linkTo": "Biosample"
+            },
+            "submissionExample": {
+                "appscript": "[\"/tissues/414e5c99-e9db-43b1-b7e9-49979fc6efb6\"]"
             }
         }
     },

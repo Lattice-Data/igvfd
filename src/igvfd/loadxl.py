@@ -553,11 +553,11 @@ PHASE1_PIPELINES = {
         skip_rows_missing_all_keys('lab'),
     ],
     'raw_matrix_file': [
-        remove_keys('derived_from'),
+        remove_keys('derived_from', 'samples'),
         skip_rows_missing_all_keys('lab'),
     ],
     'processed_matrix_file': [
-        remove_keys('derived_from'),
+        remove_keys('derived_from', 'samples'),
         skip_rows_missing_all_keys('lab'),
     ],
     'sequence_file_set': [
@@ -620,10 +620,10 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('derived_from'),
     ],
     'raw_matrix_file': [
-        skip_rows_missing_all_keys('derived_from'),
+        skip_rows_missing_all_keys('derived_from', 'samples'),
     ],
     'processed_matrix_file': [
-        skip_rows_missing_all_keys('derived_from'),
+        skip_rows_missing_all_keys('derived_from', 'samples'),
     ],
     'sequence_file_set': [
         skip_rows_missing_all_keys('lab', 'library'),

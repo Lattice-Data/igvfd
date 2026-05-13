@@ -4,6 +4,10 @@
 
 * Remove duplicate `matrix_file_sets` definition from the JSON profile.
 * Update `matrix_file_sets` calculated property schema metadata on the type class.
+* Extend `feature_keys` enum list to include "crispr guide ID".
+* Extend `feature_keys` enum list to include "hash oligo".
+* Extend `feature_counts` `feature_type` enum list to include "guide capture".
+* Add `samples`.
 
 ### Schema version 2
 
