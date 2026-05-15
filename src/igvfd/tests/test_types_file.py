@@ -663,7 +663,6 @@ def test_raw_matrix_file_accepts_new_feature_keys(testapp, other_lab):
         '/raw_matrix_file',
         {
             'lab': other_lab['@id'],
-            'md5sum': 'aa11bb22cc33dd44ee55ff6677889900',
             'file_format': 'h5',
             's3_uri': 's3://lattice-test-data/matrix/new-feature-keys.h5',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -682,7 +681,6 @@ def test_processed_matrix_file_rejects_raw_only_feature_keys(testapp, other_lab)
         '/processed_matrix_file',
         {
             'lab': other_lab['@id'],
-            'md5sum': 'bb22cc33dd44ee55ff66778899001122',
             'file_format': 'h5ad',
             's3_uri': 's3://lattice-test-data/matrix/reject-raw-feature-key.h5ad',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -706,7 +704,6 @@ def test_matrix_file_accepts_guide_capture_feature_type(testapp, other_lab, file
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': 'cc33dd44ee55ff667788990011223344',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/guide-capture.{file_format}',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -731,7 +728,6 @@ def test_matrix_file_create_with_samples(testapp, other_lab, tissue, file_type):
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': 'dd44ee55ff66778899001122334455ee',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/with-samples.{file_format}',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
@@ -754,7 +750,6 @@ def test_matrix_file_patch_samples(testapp, other_lab, tissue, file_type):
         endpoint,
         {
             'lab': other_lab['@id'],
-            'md5sum': 'ee55ff6677889900112233445566aabb',
             'file_format': file_format,
             's3_uri': f's3://lattice-test-data/{s3_path}/patch-samples.{file_format}',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
