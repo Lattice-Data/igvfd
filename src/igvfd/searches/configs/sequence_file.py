@@ -51,9 +51,6 @@ def sequence_file():
             'file_size': {
                 'title': 'File Size'
             },
-            'md5sum': {
-                'title': 'MD5sum'
-            },
             'read_count': {
                 'title': 'Read Count'
             },

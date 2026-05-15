@@ -19,3 +19,8 @@ def sequence_file_2_3(value, system):
         return
     if 'crc64nvme_base64' not in value:
         value['crc64nvme_base64'] = _CRC64NVME_BASE64_PLACEHOLDER
+
+
+@upgrade_step('sequence_file', '3', '4')
+def sequence_file_3_4(value, system):
+    value.pop('md5sum', None)

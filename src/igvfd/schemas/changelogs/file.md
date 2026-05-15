@@ -1,5 +1,9 @@
 ## Changelog for file.json
 
+### Schema version 2
+
+* Remove md5sum.
+
 ### Minor changes since schema version 1
 
 * Add `crc64nvme_base64` with Base64 format validation for AWS S3 CRC64NVME.

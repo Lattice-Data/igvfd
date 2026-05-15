@@ -1,5 +1,9 @@
 ## Changelog for processed_matrix_file.json
 
+### Schema version 3
+
+* Remove md5sum.
+
 ### Minor changes since schema version 2
 
 * Remove duplicate `matrix_file_sets` definition from the JSON profile.

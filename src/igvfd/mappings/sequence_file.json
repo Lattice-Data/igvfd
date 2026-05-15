@@ -1,6 +1,6 @@
 {
-    "hash": "b87a691b1028118f6ca1a980e692c539",
-    "index_name": "sequence_file_b87a691b",
+    "hash": "864b692a42f0a2e05be060c4dd2a76f2",
+    "index_name": "sequence_file_864b692a",
     "item_type": "sequence_file",
     "mapping": {
         "dynamic_templates": [
@@ -227,9 +227,6 @@
                             }
                         },
                         "type": "object"
-                    },
-                    "md5sum": {
-                        "type": "keyword"
                     },
                     "no_file_available": {
                         "store": true,

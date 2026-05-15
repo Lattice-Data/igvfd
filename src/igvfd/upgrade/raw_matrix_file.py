@@ -10,3 +10,8 @@ def raw_matrix_file_1_2(value, system):
         return
     if 'crc64nvme_base64' not in value:
         value['crc64nvme_base64'] = _CRC64NVME_BASE64_PLACEHOLDER
+
+
+@upgrade_step('raw_matrix_file', '2', '3')
+def raw_matrix_file_2_3(value, system):
+    value.pop('md5sum', None)

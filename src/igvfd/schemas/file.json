@@ -6,7 +6,6 @@
     "type": "object",
     "required": [
         "lab",
-        "md5sum",
         "file_format"
     ],
     "identifyingProperties": [
@@ -63,7 +62,7 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "1"
+            "default": "2"
         },
         "file_format": {
             "title": "File Format",
@@ -80,17 +79,6 @@
             "comment": "Do not submit. This value is calculated by the checkfiles script upon submission.",
             "type": "integer",
             "minimum": 0
-        },
-        "md5sum": {
-            "title": "MD5sum",
-            "description": "The md5sum of the file being transferred.",
-            "type": "string",
-            "format": "hex",
-            "maxLength": 32,
-            "pattern": "[a-f\\d]{32}|[A-F\\d]{32}",
-            "submissionExample": {
-                "appscript": "74b87337454200d4d33f80c4663dc5e5"
-            }
         },
         "s3_uri": {
             "title": "S3 URI",

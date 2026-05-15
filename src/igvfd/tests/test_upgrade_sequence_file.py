@@ -90,3 +90,36 @@ def test_sequence_file_upgrade_2_3_preserves_existing_crc(upgrader):
     )
     assert result['schema_version'] == '3'
     assert result['crc64nvme_base64'] == 'BBBBBBBBBBB'
+
+
+def test_sequence_file_upgrade_3_4_removes_md5sum(upgrader):
+    value = {
+        'schema_version': '3',
+        'lab': '/labs/test/',
+        'md5sum': '74b87337454200d4d33f80c4663dc5e5',
+        'file_format': 'fastq',
+        's3_uri': 's3://bucket/path.fastq.gz',
+        'read_count': 100,
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+    }
+    result = upgrader.upgrade(
+        'sequence_file', value, current_version='3', target_version='4'
+    )
+    assert result['schema_version'] == '4'
+    assert 'md5sum' not in result
+
+
+def test_sequence_file_upgrade_3_4_handles_missing_md5sum(upgrader):
+    value = {
+        'schema_version': '3',
+        'lab': '/labs/test/',
+        'file_format': 'fastq',
+        's3_uri': 's3://bucket/path.fastq.gz',
+        'read_count': 100,
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+    }
+    result = upgrader.upgrade(
+        'sequence_file', value, current_version='3', target_version='4'
+    )
+    assert result['schema_version'] == '4'
+    assert 'md5sum' not in result

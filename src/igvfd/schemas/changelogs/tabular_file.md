@@ -1,5 +1,9 @@
 ## Changelog for tabular_file.json
 
+### Schema version 3
+
+* Remove md5sum.
+
 ### Minor changes since schema version 2
 
 ### Schema version 2
