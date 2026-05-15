@@ -14,7 +14,14 @@
             {
                 "feature_type": "gene",
                 "feature_count": 18000
+            },
+            {
+                "feature_type": "guide capture",
+                "feature_count": 3000
             }
+        ],
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
         ],
         "uuid": "e7f8a9b0-c1d2-3456-ef01-789012345678",
         "schema_version": "2",

@@ -734,6 +734,119 @@ def test_sequence_file_reverse_links_include_cram_slots(
     assert cram_set['@id'] in sequence_file_res['sequence_file_sets']
 
 
+def test_raw_matrix_file_accepts_new_feature_keys(testapp, other_lab):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'md5sum': 'aa11bb22cc33dd44ee55ff6677889900',
+            'file_format': 'h5',
+            's3_uri': 's3://lattice-test-data/matrix/new-feature-keys.h5',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'feature_keys': ['crispr guide ID', 'hash oligo'],
+            'observation_count': 500,
+            'feature_counts': [{'feature_type': 'gene', 'feature_count': 1000}],
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert set(res.json['@graph'][0]['feature_keys']) == {'crispr guide ID', 'hash oligo'}
+
+
+def test_processed_matrix_file_rejects_raw_only_feature_keys(testapp, other_lab):
+    testapp.post_json(
+        '/processed_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'md5sum': 'bb22cc33dd44ee55ff66778899001122',
+            'file_format': 'h5ad',
+            's3_uri': 's3://lattice-test-data/matrix/reject-raw-feature-key.h5ad',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'feature_keys': ['crispr guide ID'],
+            'observation_count': 500,
+            'feature_counts': [{'feature_type': 'gene', 'feature_count': 1000}],
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+@pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_accepts_guide_capture_feature_type(testapp, other_lab, file_type):
+    config = FILE_TYPE_CONFIGS[file_type]
+    endpoint = config['endpoint']
+    file_format = config['default_format']
+    s3_path = config['s3_path']
+
+    res = testapp.post_json(
+        endpoint,
+        {
+            'lab': other_lab['@id'],
+            'md5sum': 'cc33dd44ee55ff667788990011223344',
+            'file_format': file_format,
+            's3_uri': f's3://lattice-test-data/{s3_path}/guide-capture.{file_format}',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'feature_keys': ['Ensembl gene ID'],
+            'observation_count': 800,
+            'feature_counts': [{'feature_type': 'guide capture', 'feature_count': 2000}],
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['feature_counts'][0]['feature_type'] == 'guide capture'
+
+
+@pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_create_with_samples(testapp, other_lab, tissue, file_type):
+    config = FILE_TYPE_CONFIGS[file_type]
+    endpoint = config['endpoint']
+    file_format = config['default_format']
+    s3_path = config['s3_path']
+
+    res = testapp.post_json(
+        endpoint,
+        {
+            'lab': other_lab['@id'],
+            'md5sum': 'dd44ee55ff66778899001122334455ee',
+            'file_format': file_format,
+            's3_uri': f's3://lattice-test-data/{s3_path}/with-samples.{file_format}',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'samples': [tissue['@id']],
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert tissue['@id'] in res.json['@graph'][0]['samples']
+
+
+@pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_patch_samples(testapp, other_lab, tissue, file_type):
+    config = FILE_TYPE_CONFIGS[file_type]
+    endpoint = config['endpoint']
+    file_format = config['default_format']
+    s3_path = config['s3_path']
+
+    res = testapp.post_json(
+        endpoint,
+        {
+            'lab': other_lab['@id'],
+            'md5sum': 'ee55ff6677889900112233445566aabb',
+            'file_format': file_format,
+            's3_uri': f's3://lattice-test-data/{s3_path}/patch-samples.{file_format}',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=201,
+    )
+    file_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(
+        file_id,
+        {'samples': [tissue['@id']]},
+        status=200,
+    )
+    assert tissue['@id'] in patched.json['@graph'][0]['samples']
+
+
 def test_matrix_files_reverse_links(testapp, matrix_file_set, matrix_file_set_with_processed):
     raw_file = matrix_file_set['raw_matrix_files'][0]
     processed_file = matrix_file_set_with_processed['processed_matrix_files'][0]
