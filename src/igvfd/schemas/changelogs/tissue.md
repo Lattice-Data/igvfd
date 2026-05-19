@@ -1,5 +1,9 @@
 # Tissue Changelog
 
+## Minor changes since schema version 2
+
+* Add hash_index.
+
 ## Schema version 2
 
 * Bump schema_version default to 2.

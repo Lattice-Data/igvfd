@@ -1,6 +1,6 @@
 {
-    "hash": "f45e5021d75376e82ee2a44eaeb4dd51",
-    "index_name": "droplet_based_library_f45e5021",
+    "hash": "ad46f33e1a29980baa20ed10dd748f1b",
+    "index_name": "droplet_based_library_ad46f33e",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -355,6 +355,9 @@
                                 "type": "keyword"
                             },
                             "genetic_modification": {
+                                "type": "keyword"
+                            },
+                            "hash_index": {
                                 "type": "keyword"
                             },
                             "host": {

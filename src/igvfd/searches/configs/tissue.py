@@ -45,6 +45,9 @@ def tissue():
             'donors': {
                 'title': 'Donors'
             },
+            'hash_index': {
+                'title': 'Hash Index'
+            },
             'preservation_method': {
                 'title': 'Preservation Method'
             },

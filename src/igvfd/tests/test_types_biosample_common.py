@@ -132,6 +132,59 @@ def test_biosample_dbxrefs_rejects_invalid_values(
     'biosample_type',
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
+@pytest.mark.parametrize(
+    'hash_index',
+    [
+        'P01-A1',
+        'SCALE-A1',
+        'x',
+        'group_A-1',
+        'A1_B2',
+    ],
+)
+def test_biosample_hash_index_valid(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, hash_index
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['hash_index'] = hash_index
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['hash_index'] == hash_index
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+@pytest.mark.parametrize(
+    'hash_index',
+    [
+        '',
+        ' ',
+        '  ',
+        ' P01-A1',
+        'P01-A1 ',
+        '\tP01',
+        'P01 A1',
+        'P01\nA1',
+        '-P01',
+        '_only',
+        '---',
+    ],
+)
+def test_biosample_hash_index_invalid(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, hash_index
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['hash_index'] = hash_index
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
 def test_biosample_date_obtained_accepts_valid_date(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type
 ):
