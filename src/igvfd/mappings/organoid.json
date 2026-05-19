@@ -1,6 +1,6 @@
 {
-    "hash": "db505908d5d8d31212100bf650952c68",
-    "index_name": "organoid_db505908",
+    "hash": "500c225ef0abe98e8cfb168d88120db4",
+    "index_name": "organoid_500c225e",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -245,6 +245,10 @@
                         "type": "keyword"
                     },
                     "genetic_modification": {
+                        "type": "keyword"
+                    },
+                    "hash_index": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "intended_cell_types": {

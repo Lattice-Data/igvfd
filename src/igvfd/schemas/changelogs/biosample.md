@@ -1,5 +1,9 @@
 # Biosample Changelog
 
+## Minor changes since schema version 2
+
+* Add hash_index.
+
 ## Schema version 2
 
 * Add optional `dbxrefs` for external biosample identifiers (EGA, BioSample, SRA, ENA).

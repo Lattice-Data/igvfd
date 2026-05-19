@@ -1,6 +1,6 @@
 {
-    "hash": "579dee270acc4a8bcf56a08d2b8bfa07",
-    "index_name": "plate_based_library_579dee27",
+    "hash": "473cbfbbbb7dc10c7b95f3540cf9ca4f",
+    "index_name": "plate_based_library_473cbfbb",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -346,6 +346,9 @@
                                 "type": "keyword"
                             },
                             "genetic_modification": {
+                                "type": "keyword"
+                            },
+                            "hash_index": {
                                 "type": "keyword"
                             },
                             "host": {

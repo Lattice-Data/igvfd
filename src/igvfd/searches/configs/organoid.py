@@ -39,6 +39,9 @@ def organoid():
             'donors': {
                 'title': 'Donors'
             },
+            'hash_index': {
+                'title': 'Hash Index'
+            },
             'intended_cell_types': {
                 'title': 'Intended Cell Types'
             },

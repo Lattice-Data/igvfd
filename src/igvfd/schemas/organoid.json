@@ -59,6 +59,7 @@
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
+        "hash_index",
         "sample_terms.term_name",
         "origin_cell_types.term_name"
     ],

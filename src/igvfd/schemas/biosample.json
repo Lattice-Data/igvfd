@@ -614,11 +614,21 @@
             "submissionExample": {
                 "appscript": "[\"/labs/john-doe/\", \"/sources/abcam/\"]"
             }
+        },
+        "hash_index": {
+            "title": "Hash Index",
+            "description": "Identifier for oligo-based sample hashing (hashtag demultiplexing), tagging this biosample with the hashtag oligo used during multiplexed library preparation.",
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+            "submissionExample": {
+                "appscript": "P01-A1"
+            }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
+        "hash_index",
         "sample_terms.term_name",
         "sources.title"
     ],

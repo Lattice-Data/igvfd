@@ -42,6 +42,9 @@ def cell_line():
             'donors': {
                 'title': 'Donors'
             },
+            'hash_index': {
+                'title': 'Hash Index'
+            },
             'host': {
                 'title': 'Host'
             },

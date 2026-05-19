@@ -1,6 +1,6 @@
 {
-    "hash": "48c890728b91a036ca790badbf9d8379",
-    "index_name": "cell_line_48c89072",
+    "hash": "de41da5fb2642559ab5155281d0828eb",
+    "index_name": "cell_line_de41da5f",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -245,6 +245,10 @@
                         "type": "keyword"
                     },
                     "genetic_modification": {
+                        "type": "keyword"
+                    },
+                    "hash_index": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "host": {
