@@ -136,20 +136,10 @@ def test_dual_cardinality_multiple_linked_libraries(
 
 
 def test_dual_cardinality_exactly_one_linked_library(
-    testapp,
     indexer_testapp,
-    other_lab,
-    tissue,
-    droplet_based_library,
+    droplet_based_library_dual_with_linked_library,
 ):
-    item = {
-        'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
-        'library_cardinality': 'dual',
-        'linked_libraries': [droplet_based_library['@id']],
-        'status': 'current',
-    }
-    dual_library = testapp.post_json('/droplet_based_library', item, status=201).json['@graph'][0]
+    dual_library = droplet_based_library_dual_with_linked_library
     res = indexer_testapp.get(dual_library['@id'] + '@@index-data')
     errors_list = _audit_errors(res)
     assert not any(
@@ -173,16 +163,9 @@ def test_dual_cardinality_exactly_one_linked_library(
 def test_dual_cardinality_self_linked_library(
     testapp,
     indexer_testapp,
-    other_lab,
-    tissue,
+    droplet_based_library_dual,
 ):
-    item = {
-        'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
-        'library_cardinality': 'dual',
-        'status': 'current',
-    }
-    dual_library = testapp.post_json('/droplet_based_library', item, status=201).json['@graph'][0]
+    dual_library = droplet_based_library_dual
     testapp.patch_json(
         dual_library['@id'],
         {'linked_libraries': [dual_library['@id']]},

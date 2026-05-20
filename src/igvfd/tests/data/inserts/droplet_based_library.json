@@ -56,10 +56,7 @@
             "Gene Expression",
             "ATAC"
         ],
-        "library_cardinality": "dual",
-        "linked_libraries": [
-            "d4e5f6a7-b8c9-0123-a234-567890abcdef"
-        ]
+        "library_cardinality": "dual"
     },
     {
         "lab": "teri-klein",
@@ -79,10 +76,7 @@
             "Gene Expression",
             "TCR"
         ],
-        "library_cardinality": "dual",
-        "linked_libraries": [
-            "d3e4f5a6-b7c8-9012-f123-4567890abcde"
-        ]
+        "library_cardinality": "dual"
     },
     {
         "lab": "teri-klein",
