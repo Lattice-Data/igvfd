@@ -542,6 +542,7 @@ PHASE1_PIPELINES = {
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
     'droplet_based_library': [
+        remove_keys('linked_libraries'),
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
     'sequence_file': [
@@ -611,7 +612,7 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
     'droplet_based_library': [
-        skip_rows_missing_all_keys('lab', 'samples'),
+        skip_rows_missing_all_keys('linked_libraries'),
     ],
     'sequence_file': [
         skip_rows_missing_all_keys('derived_from'),
