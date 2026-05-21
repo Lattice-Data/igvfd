@@ -43,18 +43,58 @@
         "samples": [
             "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
         ],
-        "uuid": "d3e4f5a6-b7c8-9012-f123-4567890abcde",
+        "uuid": "a7b8c9d0-e1f2-3456-a789-012345678901",
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:droplet-library-multiome"
+            "lattice:droplet-library-multiome-atac"
         ],
         "chemistry_version": "Multiome v1",
         "cell_barcode_length": 16,
         "umi_length": 10,
         "feature_types": [
-            "Gene Expression",
             "ATAC"
+        ],
+        "library_cardinality": "dual"
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
+        ],
+        "uuid": "d3e4f5a6-b7c8-9012-f123-4567890abcde",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-multiome-gex"
+        ],
+        "chemistry_version": "Multiome v1",
+        "cell_barcode_length": 16,
+        "umi_length": 10,
+        "feature_types": [
+            "Gene Expression"
+        ],
+        "library_cardinality": "dual",
+        "linked_libraries": [
+            "a7b8c9d0-e1f2-3456-a789-012345678901"
+        ]
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "2cc69a5c-eb1f-4e32-b62d-bb53eb396726"
+        ],
+        "uuid": "b8c9d0e1-f2a3-4567-b890-123456789012",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-crispr-guides"
+        ],
+        "chemistry_version": "3' v3",
+        "cell_barcode_length": 16,
+        "umi_length": 12,
+        "feature_types": [
+            "CRISPR Guide Capture"
         ],
         "library_cardinality": "dual"
     },
@@ -67,16 +107,18 @@
         "schema_version": "1",
         "status": "current",
         "aliases": [
-            "lattice:droplet-library-5prime-v2"
+            "lattice:droplet-library-crispr-gex"
         ],
-        "chemistry_version": "5' v2",
-        "cell_barcode_length": 28,
-        "umi_length": 10,
+        "chemistry_version": "3' v3",
+        "cell_barcode_length": 16,
+        "umi_length": 12,
         "feature_types": [
-            "Gene Expression",
-            "TCR"
+            "Gene Expression"
         ],
-        "library_cardinality": "dual"
+        "library_cardinality": "dual",
+        "linked_libraries": [
+            "b8c9d0e1-f2a3-4567-b890-123456789012"
+        ]
     },
     {
         "lab": "teri-klein",
