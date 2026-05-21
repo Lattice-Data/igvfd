@@ -133,10 +133,7 @@ dmypy.json
 .test-reports
 .test-results
 .vscode
-# Cursor local state; shared project rules live in .cursor/rules/
-.cursor/*
-!.cursor/rules/
-!.cursor/rules/**
+.cursor
 **/__pycache__
 **/*.pyc
 **/.mypy_cache
