@@ -1,4 +1,5 @@
 import json
+import igvfd.audit.library
 
 
 NON_AUDIT_FUNCTION_NAMES = [
@@ -7,6 +8,8 @@ NON_AUDIT_FUNCTION_NAMES = [
 ]
 
 AUDIT_MODULES_TO_PROCESS = [
+    igvfd.audit.library,
+
 ]
 
 
