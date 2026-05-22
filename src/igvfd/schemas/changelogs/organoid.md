@@ -2,6 +2,7 @@
 
 ## Minor changes since schema version 2
 
+* Add hash_index.
 * Add `origin_cell_types`.
 
 ## Schema version 2

@@ -1,6 +1,6 @@
 {
-    "hash": "bca38a55ccb3bc2c0cc1d599092a55f8",
-    "index_name": "primary_cell_culture_bca38a55",
+    "hash": "5d3d2fd503fa4fbafb8f4510c29f6c3b",
+    "index_name": "primary_cell_culture_5d3d2fd5",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -248,6 +248,10 @@
                         "type": "keyword"
                     },
                     "genetic_modification": {
+                        "type": "keyword"
+                    },
+                    "hash_index": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "lab": {
