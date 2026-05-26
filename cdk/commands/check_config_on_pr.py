@@ -3,7 +3,7 @@ def check_demo_config_on_pr():
     assert 'backend_url' not in config['environment']['demo']
     assert (
         'time-to-live-hours',
-        '60'
+        '72'
     ) in config['environment']['demo']['tags']
     assert (
         'turn-off-on-friday-night',
