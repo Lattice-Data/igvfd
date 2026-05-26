@@ -6,6 +6,7 @@ from snovault import (
 from .formatter import (
     audit_link,
     get_audit_message,
+    join_obj_paths,
     path_to_text,
     space_in_words,
 )
@@ -67,6 +68,76 @@ def audit_dual_cardinality_missing_linked_libraries(value, system):
             f'{detail} {audit_message.get("audit_description", "")}',
             level=audit_message.get('audit_level', ''),
         )
+
+
+def _samples_missing_hash_index(samples):
+    return [
+        sample for sample in samples
+        if isinstance(sample, dict) and not sample.get('hash_index')
+    ]
+
+
+def _samples_with_hash_index(samples):
+    return [
+        sample for sample in samples
+        if isinstance(sample, dict) and sample.get('hash_index')
+    ]
+
+
+def audit_plate_based_library_samples_missing_hash_index(value, system):
+    '''
+    [
+        {
+            "audit_description": "Plate-based libraries are expected to have a hash index on every linked sample.",
+            "audit_category": "missing hash index",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    missing = _samples_missing_hash_index(value.get('samples', []))
+    if not missing:
+        return
+    audit_message = get_audit_message(audit_plate_based_library_samples_missing_hash_index)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    lib_id = value['@id']
+    sample_links = join_obj_paths([sample['@id'] for sample in missing])
+    detail = (
+        f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
+        f'has linked samples missing `hash_index`: {sample_links}.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
+def audit_droplet_based_library_samples_unexpected_hash_index(value, system):
+    '''
+    [
+        {
+            "audit_description": "Droplet-based libraries are not expected to have samples with a hash index.",
+            "audit_category": "unexpected hash index",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    with_hash_index = _samples_with_hash_index(value.get('samples', []))
+    if not with_hash_index:
+        return
+    audit_message = get_audit_message(audit_droplet_based_library_samples_unexpected_hash_index)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    lib_id = value['@id']
+    sample_links = join_obj_paths([sample['@id'] for sample in with_hash_index])
+    detail = (
+        f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
+        f'has linked samples with `hash_index`: {sample_links}.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
 
 
 def _self_library_identifiers(value):
@@ -155,4 +226,28 @@ function_dispatcher_droplet_based_library_object = {
 def audit_droplet_based_library_object_dispatcher(value, system):
     for function_name in function_dispatcher_droplet_based_library_object:
         for failure in function_dispatcher_droplet_based_library_object[function_name](value, system):
+            yield failure
+
+
+function_dispatcher_plate_based_library_embedded = {
+    'audit_plate_based_library_samples_missing_hash_index': audit_plate_based_library_samples_missing_hash_index,
+}
+
+
+@audit_checker('PlateBasedLibrary', frame='embedded')
+def audit_plate_based_library_embedded_dispatcher(value, system):
+    for function_name in function_dispatcher_plate_based_library_embedded:
+        for failure in function_dispatcher_plate_based_library_embedded[function_name](value, system):
+            yield failure
+
+
+function_dispatcher_droplet_based_library_embedded = {
+    'audit_droplet_based_library_samples_unexpected_hash_index': audit_droplet_based_library_samples_unexpected_hash_index,
+}
+
+
+@audit_checker('DropletBasedLibrary', frame='embedded')
+def audit_droplet_based_library_embedded_dispatcher(value, system):
+    for function_name in function_dispatcher_droplet_based_library_embedded:
+        for failure in function_dispatcher_droplet_based_library_embedded[function_name](value, system):
             yield failure
