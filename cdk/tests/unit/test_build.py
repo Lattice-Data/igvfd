@@ -124,7 +124,7 @@ def test_synth_add_deploy_pipeline_stack_to_app():
                 },
                 {
                     'Key': 'time-to-live-hours',
-                    'Value': '60'
+                    'Value': '72'
                 },
                 {
                     'Key': 'turn-off-on-friday-night',
