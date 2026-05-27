@@ -1,6 +1,6 @@
 {
-    "hash": "c7943977b2c98a3a792cb7372a0c406b",
-    "index_name": "raw_matrix_file_c7943977",
+    "hash": "e36a8ac5cc5a1e98eb3b11c36b781b44",
+    "index_name": "raw_matrix_file_e36a8ac5",
     "item_type": "raw_matrix_file",
     "mapping": {
         "dynamic_templates": [
@@ -187,6 +187,10 @@
                         "store": true,
                         "type": "long"
                     },
+                    "genome_assembly": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
+                    },
                     "lab": {
                         "properties": {
                             "@id": {
@@ -264,6 +268,13 @@
                         "type": "keyword"
                     },
                     "schema_version": {
+                        "type": "keyword"
+                    },
+                    "software": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
+                    },
+                    "software_version": {
                         "type": "keyword"
                     },
                     "status": {

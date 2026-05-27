@@ -2,6 +2,9 @@
     {
         "lab": "teri-klein",
         "file_format": "h5",
+        "software": "Cell Ranger",
+        "software_version": "7.1.0",
+        "genome_assembly": "GRCh38",
         "s3_uri": "s3://lattice-test-data/matrix/raw-001.h5",
         "crc64nvme_base64": "AAAAAAAAAAA",
         "feature_keys": [
@@ -24,7 +27,7 @@
             "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
         ],
         "uuid": "c5d6e7f8-a9b0-1234-cdef-567890123456",
-        "schema_version": "3",
+        "schema_version": "4",
         "status": "current",
         "aliases": [
             "lattice:raw-matrix-file-001"
@@ -34,9 +37,12 @@
     {
         "lab": "teri-klein",
         "file_format": "h5",
+        "software": "Cell Ranger",
+        "software_version": "7.1.0",
+        "genome_assembly": "GRCh38",
         "no_file_available": true,
         "uuid": "d6e7f8a9-b0c1-2345-def0-678901234567",
-        "schema_version": "3",
+        "schema_version": "4",
         "status": "current",
         "aliases": [
             "lattice:raw-matrix-file-002"

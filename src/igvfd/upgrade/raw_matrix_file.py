@@ -15,3 +15,18 @@ def raw_matrix_file_1_2(value, system):
 @upgrade_step('raw_matrix_file', '2', '3')
 def raw_matrix_file_2_3(value, system):
     value.pop('md5sum', None)
+
+
+_SOFTWARE_PLACEHOLDER = 'unknown'
+_SOFTWARE_VERSION_PLACEHOLDER = 'unknown'
+_GENOME_ASSEMBLY_PLACEHOLDER = 'GRCh38'
+
+
+@upgrade_step('raw_matrix_file', '3', '4')
+def raw_matrix_file_3_4(value, system):
+    if not value.get('software'):
+        value['software'] = _SOFTWARE_PLACEHOLDER
+    if not value.get('software_version'):
+        value['software_version'] = _SOFTWARE_VERSION_PLACEHOLDER
+    if not value.get('genome_assembly'):
+        value['genome_assembly'] = _GENOME_ASSEMBLY_PLACEHOLDER

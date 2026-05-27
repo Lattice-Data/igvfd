@@ -1,5 +1,11 @@
 ## Changelog for raw_matrix_file.json
 
+### Schema version 4
+
+* Add software.
+* Add software_version.
+* Add genome_assembly.
+
 ### Schema version 3
 
 * Remove md5sum.

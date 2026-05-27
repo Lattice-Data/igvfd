@@ -7,6 +7,12 @@ from snovault.elasticsearch.searches.configs import search_config
 def raw_matrix_file():
     return {
         'facets': {
+            'software': {
+                'title': 'Software'
+            },
+            'genome_assembly': {
+                'title': 'Genome Assembly'
+            },
             'file_format': {
                 'title': 'File Format'
             },
@@ -47,6 +53,15 @@ def raw_matrix_file():
             },
             'file_format': {
                 'title': 'File Format'
+            },
+            'software': {
+                'title': 'Software'
+            },
+            'software_version': {
+                'title': 'Software Version'
+            },
+            'genome_assembly': {
+                'title': 'Genome Assembly'
             },
             'feature_keys': {
                 'title': 'Feature Keys'
