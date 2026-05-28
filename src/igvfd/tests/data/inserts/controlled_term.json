@@ -64,6 +64,9 @@
         "aliases": [
             "lattice:term-vitamin-D",
             "lattice:term-chebi-27300"
+        ],
+        "dbxrefs": [
+            "CAS:50-00-0"
         ]
     },
     {

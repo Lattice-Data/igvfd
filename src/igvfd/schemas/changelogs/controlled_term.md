@@ -1,5 +1,9 @@
 # Controlled Term Changelog
 
+### Minor changes since schema version 2
+
+* Update dbxrefs regex to accept CAS Registry Numbers.
+
 ### Schema version 2
 
 * Remove `term_name` from stored properties; `term_name` is a calculated property only.
