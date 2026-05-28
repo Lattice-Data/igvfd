@@ -1,6 +1,6 @@
 {
-    "hash": "e12bfe40949886709d5092ea089ad906",
-    "index_name": "genetic_modification_e12bfe40",
+    "hash": "91d32c8b473506060bb0125c86d452dd",
+    "index_name": "genetic_modification_91d32c8b",
     "item_type": "genetic_modification",
     "mapping": {
         "dynamic_templates": [
@@ -159,10 +159,6 @@
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
-                    "modality": {
-                        "copy_to": "_exact",
-                        "type": "keyword"
-                    },
                     "notes": {
                         "type": "text"
                     },
@@ -170,6 +166,10 @@
                         "type": "keyword"
                     },
                     "status": {
+                        "type": "keyword"
+                    },
+                    "strategy": {
+                        "copy_to": "_exact",
                         "type": "keyword"
                     },
                     "submitted_by": {

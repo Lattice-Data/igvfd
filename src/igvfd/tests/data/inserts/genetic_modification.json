@@ -1,9 +1,9 @@
 [
     {
-        "modality": "knockout",
+        "strategy": "knockout screen",
         "description": "CRISPR-Cas9 knockout of target gene.",
         "uuid": "d1e2f3a4-b5c6-7890-abcd-123456789001",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:gm-knockout-01",
@@ -11,10 +11,10 @@
         ]
     },
     {
-        "modality": "activation",
+        "strategy": "activation screen",
         "description": "CRISPRa-based gene activation.",
         "uuid": "d2e3f4a5-b6c7-8901-bcde-234567890012",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:gm-activation-01",
@@ -22,10 +22,10 @@
         ]
     },
     {
-        "modality": "interference",
+        "strategy": "interference screen",
         "description": "CRISPRi-based gene interference.",
         "uuid": "d3e4f5a6-b7c8-9012-cdef-345678901023",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:gm-interference-01",
@@ -33,13 +33,23 @@
         ]
     },
     {
-        "modality": "base editing",
+        "strategy": "base editing screen",
         "description": "Base editing for C-to-T conversion.",
         "uuid": "d4e5f6a7-b8c9-0123-defa-456789012034",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:gm-base-editing-01"
+        ]
+    },
+    {
+        "strategy": "knockout mutation",
+        "description": "Knockout mutation without a pooled screen.",
+        "uuid": "d5e6f7a8-b9c0-1234-efab-567890123045",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:gm-knockout-mutation-01"
         ]
     }
 ]

@@ -4,7 +4,7 @@ import pytest
 @pytest.fixture
 def genetic_modification(testapp):
     item = {
-        'modality': 'knockout',
+        'strategy': 'knockout screen',
         'status': 'current',
     }
     return testapp.post_json('/genetic_modification', item, status=201).json['@graph'][0]
@@ -13,7 +13,7 @@ def genetic_modification(testapp):
 @pytest.fixture
 def genetic_modification_activation(testapp):
     item = {
-        'modality': 'activation',
+        'strategy': 'activation screen',
         'status': 'current',
     }
     return testapp.post_json('/genetic_modification', item, status=201).json['@graph'][0]
@@ -22,7 +22,7 @@ def genetic_modification_activation(testapp):
 @pytest.fixture
 def genetic_modification_with_description(testapp):
     item = {
-        'modality': 'interference',
+        'strategy': 'interference screen',
         'description': 'CRISPRi-based gene silencing modification.',
         'status': 'current',
     }
@@ -32,7 +32,7 @@ def genetic_modification_with_description(testapp):
 @pytest.fixture
 def genetic_modification_with_aliases(testapp):
     item = {
-        'modality': 'cutting',
+        'strategy': 'cutting screen',
         'aliases': ['lattice:gm-test-1', 'lattice:gm-crispr-cut'],
         'status': 'current',
     }
@@ -42,7 +42,7 @@ def genetic_modification_with_aliases(testapp):
 @pytest.fixture
 def genetic_modification_base_editing(testapp):
     item = {
-        'modality': 'base editing',
+        'strategy': 'base editing screen',
         'description': 'Base editing modification for point mutations.',
         'status': 'current',
     }
@@ -52,8 +52,17 @@ def genetic_modification_base_editing(testapp):
 @pytest.fixture
 def genetic_modification_prime_editing(testapp):
     item = {
-        'modality': 'prime editing',
+        'strategy': 'prime editing screen',
         'description': 'Prime editing modification for precise genome editing.',
+        'status': 'current',
+    }
+    return testapp.post_json('/genetic_modification', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def genetic_modification_knockout_mutation(testapp):
+    item = {
+        'strategy': 'knockout mutation',
         'status': 'current',
     }
     return testapp.post_json('/genetic_modification', item, status=201).json['@graph'][0]

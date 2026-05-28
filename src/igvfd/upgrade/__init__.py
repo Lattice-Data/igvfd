@@ -12,6 +12,7 @@ def includeme(config):
     from . import biosample  # noqa: F401
     from . import controlled_term  # noqa: F401
     from . import donor  # noqa: F401
+    from . import genetic_modification  # noqa: F401
     from . import processed_matrix_file  # noqa: F401
     from . import raw_matrix_file  # noqa: F401
     from . import sequence_file  # noqa: F401
