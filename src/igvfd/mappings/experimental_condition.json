@@ -1,6 +1,6 @@
 {
-    "hash": "fced08f293655219c4db44f8bbeb6fb2",
-    "index_name": "experimental_condition_fced08f2",
+    "hash": "9e044f2aad7e6cb63b8ff5e12feecc39",
+    "index_name": "experimental_condition_9e044f2a",
     "item_type": "experimental_condition",
     "mapping": {
         "dynamic_templates": [
@@ -156,6 +156,9 @@
                         "copy_to": "_exact",
                         "type": "keyword"
                     },
+                    "controlled_term": {
+                        "type": "keyword"
+                    },
                     "creation_timestamp": {
                         "type": "date"
                     },
@@ -163,8 +166,15 @@
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
+                    "duration_units": {
+                        "type": "keyword"
+                    },
                     "lab": {
                         "type": "keyword"
+                    },
+                    "lower_bound_duration": {
+                        "store": true,
+                        "type": "float"
                     },
                     "notes": {
                         "type": "text"
@@ -190,6 +200,10 @@
                     },
                     "units": {
                         "type": "keyword"
+                    },
+                    "upper_bound_duration": {
+                        "store": true,
+                        "type": "float"
                     },
                     "uuid": {
                         "type": "keyword"

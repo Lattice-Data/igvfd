@@ -1,6 +1,6 @@
 {
-    "hash": "5d3d2fd503fa4fbafb8f4510c29f6c3b",
-    "index_name": "primary_cell_culture_5d3d2fd5",
+    "hash": "6380c6f2eae933c38626f0490bae4afd",
+    "index_name": "primary_cell_culture_6380c6f2",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -547,14 +547,28 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "amount": {
+                                "store": true,
+                                "type": "float"
+                            },
+                            "amount_units": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
                             "description": {
                                 "type": "text"
                             },
+                            "duration_units": {
+                                "type": "keyword"
+                            },
                             "lab": {
                                 "type": "keyword"
+                            },
+                            "lower_bound_duration": {
+                                "store": true,
+                                "type": "float"
                             },
                             "notes": {
                                 "type": "text"
@@ -576,6 +590,10 @@
                             },
                             "summary": {
                                 "type": "keyword"
+                            },
+                            "upper_bound_duration": {
+                                "store": true,
+                                "type": "float"
                             },
                             "uuid": {
                                 "type": "keyword"

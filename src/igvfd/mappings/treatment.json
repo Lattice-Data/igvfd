@@ -1,6 +1,6 @@
 {
-    "hash": "16c866b43f592f4a24793f8b106eb3dc",
-    "index_name": "treatment_16c866b4",
+    "hash": "f921fb3434f4b38520249b2825340465",
+    "index_name": "treatment_f921fb34",
     "item_type": "treatment",
     "mapping": {
         "dynamic_templates": [
@@ -152,6 +152,13 @@
                         "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
+                    "amount": {
+                        "store": true,
+                        "type": "float"
+                    },
+                    "amount_units": {
+                        "type": "keyword"
+                    },
                     "creation_timestamp": {
                         "type": "date"
                     },
@@ -159,8 +166,15 @@
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
+                    "duration_units": {
+                        "type": "keyword"
+                    },
                     "lab": {
                         "type": "keyword"
+                    },
+                    "lower_bound_duration": {
+                        "store": true,
+                        "type": "float"
                     },
                     "notes": {
                         "type": "text"
@@ -182,6 +196,10 @@
                     },
                     "summary": {
                         "type": "keyword"
+                    },
+                    "upper_bound_duration": {
+                        "store": true,
+                        "type": "float"
                     },
                     "uuid": {
                         "type": "keyword"

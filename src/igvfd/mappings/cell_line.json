@@ -1,6 +1,6 @@
 {
-    "hash": "de41da5fb2642559ab5155281d0828eb",
-    "index_name": "cell_line_de41da5f",
+    "hash": "477d489884cc1602fca9ec05b8116c19",
+    "index_name": "cell_line_477d4898",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -714,14 +714,28 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "amount": {
+                                "store": true,
+                                "type": "float"
+                            },
+                            "amount_units": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
                             "description": {
                                 "type": "text"
                             },
+                            "duration_units": {
+                                "type": "keyword"
+                            },
                             "lab": {
                                 "type": "keyword"
+                            },
+                            "lower_bound_duration": {
+                                "store": true,
+                                "type": "float"
                             },
                             "notes": {
                                 "type": "text"
@@ -743,6 +757,10 @@
                             },
                             "summary": {
                                 "type": "keyword"
+                            },
+                            "upper_bound_duration": {
+                                "store": true,
+                                "type": "float"
                             },
                             "uuid": {
                                 "type": "keyword"

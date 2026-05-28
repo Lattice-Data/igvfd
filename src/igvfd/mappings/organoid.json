@@ -1,6 +1,6 @@
 {
-    "hash": "500c225ef0abe98e8cfb168d88120db4",
-    "index_name": "organoid_500c225e",
+    "hash": "6b3a08be86cda2c2148da98fa0f04c34",
+    "index_name": "organoid_6b3a08be",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -655,14 +655,28 @@
                             "aliases": {
                                 "type": "keyword"
                             },
+                            "amount": {
+                                "store": true,
+                                "type": "float"
+                            },
+                            "amount_units": {
+                                "type": "keyword"
+                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
                             "description": {
                                 "type": "text"
                             },
+                            "duration_units": {
+                                "type": "keyword"
+                            },
                             "lab": {
                                 "type": "keyword"
+                            },
+                            "lower_bound_duration": {
+                                "store": true,
+                                "type": "float"
                             },
                             "notes": {
                                 "type": "text"
@@ -684,6 +698,10 @@
                             },
                             "summary": {
                                 "type": "keyword"
+                            },
+                            "upper_bound_duration": {
+                                "store": true,
+                                "type": "float"
                             },
                             "uuid": {
                                 "type": "keyword"
