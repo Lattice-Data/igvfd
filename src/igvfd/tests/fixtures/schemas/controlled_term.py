@@ -100,3 +100,13 @@ def controlled_term_chebi(testapp):
         'status': 'current',
     }
     return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def controlled_term_uniprot(testapp):
+    item = {
+        'term_id': 'uniprot:P01308',
+        'ontology_source': 'UniProt',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
