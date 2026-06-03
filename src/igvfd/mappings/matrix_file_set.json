@@ -1,6 +1,6 @@
 {
-    "hash": "24c1869e024b3100fe4971cf79c0a80f",
-    "index_name": "matrix_file_set_24c1869e",
+    "hash": "fdce9d9a46e74cc59465bc2806cda0ea",
+    "index_name": "matrix_file_set_fdce9d9a",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -263,6 +263,10 @@
                                 "store": true,
                                 "type": "long"
                             },
+                            "is_multiplexed": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "lab": {
                                 "type": "keyword"
                             },
@@ -354,6 +358,10 @@
                             },
                             "genome_assembly": {
                                 "type": "keyword"
+                            },
+                            "is_multiplexed": {
+                                "store": true,
+                                "type": "boolean"
                             },
                             "lab": {
                                 "type": "keyword"

@@ -6,6 +6,11 @@ RAW_MATRIX_FILE_METADATA = {
     'software': 'Cell Ranger',
     'software_version': '7.1.0',
     'genome_assembly': 'GRCh38',
+    'is_multiplexed': False,
+}
+
+PROCESSED_MATRIX_FILE_METADATA = {
+    'is_multiplexed': False,
 }
 
 
@@ -14,6 +19,9 @@ def _file_post_body(file_type, item):
     out = dict(item)
     if file_type == 'raw_matrix_file':
         for key, value in RAW_MATRIX_FILE_METADATA.items():
+            out.setdefault(key, value)
+    if file_type == 'processed_matrix_file':
+        for key, value in PROCESSED_MATRIX_FILE_METADATA.items():
             out.setdefault(key, value)
     if (
         file_type == 'sequence_file'
@@ -27,10 +35,13 @@ def _file_post_body(file_type, item):
 
 
 def _augment_matrix_file_post(file_type, item):
-    """Add raw_matrix_file processing metadata when building matrix file POST bodies."""
+    """Add matrix file required metadata when building matrix file POST bodies."""
     out = dict(item)
     if file_type == 'raw_matrix_file':
         out.update(RAW_MATRIX_FILE_METADATA)
+    if file_type == 'processed_matrix_file':
+        for key, value in PROCESSED_MATRIX_FILE_METADATA.items():
+            out.setdefault(key, value)
     return out
 
 
@@ -52,7 +63,7 @@ FILE_TYPE_CONFIGS = {
     },
     'raw_matrix_file': {
         'endpoint': '/raw_matrix_file',
-        'formats': ['h5'],
+        'formats': ['h5', 'h5ad'],
         'default_format': 'h5',
         's3_path': 'matrix',
         'has_matrix_fields': True,
@@ -736,6 +747,7 @@ def test_processed_matrix_file_rejects_raw_only_feature_keys(testapp, other_lab)
             'feature_keys': ['crispr guide ID'],
             'observation_count': 500,
             'feature_counts': [{'feature_type': 'gene', 'feature_count': 1000}],
+            'is_multiplexed': False,
             'status': 'current',
         },
         status=422,
@@ -837,6 +849,87 @@ def test_raw_matrix_file_required_processing_metadata(testapp, other_lab):
     )
 
 
+def test_raw_matrix_file_software_version_optional(testapp, other_lab):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'software': 'Cell Ranger',
+            'genome_assembly': 'GRCh38',
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert 'software_version' not in res.json['@graph'][0]
+
+
+def test_raw_matrix_file_h5ad_format_accepted(testapp, other_lab):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5ad',
+            'no_file_available': True,
+            'software': 'Cell Ranger',
+            'software_version': '7.1.0',
+            'genome_assembly': 'GRCh38',
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['file_format'] == 'h5ad'
+
+
+def test_processed_matrix_file_is_multiplexed_required(testapp, other_lab):
+    testapp.post_json(
+        '/processed_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5ad',
+            'no_file_available': True,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_raw_matrix_file_is_multiplexed_true(testapp, other_lab):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'software': 'Cell Ranger',
+            'software_version': '7.1.0',
+            'genome_assembly': 'GRCh38',
+            'is_multiplexed': True,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['is_multiplexed'] is True
+
+
+def test_processed_matrix_file_is_multiplexed_false(testapp, other_lab):
+    res = testapp.post_json(
+        '/processed_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5ad',
+            'no_file_available': True,
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['is_multiplexed'] is False
+
+
 def test_raw_matrix_file_rejects_genome_annotation(testapp, other_lab):
     testapp.post_json(
         '/raw_matrix_file',
@@ -852,7 +945,7 @@ def test_raw_matrix_file_rejects_genome_annotation(testapp, other_lab):
     )
 
 
-@pytest.mark.parametrize('missing_field', ['software', 'software_version', 'genome_assembly'])
+@pytest.mark.parametrize('missing_field', ['software', 'genome_assembly', 'is_multiplexed'])
 def test_raw_matrix_file_missing_required_processing_field(
     testapp, other_lab, missing_field
 ):

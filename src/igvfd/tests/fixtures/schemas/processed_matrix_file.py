@@ -8,6 +8,7 @@ def processed_matrix_file(testapp, other_lab):
         'file_format': 'h5ad',
         's3_uri': 's3://lattice-test-data/matrix/fixture-processed-001.h5ad',
         'crc64nvme_base64': 'AAAAAAAAAAA',
+        'is_multiplexed': False,
         'status': 'current',
     }
     return testapp.post_json('/processed_matrix_file', item, status=201).json['@graph'][0]
@@ -26,6 +27,7 @@ def processed_matrix_file_with_description(testapp, other_lab):
             {'feature_type': 'gene', 'feature_count': 16000},
         ],
         'description': 'Test processed matrix file',
+        'is_multiplexed': False,
         'status': 'current',
     }
     return testapp.post_json('/processed_matrix_file', item, status=201).json['@graph'][0]
@@ -45,6 +47,7 @@ def processed_matrix_file_with_samples(testapp, other_lab, tissue):
             {'feature_type': 'guide capture', 'feature_count': 3500},
         ],
         'samples': [tissue['@id']],
+        'is_multiplexed': False,
         'status': 'current',
     }
     return testapp.post_json('/processed_matrix_file', item, status=201).json['@graph'][0]
@@ -58,6 +61,7 @@ def processed_matrix_file_with_aliases(testapp, other_lab):
         's3_uri': 's3://lattice-test-data/matrix/fixture-processed-003.h5ad',
         'crc64nvme_base64': 'AAAAAAAAAAA',
         'aliases': ['lattice:pytest-processed-matrix-file-001'],
+        'is_multiplexed': False,
         'status': 'current',
     }
     return testapp.post_json('/processed_matrix_file', item, status=201).json['@graph'][0]

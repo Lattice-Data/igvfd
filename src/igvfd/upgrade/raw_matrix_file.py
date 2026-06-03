@@ -30,3 +30,11 @@ def raw_matrix_file_3_4(value, system):
         value['software_version'] = _SOFTWARE_VERSION_PLACEHOLDER
     if not value.get('genome_assembly'):
         value['genome_assembly'] = _GENOME_ASSEMBLY_PLACEHOLDER
+
+
+@upgrade_step('raw_matrix_file', '4', '5')
+def raw_matrix_file_4_5(value, system):
+    if value.get('software_version') == _SOFTWARE_VERSION_PLACEHOLDER:
+        del value['software_version']
+    if 'is_multiplexed' not in value:
+        value['is_multiplexed'] = False

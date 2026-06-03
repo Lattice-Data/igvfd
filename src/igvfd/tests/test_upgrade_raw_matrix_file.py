@@ -108,3 +108,70 @@ def test_raw_matrix_file_upgrade_3_4_preserves_existing_values(upgrader):
     assert result['software'] == 'Custom'
     assert result['software_version'] == '1.0.0'
     assert result['genome_assembly'] == 'GRCm39'
+
+
+def test_raw_matrix_file_upgrade_4_5_strips_unknown_software_version(upgrader):
+    value = {
+        'schema_version': '4',
+        'lab': '/labs/test/',
+        'file_format': 'h5',
+        'software': 'unknown',
+        'software_version': 'unknown',
+        'genome_assembly': 'GRCh38',
+    }
+    result = upgrader.upgrade(
+        'raw_matrix_file', value, current_version='4', target_version='5'
+    )
+    assert result['schema_version'] == '5'
+    assert 'software_version' not in result
+    assert result['is_multiplexed'] is False
+
+
+def test_raw_matrix_file_upgrade_4_5_preserves_real_software_version(upgrader):
+    value = {
+        'schema_version': '4',
+        'lab': '/labs/test/',
+        'file_format': 'h5',
+        'software': 'Cell Ranger',
+        'software_version': '7.1.0',
+        'genome_assembly': 'GRCh38',
+    }
+    result = upgrader.upgrade(
+        'raw_matrix_file', value, current_version='4', target_version='5'
+    )
+    assert result['schema_version'] == '5'
+    assert result['software_version'] == '7.1.0'
+    assert result['is_multiplexed'] is False
+
+
+def test_raw_matrix_file_upgrade_4_5_sets_is_multiplexed_false_when_missing(upgrader):
+    value = {
+        'schema_version': '4',
+        'lab': '/labs/test/',
+        'file_format': 'h5',
+        'software': 'Cell Ranger',
+        'software_version': '7.1.0',
+        'genome_assembly': 'GRCh38',
+    }
+    result = upgrader.upgrade(
+        'raw_matrix_file', value, current_version='4', target_version='5'
+    )
+    assert result['schema_version'] == '5'
+    assert result['is_multiplexed'] is False
+
+
+def test_raw_matrix_file_upgrade_4_5_preserves_existing_is_multiplexed(upgrader):
+    value = {
+        'schema_version': '4',
+        'lab': '/labs/test/',
+        'file_format': 'h5',
+        'software': 'Cell Ranger',
+        'software_version': '7.1.0',
+        'genome_assembly': 'GRCh38',
+        'is_multiplexed': True,
+    }
+    result = upgrader.upgrade(
+        'raw_matrix_file', value, current_version='4', target_version='5'
+    )
+    assert result['schema_version'] == '5'
+    assert result['is_multiplexed'] is True

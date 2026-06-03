@@ -5,6 +5,7 @@ _RAW_MATRIX_METADATA = {
     'software': 'Cell Ranger',
     'software_version': '7.1.0',
     'genome_assembly': 'GRCh38',
+    'is_multiplexed': False,
 }
 
 
@@ -70,5 +71,20 @@ def raw_matrix_file_with_aliases(testapp, other_lab):
         'aliases': ['lattice:pytest-raw-matrix-file-001'],
         'status': 'current',
         **_RAW_MATRIX_METADATA,
+    }
+    return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def raw_matrix_file_without_software_version(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'file_format': 'h5',
+        's3_uri': 's3://lattice-test-data/matrix/fixture-raw-005.h5',
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+        'software': 'Cell Ranger',
+        'genome_assembly': 'GRCh38',
+        'is_multiplexed': False,
+        'status': 'current',
     }
     return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]

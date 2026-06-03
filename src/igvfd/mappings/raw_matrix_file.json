@@ -1,6 +1,6 @@
 {
-    "hash": "e36a8ac5cc5a1e98eb3b11c36b781b44",
-    "index_name": "raw_matrix_file_e36a8ac5",
+    "hash": "95cae87929369d69df2654e1235f7cf3",
+    "index_name": "raw_matrix_file_95cae879",
     "item_type": "raw_matrix_file",
     "mapping": {
         "dynamic_templates": [
@@ -190,6 +190,10 @@
                     "genome_assembly": {
                         "copy_to": "_fuzzy",
                         "type": "keyword"
+                    },
+                    "is_multiplexed": {
+                        "store": true,
+                        "type": "boolean"
                     },
                     "lab": {
                         "properties": {
