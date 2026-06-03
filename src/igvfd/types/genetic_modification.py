@@ -27,11 +27,11 @@ class GeneticModification(Item):
             'notSubmittable': True,
         }
     )
-    def summary(self, modality=None, description=None, aliases=None):
+    def summary(self, strategy=None, description=None, aliases=None):
         if description:
             return description
-        if modality:
-            return modality
+        if strategy:
+            return strategy
         if aliases:
             return aliases[0]
         return self.uuid

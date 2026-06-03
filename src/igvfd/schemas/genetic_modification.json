@@ -5,7 +5,7 @@
     "description": "Genetic modifications applied to biological samples, including CRISPR-based and other genetic engineering techniques.",
     "type": "object",
     "required": [
-        "modality"
+        "strategy"
     ],
     "identifyingProperties": [
         "uuid",
@@ -22,20 +22,21 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "1"
+            "default": "2"
         },
-        "modality": {
-            "title": "Modality",
+        "strategy": {
+            "title": "Strategy",
             "description": "The purpose or intended effect of the genetic modification.",
             "type": "string",
             "enum": [
-                "activation",
-                "base editing",
-                "cutting",
-                "interference",
-                "knockout",
-                "localizing",
-                "prime editing"
+                "activation screen",
+                "base editing screen",
+                "cutting screen",
+                "interference screen",
+                "knockout screen",
+                "localizing screen",
+                "prime editing screen",
+                "knockout mutation"
             ]
         }
     },
@@ -45,7 +46,7 @@
     ],
     "exact_searchable_fields": [
         "@type",
-        "modality"
+        "strategy"
     ],
     "changelog": "/profiles/changelogs/genetic_modification.md"
 }

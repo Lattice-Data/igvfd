@@ -7,8 +7,8 @@ from snovault.elasticsearch.searches.configs import search_config
 def genetic_modification():
     return {
         'facets': {
-            'modality': {
-                'title': 'Modality'
+            'strategy': {
+                'title': 'Strategy'
             },
             'status': {
                 'title': 'Status'
@@ -33,8 +33,8 @@ def genetic_modification():
             'aliases': {
                 'title': 'Aliases'
             },
-            'modality': {
-                'title': 'Modality'
+            'strategy': {
+                'title': 'Strategy'
             },
             'description': {
                 'title': 'Description'
