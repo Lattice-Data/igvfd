@@ -1,16 +1,11 @@
 ## Changelog for raw_matrix_file.json
 
-### Schema version 5
-
-* Remove `software_version` from required properties.
-* Extend `file_format` enum list to include `h5ad`.
-* Add `is_multiplexed`.
-
 ### Schema version 4
 
-* Add software.
-* Add software_version.
-* Add genome_assembly.
+* Add `software`.
+* Add `genome_assembly`.
+* Add `is_multiplexed`.
+* Extend `file_format` enum list to include `h5ad`.
 
 ### Schema version 3
 

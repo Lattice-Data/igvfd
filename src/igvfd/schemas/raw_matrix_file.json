@@ -42,7 +42,7 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "5"
+            "default": "4"
         },
         "feature_keys": {
             "title": "Feature Keys",
