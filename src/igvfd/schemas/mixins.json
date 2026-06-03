@@ -365,5 +365,64 @@
                 "thickness"
             ]
         }
+    },
+    "duration_range": {
+        "lower_bound_duration": {
+            "title": "Lower Bound Duration",
+            "description": "Lower bound of the duration range for this treatment or condition, in the units given by duration_units. When the duration is known as a single value rather than an uncertain range, set this to the same number as upper_bound_duration. lower_bound_duration must be less than or equal to upper_bound_duration.",
+            "type": "number",
+            "minimum": 0,
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "24"
+            }
+        },
+        "upper_bound_duration": {
+            "title": "Upper Bound Duration",
+            "description": "Upper bound of the duration range for this treatment or condition, in the units given by duration_units. When the duration is known as a single value rather than an uncertain range, set this to the same number as lower_bound_duration. upper_bound_duration must be greater than or equal to lower_bound_duration.",
+            "type": "number",
+            "minimum": 0,
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "48"
+            }
+        },
+        "duration_units": {
+            "title": "Duration Units",
+            "description": "Units for lower_bound_duration and upper_bound_duration.",
+            "type": "string",
+            "enum": [
+                "minute",
+                "hour",
+                "day",
+                "week",
+                "month",
+                "year"
+            ],
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "\"hour\""
+            }
+        }
+    },
+    "duration_range_dependent_schemas": {
+        "lower_bound_duration": {
+            "required": [
+                "upper_bound_duration",
+                "duration_units"
+            ]
+        },
+        "upper_bound_duration": {
+            "required": [
+                "lower_bound_duration",
+                "duration_units"
+            ]
+        },
+        "duration_units": {
+            "required": [
+                "lower_bound_duration",
+                "upper_bound_duration"
+            ]
+        }
     }
 }

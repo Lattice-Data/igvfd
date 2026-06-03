@@ -125,6 +125,30 @@ def test_controlled_term_with_all_fields(testapp):
     assert res.json['@graph'][0]['dbxrefs'] == ['PMID:12345678', 'DOI:10.1234/test']
 
 
+def test_controlled_term_dbxrefs_cas_pattern_valid(testapp):
+    item = {
+        'term_id': 'CHEBI:99999',
+        'ontology_source': 'CHEBI',
+        'dbxrefs': ['CAS:50-00-0'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/controlled_term', item, status=201)
+    assert res.json['@graph'][0]['dbxrefs'] == ['CAS:50-00-0']
+
+
+def test_controlled_term_dbxrefs_cas_pattern_invalid(testapp):
+    testapp.post_json(
+        '/controlled_term',
+        {
+            'term_id': 'CHEBI:99998',
+            'ontology_source': 'CHEBI',
+            'dbxrefs': ['50-00-0'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
 def test_controlled_term_hancestro_create(testapp):
     item = {
         'term_id': 'HANCESTRO:0304',

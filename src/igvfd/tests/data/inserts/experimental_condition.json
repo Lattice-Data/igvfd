@@ -42,12 +42,16 @@
         "lab": "teri-klein",
         "condition": "diet",
         "text_value": "high fat diet",
+        "controlled_term": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
         "uuid": "b4efe4b2-f580-46b4-8478-99f337db3116",
         "schema_version": "1",
         "status": "current",
         "aliases": [
             "lattice:ec-high-fat-diet"
-        ]
+        ],
+        "lower_bound_duration": 7,
+        "upper_bound_duration": 14,
+        "duration_units": "day"
     },
     {
         "lab": "teri-klein",

@@ -59,14 +59,17 @@
         },
         "dbxrefs": {
             "title": "External References",
-            "description": "External identifiers for this ontology term.",
+            "description": "External identifiers for this ontology term, including CAS Registry Numbers for chemical substances.",
             "type": "array",
             "uniqueItems": true,
             "items": {
                 "title": "External Identifier",
-                "description": "An identifier from external resource.",
+                "description": "An identifier from an external resource (PMID, DOI, or CAS Registry Number prefixed with CAS:).",
                 "type": "string",
-                "pattern": "^(PMID:[0-9]+|DOI:10\\.[0-9]+/.+)$"
+                "pattern": "^(PMID:[0-9]+|DOI:10\\.[0-9]+/.+|CAS:\\d{2,7}-\\d{2}-\\d)$"
+            },
+            "submissionExample": {
+                "appscript": "[\"PMID:12345678\", \"CAS:50-00-0\"]"
             }
         }
     },

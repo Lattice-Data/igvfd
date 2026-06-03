@@ -189,3 +189,74 @@ def test_experimental_condition_create_with_all_fields(testapp, other_lab):
     assert res.json['@graph'][0]['units'] == 'celsius'
     assert res.json['@graph'][0]['description'] == 'Cold storage for sample preservation.'
     assert res.json['@graph'][0]['aliases'] == ['lattice:ec-test-complete']
+
+
+def test_experimental_condition_controlled_term_optional(
+    testapp, other_lab, controlled_term_efo
+):
+    item = {
+        'lab': other_lab['@id'],
+        'condition': 'diet',
+        'text_value': 'high fat diet',
+        'status': 'current',
+    }
+    res = testapp.post_json('/experimental_condition', item, status=201)
+    assert 'controlled_term' not in res.json['@graph'][0]
+
+
+def test_experimental_condition_create_with_controlled_term(
+    testapp, other_lab, controlled_term_efo
+):
+    item = {
+        'lab': other_lab['@id'],
+        'condition': 'diet',
+        'text_value': 'high fat diet',
+        'controlled_term': controlled_term_efo['@id'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/experimental_condition', item, status=201)
+    assert res.json['@graph'][0]['controlled_term'] == controlled_term_efo['@id']
+
+
+def test_experimental_condition_duration_dependency(testapp, other_lab):
+    testapp.post_json(
+        '/experimental_condition',
+        {
+            'lab': other_lab['@id'],
+            'condition': 'temperature',
+            'value': 37,
+            'units': 'celsius',
+            'lower_bound_duration': 12,
+            'status': 'current',
+        },
+        status=422
+    )
+    testapp.post_json(
+        '/experimental_condition',
+        {
+            'lab': other_lab['@id'],
+            'condition': 'temperature',
+            'value': 37,
+            'units': 'celsius',
+            'duration_units': 'hour',
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_experimental_condition_create_with_duration_range(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'condition': 'temperature',
+        'value': 37,
+        'units': 'celsius',
+        'lower_bound_duration': 12,
+        'upper_bound_duration': 24,
+        'duration_units': 'hour',
+        'status': 'current',
+    }
+    res = testapp.post_json('/experimental_condition', item, status=201)
+    assert res.json['@graph'][0]['lower_bound_duration'] == 12
+    assert res.json['@graph'][0]['upper_bound_duration'] == 24
+    assert res.json['@graph'][0]['duration_units'] == 'hour'

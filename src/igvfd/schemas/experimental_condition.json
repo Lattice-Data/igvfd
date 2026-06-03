@@ -22,9 +22,15 @@
         },
         {
             "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "mixins.json#/duration_range"
         }
     ],
     "dependentSchemas": {
+        "$merge": [
+            "mixins.json#/duration_range_dependent_schemas"
+        ],
         "condition": {
             "allOf": [
                 {
@@ -99,6 +105,16 @@
                 "surface tension",
                 "temperature"
             ]
+        },
+        "controlled_term": {
+            "title": "Controlled Term",
+            "description": "Ontology term describing this condition (for example a diet term).",
+            "comment": "See controlled_term.json for available identifiers.",
+            "type": "string",
+            "linkTo": "ControlledTerm",
+            "submissionExample": {
+                "appscript": "lattice:term-high-fat-diet"
+            }
         },
         "value": {
             "title": "Value",

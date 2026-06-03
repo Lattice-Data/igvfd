@@ -60,3 +60,18 @@ def experimental_condition_with_description(testapp, other_lab):
         'status': 'current',
     }
     return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def experimental_condition_with_duration(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'condition': 'temperature',
+        'value': 37,
+        'units': 'celsius',
+        'lower_bound_duration': 12,
+        'upper_bound_duration': 24,
+        'duration_units': 'hour',
+        'status': 'current',
+    }
+    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]

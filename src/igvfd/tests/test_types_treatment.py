@@ -54,3 +54,136 @@ def test_treatment_create_with_all_fields(testapp, other_lab, controlled_term_ch
     }
     res = testapp.post_json('/treatment', item, status=201)
     assert res.json['@graph'][0]['summary'] == 'lattice:treatment-full'
+
+
+def test_treatment_amount_dependency(testapp, other_lab, controlled_term_chebi):
+    testapp.post_json(
+        '/treatment',
+        {
+            'lab': other_lab['@id'],
+            'ontological_term': controlled_term_chebi['@id'],
+            'amount': 10,
+            'status': 'current',
+        },
+        status=422
+    )
+    testapp.post_json(
+        '/treatment',
+        {
+            'lab': other_lab['@id'],
+            'ontological_term': controlled_term_chebi['@id'],
+            'amount_units': 'mg/kg',
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_treatment_amount_units_enum(testapp, other_lab, controlled_term_chebi):
+    testapp.post_json(
+        '/treatment',
+        {
+            'lab': other_lab['@id'],
+            'ontological_term': controlled_term_chebi['@id'],
+            'amount': 10,
+            'amount_units': 'invalid_unit',
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+@pytest.mark.parametrize(
+    'amount_units',
+    [
+        'mg/kg',
+        'mg/mL',
+        'mM',
+        'ng/mL',
+        'nM',
+        'percent',
+        'μg/kg',
+        'μg/mL',
+        'μM',
+        'kpa',
+    ]
+)
+def test_treatment_create_with_amount_units(
+    testapp, other_lab, controlled_term_chebi, amount_units
+):
+    item = {
+        'lab': other_lab['@id'],
+        'ontological_term': controlled_term_chebi['@id'],
+        'amount': 10,
+        'amount_units': amount_units,
+        'status': 'current',
+    }
+    res = testapp.post_json('/treatment', item, status=201)
+    assert res.json['@graph'][0]['amount_units'] == amount_units
+
+
+def test_treatment_duration_dependency(testapp, other_lab, controlled_term_chebi):
+    testapp.post_json(
+        '/treatment',
+        {
+            'lab': other_lab['@id'],
+            'ontological_term': controlled_term_chebi['@id'],
+            'lower_bound_duration': 24,
+            'status': 'current',
+        },
+        status=422
+    )
+    testapp.post_json(
+        '/treatment',
+        {
+            'lab': other_lab['@id'],
+            'ontological_term': controlled_term_chebi['@id'],
+            'duration_units': 'hour',
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_treatment_create_with_duration_range(testapp, other_lab, controlled_term_chebi):
+    item = {
+        'lab': other_lab['@id'],
+        'ontological_term': controlled_term_chebi['@id'],
+        'lower_bound_duration': 24,
+        'upper_bound_duration': 48,
+        'duration_units': 'hour',
+        'status': 'current',
+    }
+    res = testapp.post_json('/treatment', item, status=201)
+    assert res.json['@graph'][0]['lower_bound_duration'] == 24
+    assert res.json['@graph'][0]['upper_bound_duration'] == 48
+    assert res.json['@graph'][0]['duration_units'] == 'hour'
+
+
+def test_treatment_duration_range_invalid_order(testapp, other_lab, controlled_term_chebi):
+    testapp.post_json(
+        '/treatment',
+        {
+            'lab': other_lab['@id'],
+            'ontological_term': controlled_term_chebi['@id'],
+            'lower_bound_duration': 48,
+            'upper_bound_duration': 24,
+            'duration_units': 'hour',
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_treatment_duration_range_equal_bounds_valid(testapp, other_lab, controlled_term_chebi):
+    item = {
+        'lab': other_lab['@id'],
+        'ontological_term': controlled_term_chebi['@id'],
+        'lower_bound_duration': 24,
+        'upper_bound_duration': 24,
+        'duration_units': 'hour',
+        'status': 'current',
+    }
+    res = testapp.post_json('/treatment', item, status=201)
+    assert res.json['@graph'][0]['lower_bound_duration'] == 24
+    assert res.json['@graph'][0]['upper_bound_duration'] == 24
