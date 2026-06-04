@@ -80,7 +80,16 @@ The description, category, and level should be listed in the docstring of the au
 
 5. After writing the audit function add it to the function dispatcher located at the bottom of the audit script for its respective type and frame.
 
-6. In the **tests** directory add audit test to an existing/new python file named ```test_audit_{metadata_object}.py```. This example shows the basic structure of setting up ```pytest.fixture``` and test that ```property_1``` is present if ```property_2``` is RNA:
+6. Register the new audit module in `src/igvfd/commands/make_audit_docstring_json.py` so that its docstrings are included in the audit documentation page (`src/igvfd/static/doc/auditdoc.json`). Add an import for the new module and append it to `AUDIT_MODULES_TO_PROCESS`:
+
+        import igvfd.audit.{metadata_object}
+
+        AUDIT_MODULES_TO_PROCESS = [
+            igvfd.audit.library,
+            igvfd.audit.{metadata_object},
+        ]
+
+7. In the **tests** directory add audit test to an existing/new python file named ```test_audit_{metadata_object}.py```. This example shows the basic structure of setting up ```pytest.fixture``` and test that ```property_1``` is present if ```property_2``` is RNA:
 
         @pytest.fixture
         def {metadata_object}_1:

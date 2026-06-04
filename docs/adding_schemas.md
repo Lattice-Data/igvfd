@@ -178,7 +178,12 @@ This document outlines all the files that need to be created or updated when add
   - Edge cases
 - **Note**: Abstract schemas do NOT need type tests (concrete subclasses handle this)
 
-### 9. **Update loadxl.py** (REQUIRED for concrete schemas only)
+### 9. **Audit Module** (REQUIRED if adding audits for this schema)
+- **File**: `src/igvfd/audit/{schema_name}.py`
+- **Purpose**: Post-submission metadata consistency and integrity checks
+- **Notes**: Follow the guide in `docs/making_audits.md`. After creating the audit module, register it in `src/igvfd/commands/make_audit_docstring_json.py` by adding an import and an entry to `AUDIT_MODULES_TO_PROCESS` so its docstrings are included in the audit documentation page.
+
+### 10. **Update loadxl.py** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/loadxl.py`
 - **Purpose**: Add schema to the loading order and pipeline phases
 - **What to Do**:
@@ -229,7 +234,7 @@ The main issue is not “rows that don’t have the link” but **rows that do h
 
 **Summary:** For optional linkTo: strip it in Phase 1 (`remove_keys`), then in Phase 2 only process rows that have it (`skip_rows_missing_all_keys(linkTo_key)`) and add it back via PUT. Put the referenced type earlier in `ORDER`.
 
-### 10. **Update conftest.py** (REQUIRED for concrete schemas only)
+### 11. **Update conftest.py** (REQUIRED for concrete schemas only)
 - **File**: `src/igvfd/tests/conftest.py`
 - **Purpose**: Register test fixtures so pytest can discover and use them
 - **What to Do**: Add `'igvfd.tests.fixtures.schemas.{schema_name}'` to the `pytest_plugins` list
@@ -257,6 +262,7 @@ The main issue is not “rows that don’t have the link” but **rows that do h
 | Test Fixtures | `src/igvfd/tests/fixtures/schemas/{name}.py` | ❌ | ✅ | ❌ | Only concrete schemas |
 | Test Inserts | `src/igvfd/tests/data/inserts/{name}.json` | ❌ | ✅ | ❌ | Only concrete schemas |
 | Type Tests | `src/igvfd/tests/test_types_{name}.py` | ❌ | ✅ | ❌ | Only concrete schemas |
+| Audit Module | `src/igvfd/audit/{name}.py` + `make_audit_docstring_json.py` | ❌ | ⚠️ (if audits needed) | ❌ | Register in `make_audit_docstring_json.py`; see `docs/making_audits.md` |
 | loadxl.py | `src/igvfd/loadxl.py` | ❌ | ✅ | ❌ | Only concrete schemas |
 | conftest.py | `src/igvfd/tests/conftest.py` | ❌ | ✅ | ❌ | Concrete schemas only |
 
@@ -353,7 +359,8 @@ If you were to add a new "sample" schema, you would create/update:
 6. ✅ `src/igvfd/tests/fixtures/schemas/sample.py` - Create fixtures
 7. ✅ `src/igvfd/tests/data/inserts/sample.json` - Add test data
 8. ✅ `src/igvfd/tests/test_types_sample.py` - Write tests
-9. ✅ `src/igvfd/loadxl.py` - Add to ORDER list
-10. ✅ `src/igvfd/tests/conftest.py` - Register fixtures in pytest_plugins
+9. ⚠️ `src/igvfd/audit/sample.py` + `src/igvfd/commands/make_audit_docstring_json.py` - Add audits if needed
+10. ✅ `src/igvfd/loadxl.py` - Add to ORDER list
+11. ✅ `src/igvfd/tests/conftest.py` - Register fixtures in pytest_plugins
 
 Then run the mapping generation script and tests.

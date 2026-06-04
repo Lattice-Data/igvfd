@@ -304,7 +304,7 @@ INFO [snovault.batchupgrade][MainThread] Run Time: 11.91 minutes
 ```
 If you do see any errors in the summary above, you must to look at log above and find out what objects failed the upgrade and why.
 
-9. If applicable you may need to update audits on the metadata. Please refer to [making_audits]
+9. If applicable you may need to update audits on the metadata. Please refer to [making_audits]. If a new audit module is created for a type, also register it in `src/igvfd/commands/make_audit_docstring_json.py` by adding an import and an entry to `AUDIT_MODULES_TO_PROCESS`.
 
 10. To document all the schema changes that occurred between increments of the `schema_version` update the object changelogs in `src/igvfd/schemas/changelogs/`.
 
