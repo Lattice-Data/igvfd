@@ -34,22 +34,11 @@ def plate_based_library_with_aliases(testapp, other_lab, tissue):
 
 
 @pytest.fixture
-def plate_based_library_with_kit_version(testapp, other_lab, tissue):
+def plate_based_library_with_feature_types(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
-        'kit_version': 'QuantumScale Single Cell RNA',
-        'status': 'current',
-    }
-    return testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]
-
-
-@pytest.fixture
-def plate_based_library_with_indexing_rounds(testapp, other_lab, tissue):
-    item = {
-        'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
-        'indexing_rounds': 3,
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     return testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]

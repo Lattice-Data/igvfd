@@ -169,11 +169,7 @@
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
-                    "indexing_rounds": {
-                        "store": true,
-                        "type": "long"
-                    },
-                    "kit_version": {
+                    "feature_types": {
                         "type": "keyword"
                     },
                     "lab": {

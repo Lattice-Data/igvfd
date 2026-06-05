@@ -7,14 +7,11 @@ from snovault.elasticsearch.searches.configs import search_config
 def plate_based_library():
     return {
         'facets': {
-            'kit_version': {
-                'title': 'Kit Version'
-            },
             'library_construction_technology.term_id': {
                 'title': 'Library Construction Technology'
             },
-            'indexing_rounds': {
-                'title': 'Indexing Rounds'
+            'feature_types': {
+                'title': 'Feature Types'
             },
             'lab.title': {
                 'title': 'Lab'
@@ -45,14 +42,11 @@ def plate_based_library():
             'samples': {
                 'title': 'Samples'
             },
-            'kit_version': {
-                'title': 'Kit Version'
-            },
             'library_construction_technology': {
                 'title': 'Library Construction Technology'
             },
-            'indexing_rounds': {
-                'title': 'Indexing Rounds'
+            'feature_types': {
+                'title': 'Feature Types'
             },
             'multiplexing_method': {
                 'title': 'Multiplexing Method'

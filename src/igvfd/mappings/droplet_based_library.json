@@ -159,13 +159,6 @@
                         "properties": {},
                         "type": "object"
                     },
-                    "cell_barcode_length": {
-                        "store": true,
-                        "type": "long"
-                    },
-                    "chemistry_version": {
-                        "type": "keyword"
-                    },
                     "creation_timestamp": {
                         "type": "date"
                     },
@@ -534,10 +527,6 @@
                     },
                     "summary": {
                         "type": "keyword"
-                    },
-                    "umi_length": {
-                        "store": true,
-                        "type": "long"
                     },
                     "uuid": {
                         "type": "keyword"
