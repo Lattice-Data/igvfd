@@ -61,6 +61,7 @@
         "description",
         "hash_index",
         "sample_terms.term_name",
+        "developmental_stages.term_name",
         "origin_cell_types.term_name"
     ],
     "exact_searchable_fields": [

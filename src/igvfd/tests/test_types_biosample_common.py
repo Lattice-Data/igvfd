@@ -267,6 +267,75 @@ def test_biosample_diseases_accepts_controlled_term_links(
     'biosample_type',
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
+def test_biosample_developmental_stages_accepts_controlled_term_links(
+    testapp, other_lab, human_donor, controlled_term_brain, controlled_term_dev_stage_human, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['developmental_stages'] = [controlled_term_dev_stage_human['@id']]
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['developmental_stages'] == [controlled_term_dev_stage_human['@id']]
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_developmental_stages_rejects_invalid_path(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['developmental_stages'] = ['/invalid/term/path/']
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_developmental_stages_rejects_empty_array(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['developmental_stages'] = []
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_developmental_stages_rejects_duplicate_values(
+    testapp, other_lab, human_donor, controlled_term_brain, controlled_term_dev_stage_human, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['developmental_stages'] = [
+        controlled_term_dev_stage_human['@id'],
+        controlled_term_dev_stage_human['@id'],
+    ]
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_developmental_stages_is_optional(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0].get('developmental_stages') is None
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
 def test_biosample_diseases_rejects_duplicate_values(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type
 ):

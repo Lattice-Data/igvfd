@@ -73,6 +73,16 @@ def controlled_term_ethnicity(testapp):
 
 
 @pytest.fixture
+def controlled_term_dev_stage_human(testapp):
+    item = {
+        'term_id': 'HsapDv:0000002',
+        'ontology_source': 'HsapDv',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
 def controlled_term_brain(testapp):
     item = {
         'term_id': 'UBERON:0000955',

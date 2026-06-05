@@ -2,6 +2,7 @@
 
 ## Minor changes since schema version 2
 
+* Add developmental_stages.
 * Add hash_index.
 * Add `origin_cell_types`.
 

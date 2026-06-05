@@ -36,6 +36,9 @@ def organoid():
             'sample_terms': {
                 'title': 'Sample Terms'
             },
+            'developmental_stages': {
+                'title': 'Developmental Stages'
+            },
             'donors': {
                 'title': 'Donors'
             },

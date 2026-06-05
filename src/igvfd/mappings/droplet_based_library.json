@@ -1,6 +1,6 @@
 {
-    "hash": "525859639d638a8a92a73f5ba43de62b",
-    "index_name": "droplet_based_library_52585963",
+    "hash": "f87469fda8bdd816edb05c39104e4c68",
+    "index_name": "droplet_based_library_f87469fd",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -334,6 +334,9 @@
                             },
                             "description": {
                                 "type": "text"
+                            },
+                            "developmental_stages": {
+                                "type": "keyword"
                             },
                             "diseases": {
                                 "type": "keyword"

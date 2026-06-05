@@ -30,6 +30,7 @@ class Biosample(Item):
         Path('submitted_by', include=['@id', 'title']),
         Path('donors', include=['@id', 'title', 'aliases']),
         Path('sample_terms', include=['@id', 'term_name']),
+        Path('developmental_stages', include=['@id', 'term_name', 'ontology_source']),
         Path('treatments', include=['@id', 'title', 'summary']),
         Path('sources', include=['@id', 'title']),
     ]

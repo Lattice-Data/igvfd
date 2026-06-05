@@ -1,6 +1,6 @@
 {
-    "hash": "8f35e73177e483a19b27b62cc5b8b13a",
-    "index_name": "plate_based_library_8f35e731",
+    "hash": "ecdaae0b674ef8155f1922549251a4be",
+    "index_name": "plate_based_library_ecdaae0b",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -328,6 +328,9 @@
                             },
                             "description": {
                                 "type": "text"
+                            },
+                            "developmental_stages": {
+                                "type": "keyword"
                             },
                             "diseases": {
                                 "type": "keyword"
