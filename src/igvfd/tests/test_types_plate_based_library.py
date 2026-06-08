@@ -36,39 +36,26 @@ def test_plate_based_library_required_fields(testapp, other_lab, tissue):
     )
 
 
-def test_plate_based_library_kit_version_enum(testapp, other_lab, tissue):
+def test_plate_based_library_feature_types_min_items(testapp, other_lab, tissue):
     testapp.post_json(
         '/plate_based_library',
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
-            'kit_version': 'invalid_kit',
+            'feature_types': [],
             'status': 'current',
         },
         status=422
     )
 
 
-def test_plate_based_library_indexing_rounds_minimum(testapp, other_lab, tissue):
+def test_plate_based_library_feature_types_enum(testapp, other_lab, tissue):
     testapp.post_json(
         '/plate_based_library',
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
-            'indexing_rounds': 1,
-            'status': 'current',
-        },
-        status=422
-    )
-
-
-def test_plate_based_library_indexing_rounds_maximum(testapp, other_lab, tissue):
-    testapp.post_json(
-        '/plate_based_library',
-        {
-            'lab': other_lab['@id'],
-            'samples': [tissue['@id']],
-            'indexing_rounds': 5,
+            'feature_types': ['ATAC'],
             'status': 'current',
         },
         status=422
@@ -76,36 +63,60 @@ def test_plate_based_library_indexing_rounds_maximum(testapp, other_lab, tissue)
 
 
 @pytest.mark.parametrize(
-    'kit_version',
+    'feature_type',
     [
-        'QuantumScale Single Cell RNA',
-        'sci-RNA-seq3'
+        'Gene Expression',
+        'Multiplexing Capture',
     ]
 )
-def test_plate_based_library_create_with_kit_version_enum_values(testapp, other_lab, tissue, kit_version):
+def test_plate_based_library_create_with_feature_type_enum_values(
+    testapp, other_lab, tissue, feature_type
+):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
-        'kit_version': kit_version,
+        'feature_types': [feature_type],
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
-    assert res.json['@graph'][0]['kit_version'] == kit_version
+    assert res.json['@graph'][0]['feature_types'] == [feature_type]
+
+
+def test_plate_based_library_multiplexing_method_requires_two_samples(testapp, other_lab, tissue):
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'multiplexing_method': ['combinatorial indexing'],
+            'status': 'current',
+        },
+        status=422
+    )
 
 
 @pytest.mark.parametrize(
-    'indexing_rounds',
-    [2, 3, 4]
+    'multiplexing_method',
+    [
+        'antibody hashing',
+        'lipid hashing',
+        'chemical hashing',
+        'probe barcoding',
+        'natural genetic variation',
+        'combinatorial indexing',
+    ]
 )
-def test_plate_based_library_create_with_indexing_rounds_values(testapp, other_lab, tissue, indexing_rounds):
+def test_plate_based_library_create_with_multiplexing_method_enum_values(
+    testapp, other_lab, tissue, tissue_with_aliases, multiplexing_method
+):
     item = {
         'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
-        'indexing_rounds': indexing_rounds,
+        'samples': [tissue['@id'], tissue_with_aliases['@id']],
+        'multiplexing_method': [multiplexing_method],
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
-    assert res.json['@graph'][0]['indexing_rounds'] == indexing_rounds
+    assert res.json['@graph'][0]['multiplexing_method'] == [multiplexing_method]
 
 
 def test_plate_based_library_create_success(testapp, other_lab, tissue):
@@ -179,21 +190,21 @@ def test_plate_based_library_cro_group_identifier_invalid(testapp, other_lab, ti
     )
 
 
-def test_plate_based_library_create_with_all_optional_fields(testapp, other_lab, tissue):
+def test_plate_based_library_create_with_all_optional_fields(
+    testapp, other_lab, tissue, tissue_with_aliases
+):
     item = {
         'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
-        'kit_version': 'QuantumScale Single Cell RNA',
-        'indexing_rounds': 3,
-        'multiplexing_method': 'cell hashing',
+        'samples': [tissue['@id'], tissue_with_aliases['@id']],
+        'feature_types': ['Gene Expression', 'Multiplexing Capture'],
+        'multiplexing_method': ['antibody hashing'],
         'description': 'Complete plate-based library',
         'CRO_group_identifier': 'PLATE-CRO-42',
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
-    assert res.json['@graph'][0]['kit_version'] == 'QuantumScale Single Cell RNA'
-    assert res.json['@graph'][0]['indexing_rounds'] == 3
-    assert res.json['@graph'][0]['multiplexing_method'] == 'cell hashing'
+    assert res.json['@graph'][0]['feature_types'] == ['Gene Expression', 'Multiplexing Capture']
+    assert res.json['@graph'][0]['multiplexing_method'] == ['antibody hashing']
     assert res.json['@graph'][0]['description'] == 'Complete plate-based library'
     assert res.json['@graph'][0]['CRO_group_identifier'] == 'PLATE-CRO-42'
 

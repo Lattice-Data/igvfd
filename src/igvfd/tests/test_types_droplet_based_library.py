@@ -47,48 +47,6 @@ def test_droplet_based_library_required_fields(testapp, other_lab, tissue):
     )
 
 
-def test_droplet_based_library_chemistry_version_enum(testapp, other_lab, tissue):
-    testapp.post_json(
-        '/droplet_based_library',
-        {
-            'lab': other_lab['@id'],
-            'samples': [tissue['@id']],
-            'library_cardinality': 'single',
-            'chemistry_version': 'invalid_chemistry',
-            'status': 'current',
-        },
-        status=422
-    )
-
-
-def test_droplet_based_library_cell_barcode_length_enum(testapp, other_lab, tissue):
-    testapp.post_json(
-        '/droplet_based_library',
-        {
-            'lab': other_lab['@id'],
-            'samples': [tissue['@id']],
-            'library_cardinality': 'single',
-            'cell_barcode_length': 20,
-            'status': 'current',
-        },
-        status=422
-    )
-
-
-def test_droplet_based_library_umi_length_enum(testapp, other_lab, tissue):
-    testapp.post_json(
-        '/droplet_based_library',
-        {
-            'lab': other_lab['@id'],
-            'samples': [tissue['@id']],
-            'library_cardinality': 'single',
-            'umi_length': 15,
-            'status': 'current',
-        },
-        status=422
-    )
-
-
 def test_droplet_based_library_feature_types_min_items(testapp, other_lab, tissue):
     testapp.post_json(
         '/droplet_based_library',
@@ -144,68 +102,85 @@ def test_droplet_based_library_library_cardinality_enum(testapp, other_lab, tiss
     )
 
 
+def test_droplet_based_library_multiplexing_method_min_items(testapp, other_lab, tissue, tissue_with_aliases):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id'], tissue_with_aliases['@id']],
+            'library_cardinality': 'single',
+            'multiplexing_method': [],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_droplet_based_library_multiplexing_method_max_items(testapp, other_lab, tissue, tissue_with_aliases):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id'], tissue_with_aliases['@id']],
+            'library_cardinality': 'single',
+            'multiplexing_method': ['antibody hashing', 'lipid hashing'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_droplet_based_library_multiplexing_method_requires_two_samples(testapp, other_lab, tissue):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
+            'multiplexing_method': ['antibody hashing'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_droplet_based_library_multiplexing_method_enum(testapp, other_lab, tissue, tissue_with_aliases):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id'], tissue_with_aliases['@id']],
+            'library_cardinality': 'single',
+            'multiplexing_method': ['invalid method'],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
 @pytest.mark.parametrize(
-    'chemistry_version',
+    'multiplexing_method',
     [
-        "3' v2",
-        "3' v3",
-        "3' v3.1",
-        "3' v4",
-        "5' v1",
-        "5' v2",
-        "5' v3",
-        'Multiome v1',
-        'Multiome v2',
-        'Flex v1',
-        'Flex v2',
-        'ATAC v1',
-        'ATAC v2',
-        'VDJ v1',
-        'VDJ v2'
+        'antibody hashing',
+        'lipid hashing',
+        'chemical hashing',
+        'probe barcoding',
+        'natural genetic variation',
+        'combinatorial indexing',
     ]
 )
-def test_droplet_based_library_create_with_chemistry_version_enum_values(testapp, other_lab, tissue, chemistry_version):
+def test_droplet_based_library_create_with_multiplexing_method_enum_values(
+    testapp, other_lab, tissue, tissue_with_aliases, multiplexing_method
+):
     item = {
         'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
+        'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'single',
-        'chemistry_version': chemistry_version,
+        'multiplexing_method': [multiplexing_method],
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
-    assert res.json['@graph'][0]['chemistry_version'] == chemistry_version
-
-
-@pytest.mark.parametrize(
-    'cell_barcode_length',
-    [16, 28]
-)
-def test_droplet_based_library_create_with_cell_barcode_length_values(testapp, other_lab, tissue, cell_barcode_length):
-    item = {
-        'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
-        'library_cardinality': 'single',
-        'cell_barcode_length': cell_barcode_length,
-        'status': 'current',
-    }
-    res = testapp.post_json('/droplet_based_library', item, status=201)
-    assert res.json['@graph'][0]['cell_barcode_length'] == cell_barcode_length
-
-
-@pytest.mark.parametrize(
-    'umi_length',
-    [10, 12]
-)
-def test_droplet_based_library_create_with_umi_length_values(testapp, other_lab, tissue, umi_length):
-    item = {
-        'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
-        'library_cardinality': 'single',
-        'umi_length': umi_length,
-        'status': 'current',
-    }
-    res = testapp.post_json('/droplet_based_library', item, status=201)
-    assert res.json['@graph'][0]['umi_length'] == umi_length
+    assert res.json['@graph'][0]['multiplexing_method'] == [multiplexing_method]
 
 
 @pytest.mark.parametrize(
@@ -345,27 +320,23 @@ def test_droplet_based_library_author_metadata(testapp, other_lab, tissue):
     assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']
 
 
-def test_droplet_based_library_create_with_all_optional_fields(testapp, other_lab, tissue):
+def test_droplet_based_library_create_with_all_optional_fields(
+    testapp, other_lab, tissue, tissue_with_aliases
+):
     item = {
         'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
+        'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'dual',
-        'chemistry_version': "3' v3",
-        'cell_barcode_length': 16,
-        'umi_length': 12,
         'feature_types': ['Gene Expression', 'ATAC'],
-        'multiplexing_method': 'cell hashing',
+        'multiplexing_method': ['antibody hashing'],
         'description': 'Complete droplet-based library',
         'CRO_group_identifier': 'CRO-GROUP-001',
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
     assert res.json['@graph'][0]['library_cardinality'] == 'dual'
-    assert res.json['@graph'][0]['chemistry_version'] == "3' v3"
-    assert res.json['@graph'][0]['cell_barcode_length'] == 16
-    assert res.json['@graph'][0]['umi_length'] == 12
     assert res.json['@graph'][0]['feature_types'] == ['Gene Expression', 'ATAC']
-    assert res.json['@graph'][0]['multiplexing_method'] == 'cell hashing'
+    assert res.json['@graph'][0]['multiplexing_method'] == ['antibody hashing']
     assert res.json['@graph'][0]['description'] == 'Complete droplet-based library'
     assert res.json['@graph'][0]['CRO_group_identifier'] == 'CRO-GROUP-001'
 
@@ -424,21 +395,27 @@ def test_droplet_based_library_create_with_linked_libraries(testapp, other_lab, 
     assert res.json['@graph'][0]['linked_libraries'] == [droplet_based_library['@id']]
 
 
-def test_droplet_based_library_create_with_multiple_linked_libraries(testapp, other_lab, tissue, droplet_based_library, droplet_based_library_with_chemistry_version):
+def test_droplet_based_library_create_with_multiple_linked_libraries(
+    testapp,
+    other_lab,
+    tissue,
+    droplet_based_library,
+    droplet_based_library_with_feature_types,
+):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
         'linked_libraries': [
             droplet_based_library['@id'],
-            droplet_based_library_with_chemistry_version['@id']
+            droplet_based_library_with_feature_types['@id'],
         ],
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
     assert len(res.json['@graph'][0]['linked_libraries']) == 2
     assert droplet_based_library['@id'] in res.json['@graph'][0]['linked_libraries']
-    assert droplet_based_library_with_chemistry_version['@id'] in res.json['@graph'][0]['linked_libraries']
+    assert droplet_based_library_with_feature_types['@id'] in res.json['@graph'][0]['linked_libraries']
 
 
 def test_droplet_based_library_linked_libraries_requires_dual_cardinality(testapp, other_lab, tissue, droplet_based_library):

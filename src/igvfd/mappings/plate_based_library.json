@@ -1,6 +1,6 @@
 {
-    "hash": "a5d4f2b61417747aabe5a9f12d684099",
-    "index_name": "plate_based_library_a5d4f2b6",
+    "hash": "8f35e73177e483a19b27b62cc5b8b13a",
+    "index_name": "plate_based_library_8f35e731",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -169,11 +169,7 @@
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
-                    "indexing_rounds": {
-                        "store": true,
-                        "type": "long"
-                    },
-                    "kit_version": {
+                    "feature_types": {
                         "type": "keyword"
                     },
                     "lab": {

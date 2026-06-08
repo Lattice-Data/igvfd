@@ -166,7 +166,7 @@ def test_dual_cardinality_multiple_linked_libraries(
     other_lab,
     tissue,
     droplet_based_library,
-    droplet_based_library_with_chemistry_version,
+    droplet_based_library_with_feature_types,
 ):
     item = {
         'lab': other_lab['@id'],
@@ -174,7 +174,7 @@ def test_dual_cardinality_multiple_linked_libraries(
         'library_cardinality': 'dual',
         'linked_libraries': [
             droplet_based_library['@id'],
-            droplet_based_library_with_chemistry_version['@id'],
+            droplet_based_library_with_feature_types['@id'],
         ],
         'status': 'current',
     }

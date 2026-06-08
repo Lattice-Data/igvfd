@@ -1,6 +1,6 @@
 {
-    "hash": "544b8e0b777c2cb90300a18bd0ea3852",
-    "index_name": "sequence_file_set_544b8e0b",
+    "hash": "3e5e8721a5e7be7675450c7e81111be3",
+    "index_name": "sequence_file_set_3e5e8721",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -378,13 +378,6 @@
                                 "properties": {},
                                 "type": "object"
                             },
-                            "cell_barcode_length": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "chemistry_version": {
-                                "type": "keyword"
-                            },
                             "creation_timestamp": {
                                 "type": "date"
                             },
@@ -395,13 +388,6 @@
                                 "type": "text"
                             },
                             "feature_types": {
-                                "type": "keyword"
-                            },
-                            "indexing_rounds": {
-                                "store": true,
-                                "type": "long"
-                            },
-                            "kit_version": {
                                 "type": "keyword"
                             },
                             "lab": {
@@ -439,10 +425,6 @@
                             },
                             "summary": {
                                 "type": "keyword"
-                            },
-                            "umi_length": {
-                                "store": true,
-                                "type": "long"
                             },
                             "uuid": {
                                 "type": "keyword"

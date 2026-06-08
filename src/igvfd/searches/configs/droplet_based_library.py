@@ -7,17 +7,8 @@ from snovault.elasticsearch.searches.configs import search_config
 def droplet_based_library():
     return {
         'facets': {
-            'chemistry_version': {
-                'title': 'Chemistry Version'
-            },
             'library_construction_technology.term_id': {
                 'title': 'Library Construction Technology'
-            },
-            'cell_barcode_length': {
-                'title': 'Cell Barcode Length'
-            },
-            'umi_length': {
-                'title': 'UMI Length'
             },
             'feature_types': {
                 'title': 'Feature Types'
@@ -54,17 +45,8 @@ def droplet_based_library():
             'samples': {
                 'title': 'Samples'
             },
-            'chemistry_version': {
-                'title': 'Chemistry Version'
-            },
             'library_construction_technology': {
                 'title': 'Library Construction Technology'
-            },
-            'cell_barcode_length': {
-                'title': 'Cell Barcode Length'
-            },
-            'umi_length': {
-                'title': 'UMI Length'
             },
             'feature_types': {
                 'title': 'Feature Types'

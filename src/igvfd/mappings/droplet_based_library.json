@@ -1,6 +1,6 @@
 {
-    "hash": "5c24bc372afafe618785c3b5996b6238",
-    "index_name": "droplet_based_library_5c24bc37",
+    "hash": "525859639d638a8a92a73f5ba43de62b",
+    "index_name": "droplet_based_library_52585963",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -158,13 +158,6 @@
                     "author_metadata": {
                         "properties": {},
                         "type": "object"
-                    },
-                    "cell_barcode_length": {
-                        "store": true,
-                        "type": "long"
-                    },
-                    "chemistry_version": {
-                        "type": "keyword"
                     },
                     "creation_timestamp": {
                         "type": "date"
@@ -534,10 +527,6 @@
                     },
                     "summary": {
                         "type": "keyword"
-                    },
-                    "umi_length": {
-                        "store": true,
-                        "type": "long"
                     },
                     "uuid": {
                         "type": "keyword"

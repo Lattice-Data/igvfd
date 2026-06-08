@@ -30,25 +30,14 @@
             "$ref": "library.json#/properties"
         }
     ],
+    "dependentSchemas": {
+        "$merge": [
+            "library.json#/dependentSchemas"
+        ]
+    },
     "properties": {
         "schema_version": {
-            "default": "1"
-        },
-        "kit_version": {
-            "title": "Kit Version",
-            "description": "Version of the plate-based library preparation kit.",
-            "type": "string",
-            "enum": [
-                "QuantumScale Single Cell RNA",
-                "sci-RNA-seq3"
-            ]
-        },
-        "indexing_rounds": {
-            "title": "Indexing Rounds",
-            "description": "Number of combinatorial indexing rounds performed.",
-            "type": "integer",
-            "minimum": 2,
-            "maximum": 4
+            "default": "2"
         }
     },
     "fuzzy_searchable_fields": [

@@ -1,5 +1,13 @@
 # Plate Based Library Changelog
 
+### Schema version 2
+
+* Merge *dependentSchemas* from abstract Library schema (including *multiplexing_method* requiring at least two samples).
+* Remove *kit_version*.
+* Remove *indexing_rounds*.
+* Add *feature_types* (inherited from abstract Library schema).
+* Adjust *multiplexing_method* enum list (inherited from abstract Library schema).
+
 ### Minor changes since schema version 1
 
 * Add `library_construction_technology` (inherited from abstract Library schema).
