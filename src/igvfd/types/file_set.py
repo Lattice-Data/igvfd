@@ -92,7 +92,6 @@ class MatrixFileSet(FileSet):
         Path('submitted_by', include=['@id', 'title']),
         Path('raw_matrix_files', include=['@id', 'aliases', 'file_format']),
         Path('processed_matrix_files', include=['@id', 'aliases', 'file_format']),
-        Path('source_sequence_file_sets', include=['@id', 'aliases']),
     ]
 
     @calculated_property(

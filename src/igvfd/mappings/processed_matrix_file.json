@@ -1,6 +1,6 @@
 {
-    "hash": "c7943977b2c98a3a792cb7372a0c406b",
-    "index_name": "processed_matrix_file_c7943977",
+    "hash": "fac0fd63b1f05d56514c2796bbccfba4",
+    "index_name": "processed_matrix_file_fac0fd63",
     "item_type": "processed_matrix_file",
     "mapping": {
         "dynamic_templates": [
@@ -186,6 +186,10 @@
                     "file_size": {
                         "store": true,
                         "type": "long"
+                    },
+                    "is_multiplexed": {
+                        "store": true,
+                        "type": "boolean"
                     },
                     "lab": {
                         "properties": {

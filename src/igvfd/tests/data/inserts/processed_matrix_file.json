@@ -2,6 +2,7 @@
     {
         "lab": "teri-klein",
         "file_format": "h5ad",
+        "is_multiplexed": false,
         "s3_uri": "s3://lattice-test-data/matrix/processed-001.h5ad",
         "crc64nvme_base64": "AAAAAAAAAAA",
         "feature_keys": [
@@ -23,7 +24,7 @@
             "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
         ],
         "uuid": "e7f8a9b0-c1d2-3456-ef01-789012345678",
-        "schema_version": "3",
+        "schema_version": "4",
         "status": "current",
         "aliases": [
             "lattice:processed-matrix-file-001"
@@ -33,9 +34,10 @@
     {
         "lab": "teri-klein",
         "file_format": "h5ad",
+        "is_multiplexed": false,
         "no_file_available": true,
         "uuid": "f8a9b0c1-d2e3-4567-f012-890123456789",
-        "schema_version": "3",
+        "schema_version": "4",
         "status": "current",
         "aliases": [
             "lattice:processed-matrix-file-002"
@@ -45,6 +47,7 @@
     {
         "lab": "teri-klein",
         "file_format": "h5ad",
+        "is_multiplexed": false,
         "s3_uri": "s3://lattice-test-data/matrix/processed-derived-001.h5ad",
         "crc64nvme_base64": "AAAAAAAAAAA",
         "feature_keys": [
@@ -59,7 +62,7 @@
             }
         ],
         "uuid": "92031425-3647-5678-2345-999999999999",
-        "schema_version": "3",
+        "schema_version": "4",
         "status": "current",
         "aliases": [
             "lattice:processed-matrix-file-derived"

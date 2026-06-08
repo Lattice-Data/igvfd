@@ -2,11 +2,27 @@ import pytest
 
 SEQUENCE_FILE_READ_COUNT = 15_000_000
 CRC64NVME_BASE64_VALID = 'AAAAAAAAAAA'
+RAW_MATRIX_FILE_METADATA = {
+    'software': 'Cell Ranger',
+    'software_version': '7.1.0',
+    'genome_assembly': 'GRCh38',
+    'is_multiplexed': False,
+}
+
+PROCESSED_MATRIX_FILE_METADATA = {
+    'is_multiplexed': False,
+}
 
 
 def _file_post_body(file_type, item):
     """Augment POST bodies for sequence_file read_count and file-available crc64nvme_base64."""
     out = dict(item)
+    if file_type == 'raw_matrix_file':
+        for key, value in RAW_MATRIX_FILE_METADATA.items():
+            out.setdefault(key, value)
+    if file_type == 'processed_matrix_file':
+        for key, value in PROCESSED_MATRIX_FILE_METADATA.items():
+            out.setdefault(key, value)
     if (
         file_type == 'sequence_file'
         and 's3_uri' in out
@@ -15,6 +31,17 @@ def _file_post_body(file_type, item):
         out['read_count'] = SEQUENCE_FILE_READ_COUNT
     if 's3_uri' in out and out.get('no_file_available') is not True:
         out.setdefault('crc64nvme_base64', CRC64NVME_BASE64_VALID)
+    return out
+
+
+def _augment_matrix_file_post(file_type, item):
+    """Add matrix file required metadata when building matrix file POST bodies."""
+    out = dict(item)
+    if file_type == 'raw_matrix_file':
+        out.update(RAW_MATRIX_FILE_METADATA)
+    if file_type == 'processed_matrix_file':
+        for key, value in PROCESSED_MATRIX_FILE_METADATA.items():
+            out.setdefault(key, value)
     return out
 
 
@@ -36,7 +63,7 @@ FILE_TYPE_CONFIGS = {
     },
     'raw_matrix_file': {
         'endpoint': '/raw_matrix_file',
-        'formats': ['h5'],
+        'formats': ['h5', 'h5ad'],
         'default_format': 'h5',
         's3_path': 'matrix',
         'has_matrix_fields': True,
@@ -241,12 +268,15 @@ def test_file_requires_s3_uri_when_file_available(testapp, other_lab, file_type)
 
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            'no_file_available': False,
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                'no_file_available': False,
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -259,12 +289,15 @@ def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, file_
 
     res = testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            'no_file_available': True,
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                'no_file_available': True,
+                'status': 'current',
+            },
+        ),
         status=201
     )
     assert res.json['@graph'][0]['no_file_available'] is True
@@ -279,11 +312,14 @@ def test_file_create_success_no_file_available_modes(testapp, other_lab, file_ty
     file_format = config['default_format']
     s3_path = config['s3_path']
 
-    item = {
-        'lab': other_lab['@id'],
-        'file_format': file_format,
-        'status': 'current',
-    }
+    item = _augment_matrix_file_post(
+        file_type,
+        {
+            'lab': other_lab['@id'],
+            'file_format': file_format,
+            'status': 'current',
+        },
+    )
 
     if no_file_available is True:
         item['no_file_available'] = True
@@ -320,13 +356,16 @@ def test_file_requires_crc64nvme_when_file_available(testapp, other_lab, file_ty
     file_format = config['default_format']
     s3_path = config['s3_path']
 
-    item = {
-        'lab': other_lab['@id'],
-        'file_format': file_format,
-        's3_uri': f's3://lattice-test-data/{s3_path}/missing-crc.{file_format}',
-        'no_file_available': False,
-        'status': 'current',
-    }
+    item = _augment_matrix_file_post(
+        file_type,
+        {
+            'lab': other_lab['@id'],
+            'file_format': file_format,
+            's3_uri': f's3://lattice-test-data/{s3_path}/missing-crc.{file_format}',
+            'no_file_available': False,
+            'status': 'current',
+        },
+    )
     if file_type == 'sequence_file':
         item['read_count'] = SEQUENCE_FILE_READ_COUNT
     if config['has_matrix_fields']:
@@ -353,14 +392,17 @@ def test_file_rejects_invalid_crc64nvme_base64(testapp, other_lab, file_type, in
     file_format = config['default_format']
     s3_path = config['s3_path']
 
-    item = {
-        'lab': other_lab['@id'],
-        'file_format': file_format,
-        's3_uri': f's3://lattice-test-data/{s3_path}/bad-crc.{file_format}',
-        'no_file_available': False,
-        'crc64nvme_base64': invalid_crc,
-        'status': 'current',
-    }
+    item = _augment_matrix_file_post(
+        file_type,
+        {
+            'lab': other_lab['@id'],
+            'file_format': file_format,
+            's3_uri': f's3://lattice-test-data/{s3_path}/bad-crc.{file_format}',
+            'no_file_available': False,
+            'crc64nvme_base64': invalid_crc,
+            'status': 'current',
+        },
+    )
     if file_type == 'sequence_file':
         item['read_count'] = SEQUENCE_FILE_READ_COUNT
     if config['has_matrix_fields']:
@@ -432,16 +474,19 @@ def test_file_rejects_invalid_s3_uri_prefix(testapp, other_lab, file_type, inval
 
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            's3_uri': invalid_uri,
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'feature_keys': ['Ensembl gene ID', 'gene symbol'],
-            'observation_count': 1000,
-            'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                's3_uri': invalid_uri,
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'feature_keys': ['Ensembl gene ID', 'gene symbol'],
+                'observation_count': 1000,
+                'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -455,16 +500,19 @@ def test_matrix_file_create_with_shared_matrix_fields(testapp, other_lab, file_t
 
     res = testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/create-shared-fields.{file_format}',
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'feature_keys': ['Ensembl gene ID', 'gene symbol'],
-            'observation_count': 1000,
-            'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/create-shared-fields.{file_format}',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'feature_keys': ['Ensembl gene ID', 'gene symbol'],
+                'observation_count': 1000,
+                'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
+                'status': 'current',
+            },
+        ),
         status=201
     )
     assert res.json['@graph'][0]['feature_keys'] == ['Ensembl gene ID', 'gene symbol']
@@ -480,16 +528,19 @@ def test_matrix_file_rejects_invalid_feature_key(testapp, other_lab, file_type):
 
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/invalid-feature-key.{file_format}',
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'feature_keys': ['invalid feature key'],
-            'observation_count': 1000,
-            'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/invalid-feature-key.{file_format}',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'feature_keys': ['invalid feature key'],
+                'observation_count': 1000,
+                'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -503,16 +554,19 @@ def test_matrix_file_rejects_invalid_feature_counts_shape(testapp, other_lab, fi
 
     testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/invalid-feature-counts.{file_format}',
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'feature_keys': ['Ensembl gene ID', 'gene symbol'],
-            'observation_count': 1000,
-            'feature_counts': [{'feature_type': 'gene'}],
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/invalid-feature-counts.{file_format}',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'feature_keys': ['Ensembl gene ID', 'gene symbol'],
+                'observation_count': 1000,
+                'feature_counts': [{'feature_type': 'gene'}],
+                'status': 'current',
+            },
+        ),
         status=422
     )
 
@@ -564,16 +618,19 @@ def test_tabular_file_omits_read_count(testapp, other_lab):
 def test_raw_matrix_file_omits_read_count(testapp, other_lab):
     res = testapp.post_json(
         '/raw_matrix_file',
-        {
-            'lab': other_lab['@id'],
-            'file_format': 'h5',
-            's3_uri': 's3://lattice-test-data/matrix/no-read-count.h5',
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'feature_keys': ['Ensembl gene ID', 'gene symbol'],
-            'observation_count': 1000,
-            'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            'raw_matrix_file',
+            {
+                'lab': other_lab['@id'],
+                'file_format': 'h5',
+                's3_uri': 's3://lattice-test-data/matrix/no-read-count.h5',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'feature_keys': ['Ensembl gene ID', 'gene symbol'],
+                'observation_count': 1000,
+                'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
+                'status': 'current',
+            },
+        ),
         status=201,
     )
     assert 'read_count' not in res.json['@graph'][0]
@@ -661,16 +718,19 @@ def test_sequence_file_reverse_links_include_cram_slots(
 def test_raw_matrix_file_accepts_new_feature_keys(testapp, other_lab):
     res = testapp.post_json(
         '/raw_matrix_file',
-        {
-            'lab': other_lab['@id'],
-            'file_format': 'h5',
-            's3_uri': 's3://lattice-test-data/matrix/new-feature-keys.h5',
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'feature_keys': ['crispr guide ID', 'hash oligo'],
-            'observation_count': 500,
-            'feature_counts': [{'feature_type': 'gene', 'feature_count': 1000}],
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            'raw_matrix_file',
+            {
+                'lab': other_lab['@id'],
+                'file_format': 'h5',
+                's3_uri': 's3://lattice-test-data/matrix/new-feature-keys.h5',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'feature_keys': ['crispr guide ID', 'hash oligo'],
+                'observation_count': 500,
+                'feature_counts': [{'feature_type': 'gene', 'feature_count': 1000}],
+                'status': 'current',
+            },
+        ),
         status=201,
     )
     assert set(res.json['@graph'][0]['feature_keys']) == {'crispr guide ID', 'hash oligo'}
@@ -687,6 +747,7 @@ def test_processed_matrix_file_rejects_raw_only_feature_keys(testapp, other_lab)
             'feature_keys': ['crispr guide ID'],
             'observation_count': 500,
             'feature_counts': [{'feature_type': 'gene', 'feature_count': 1000}],
+            'is_multiplexed': False,
             'status': 'current',
         },
         status=422,
@@ -702,16 +763,19 @@ def test_matrix_file_accepts_guide_capture_feature_type(testapp, other_lab, file
 
     res = testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/guide-capture.{file_format}',
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'feature_keys': ['Ensembl gene ID'],
-            'observation_count': 800,
-            'feature_counts': [{'feature_type': 'guide capture', 'feature_count': 2000}],
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/guide-capture.{file_format}',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'feature_keys': ['Ensembl gene ID'],
+                'observation_count': 800,
+                'feature_counts': [{'feature_type': 'guide capture', 'feature_count': 2000}],
+                'status': 'current',
+            },
+        ),
         status=201,
     )
     assert res.json['@graph'][0]['feature_counts'][0]['feature_type'] == 'guide capture'
@@ -726,14 +790,17 @@ def test_matrix_file_create_with_samples(testapp, other_lab, tissue, file_type):
 
     res = testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/with-samples.{file_format}',
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'samples': [tissue['@id']],
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/with-samples.{file_format}',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'samples': [tissue['@id']],
+                'status': 'current',
+            },
+        ),
         status=201,
     )
     assert tissue['@id'] in res.json['@graph'][0]['samples']
@@ -748,13 +815,16 @@ def test_matrix_file_patch_samples(testapp, other_lab, tissue, file_type):
 
     res = testapp.post_json(
         endpoint,
-        {
-            'lab': other_lab['@id'],
-            'file_format': file_format,
-            's3_uri': f's3://lattice-test-data/{s3_path}/patch-samples.{file_format}',
-            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-            'status': 'current',
-        },
+        _augment_matrix_file_post(
+            file_type,
+            {
+                'lab': other_lab['@id'],
+                'file_format': file_format,
+                's3_uri': f's3://lattice-test-data/{s3_path}/patch-samples.{file_format}',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'status': 'current',
+            },
+        ),
         status=201,
     )
     file_id = res.json['@graph'][0]['@id']
@@ -764,6 +834,169 @@ def test_matrix_file_patch_samples(testapp, other_lab, tissue, file_type):
         status=200,
     )
     assert tissue['@id'] in patched.json['@graph'][0]['samples']
+
+
+def test_raw_matrix_file_required_processing_metadata(testapp, other_lab):
+    testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_raw_matrix_file_software_version_optional(testapp, other_lab):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'software': 'Cell Ranger',
+            'genome_assembly': 'GRCh38',
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert 'software_version' not in res.json['@graph'][0]
+
+
+def test_raw_matrix_file_h5ad_format_accepted(testapp, other_lab):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5ad',
+            'no_file_available': True,
+            'software': 'Cell Ranger',
+            'software_version': '7.1.0',
+            'genome_assembly': 'GRCh38',
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['file_format'] == 'h5ad'
+
+
+def test_processed_matrix_file_is_multiplexed_required(testapp, other_lab):
+    testapp.post_json(
+        '/processed_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5ad',
+            'no_file_available': True,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_raw_matrix_file_is_multiplexed_true(testapp, other_lab):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'software': 'Cell Ranger',
+            'software_version': '7.1.0',
+            'genome_assembly': 'GRCh38',
+            'is_multiplexed': True,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['is_multiplexed'] is True
+
+
+def test_processed_matrix_file_is_multiplexed_false(testapp, other_lab):
+    res = testapp.post_json(
+        '/processed_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5ad',
+            'no_file_available': True,
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['is_multiplexed'] is False
+
+
+def test_raw_matrix_file_rejects_genome_annotation(testapp, other_lab):
+    testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'status': 'current',
+            **RAW_MATRIX_FILE_METADATA,
+            'genome_annotation': 'GENCODE v44',
+        },
+        status=422,
+    )
+
+
+@pytest.mark.parametrize('missing_field', ['software', 'genome_assembly', 'is_multiplexed'])
+def test_raw_matrix_file_missing_required_processing_field(
+    testapp, other_lab, missing_field
+):
+    item = {
+        'lab': other_lab['@id'],
+        'file_format': 'h5',
+        'no_file_available': True,
+        'status': 'current',
+        **RAW_MATRIX_FILE_METADATA,
+    }
+    del item[missing_field]
+    testapp.post_json('/raw_matrix_file', item, status=422)
+
+
+def test_raw_matrix_file_genome_assembly_enum(testapp, other_lab):
+    testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'status': 'current',
+            **RAW_MATRIX_FILE_METADATA,
+            'genome_assembly': 'invalid_assembly',
+        },
+        status=422,
+    )
+
+
+@pytest.mark.parametrize('genome_assembly', ['GRCh38', 'GRCm39'])
+def test_raw_matrix_file_genome_assembly_values(testapp, other_lab, genome_assembly):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'status': 'current',
+            **RAW_MATRIX_FILE_METADATA,
+            'genome_assembly': genome_assembly,
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['genome_assembly'] == genome_assembly
+
+
+def test_raw_matrix_file_processing_metadata_persists(testapp, raw_matrix_file):
+    res = testapp.get(raw_matrix_file['@id'])
+    assert res.json['software'] == 'Cell Ranger'
+    assert res.json['software_version'] == '7.1.0'
+    assert res.json['genome_assembly'] == 'GRCh38'
 
 
 def test_matrix_files_reverse_links(testapp, matrix_file_set, matrix_file_set_with_processed):

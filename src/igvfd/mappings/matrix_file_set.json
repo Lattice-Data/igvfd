@@ -1,6 +1,6 @@
 {
-    "hash": "cdcdef63424ab243c98ccbca794bbcd0",
-    "index_name": "matrix_file_set_cdcdef63",
+    "hash": "fdce9d9a46e74cc59465bc2806cda0ea",
+    "index_name": "matrix_file_set_fdce9d9a",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -159,16 +159,6 @@
                         "copy_to": "_fuzzy",
                         "type": "text"
                     },
-                    "experiment_ids": {
-                        "copy_to": "_fuzzy",
-                        "type": "keyword"
-                    },
-                    "genome_annotation": {
-                        "type": "keyword"
-                    },
-                    "genome_assembly": {
-                        "type": "keyword"
-                    },
                     "lab": {
                         "properties": {
                             "@id": {
@@ -273,6 +263,10 @@
                                 "store": true,
                                 "type": "long"
                             },
+                            "is_multiplexed": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "lab": {
                                 "type": "keyword"
                             },
@@ -362,6 +356,13 @@
                                 "store": true,
                                 "type": "long"
                             },
+                            "genome_assembly": {
+                                "type": "keyword"
+                            },
+                            "is_multiplexed": {
+                                "store": true,
+                                "type": "boolean"
+                            },
                             "lab": {
                                 "type": "keyword"
                             },
@@ -388,6 +389,12 @@
                             "schema_version": {
                                 "type": "keyword"
                             },
+                            "software": {
+                                "type": "keyword"
+                            },
+                            "software_version": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -408,89 +415,6 @@
                     },
                     "schema_version": {
                         "type": "keyword"
-                    },
-                    "software": {
-                        "type": "keyword"
-                    },
-                    "software_version": {
-                        "type": "keyword"
-                    },
-                    "source_sequence_file_sets": {
-                        "properties": {
-                            "@id": {
-                                "type": "keyword"
-                            },
-                            "@type": {
-                                "type": "keyword"
-                            },
-                            "CRO_order": {
-                                "type": "keyword"
-                            },
-                            "aliases": {
-                                "type": "keyword"
-                            },
-                            "creation_timestamp": {
-                                "type": "date"
-                            },
-                            "description": {
-                                "type": "text"
-                            },
-                            "index1": {
-                                "type": "keyword"
-                            },
-                            "index2": {
-                                "type": "keyword"
-                            },
-                            "lab": {
-                                "type": "keyword"
-                            },
-                            "library": {
-                                "type": "keyword"
-                            },
-                            "notes": {
-                                "type": "text"
-                            },
-                            "read1": {
-                                "type": "keyword"
-                            },
-                            "read2": {
-                                "type": "keyword"
-                            },
-                            "read3": {
-                                "type": "keyword"
-                            },
-                            "run_cardinality": {
-                                "type": "keyword"
-                            },
-                            "schema_version": {
-                                "type": "keyword"
-                            },
-                            "sequencing_platform": {
-                                "type": "keyword"
-                            },
-                            "status": {
-                                "type": "keyword"
-                            },
-                            "submitted_by": {
-                                "type": "keyword"
-                            },
-                            "submitter_comment": {
-                                "type": "keyword"
-                            },
-                            "summary": {
-                                "type": "keyword"
-                            },
-                            "trimmed_cram": {
-                                "type": "keyword"
-                            },
-                            "untrimmed_cram": {
-                                "type": "keyword"
-                            },
-                            "uuid": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
                     },
                     "status": {
                         "type": "keyword"

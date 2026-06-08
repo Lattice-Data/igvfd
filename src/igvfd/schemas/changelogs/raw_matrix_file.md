@@ -1,5 +1,12 @@
 ## Changelog for raw_matrix_file.json
 
+### Schema version 4
+
+* Add `software`.
+* Add `genome_assembly`.
+* Add `is_multiplexed`.
+* Extend `file_format` enum list to include `h5ad`.
+
 ### Schema version 3
 
 * Remove md5sum.

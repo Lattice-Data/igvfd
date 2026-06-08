@@ -1,5 +1,9 @@
 ## Changelog for processed_matrix_file.json
 
+### Schema version 4
+
+* Add `is_multiplexed`.
+
 ### Schema version 3
 
 * Remove md5sum.

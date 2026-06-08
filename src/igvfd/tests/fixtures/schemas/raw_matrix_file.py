@@ -1,6 +1,14 @@
 import pytest
 
 
+_RAW_MATRIX_METADATA = {
+    'software': 'Cell Ranger',
+    'software_version': '7.1.0',
+    'genome_assembly': 'GRCh38',
+    'is_multiplexed': False,
+}
+
+
 @pytest.fixture
 def raw_matrix_file(testapp, other_lab):
     item = {
@@ -9,6 +17,7 @@ def raw_matrix_file(testapp, other_lab):
         's3_uri': 's3://lattice-test-data/matrix/fixture-raw-001.h5',
         'crc64nvme_base64': 'AAAAAAAAAAA',
         'status': 'current',
+        **_RAW_MATRIX_METADATA,
     }
     return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]
 
@@ -27,6 +36,7 @@ def raw_matrix_file_with_description(testapp, other_lab):
         ],
         'description': 'Test raw matrix file',
         'status': 'current',
+        **_RAW_MATRIX_METADATA,
     }
     return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]
 
@@ -46,6 +56,7 @@ def raw_matrix_file_with_samples(testapp, other_lab, tissue):
         ],
         'samples': [tissue['@id']],
         'status': 'current',
+        **_RAW_MATRIX_METADATA,
     }
     return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]
 
@@ -58,6 +69,22 @@ def raw_matrix_file_with_aliases(testapp, other_lab):
         's3_uri': 's3://lattice-test-data/matrix/fixture-raw-003.h5',
         'crc64nvme_base64': 'AAAAAAAAAAA',
         'aliases': ['lattice:pytest-raw-matrix-file-001'],
+        'status': 'current',
+        **_RAW_MATRIX_METADATA,
+    }
+    return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def raw_matrix_file_without_software_version(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'file_format': 'h5',
+        's3_uri': 's3://lattice-test-data/matrix/fixture-raw-005.h5',
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+        'software': 'Cell Ranger',
+        'genome_assembly': 'GRCh38',
+        'is_multiplexed': False,
         'status': 'current',
     }
     return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]

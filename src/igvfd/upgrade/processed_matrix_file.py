@@ -15,3 +15,9 @@ def processed_matrix_file_1_2(value, system):
 @upgrade_step('processed_matrix_file', '2', '3')
 def processed_matrix_file_2_3(value, system):
     value.pop('md5sum', None)
+
+
+@upgrade_step('processed_matrix_file', '3', '4')
+def processed_matrix_file_3_4(value, system):
+    if 'is_multiplexed' not in value:
+        value['is_multiplexed'] = False
