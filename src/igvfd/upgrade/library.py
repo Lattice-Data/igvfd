@@ -24,7 +24,10 @@ def _upgrade_multiplexing_method(value):
     legacy = value.pop('multiplexing_method', None)
     if legacy is None:
         return
+    if len(value.get('samples', [])) < 2:
+        return
     if isinstance(legacy, list):
+        value['multiplexing_method'] = legacy
         return
     mapped = MULTIPLEXING_METHOD_MAP.get(legacy)
     if mapped is None:
