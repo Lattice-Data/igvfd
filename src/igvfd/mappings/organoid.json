@@ -1,6 +1,6 @@
 {
-    "hash": "6b3a08be86cda2c2148da98fa0f04c34",
-    "index_name": "organoid_6b3a08be",
+    "hash": "cc4cdaa9dd8b605e5c0676bb6cfcc69a",
+    "index_name": "organoid_cc4cdaa9",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -174,6 +174,66 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
+                    },
+                    "developmental_stages": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "dbxrefs": {
+                                "type": "keyword"
+                            },
+                            "definition": {
+                                "type": "keyword"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "ontology_source": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "synonyms": {
+                                "type": "keyword"
+                            },
+                            "term_id": {
+                                "type": "keyword"
+                            },
+                            "term_name": {
+                                "copy_to": "_fuzzy",
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "diseases": {
                         "type": "keyword"

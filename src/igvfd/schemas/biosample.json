@@ -113,6 +113,23 @@
                 "linkTo": "ControlledTerm"
             }
         },
+        "developmental_stages": {
+            "title": "Developmental Stages",
+            "description": "The developmental stage(s) of the donor at the time the biosample was obtained.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Developmental Stage",
+                "description": "Reference to a developmental-stage ontology term.",
+                "comment": "Link to a ControlledTerm with a developmental-stage ontology (e.g. HsapDv, MmusDv). See controlled_term.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ControlledTerm",
+                "submissionExample": {
+                    "appscript": "lattice:term-dev-stage-human-embryonic"
+                }
+            }
+        },
         "sample_procurement_interval": {
             "title": "Sample Procurement Interval",
             "description": "Time passing from the moment of sample collection till the freezing or initiation of the experiment with the sample.",
@@ -630,6 +647,7 @@
         "description",
         "hash_index",
         "sample_terms.term_name",
+        "developmental_stages.term_name",
         "sources.title"
     ],
     "exact_searchable_fields": [

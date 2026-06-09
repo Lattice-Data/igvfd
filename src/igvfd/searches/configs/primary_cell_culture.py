@@ -39,6 +39,9 @@ def primary_cell_culture():
             'sample_terms': {
                 'title': 'Sample Terms'
             },
+            'developmental_stages': {
+                'title': 'Developmental Stages'
+            },
             'donors': {
                 'title': 'Donors'
             },

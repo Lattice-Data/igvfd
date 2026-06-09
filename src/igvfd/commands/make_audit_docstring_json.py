@@ -1,4 +1,5 @@
 import json
+import igvfd.audit.biosample
 import igvfd.audit.library
 import igvfd.audit.matrix_file
 import igvfd.audit.treatment
@@ -9,6 +10,7 @@ NON_AUDIT_FUNCTION_NAMES = [
 ]
 
 AUDIT_MODULES_TO_PROCESS = [
+    igvfd.audit.biosample,
     igvfd.audit.library,
     igvfd.audit.matrix_file,
     igvfd.audit.treatment,

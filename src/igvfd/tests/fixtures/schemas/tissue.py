@@ -49,6 +49,20 @@ def tissue_with_preservation_method(testapp, other_lab, human_donor, controlled_
 
 
 @pytest.fixture
+def tissue_with_developmental_stages(
+    testapp, other_lab, human_donor, controlled_term_brain, controlled_term_dev_stage_human
+):
+    item = {
+        'lab': other_lab['@id'],
+        'donors': [human_donor['@id']],
+        'sample_terms': [controlled_term_brain['@id']],
+        'developmental_stages': [controlled_term_dev_stage_human['@id']],
+        'status': 'current',
+    }
+    return testapp.post_json('/tissue', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
 def tissue_with_thickness(testapp, other_lab, human_donor, controlled_term_brain):
     item = {
         'lab': other_lab['@id'],
