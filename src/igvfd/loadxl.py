@@ -32,6 +32,7 @@ ORDER = [
     'cell_line',
     'plate_based_library',
     'droplet_based_library',
+    'experiment',
     'sequence_file',
     'tabular_file',
     'raw_matrix_file',
@@ -552,6 +553,9 @@ PHASE1_PIPELINES = {
         remove_keys('linked_libraries'),
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
+    'experiment': [
+        skip_rows_missing_all_keys('lab', 'libraries'),
+    ],
     'sequence_file': [
         remove_keys('derived_from'),
         skip_rows_missing_all_keys('lab'),
@@ -620,6 +624,9 @@ PHASE2_PIPELINES = {
     ],
     'droplet_based_library': [
         skip_rows_missing_all_keys('linked_libraries'),
+    ],
+    'experiment': [
+        skip_rows_missing_all_keys('lab', 'libraries'),
     ],
     'sequence_file': [
         skip_rows_missing_all_keys('derived_from'),

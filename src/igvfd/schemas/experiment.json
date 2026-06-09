@@ -1,0 +1,67 @@
+{
+    "title": "Experiment",
+    "$id": "/profiles/experiment.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A grouping of libraries prepared under the same experimental unit.",
+    "type": "object",
+    "required": [
+        "lab",
+        "libraries"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        }
+    ],
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "libraries": {
+            "title": "Libraries",
+            "description": "Libraries grouped in this experiment. All libraries must be of the same preparation type (all droplet-based or all plate-based).",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Library",
+                "description": "A library belonging to this experiment.",
+                "comment": "See library.json for available identifiers.",
+                "type": "string",
+                "linkTo": "Library"
+            },
+            "submissionExample": {
+                "appscript": "[\"lattice:droplet-library-basic\"]"
+            }
+        },
+        "CRO_experiment_identifier": {
+            "title": "CRO Experiment Identifier",
+            "description": "A CRO-specific identifier that associates libraries prepared by the same Contract Research Organization (CRO) when they belong to the same experimental unit across modalities. Use this to link related libraries from one CRO project—for example, GEX and ATAC libraries from a 10x Multiome run, or hash_oligo and GEX libraries from a Scale experiment—so they can be retrieved and analyzed together.",
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^ \\t](?:[\\s\\S]*[^ \\t])?$",
+            "submissionExample": {
+                "appscript": "CRO-BATCH-2024-01"
+            }
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/experiment.md"
+}

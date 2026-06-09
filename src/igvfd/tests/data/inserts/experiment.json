@@ -1,0 +1,30 @@
+[
+    {
+        "lab": "teri-klein",
+        "libraries": [
+            "d1e2f3a4-b5c6-7890-def1-234567890abc",
+            "d2e3f4a5-b6c7-8901-ef12-34567890abcd"
+        ],
+        "uuid": "e1f2a3b4-c5d6-7890-abcd-ef1234567890",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:experiment-droplet-group-1"
+        ],
+        "description": "Droplet-based experiment grouping two libraries",
+        "CRO_experiment_identifier": "INSERT-EXPERIMENT-CRO-1"
+    },
+    {
+        "lab": "teri-klein",
+        "libraries": [
+            "f1a2b3c4-d5e6-7890-abcd-ef1234567890"
+        ],
+        "uuid": "e2f3a4b5-c6d7-8901-bcde-f23456789012",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:experiment-plate-group-1"
+        ],
+        "description": "Plate-based experiment grouping one library"
+    }
+]
