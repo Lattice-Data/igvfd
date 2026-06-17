@@ -70,40 +70,47 @@ def audit_dual_cardinality_missing_linked_libraries(value, system):
         )
 
 
-def _samples_missing_hash_index(samples):
+def _samples_missing_multiplexing_barcodes(samples):
     return [
         sample for sample in samples
-        if isinstance(sample, dict) and not sample.get('hash_index')
+        if isinstance(sample, dict) and not sample.get('multiplexing_barcodes')
     ]
 
 
-def _samples_with_hash_index(samples):
+def _samples_with_multiplexing_barcodes(samples):
     return [
         sample for sample in samples
-        if isinstance(sample, dict) and sample.get('hash_index')
+        if isinstance(sample, dict) and sample.get('multiplexing_barcodes')
     ]
 
 
-def audit_plate_based_library_samples_missing_hash_index(value, system):
+def _library_has_multiplexing_method(value):
+    return bool(value.get('multiplexing_method'))
+
+
+def audit_library_samples_missing_multiplexing_barcodes(value, system):
     '''
     [
         {
-            "audit_description": "Plate-based libraries are expected to have a hash index on every linked sample.",
-            "audit_category": "missing hash index",
+            "audit_description": "Libraries with a multiplexing method are expected to have multiplexing barcodes on every linked sample.",
+            "audit_category": "missing multiplexing barcodes",
             "audit_level": "ERROR"
         }
     ]
     '''
-    missing = _samples_missing_hash_index(value.get('samples', []))
+    if not _library_has_multiplexing_method(value):
+        return
+    missing = _samples_missing_multiplexing_barcodes(value.get('samples', []))
     if not missing:
         return
-    audit_message = get_audit_message(audit_plate_based_library_samples_missing_hash_index)
+    audit_message = get_audit_message(audit_library_samples_missing_multiplexing_barcodes)
     object_type = space_in_words(value['@type'][0]).capitalize()
     lib_id = value['@id']
     sample_links = join_obj_paths([sample['@id'] for sample in missing])
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has linked samples missing `hash_index`: {sample_links}.'
+        f'has `multiplexing_method` but linked samples missing `multiplexing_barcodes`: '
+        f'{sample_links}.'
     )
     yield AuditFailure(
         audit_message.get('audit_category', ''),
@@ -112,26 +119,29 @@ def audit_plate_based_library_samples_missing_hash_index(value, system):
     )
 
 
-def audit_droplet_based_library_samples_unexpected_hash_index(value, system):
+def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
     '''
     [
         {
-            "audit_description": "Droplet-based libraries are not expected to have samples with a hash index.",
-            "audit_category": "unexpected hash index",
+            "audit_description": "Libraries without a multiplexing method are not expected to have samples with multiplexing barcodes.",
+            "audit_category": "unexpected multiplexing barcodes",
             "audit_level": "ERROR"
         }
     ]
     '''
-    with_hash_index = _samples_with_hash_index(value.get('samples', []))
-    if not with_hash_index:
+    if _library_has_multiplexing_method(value):
         return
-    audit_message = get_audit_message(audit_droplet_based_library_samples_unexpected_hash_index)
+    with_multiplexing_barcodes = _samples_with_multiplexing_barcodes(value.get('samples', []))
+    if not with_multiplexing_barcodes:
+        return
+    audit_message = get_audit_message(audit_library_samples_unexpected_multiplexing_barcodes)
     object_type = space_in_words(value['@type'][0]).capitalize()
     lib_id = value['@id']
-    sample_links = join_obj_paths([sample['@id'] for sample in with_hash_index])
+    sample_links = join_obj_paths([sample['@id'] for sample in with_multiplexing_barcodes])
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has linked samples with `hash_index`: {sample_links}.'
+        f'has no `multiplexing_method` but linked samples with `multiplexing_barcodes`: '
+        f'{sample_links}.'
     )
     yield AuditFailure(
         audit_message.get('audit_category', ''),
@@ -230,7 +240,8 @@ def audit_droplet_based_library_object_dispatcher(value, system):
 
 
 function_dispatcher_plate_based_library_embedded = {
-    'audit_plate_based_library_samples_missing_hash_index': audit_plate_based_library_samples_missing_hash_index,
+    'audit_library_samples_missing_multiplexing_barcodes': audit_library_samples_missing_multiplexing_barcodes,
+    'audit_library_samples_unexpected_multiplexing_barcodes': audit_library_samples_unexpected_multiplexing_barcodes,
 }
 
 
@@ -242,7 +253,8 @@ def audit_plate_based_library_embedded_dispatcher(value, system):
 
 
 function_dispatcher_droplet_based_library_embedded = {
-    'audit_droplet_based_library_samples_unexpected_hash_index': audit_droplet_based_library_samples_unexpected_hash_index,
+    'audit_library_samples_missing_multiplexing_barcodes': audit_library_samples_missing_multiplexing_barcodes,
+    'audit_library_samples_unexpected_multiplexing_barcodes': audit_library_samples_unexpected_multiplexing_barcodes,
 }
 
 

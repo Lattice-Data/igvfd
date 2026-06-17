@@ -1,6 +1,6 @@
 {
-    "hash": "629e81f14eeef94b5aae943f430f085b",
-    "index_name": "cell_line_629e81f1",
+    "hash": "e97660ba0de2d0d030ef2642eb9110f2",
+    "index_name": "cell_line_e97660ba",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -307,10 +307,6 @@
                     "genetic_modification": {
                         "type": "keyword"
                     },
-                    "hash_index": {
-                        "copy_to": "_fuzzy",
-                        "type": "keyword"
-                    },
                     "host": {
                         "properties": {
                             "@id": {
@@ -544,6 +540,10 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "multiplexing_barcodes": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
                     },
                     "notes": {
                         "type": "text"

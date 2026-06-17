@@ -133,23 +133,24 @@ def test_biosample_dbxrefs_rejects_invalid_values(
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
 @pytest.mark.parametrize(
-    'hash_index',
+    'multiplexing_barcodes',
     [
-        'P01-A1',
-        'SCALE-A1',
-        'x',
-        'group_A-1',
-        'A1_B2',
+        ['P01-A1'],
+        ['SCALE-A1'],
+        ['BC001'],
+        ['A-A01'],
+        ['9A-9C'],
+        ['A0251'],
     ],
 )
-def test_biosample_hash_index_valid(
-    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, hash_index
+def test_biosample_multiplexing_barcodes_valid(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, multiplexing_barcodes
 ):
     endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
-    payload['hash_index'] = hash_index
+    payload['multiplexing_barcodes'] = multiplexing_barcodes
     payload['status'] = 'current'
     res = testapp.post_json(endpoint, payload, status=201)
-    assert res.json['@graph'][0]['hash_index'] == hash_index
+    assert res.json['@graph'][0]['multiplexing_barcodes'] == multiplexing_barcodes
 
 
 @pytest.mark.parametrize(
@@ -157,26 +158,29 @@ def test_biosample_hash_index_valid(
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
 @pytest.mark.parametrize(
-    'hash_index',
+    'multiplexing_barcodes',
     [
-        '',
-        ' ',
-        '  ',
-        ' P01-A1',
-        'P01-A1 ',
-        '\tP01',
-        'P01 A1',
-        'P01\nA1',
-        '-P01',
-        '_only',
-        '---',
+        [],
+        [''],
+        [' '],
+        [' P01-A1'],
+        ['P01-A1 '],
+        ['\tP01'],
+        ['P01 A1'],
+        ['P01\nA1'],
+        ['-P01'],
+        ['_only'],
+        ['---'],
+        ['x'],
+        ['group_A-1'],
+        ['A1_B2'],
     ],
 )
-def test_biosample_hash_index_invalid(
-    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, hash_index
+def test_biosample_multiplexing_barcodes_invalid(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, multiplexing_barcodes
 ):
     endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
-    payload['hash_index'] = hash_index
+    payload['multiplexing_barcodes'] = multiplexing_barcodes
     payload['status'] = 'current'
     testapp.post_json(endpoint, payload, status=422)
 

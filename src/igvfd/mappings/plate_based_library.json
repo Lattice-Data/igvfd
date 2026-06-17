@@ -1,6 +1,6 @@
 {
-    "hash": "ecdaae0b674ef8155f1922549251a4be",
-    "index_name": "plate_based_library_ecdaae0b",
+    "hash": "93d8ce771117408cb3eddb3e1960c48f",
+    "index_name": "plate_based_library_93d8ce77",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -347,9 +347,6 @@
                             "genetic_modification": {
                                 "type": "keyword"
                             },
-                            "hash_index": {
-                                "type": "keyword"
-                            },
                             "host": {
                                 "type": "keyword"
                             },
@@ -365,6 +362,9 @@
                             "lower_bound_age": {
                                 "store": true,
                                 "type": "float"
+                            },
+                            "multiplexing_barcodes": {
+                                "type": "keyword"
                             },
                             "notes": {
                                 "type": "text"

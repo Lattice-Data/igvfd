@@ -1,6 +1,6 @@
 {
-    "hash": "54131b81bed65feeae260d502078d7ed",
-    "index_name": "primary_cell_culture_54131b81",
+    "hash": "b10096b2d1212c7d1354f71aca4dccb0",
+    "index_name": "primary_cell_culture_b10096b2",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -310,10 +310,6 @@
                     "genetic_modification": {
                         "type": "keyword"
                     },
-                    "hash_index": {
-                        "copy_to": "_fuzzy",
-                        "type": "keyword"
-                    },
                     "lab": {
                         "properties": {
                             "@id": {
@@ -373,6 +369,10 @@
                     "lower_bound_age": {
                         "store": true,
                         "type": "float"
+                    },
+                    "multiplexing_barcodes": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
                     },
                     "notes": {
                         "type": "text"

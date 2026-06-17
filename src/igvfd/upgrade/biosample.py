@@ -63,3 +63,28 @@ def organoid_1_2(value, system):
 @upgrade_step('cell_line', '1', '2')
 def cell_line_1_2(value, system):
     _upgrade_biosample_properties(value)
+
+
+def _upgrade_hash_index_to_multiplexing_barcodes(value):
+    if 'hash_index' in value:
+        value['multiplexing_barcodes'] = [value.pop('hash_index')]
+
+
+@upgrade_step('tissue', '2', '3')
+def tissue_2_3(value, system):
+    _upgrade_hash_index_to_multiplexing_barcodes(value)
+
+
+@upgrade_step('primary_cell_culture', '2', '3')
+def primary_cell_culture_2_3(value, system):
+    _upgrade_hash_index_to_multiplexing_barcodes(value)
+
+
+@upgrade_step('organoid', '2', '3')
+def organoid_2_3(value, system):
+    _upgrade_hash_index_to_multiplexing_barcodes(value)
+
+
+@upgrade_step('cell_line', '2', '3')
+def cell_line_2_3(value, system):
+    _upgrade_hash_index_to_multiplexing_barcodes(value)
