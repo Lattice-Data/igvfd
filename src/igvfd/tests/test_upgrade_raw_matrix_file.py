@@ -143,3 +143,36 @@ def test_raw_matrix_file_upgrade_3_4_preserves_existing_is_multiplexed(upgrader)
     )
     assert result['schema_version'] == '4'
     assert result['is_multiplexed'] is True
+
+
+def test_raw_matrix_file_upgrade_4_5_bumps_version(upgrader):
+    value = {
+        'schema_version': '4',
+        'lab': '/labs/test/',
+        'file_format': 'h5',
+        'software': 'Cell Ranger',
+        'genome_assembly': 'GRCh38',
+        'is_multiplexed': False,
+        'samples': ['/tissues/abc/'],
+    }
+    result = upgrader.upgrade(
+        'raw_matrix_file', value, current_version='4', target_version='5'
+    )
+    assert result['schema_version'] == '5'
+    assert result['samples'] == ['/tissues/abc/']
+
+
+def test_raw_matrix_file_upgrade_4_5_bumps_version_without_samples(upgrader):
+    value = {
+        'schema_version': '4',
+        'lab': '/labs/test/',
+        'file_format': 'h5',
+        'software': 'Cell Ranger',
+        'genome_assembly': 'GRCh38',
+        'is_multiplexed': False,
+    }
+    result = upgrader.upgrade(
+        'raw_matrix_file', value, current_version='4', target_version='5'
+    )
+    assert result['schema_version'] == '5'
+    assert 'samples' not in result
