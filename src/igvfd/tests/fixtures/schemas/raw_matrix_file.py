@@ -10,12 +10,13 @@ _RAW_MATRIX_METADATA = {
 
 
 @pytest.fixture
-def raw_matrix_file(testapp, other_lab):
+def raw_matrix_file(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'file_format': 'h5',
         's3_uri': 's3://lattice-test-data/matrix/fixture-raw-001.h5',
         'crc64nvme_base64': 'AAAAAAAAAAA',
+        'samples': [tissue['@id']],
         'status': 'current',
         **_RAW_MATRIX_METADATA,
     }
@@ -23,7 +24,7 @@ def raw_matrix_file(testapp, other_lab):
 
 
 @pytest.fixture
-def raw_matrix_file_with_description(testapp, other_lab):
+def raw_matrix_file_with_description(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'file_format': 'h5',
@@ -34,6 +35,7 @@ def raw_matrix_file_with_description(testapp, other_lab):
         'feature_counts': [
             {'feature_type': 'gene', 'feature_count': 17000},
         ],
+        'samples': [tissue['@id']],
         'description': 'Test raw matrix file',
         'status': 'current',
         **_RAW_MATRIX_METADATA,
@@ -62,13 +64,14 @@ def raw_matrix_file_with_samples(testapp, other_lab, tissue):
 
 
 @pytest.fixture
-def raw_matrix_file_with_aliases(testapp, other_lab):
+def raw_matrix_file_with_aliases(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'file_format': 'h5',
         's3_uri': 's3://lattice-test-data/matrix/fixture-raw-003.h5',
         'crc64nvme_base64': 'AAAAAAAAAAA',
         'aliases': ['lattice:pytest-raw-matrix-file-001'],
+        'samples': [tissue['@id']],
         'status': 'current',
         **_RAW_MATRIX_METADATA,
     }
@@ -76,7 +79,7 @@ def raw_matrix_file_with_aliases(testapp, other_lab):
 
 
 @pytest.fixture
-def raw_matrix_file_without_software_version(testapp, other_lab):
+def raw_matrix_file_without_software_version(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'file_format': 'h5',
@@ -85,6 +88,7 @@ def raw_matrix_file_without_software_version(testapp, other_lab):
         'software': 'Cell Ranger',
         'genome_assembly': 'GRCh38',
         'is_multiplexed': False,
+        'samples': [tissue['@id']],
         'status': 'current',
     }
     return testapp.post_json('/raw_matrix_file', item, status=201).json['@graph'][0]

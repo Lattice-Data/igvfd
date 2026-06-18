@@ -29,3 +29,9 @@ def raw_matrix_file_3_4(value, system):
         value['genome_assembly'] = _GENOME_ASSEMBLY_PLACEHOLDER
     if 'is_multiplexed' not in value:
         value['is_multiplexed'] = False
+
+
+@upgrade_step('raw_matrix_file', '4', '5')
+def raw_matrix_file_4_5(value, system):
+    """No data migration: sample links must be patched before upgrade."""
+    pass

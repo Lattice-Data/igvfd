@@ -14,12 +14,14 @@ PROCESSED_MATRIX_FILE_METADATA = {
 }
 
 
-def _file_post_body(file_type, item):
+def _file_post_body(file_type, item, tissue=None):
     """Augment POST bodies for sequence_file read_count and file-available crc64nvme_base64."""
     out = dict(item)
     if file_type == 'raw_matrix_file':
         for key, value in RAW_MATRIX_FILE_METADATA.items():
             out.setdefault(key, value)
+        if tissue is not None:
+            out.setdefault('samples', [tissue['@id']])
     if file_type == 'processed_matrix_file':
         for key, value in PROCESSED_MATRIX_FILE_METADATA.items():
             out.setdefault(key, value)
@@ -34,11 +36,13 @@ def _file_post_body(file_type, item):
     return out
 
 
-def _augment_matrix_file_post(file_type, item):
+def _augment_matrix_file_post(file_type, item, tissue=None):
     """Add matrix file required metadata when building matrix file POST bodies."""
     out = dict(item)
     if file_type == 'raw_matrix_file':
         out.update(RAW_MATRIX_FILE_METADATA)
+        if tissue is not None:
+            out.setdefault('samples', [tissue['@id']])
     if file_type == 'processed_matrix_file':
         for key, value in PROCESSED_MATRIX_FILE_METADATA.items():
             out.setdefault(key, value)
@@ -193,11 +197,12 @@ def test_file_create_with_file_format_enum_values(testapp, other_lab, file_type,
 
 
 @pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
-def test_file_create_success(testapp, other_lab, file_type):
+def test_file_create_success(testapp, other_lab, tissue, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
     file_format = config['default_format']
     s3_path = config['s3_path']
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
 
     item = _file_post_body(
         file_type,
@@ -207,6 +212,7 @@ def test_file_create_success(testapp, other_lab, file_type):
             's3_uri': f's3://lattice-test-data/{s3_path}/create-success.{file_format}',
             'status': 'current',
         },
+        tissue=raw_tissue,
     )
     res = testapp.post_json(endpoint, item, status=201)
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
@@ -282,10 +288,11 @@ def test_file_requires_s3_uri_when_file_available(testapp, other_lab, file_type)
 
 
 @pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
-def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, file_type):
+def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, tissue, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
     file_format = config['default_format']
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
 
     res = testapp.post_json(
         endpoint,
@@ -297,6 +304,7 @@ def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, file_
                 'no_file_available': True,
                 'status': 'current',
             },
+            tissue=raw_tissue,
         ),
         status=201
     )
@@ -306,11 +314,12 @@ def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, file_
 
 @pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
 @pytest.mark.parametrize('no_file_available', [None, False, True])
-def test_file_create_success_no_file_available_modes(testapp, other_lab, file_type, no_file_available):
+def test_file_create_success_no_file_available_modes(testapp, other_lab, tissue, file_type, no_file_available):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
     file_format = config['default_format']
     s3_path = config['s3_path']
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
 
     item = _augment_matrix_file_post(
         file_type,
@@ -319,6 +328,7 @@ def test_file_create_success_no_file_available_modes(testapp, other_lab, file_ty
             'file_format': file_format,
             'status': 'current',
         },
+        tissue=raw_tissue,
     )
 
     if no_file_available is True:
@@ -492,11 +502,12 @@ def test_file_rejects_invalid_s3_uri_prefix(testapp, other_lab, file_type, inval
 
 
 @pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
-def test_matrix_file_create_with_shared_matrix_fields(testapp, other_lab, file_type):
+def test_matrix_file_create_with_shared_matrix_fields(testapp, other_lab, tissue, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
     file_format = config['default_format']
     s3_path = config['s3_path']
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
 
     res = testapp.post_json(
         endpoint,
@@ -512,6 +523,7 @@ def test_matrix_file_create_with_shared_matrix_fields(testapp, other_lab, file_t
                 'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
                 'status': 'current',
             },
+            tissue=raw_tissue,
         ),
         status=201
     )
@@ -615,7 +627,7 @@ def test_tabular_file_omits_read_count(testapp, other_lab):
     assert 'read_count' not in res.json['@graph'][0]
 
 
-def test_raw_matrix_file_omits_read_count(testapp, other_lab):
+def test_raw_matrix_file_omits_read_count(testapp, other_lab, tissue):
     res = testapp.post_json(
         '/raw_matrix_file',
         _augment_matrix_file_post(
@@ -630,6 +642,7 @@ def test_raw_matrix_file_omits_read_count(testapp, other_lab):
                 'feature_counts': [{'feature_type': 'gene', 'feature_count': 14000}],
                 'status': 'current',
             },
+            tissue=tissue,
         ),
         status=201,
     )
@@ -715,7 +728,7 @@ def test_sequence_file_reverse_links_include_cram_slots(
     assert cram_set['@id'] in sequence_file_res['sequence_file_sets']
 
 
-def test_raw_matrix_file_accepts_new_feature_keys(testapp, other_lab):
+def test_raw_matrix_file_accepts_new_feature_keys(testapp, other_lab, tissue):
     res = testapp.post_json(
         '/raw_matrix_file',
         _augment_matrix_file_post(
@@ -730,6 +743,7 @@ def test_raw_matrix_file_accepts_new_feature_keys(testapp, other_lab):
                 'feature_counts': [{'feature_type': 'gene', 'feature_count': 1000}],
                 'status': 'current',
             },
+            tissue=tissue,
         ),
         status=201,
     )
@@ -755,11 +769,12 @@ def test_processed_matrix_file_rejects_raw_only_feature_keys(testapp, other_lab)
 
 
 @pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
-def test_matrix_file_accepts_guide_capture_feature_type(testapp, other_lab, file_type):
+def test_matrix_file_accepts_guide_capture_feature_type(testapp, other_lab, tissue, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
     file_format = config['default_format']
     s3_path = config['s3_path']
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
 
     res = testapp.post_json(
         endpoint,
@@ -775,6 +790,7 @@ def test_matrix_file_accepts_guide_capture_feature_type(testapp, other_lab, file
                 'feature_counts': [{'feature_type': 'guide capture', 'feature_count': 2000}],
                 'status': 'current',
             },
+            tissue=raw_tissue,
         ),
         status=201,
     )
@@ -812,18 +828,23 @@ def test_matrix_file_patch_samples(testapp, other_lab, tissue, file_type):
     endpoint = config['endpoint']
     file_format = config['default_format']
     s3_path = config['s3_path']
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
+    post_body = {
+        'lab': other_lab['@id'],
+        'file_format': file_format,
+        's3_uri': f's3://lattice-test-data/{s3_path}/patch-samples.{file_format}',
+        'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+        'status': 'current',
+    }
+    if file_type == 'raw_matrix_file':
+        post_body['samples'] = [tissue['@id']]
 
     res = testapp.post_json(
         endpoint,
         _augment_matrix_file_post(
             file_type,
-            {
-                'lab': other_lab['@id'],
-                'file_format': file_format,
-                's3_uri': f's3://lattice-test-data/{s3_path}/patch-samples.{file_format}',
-                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
-                'status': 'current',
-            },
+            post_body,
+            tissue=raw_tissue,
         ),
         status=201,
     )
@@ -849,7 +870,7 @@ def test_raw_matrix_file_required_processing_metadata(testapp, other_lab):
     )
 
 
-def test_raw_matrix_file_software_version_optional(testapp, other_lab):
+def test_raw_matrix_file_software_version_optional(testapp, other_lab, tissue):
     res = testapp.post_json(
         '/raw_matrix_file',
         {
@@ -859,6 +880,7 @@ def test_raw_matrix_file_software_version_optional(testapp, other_lab):
             'software': 'Cell Ranger',
             'genome_assembly': 'GRCh38',
             'is_multiplexed': False,
+            'samples': [tissue['@id']],
             'status': 'current',
         },
         status=201,
@@ -866,7 +888,7 @@ def test_raw_matrix_file_software_version_optional(testapp, other_lab):
     assert 'software_version' not in res.json['@graph'][0]
 
 
-def test_raw_matrix_file_h5ad_format_accepted(testapp, other_lab):
+def test_raw_matrix_file_h5ad_format_accepted(testapp, other_lab, tissue):
     res = testapp.post_json(
         '/raw_matrix_file',
         {
@@ -877,6 +899,7 @@ def test_raw_matrix_file_h5ad_format_accepted(testapp, other_lab):
             'software_version': '7.1.0',
             'genome_assembly': 'GRCh38',
             'is_multiplexed': False,
+            'samples': [tissue['@id']],
             'status': 'current',
         },
         status=201,
@@ -897,7 +920,7 @@ def test_processed_matrix_file_is_multiplexed_required(testapp, other_lab):
     )
 
 
-def test_raw_matrix_file_is_multiplexed_true(testapp, other_lab):
+def test_raw_matrix_file_is_multiplexed_true(testapp, other_lab, tissue):
     res = testapp.post_json(
         '/raw_matrix_file',
         {
@@ -908,6 +931,7 @@ def test_raw_matrix_file_is_multiplexed_true(testapp, other_lab):
             'software_version': '7.1.0',
             'genome_assembly': 'GRCh38',
             'is_multiplexed': True,
+            'samples': [tissue['@id']],
             'status': 'current',
         },
         status=201,
@@ -945,9 +969,23 @@ def test_raw_matrix_file_rejects_genome_annotation(testapp, other_lab):
     )
 
 
-@pytest.mark.parametrize('missing_field', ['software', 'genome_assembly', 'is_multiplexed'])
+def test_raw_matrix_file_missing_samples_rejected(testapp, other_lab):
+    testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5',
+            'no_file_available': True,
+            'status': 'current',
+            **RAW_MATRIX_FILE_METADATA,
+        },
+        status=422,
+    )
+
+
+@pytest.mark.parametrize('missing_field', ['software', 'genome_assembly', 'is_multiplexed', 'samples'])
 def test_raw_matrix_file_missing_required_processing_field(
-    testapp, other_lab, missing_field
+    testapp, other_lab, tissue, missing_field
 ):
     item = {
         'lab': other_lab['@id'],
@@ -955,6 +993,7 @@ def test_raw_matrix_file_missing_required_processing_field(
         'no_file_available': True,
         'status': 'current',
         **RAW_MATRIX_FILE_METADATA,
+        'samples': [tissue['@id']],
     }
     del item[missing_field]
     testapp.post_json('/raw_matrix_file', item, status=422)
@@ -976,7 +1015,7 @@ def test_raw_matrix_file_genome_assembly_enum(testapp, other_lab):
 
 
 @pytest.mark.parametrize('genome_assembly', ['GRCh38', 'GRCm39'])
-def test_raw_matrix_file_genome_assembly_values(testapp, other_lab, genome_assembly):
+def test_raw_matrix_file_genome_assembly_values(testapp, other_lab, tissue, genome_assembly):
     res = testapp.post_json(
         '/raw_matrix_file',
         {
@@ -986,6 +1025,7 @@ def test_raw_matrix_file_genome_assembly_values(testapp, other_lab, genome_assem
             'status': 'current',
             **RAW_MATRIX_FILE_METADATA,
             'genome_assembly': genome_assembly,
+            'samples': [tissue['@id']],
         },
         status=201,
     )

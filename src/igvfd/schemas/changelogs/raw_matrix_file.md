@@ -1,5 +1,9 @@
 ## Changelog for raw_matrix_file.json
 
+### Schema version 5
+
+* Require `samples`.
+
 ### Schema version 4
 
 * Add `software`.

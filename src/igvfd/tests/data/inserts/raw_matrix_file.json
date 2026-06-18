@@ -28,7 +28,7 @@
             "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
         ],
         "uuid": "c5d6e7f8-a9b0-1234-cdef-567890123456",
-        "schema_version": "4",
+        "schema_version": "5",
         "status": "current",
         "aliases": [
             "lattice:raw-matrix-file-001"
@@ -43,8 +43,11 @@
         "genome_assembly": "GRCh38",
         "is_multiplexed": false,
         "no_file_available": true,
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
+        ],
         "uuid": "d6e7f8a9-b0c1-2345-def0-678901234567",
-        "schema_version": "4",
+        "schema_version": "5",
         "status": "current",
         "aliases": [
             "lattice:raw-matrix-file-002"
