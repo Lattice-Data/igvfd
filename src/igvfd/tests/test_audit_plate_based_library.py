@@ -52,6 +52,66 @@ def test_plate_based_library_sample_missing_multiplexing_barcodes_audit():
     assert failures[0].category == 'missing multiplexing barcodes'
 
 
+def test_plate_based_library_ngv_all_samples_without_barcodes_no_audit():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'multiplexing_method': ['natural genetic variation'],
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+            },
+            {
+                '@id': '/tissues/IGVFDTEST0002/',
+            },
+        ],
+    }
+    missing_failures = list(audit_library_samples_missing_multiplexing_barcodes(value, {}))
+    unexpected_failures = list(audit_library_samples_unexpected_multiplexing_barcodes(value, {}))
+    assert len(missing_failures) == 0
+    assert len(unexpected_failures) == 0
+
+
+def test_plate_based_library_ngv_sample_with_barcodes_unexpected_audit():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'multiplexing_method': ['natural genetic variation'],
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+            },
+            {
+                '@id': '/tissues/IGVFDTEST0002/',
+                'multiplexing_barcodes': ['P01-A1'],
+            },
+        ],
+    }
+    missing_failures = list(audit_library_samples_missing_multiplexing_barcodes(value, {}))
+    unexpected_failures = list(audit_library_samples_unexpected_multiplexing_barcodes(value, {}))
+    assert len(missing_failures) == 0
+    assert len(unexpected_failures) == 1
+    assert unexpected_failures[0].category == 'unexpected multiplexing barcodes'
+
+
+def test_plate_based_library_ngv_missing_barcodes_no_missing_audit():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'multiplexing_method': ['natural genetic variation'],
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+            },
+            {
+                '@id': '/tissues/IGVFDTEST0002/',
+            },
+        ],
+    }
+    failures = list(audit_library_samples_missing_multiplexing_barcodes(value, {}))
+    assert len(failures) == 0
+
+
 def test_plate_based_library_without_multiplexing_method_no_barcode_audit():
     value = {
         '@type': ['PlateBasedLibrary'],

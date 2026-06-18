@@ -84,21 +84,35 @@ def _samples_with_multiplexing_barcodes(samples):
     ]
 
 
-def _library_has_multiplexing_method(value):
-    return bool(value.get('multiplexing_method'))
+NATURAL_GENETIC_VARIATION_METHOD = 'natural genetic variation'
+
+
+def _library_multiplexing_method(value):
+    methods = value.get('multiplexing_method') or []
+    return methods[0] if methods else None
+
+
+def _library_requires_sample_barcodes(value):
+    method = _library_multiplexing_method(value)
+    return method is not None and method != NATURAL_GENETIC_VARIATION_METHOD
+
+
+def _library_forbids_sample_barcodes(value):
+    method = _library_multiplexing_method(value)
+    return method is None or method == NATURAL_GENETIC_VARIATION_METHOD
 
 
 def audit_library_samples_missing_multiplexing_barcodes(value, system):
     '''
     [
         {
-            "audit_description": "Libraries with a multiplexing method are expected to have multiplexing barcodes on every linked sample.",
+            "audit_description": "Libraries with a barcode-based multiplexing method are expected to have multiplexing barcodes on every linked sample.",
             "audit_category": "missing multiplexing barcodes",
             "audit_level": "ERROR"
         }
     ]
     '''
-    if not _library_has_multiplexing_method(value):
+    if not _library_requires_sample_barcodes(value):
         return
     missing = _samples_missing_multiplexing_barcodes(value.get('samples', []))
     if not missing:
@@ -123,13 +137,13 @@ def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
     '''
     [
         {
-            "audit_description": "Libraries without a multiplexing method are not expected to have samples with multiplexing barcodes.",
+            "audit_description": "Libraries without a multiplexing method, or with natural genetic variation multiplexing, are not expected to have samples with multiplexing barcodes.",
             "audit_category": "unexpected multiplexing barcodes",
             "audit_level": "ERROR"
         }
     ]
     '''
-    if _library_has_multiplexing_method(value):
+    if not _library_forbids_sample_barcodes(value):
         return
     with_multiplexing_barcodes = _samples_with_multiplexing_barcodes(value.get('samples', []))
     if not with_multiplexing_barcodes:
