@@ -1,6 +1,6 @@
 {
-    "hash": "f87469fda8bdd816edb05c39104e4c68",
-    "index_name": "droplet_based_library_f87469fd",
+    "hash": "71719a7f5014c6129baee6555928d4b9",
+    "index_name": "droplet_based_library_71719a7f",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -353,9 +353,6 @@
                             "genetic_modification": {
                                 "type": "keyword"
                             },
-                            "hash_index": {
-                                "type": "keyword"
-                            },
                             "host": {
                                 "type": "keyword"
                             },
@@ -371,6 +368,9 @@
                             "lower_bound_age": {
                                 "store": true,
                                 "type": "float"
+                            },
+                            "multiplexing_barcodes": {
+                                "type": "keyword"
                             },
                             "notes": {
                                 "type": "text"

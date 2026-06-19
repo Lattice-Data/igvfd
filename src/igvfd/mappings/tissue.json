@@ -1,6 +1,6 @@
 {
-    "hash": "7c720d36bf4d376fd1ebbbc6d28e64ee",
-    "index_name": "tissue_7c720d36",
+    "hash": "52ee639c9432a060e1b76c8ab5ab8323",
+    "index_name": "tissue_52ee639c",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -310,10 +310,6 @@
                     "genetic_modification": {
                         "type": "keyword"
                     },
-                    "hash_index": {
-                        "copy_to": "_fuzzy",
-                        "type": "keyword"
-                    },
                     "lab": {
                         "properties": {
                             "@id": {
@@ -373,6 +369,10 @@
                     "lower_bound_age": {
                         "store": true,
                         "type": "float"
+                    },
+                    "multiplexing_barcodes": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
                     },
                     "notes": {
                         "type": "text"

@@ -48,8 +48,8 @@ def tissue():
             'donors': {
                 'title': 'Donors'
             },
-            'hash_index': {
-                'title': 'Hash Index'
+            'multiplexing_barcodes': {
+                'title': 'Multiplexing Barcodes'
             },
             'preservation_method': {
                 'title': 'Preservation Method'

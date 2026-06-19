@@ -1,9 +1,12 @@
 # Primary Cell Culture Changelog
 
+## Schema version 3
+
+* Rename hash_index to multiplexing_barcodes.
+
 ## Minor changes since schema version 2
 
 * Add developmental_stages.
-* Add hash_index.
 
 ## Schema version 2
 

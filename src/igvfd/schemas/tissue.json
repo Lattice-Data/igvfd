@@ -42,7 +42,7 @@
     },
     "properties": {
         "schema_version": {
-            "default": "2"
+            "default": "3"
         },
         "spatial_information": {
             "title": "Spatial Information",
@@ -96,7 +96,7 @@
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
-        "hash_index",
+        "multiplexing_barcodes",
         "sample_terms.term_name",
         "developmental_stages.term_name",
         "spatial_information"

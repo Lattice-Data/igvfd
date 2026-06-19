@@ -11,7 +11,7 @@
             "c2de111f-900d-460d-91d3-6a735002b45c"
         ],
         "uuid": "414e5c99-e9db-43b1-b7e9-49979fc6efb6",
-        "schema_version": "1",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:tissue-frozen-basic"
@@ -20,7 +20,10 @@
             "SRA:SRS12345"
         ],
         "description": "Test tissue sample 1",
-        "preservation_method": "frozen"
+        "preservation_method": "frozen",
+        "multiplexing_barcodes": [
+            "P01-A1"
+        ]
     },
     {
         "lab": "teri-klein",
@@ -31,7 +34,7 @@
             "c3d4e5f6-a7b8-9012-cdef-345678901234"
         ],
         "uuid": "2cc69a5c-eb1f-4e32-b62d-bb53eb396726",
-        "schema_version": "1",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:tissue-brain-coronal",
@@ -42,7 +45,10 @@
         "thickness": 5.0,
         "thickness_units": "mm",
         "orientation": "coronal",
-        "date_obtained": "2024-01-15"
+        "date_obtained": "2024-01-15",
+        "multiplexing_barcodes": [
+            "SCALE-A1"
+        ]
     },
     {
         "lab": "teri-klein",
@@ -53,7 +59,7 @@
             "c3d4e5f6-a7b8-9012-cdef-345678901234"
         ],
         "uuid": "2b3c4d5e-6f70-8901-bcde-222222222222",
-        "schema_version": "1",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:tissue-cultured-treated"

@@ -103,3 +103,29 @@ def test_upgrade_unknown_enrichment_method_still_drops_key(upgrader):
     result = upgrader.upgrade('tissue', value, current_version='1', target_version='2')
     assert 'enrichment_method' not in result
     assert 'selection_methods' not in result
+
+
+@pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
+@pytest.mark.parametrize(
+    'hash_index',
+    [
+        'P01-A1',
+        'SCALE-A1',
+        'BC001',
+    ],
+)
+def test_upgrade_hash_index_to_multiplexing_barcodes(upgrader, item_type, hash_index):
+    value = {'schema_version': '2', 'hash_index': hash_index}
+    result = upgrader.upgrade(item_type, value, current_version='2', target_version='3')
+    assert result['schema_version'] == '3'
+    assert result['multiplexing_barcodes'] == [hash_index]
+    assert 'hash_index' not in result
+
+
+@pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
+def test_upgrade_without_hash_index(upgrader, item_type):
+    value = {'schema_version': '2'}
+    result = upgrader.upgrade(item_type, value, current_version='2', target_version='3')
+    assert result['schema_version'] == '3'
+    assert 'multiplexing_barcodes' not in result
+    assert 'hash_index' not in result

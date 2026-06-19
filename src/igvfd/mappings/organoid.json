@@ -1,6 +1,6 @@
 {
-    "hash": "cc4cdaa9dd8b605e5c0676bb6cfcc69a",
-    "index_name": "organoid_cc4cdaa9",
+    "hash": "94810f8ed85c6a45b1587f36f656b80d",
+    "index_name": "organoid_94810f8e",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -307,10 +307,6 @@
                     "genetic_modification": {
                         "type": "keyword"
                     },
-                    "hash_index": {
-                        "copy_to": "_fuzzy",
-                        "type": "keyword"
-                    },
                     "intended_cell_types": {
                         "properties": {
                             "@id": {
@@ -425,6 +421,10 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "multiplexing_barcodes": {
+                        "copy_to": "_fuzzy",
+                        "type": "keyword"
                     },
                     "notes": {
                         "type": "text"

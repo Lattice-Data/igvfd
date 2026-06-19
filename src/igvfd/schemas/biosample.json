@@ -60,7 +60,7 @@
     },
     "properties": {
         "schema_version": {
-            "default": "2"
+            "default": "3"
         },
         "dbxrefs": {
             "type": "array",
@@ -632,20 +632,25 @@
                 "appscript": "[\"/labs/john-doe/\", \"/sources/abcam/\"]"
             }
         },
-        "hash_index": {
-            "title": "Hash Index",
-            "description": "Identifier for oligo-based sample hashing (hashtag demultiplexing), tagging this biosample with the hashtag oligo used during multiplexed library preparation.",
-            "type": "string",
-            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+        "multiplexing_barcodes": {
+            "title": "Multiplexing Barcodes",
+            "description": "Identifier(s) for the sample-level barcode used to demultiplex this biosample from a multiplexed library. Multiple values are valid when the multiplexing strategy assigns more than one barcode per biosample, as in combinatorial indexing across plate wells. Each entry must match the controlled vocabulary for the multiplexing strategy declared in `multiplexing_method`. Supported strategies include hashtag-oligo demultiplexing (e.g., BioLegend TotalSeq A0251), combinatorial indexing via plate-well addresses (e.g., ScaleBio SCALE-A1 or P02-D1, sci-RNA-seq 9A-9C or 10H), and probe-based sample barcoding (e.g., 10X Genomics Flex BC001–BC016, CRISPR Flex CR001–CR016, or 384-plate well A-A01–D-H12).",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "pattern": "^(BC0(0[1-9]|1[0-6])|CR0(0[1-9]|1[0-6])|[A-D]-[A-H](0[1-9]|1[0-2])|SCALE-[A-H]([1-9]|1[0-2])|P(0[1-9]|[1-9][0-9])-[A-H]([1-9]|1[0-2])|([1-9]|1[0-2])[A-H](-([1-9]|1[0-2])[A-H])?|[A-D][0-9]{4})$"
+            },
             "submissionExample": {
-                "appscript": "P01-A1"
+                "appscript": "[\"P01-A1\"]"
             }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
-        "hash_index",
+        "multiplexing_barcodes",
         "sample_terms.term_name",
         "developmental_stages.term_name",
         "sources.title"

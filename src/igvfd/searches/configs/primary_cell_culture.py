@@ -45,8 +45,8 @@ def primary_cell_culture():
             'donors': {
                 'title': 'Donors'
             },
-            'hash_index': {
-                'title': 'Hash Index'
+            'multiplexing_barcodes': {
+                'title': 'Multiplexing Barcodes'
             },
             'passage_number': {
                 'title': 'Passage Number'
