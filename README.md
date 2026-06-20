@@ -16,62 +16,89 @@ $ docker compose up --build
 3. Browse at `localhost:8000`.
 4. Stop services and remove data volume:
 ```bash
-$ docker compose down -v
+$ docker compose down -v --remove-orphans
 ```
+
+The dev stack uses compose project name `igvfd-dev`. Test stacks use separate project names (`igvfd-test`, `igvfd-test-indexer`) so dev data does not contaminate test postgres volumes.
 
 ## Test with Docker Compose
-Run all unit tests automatically and clean up:
+
+Use [`scripts/test.sh`](scripts/test.sh) for all local test runs. It runs preflight cleanup, executes tests, and tears down stacks automatically (including on `Ctrl+C`).
+
 ```bash
-$ docker compose -f docker-compose.test.yml up --exit-code-from pyramid
-....
-$ docker compose -f docker-compose.test.yml down -v
+# Full unit test suite (excludes @pytest.mark.indexing)
+$ ./scripts/test.sh unit
+
+# Full indexer test suite (@pytest.mark.indexing only)
+$ ./scripts/test.sh indexer
+
+# Targeted unit tests
+$ ./scripts/test.sh unit -- -k "test_foo" -q --tb=short
+$ ./scripts/test.sh unit -- --pyargs igvfd.tests.test_audit_plate_based_library -q
+
+# Targeted indexer tests
+$ ./scripts/test.sh indexer -- -k "test_indexing_foo" -q
+
+# If tests hang or ports conflict
+$ ./scripts/test.sh reset
+
+# Show running igvfd containers and port usage
+$ ./scripts/test.sh status
+
+$ ./scripts/test.sh --help
 ```
 
-Run all indexer tests automatically and clean up:
+**Important:** `pytest.ini` sets `--pyargs igvfd.tests`. For targeted runs, `./scripts/test.sh` clears that automatically. If running pytest manually inside a container, you must pass `--override-ini addopts=` or pytest collects the **entire suite** (~1300+ tests) and appears hung. Use `--pyargs igvfd.tests.<module>` (no `.py` suffix) or `-k`.
+
+**Indexer tests:** use `./scripts/test.sh indexer` only for tests marked `@pytest.mark.indexing`. Audit tests that use `indexer_testapp` or `@@index-data` run on the unit stack.
+
+Requires Docker Compose v2 (same as CI).
+
+### Interactive debugging
+
+Prefer the wrapper shell mode (automatic cleanup on exit):
+
 ```bash
-$ docker compose -f docker-compose.test-indexer.yml up --exit-code-from indexer-tests
-....
-$ docker compose -f docker-compose.test-indexer.yml down -v
+$ ./scripts/test.sh shell unit      # unit fixtures + bash in pyramid container
+$ ./scripts/test.sh shell indexer   # indexer fixtures + bash in indexer-tests container
 ```
 
-Or run unit tests interactively:
-1. Start `postgres` and `localstack` services (for use as fixtures).
+Advanced manual flow (unit tests):
+
+1. Start fixtures:
 ```bash
 $ docker compose -f docker-compose.test.yml up postgres localstack
 ```
-2. Connect to testing environment.
+2. Connect to testing environment:
 ```bash
-# In another terminal (starts interactive container).
-$ docker compose -f docker-compose.test.yml run --service-ports pyramid /bin/bash
+$ docker compose -f docker-compose.test.yml run --rm --service-ports pyramid /bin/bash
 ```
-3. Run tests.
+3. Run tests inside the container:
 ```bash
-# In interactive container (modify pytest command as needed).
-$ pytest
+$ pytest --override-ini addopts= -p igvfd.tests --pyargs igvfd.tests.test_foo -q
 ```
-4. Stop and clean.
+4. Stop and clean:
 ```bash
-docker compose down -v
+$ docker compose -f docker-compose.test.yml down -v --remove-orphans
 ```
 
-Or run indexer tests interactively:
-1. Start the services (for use as fixtures): `postgres`, `localstack`, `opensearch`, `pyramid`, `nginx`, `invalidation-service` and `indexing-service`.
+Advanced manual flow (indexer tests):
+
+1. Start fixtures:
 ```bash
 $ docker compose -f docker-compose.test-indexer.yml up localstack postgres opensearch pyramid nginx invalidation-service indexing-service
 ```
-2. Connect to testing environment.
+2. Connect:
 ```bash
-# In another terminal (starts interactive container).
-$ docker compose -f docker-compose.test-indexer.yml run --service-ports indexer-tests /bin/bash
+$ docker compose -f docker-compose.test-indexer.yml run --rm --service-ports indexer-tests /bin/bash
 ```
-3. Run tests.
+3. Run tests:
 ```bash
-# In interactive container (modify pytest command as needed).
-$ pytest
+$ pytest -m indexing -q
 ```
-4. Stop and clean.
+4. Stop and clean:
 ```bash
-docker compose down -v
+$ docker compose -f docker-compose.test-indexer.yml down -v --remove-orphans
 ```
 
 ## Automatic linting
@@ -88,8 +115,9 @@ Now every time you run `git commit` the automatic checks are run to check the ch
 The `igvfd-check-opensearch-mappings` test on CircleCI will fail if the mappings haven't been updated after changing schemas, calculated properties, or embedded fields.
 
 ```bash
-$ docker compose down -v && docker compose build
-$ docker compose run pyramid /scripts/pyramid/generate-opensearch-mappings.sh
+$ ./scripts/test.sh reset
+$ docker compose down -v --remove-orphans && docker compose build
+$ docker compose run --rm pyramid /scripts/pyramid/generate-opensearch-mappings.sh
 ```
 
 This will regenerate the mappings and allow you to see any differences with `git diff`. Commit the changes and push.

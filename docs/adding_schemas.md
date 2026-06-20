@@ -111,9 +111,10 @@ This document outlines all the files that need to be created or updated when add
   The `index_name` value is temporary; the generator will replace it with the actual name.
 - **Scripts to Run**:
   ```bash
-  # Generate mapping
-  docker compose down -v && docker compose build
-  docker compose run pyramid /scripts/pyramid/generate-opensearch-mappings.sh
+  # Generate mapping (reset stale Docker stacks first)
+  ./scripts/test.sh reset
+  docker compose down -v --remove-orphans && docker compose build
+  docker compose run --rm pyramid /scripts/pyramid/generate-opensearch-mappings.sh
   ```
 
 ### 5. **Search Configuration** (REQUIRED)

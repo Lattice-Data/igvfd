@@ -1,3 +1,5 @@
+name: igvfd-test
+
 services:
 
   localstack:

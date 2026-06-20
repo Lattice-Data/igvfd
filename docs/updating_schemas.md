@@ -162,8 +162,9 @@ For example, if we included a minor change in treatment object such that *μg/kg
 6. If applicable, regenerate OpenSearch mappings after changes to schemas, calculated properties, or embedded fields (see `README.md` "Generate Opensearch mappings"):
 
 ```bash
-docker compose down -v && docker compose build
-docker compose run pyramid /scripts/pyramid/generate-opensearch-mappings.sh
+./scripts/test.sh reset
+docker compose down -v --remove-orphans && docker compose build
+docker compose run --rm pyramid /scripts/pyramid/generate-opensearch-mappings.sh
 ```
 
 7. Document the changes to the corresponding log file within `src/igvfd/schemas/changelogs/`.
@@ -252,8 +253,9 @@ Continuing with our example, all the ```"purpose": "validation"``` must now be c
 7. If applicable, regenerate OpenSearch mappings after changes to schemas, calculated properties, or embedded fields (see `README.md` "Generate Opensearch mappings"):
 
 ```bash
-docker compose down -v && docker compose build
-docker compose run pyramid /scripts/pyramid/generate-opensearch-mappings.sh
+./scripts/test.sh reset
+docker compose down -v --remove-orphans && docker compose build
+docker compose run --rm pyramid /scripts/pyramid/generate-opensearch-mappings.sh
 ```
 
 **Specific example from the genetic modifications object upgrade:**
