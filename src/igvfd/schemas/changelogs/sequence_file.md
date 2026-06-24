@@ -4,6 +4,10 @@
 
 * Remove md5sum.
 
+### Minor changes since schema version 4
+
+* Update inherited `file_size` and `crc64nvme_base64` comments from file profile.
+
 ### Minor changes since schema version 3
 
 * Remove duplicate `sequence_file_sets` definition from the JSON profile; calculated property unchanged on the type class.

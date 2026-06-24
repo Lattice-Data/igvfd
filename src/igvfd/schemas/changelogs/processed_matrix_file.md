@@ -4,6 +4,10 @@
 
 * Add `is_multiplexed`.
 
+### Minor changes since schema version 4
+
+* Update inherited `file_size` and `crc64nvme_base64` comments from file profile.
+
 ### Schema version 3
 
 * Remove md5sum.

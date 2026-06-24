@@ -1,6 +1,6 @@
 {
-    "hash": "52ee639c9432a060e1b76c8ab5ab8323",
-    "index_name": "tissue_52ee639c",
+    "hash": "3125f39be54ee334d419ea80916f79c0",
+    "index_name": "tissue_3125f39b",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -365,6 +365,9 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "libraries": {
+                        "type": "keyword"
                     },
                     "lower_bound_age": {
                         "store": true,

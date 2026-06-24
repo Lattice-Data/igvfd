@@ -92,6 +92,13 @@ STATUS_HIERARCHY = {
 }
 
 
+def reverse_link_paths(request, uuids):
+    return [
+        request.embed('/', str(uuid), '@@object')['@id']
+        for uuid in uuids
+    ]
+
+
 def paths_filtered_by_status(request, paths, exclude=('deleted', 'replaced'), include=None):
     if include is not None:
         return sorted([

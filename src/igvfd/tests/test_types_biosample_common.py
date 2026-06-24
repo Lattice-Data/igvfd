@@ -458,3 +458,92 @@ def test_biosample_author_metadata(
             item['classification'] = config['classification_value']
     res = testapp.post_json(endpoint, item, status=201)
     assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']
+
+
+def test_biosample_libraries_reverse_link_plate_based_library(
+    testapp, tissue, plate_based_library,
+):
+    res = testapp.get(tissue['@id'])
+    assert plate_based_library['@id'] in res.json['libraries']
+
+
+def test_biosample_libraries_reverse_link_droplet_based_library(
+    testapp, tissue, droplet_based_library,
+):
+    res = testapp.get(tissue['@id'])
+    assert droplet_based_library['@id'] in res.json['libraries']
+
+
+def test_biosample_libraries_reverse_link_multiple_libraries(
+    testapp, other_lab, tissue, plate_based_library, droplet_based_library,
+):
+    second_plate_library = testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+
+    res = testapp.get(tissue['@id'])
+    libraries = res.json['libraries']
+    assert len(libraries) == 3
+    assert plate_based_library['@id'] in libraries
+    assert droplet_based_library['@id'] in libraries
+    assert second_plate_library['@id'] in libraries
+
+
+def test_biosample_libraries_reverse_link_no_libraries(
+    testapp, other_lab, human_donor, controlled_term_brain,
+):
+    tissue = testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+
+    res = testapp.get(tissue['@id'])
+    assert res.json['libraries'] == []
+
+
+@pytest.mark.parametrize(
+    'endpoint,sample_term_fixture',
+    [
+        ('/organoid', 'controlled_term_brain'),
+        ('/cell_line', 'controlled_term'),
+    ],
+)
+def test_biosample_libraries_reverse_link_inherited(
+    testapp, other_lab, human_donor, endpoint, sample_term_fixture, request,
+):
+    sample_term = request.getfixturevalue(sample_term_fixture)
+    biosample = testapp.post_json(
+        endpoint,
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [sample_term['@id']],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+
+    linked_library = testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [biosample['@id']],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+
+    res = testapp.get(biosample['@id'])
+    assert linked_library['@id'] in res.json['libraries']

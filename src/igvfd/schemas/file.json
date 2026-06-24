@@ -76,7 +76,6 @@
         "file_size": {
             "title": "File Size",
             "description": "File size specified in bytes.",
-            "comment": "Do not submit. This value is calculated by the checkfiles script upon submission.",
             "type": "integer",
             "minimum": 0
         },
@@ -92,7 +91,7 @@
         "crc64nvme_base64": {
             "title": "CRC64NVME checksum (Base64)",
             "description": "Base64-encoded CRC64NVME checksum as reported by AWS S3.",
-            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "comment": "Submit the Base64-encoded CRC64NVME checksum from S3 when the file is available (no_file_available is false). When no_file_available is true, omit both s3_uri and crc64nvme_base64.",
             "type": "string",
             "pattern": "^[A-Za-z0-9+/]{11}={0,2}$",
             "submissionExample": {

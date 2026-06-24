@@ -4,6 +4,10 @@
 
 * Require `samples`.
 
+### Minor changes since schema version 5
+
+* Update inherited `file_size` and `crc64nvme_base64` comments from file profile.
+
 ### Schema version 4
 
 * Add `software`.
