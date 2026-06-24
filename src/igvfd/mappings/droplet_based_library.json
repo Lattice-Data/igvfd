@@ -1,6 +1,6 @@
 {
-    "hash": "71719a7f5014c6129baee6555928d4b9",
-    "index_name": "droplet_based_library_71719a7f",
+    "hash": "efd268db0eaee88ca831fa80e8687c56",
+    "index_name": "droplet_based_library_efd268db",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -363,6 +363,9 @@
                                 "type": "keyword"
                             },
                             "lab": {
+                                "type": "keyword"
+                            },
+                            "libraries": {
                                 "type": "keyword"
                             },
                             "lower_bound_age": {

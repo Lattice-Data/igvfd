@@ -1,6 +1,6 @@
 {
-    "hash": "e97660ba0de2d0d030ef2642eb9110f2",
-    "index_name": "cell_line_e97660ba",
+    "hash": "98de7703517ea63ab83583822558e614",
+    "index_name": "cell_line_98de7703",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -540,6 +540,9 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "libraries": {
+                        "type": "keyword"
                     },
                     "multiplexing_barcodes": {
                         "copy_to": "_fuzzy",

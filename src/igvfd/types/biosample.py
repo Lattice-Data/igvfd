@@ -7,6 +7,7 @@ from snovault import (
 from snovault.util import Path
 from .base import (
     Item,
+    reverse_link_paths,
 )
 
 
@@ -25,6 +26,10 @@ class Biosample(Item):
     item_type = 'biosample'
     base_types = ['Biosample'] + Item.base_types
     schema = load_schema('igvfd:schemas/biosample.json')
+    rev = {
+        'plate_based_libraries': ('PlateBasedLibrary', 'samples'),
+        'droplet_based_libraries': ('DropletBasedLibrary', 'samples'),
+    }
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
@@ -34,6 +39,24 @@ class Biosample(Item):
         Path('treatments', include=['@id', 'title', 'summary']),
         Path('sources', include=['@id', 'title']),
     ]
+
+    @calculated_property(
+        schema={
+            'title': 'Libraries',
+            'type': 'array',
+            'description': 'Libraries prepared from this biosample.',
+            'notSubmittable': True,
+            'items': {
+                'title': 'Library',
+                'type': 'string',
+            },
+        }
+    )
+    def libraries(self, request):
+        uuids = set()
+        for rev_key in self.rev:
+            uuids.update(self.get_rev_links(rev_key))
+        return reverse_link_paths(request, sorted(uuids))
 
 
 @collection(

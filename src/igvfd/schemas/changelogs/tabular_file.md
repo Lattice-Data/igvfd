@@ -4,6 +4,10 @@
 
 * Remove md5sum.
 
+### Minor changes since schema version 3
+
+* Update inherited `file_size` and `crc64nvme_base64` comments from file profile.
+
 ### Minor changes since schema version 2
 
 ### Schema version 2

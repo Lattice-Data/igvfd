@@ -7,6 +7,7 @@ from snovault import (
 from snovault.util import Path
 from .base import (
     Item,
+    reverse_link_paths,
 )
 
 
@@ -29,10 +30,6 @@ class File(Item):
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
     ]
-
-
-def _reverse_link_paths(request, uuids):
-    return [request.embed('/', str(uuid), '@@object')['@id'] for uuid in uuids]
 
 
 @collection(
@@ -87,7 +84,7 @@ class SequenceFile(File):
         uuids = set()
         for rev_key in self.rev:
             uuids.update(self.get_rev_links(rev_key))
-        return _reverse_link_paths(request, sorted(uuids))
+        return reverse_link_paths(request, sorted(uuids))
 
 
 @collection(
@@ -163,7 +160,7 @@ class RawMatrixFile(File):
     )
     def matrix_file_sets(self, request):
         uuids = self.get_rev_links('matrix_file_sets')
-        return _reverse_link_paths(request, sorted(uuids))
+        return reverse_link_paths(request, sorted(uuids))
 
 
 @collection(
@@ -211,4 +208,4 @@ class ProcessedMatrixFile(File):
     )
     def matrix_file_sets(self, request):
         uuids = self.get_rev_links('matrix_file_sets')
-        return _reverse_link_paths(request, sorted(uuids))
+        return reverse_link_paths(request, sorted(uuids))

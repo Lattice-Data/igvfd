@@ -4,6 +4,10 @@
 
 * Rename hash_index to multiplexing_barcodes.
 
+## Minor changes since schema version 3
+
+* Add calculated property `libraries`.
+
 ## Minor changes since schema version 2
 
 * Add developmental_stages.

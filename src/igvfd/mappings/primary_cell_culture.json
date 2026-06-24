@@ -1,6 +1,6 @@
 {
-    "hash": "b10096b2d1212c7d1354f71aca4dccb0",
-    "index_name": "primary_cell_culture_b10096b2",
+    "hash": "546c0031037dd427a8ad8b2dd2cb58df",
+    "index_name": "primary_cell_culture_546c0031",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -365,6 +365,9 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "libraries": {
+                        "type": "keyword"
                     },
                     "lower_bound_age": {
                         "store": true,
