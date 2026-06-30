@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/python:3.11.4-slim-bookworm
+FROM public.ecr.aws/docker/library/python:3.11.15-slim-trixie
 
 ENV PYTHONDONTWRITEBYTECODE 1
 
