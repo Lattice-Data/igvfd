@@ -189,6 +189,7 @@ def test_droplet_based_library_create_with_multiplexing_method_enum_values(
         'Gene Expression',
         'Antibody Capture',
         'CRISPR Guide Capture',
+        'Viral ORF Expression',
         'Multiplexing Capture',
         'ATAC',
         'BCR',
@@ -393,6 +394,30 @@ def test_droplet_based_library_create_with_linked_libraries(testapp, other_lab, 
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
     assert res.json['@graph'][0]['linked_libraries'] == [droplet_based_library['@id']]
+
+
+def test_droplet_based_library_create_with_viral_orf_expression_gex_pairing(testapp, other_lab, tissue):
+    viral_orf_item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'feature_types': ['Viral ORF Expression'],
+        'status': 'current',
+    }
+    viral_orf_library = testapp.post_json(
+        '/droplet_based_library', viral_orf_item, status=201
+    ).json['@graph'][0]
+    gex_item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
+        'linked_libraries': [viral_orf_library['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', gex_item, status=201)
+    assert res.json['@graph'][0]['feature_types'] == ['Gene Expression']
+    assert res.json['@graph'][0]['linked_libraries'] == [viral_orf_library['@id']]
 
 
 def test_droplet_based_library_create_with_multiple_linked_libraries(

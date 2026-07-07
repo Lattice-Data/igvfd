@@ -108,6 +108,41 @@
     {
         "lab": "teri-klein",
         "samples": [
+            "2cc69a5c-eb1f-4e32-b62d-bb53eb396726"
+        ],
+        "uuid": "4ba01e07-b11d-4a73-a306-4ef8fbdd274a",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-viral-orf"
+        ],
+        "feature_types": [
+            "Viral ORF Expression"
+        ],
+        "library_cardinality": "dual"
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "2cc69a5c-eb1f-4e32-b62d-bb53eb396726"
+        ],
+        "uuid": "45419ec9-e208-4673-8cf9-d3ae17c2c4b6",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:droplet-library-viral-orf-gex"
+        ],
+        "feature_types": [
+            "Gene Expression"
+        ],
+        "library_cardinality": "dual",
+        "linked_libraries": [
+            "4ba01e07-b11d-4a73-a306-4ef8fbdd274a"
+        ]
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
             "414e5c99-e9db-43b1-b7e9-49979fc6efb6",
             "2cc69a5c-eb1f-4e32-b62d-bb53eb396726"
         ],

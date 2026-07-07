@@ -1,5 +1,9 @@
 # Droplet Based Library Changelog
 
+### Minor changes since schema version 2
+
+* Extend `feature_types` enum list to include `Viral ORF Expression`.
+
 ### Schema version 2
 
 * Merge *dependentSchemas* from abstract Library schema (including *multiplexing_method* requiring at least two samples).

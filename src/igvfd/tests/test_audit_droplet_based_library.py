@@ -384,6 +384,55 @@ def test_dual_cardinality_exactly_one_linked_library(
     )
 
 
+def test_dual_cardinality_viral_orf_expression_gex_pairing(
+    testapp,
+    indexer_testapp,
+    other_lab,
+    tissue,
+):
+    viral_orf_library = testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'dual',
+            'feature_types': ['Viral ORF Expression'],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+    gex_library = testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'dual',
+            'feature_types': ['Gene Expression'],
+            'linked_libraries': [viral_orf_library['@id']],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+    res = indexer_testapp.get(gex_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] == 'missing linked libraries'
+        for error in errors_list
+    )
+    assert not any(
+        error['category'] == 'unexpected number of linked libraries'
+        for error in errors_list
+    )
+    assert not any(
+        error['category'] == 'unexpected linked libraries'
+        for error in errors_list
+    )
+    assert not any(
+        error['category'] == 'self linked library'
+        for error in errors_list
+    )
+
+
 def test_dual_cardinality_self_linked_library(
     testapp,
     indexer_testapp,
