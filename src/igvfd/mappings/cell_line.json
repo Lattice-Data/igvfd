@@ -1,6 +1,6 @@
 {
-    "hash": "98de7703517ea63ab83583822558e614",
-    "index_name": "cell_line_98de7703",
+    "hash": "283f1b1bd4600a95c6661fe7b246cf1d",
+    "index_name": "cell_line_283f1b1b",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -146,6 +146,10 @@
                     },
                     "@type": {
                         "copy_to": "_exact",
+                        "type": "keyword"
+                    },
+                    "RT_indexes": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "aliases": {

@@ -45,6 +45,9 @@ def organoid():
             'multiplexing_barcodes': {
                 'title': 'Multiplexing Barcodes'
             },
+            'RT_indexes': {
+                'title': 'RT Indexes'
+            },
             'intended_cell_types': {
                 'title': 'Intended Cell Types'
             },

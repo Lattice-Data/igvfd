@@ -51,6 +51,9 @@ def tissue():
             'multiplexing_barcodes': {
                 'title': 'Multiplexing Barcodes'
             },
+            'RT_indexes': {
+                'title': 'RT Indexes'
+            },
             'preservation_method': {
                 'title': 'Preservation Method'
             },

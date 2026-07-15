@@ -1,6 +1,7 @@
 from igvfd.audit.library import (
     audit_library_samples_missing_multiplexing_barcodes,
     audit_library_samples_unexpected_multiplexing_barcodes,
+    audit_plate_based_library_samples_missing_rt_indexes,
 )
 
 
@@ -231,5 +232,75 @@ def test_plate_based_library_fixture_with_multiplexing_barcodes_clean(
     )
     assert not any(
         error['category'] == 'unexpected multiplexing barcodes'
+        for error in errors_list
+    )
+
+
+def test_plate_based_library_all_samples_have_rt_indexes_no_audit():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+                'RT_indexes': ['SCALEQUANT-A1'],
+            },
+            {
+                '@id': '/tissues/IGVFDTEST0002/',
+                'RT_indexes': ['SCALEQUANT-A2'],
+            },
+        ],
+    }
+    failures = list(audit_plate_based_library_samples_missing_rt_indexes(value, {}))
+    assert len(failures) == 0
+
+
+def test_plate_based_library_sample_missing_rt_indexes_audit():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+                'RT_indexes': ['SCALEQUANT-A1'],
+            },
+            {
+                '@id': '/tissues/IGVFDTEST0002/',
+            },
+        ],
+    }
+    failures = list(audit_plate_based_library_samples_missing_rt_indexes(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'missing RT indexes'
+
+
+def test_plate_based_library_fixture_missing_rt_indexes(
+    testapp,
+    indexer_testapp,
+    plate_based_library,
+):
+    res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert any(
+        error['category'] == 'missing RT indexes'
+        for error in errors_list
+    )
+
+
+def test_plate_based_library_fixture_with_rt_indexes_clean(
+    testapp,
+    indexer_testapp,
+    plate_based_library,
+):
+    tissue_id = plate_based_library['samples'][0]
+    testapp.patch_json(
+        tissue_id,
+        {'RT_indexes': ['SCALEQUANT-A1', 'SCALEQUANT-A2']},
+        status=200,
+    )
+    res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] == 'missing RT indexes'
         for error in errors_list
     )

@@ -48,6 +48,9 @@ def cell_line():
             'multiplexing_barcodes': {
                 'title': 'Multiplexing Barcodes'
             },
+            'RT_indexes': {
+                'title': 'RT Indexes'
+            },
             'host': {
                 'title': 'Host'
             },
