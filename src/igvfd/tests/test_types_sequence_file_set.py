@@ -302,6 +302,7 @@ def test_sequence_file_set_cro_order_valid(testapp, other_lab, sequence_file,
         'run_cardinality': 'single-end',
         'read1': sequence_file['@id'],
         'CRO_order': cro_order,
+        'is_pilot_order': False,
         'status': 'current',
     }
     res = testapp.post_json('/sequence_file_set', item, status=201)
@@ -327,6 +328,7 @@ def test_sequence_file_set_cro_order_invalid(testapp, other_lab, sequence_file,
             'run_cardinality': 'single-end',
             'read1': sequence_file['@id'],
             'CRO_order': cro_order,
+            'is_pilot_order': False,
             'status': 'current',
         },
         status=422
@@ -398,6 +400,7 @@ def test_sequence_file_set_create_with_all_optional_fields(testapp, other_lab, s
         'read2': sequence_file_with_description['@id'],
         'sequencing_platform': 'Illumina NextSeq 1000',
         'CRO_order': 'AN00012345',
+        'is_pilot_order': False,
         'description': 'Test sequence file set with all fields',
         'aliases': ['lattice:test-sfs-001'],
         'status': 'current',
@@ -405,5 +408,101 @@ def test_sequence_file_set_create_with_all_optional_fields(testapp, other_lab, s
     res = testapp.post_json('/sequence_file_set', item, status=201)
     assert res.json['@graph'][0]['sequencing_platform'] == 'Illumina NextSeq 1000'
     assert res.json['@graph'][0]['CRO_order'] == 'AN00012345'
+    assert res.json['@graph'][0]['is_pilot_order'] is False
     assert res.json['@graph'][0]['description'] == 'Test sequence file set with all fields'
     assert 'lattice:test-sfs-001' in res.json['@graph'][0]['aliases']
+
+
+def test_sequence_file_set_without_cro_order_or_is_pilot_order(testapp, other_lab, sequence_file,
+                                                               droplet_based_library):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/sequence_file_set', item, status=201)
+    assert 'CRO_order' not in res.json['@graph'][0]
+    assert 'is_pilot_order' not in res.json['@graph'][0]
+
+
+def test_sequence_file_set_is_pilot_order_true_with_cro_order(testapp, other_lab, sequence_file,
+                                                              droplet_based_library):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'CRO_order': 'AN00012345',
+        'is_pilot_order': True,
+        'status': 'current',
+    }
+    res = testapp.post_json('/sequence_file_set', item, status=201)
+    assert res.json['@graph'][0]['is_pilot_order'] is True
+    assert res.json['@graph'][0]['CRO_order'] == 'AN00012345'
+
+
+def test_sequence_file_set_is_pilot_order_false_with_cro_order(testapp, other_lab, sequence_file,
+                                                               droplet_based_library):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'CRO_order': 'AN00012345',
+        'is_pilot_order': False,
+        'status': 'current',
+    }
+    res = testapp.post_json('/sequence_file_set', item, status=201)
+    assert res.json['@graph'][0]['is_pilot_order'] is False
+    assert res.json['@graph'][0]['CRO_order'] == 'AN00012345'
+
+
+def test_sequence_file_set_cro_order_without_is_pilot_order_fails(testapp, other_lab, sequence_file,
+                                                                  droplet_based_library):
+    testapp.post_json(
+        '/sequence_file_set',
+        {
+            'lab': other_lab['@id'],
+            'library': droplet_based_library['@id'],
+            'run_cardinality': 'single-end',
+            'read1': sequence_file['@id'],
+            'CRO_order': 'AN00012345',
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_sequence_file_set_is_pilot_order_without_cro_order_fails(testapp, other_lab, sequence_file,
+                                                                  droplet_based_library):
+    testapp.post_json(
+        '/sequence_file_set',
+        {
+            'lab': other_lab['@id'],
+            'library': droplet_based_library['@id'],
+            'run_cardinality': 'single-end',
+            'read1': sequence_file['@id'],
+            'is_pilot_order': True,
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_sequence_file_set_is_pilot_order_invalid_type(testapp, other_lab, sequence_file,
+                                                       droplet_based_library):
+    testapp.post_json(
+        '/sequence_file_set',
+        {
+            'lab': other_lab['@id'],
+            'library': droplet_based_library['@id'],
+            'run_cardinality': 'single-end',
+            'read1': sequence_file['@id'],
+            'CRO_order': 'AN00012345',
+            'is_pilot_order': 'not-a-boolean',
+            'status': 'current',
+        },
+        status=422
+    )

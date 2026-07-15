@@ -29,6 +29,16 @@
         }
     ],
     "dependentSchemas": {
+        "CRO_order": {
+            "required": [
+                "is_pilot_order"
+            ]
+        },
+        "is_pilot_order": {
+            "required": [
+                "CRO_order"
+            ]
+        },
         "run_cardinality": {
             "oneOf": [
                 {
@@ -212,7 +222,7 @@
     },
     "properties": {
         "schema_version": {
-            "default": "1"
+            "default": "2"
         },
         "library": {
             "title": "Library",
@@ -242,10 +252,20 @@
         "CRO_order": {
             "title": "CRO Order",
             "description": "The order identifier from a Contract Research Organization (CRO), such as Novogene or Psomagen.",
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
             "type": "string",
             "pattern": "^(AN0|NVUS)[A-Za-z0-9-]+$",
             "submissionExample": {
                 "appscript": "AN00012345"
+            }
+        },
+        "is_pilot_order": {
+            "title": "Is Pilot Order",
+            "description": "Whether this sequence file set is associated with a pilot order.",
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "type": "boolean",
+            "submissionExample": {
+                "appscript": "false"
             }
         },
         "read1": {

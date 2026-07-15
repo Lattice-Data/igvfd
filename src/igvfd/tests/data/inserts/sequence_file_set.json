@@ -6,8 +6,9 @@
         "read1": "f1a2b3c4-d5e6-7890-abcd-1234567890ab",
         "sequencing_platform": "Illumina NextSeq 1000",
         "CRO_order": "AN00012345",
+        "is_pilot_order": true,
         "uuid": "a1b2c3d4-e5f6-7890-abcd-111111111111",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:sfs-illumina-single-end-001"
@@ -21,8 +22,9 @@
         "untrimmed_cram": "f2b3c4d5-e6f7-8901-bcde-234567890abc",
         "sequencing_platform": "Ultima Genomics UG 100",
         "CRO_order": "NVUS123456789-01",
+        "is_pilot_order": false,
         "uuid": "b2c3d4e5-f6a7-8901-bcde-222222222222",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:sfs-ultima-untrimmed-001"
@@ -36,8 +38,9 @@
         "read1": "81920314-2536-4567-1234-888888888888",
         "sequencing_platform": "Illumina NextSeq 1000",
         "CRO_order": "AN00012346",
+        "is_pilot_order": false,
         "uuid": "a1415264-7586-7890-4567-aaaaaaaaaaaa",
-        "schema_version": "1",
+        "schema_version": "2",
         "status": "current",
         "aliases": [
             "lattice:sfs-treated-tissue-library"
