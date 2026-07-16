@@ -1,6 +1,6 @@
 {
-    "hash": "546c0031037dd427a8ad8b2dd2cb58df",
-    "index_name": "primary_cell_culture_546c0031",
+    "hash": "b8a3e87fe4ac10e40712c7f7b91d0cd0",
+    "index_name": "primary_cell_culture_b8a3e87f",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -146,6 +146,10 @@
                     },
                     "@type": {
                         "copy_to": "_exact",
+                        "type": "keyword"
+                    },
+                    "RT_indexes": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "age_units": {

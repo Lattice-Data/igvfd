@@ -84,6 +84,20 @@ def _samples_with_multiplexing_barcodes(samples):
     ]
 
 
+def _samples_missing_rt_indexes(samples):
+    return [
+        sample for sample in samples
+        if isinstance(sample, dict) and not sample.get('RT_indexes')
+    ]
+
+
+def _samples_with_rt_indexes(samples):
+    return [
+        sample for sample in samples
+        if isinstance(sample, dict) and sample.get('RT_indexes')
+    ]
+
+
 NATURAL_GENETIC_VARIATION_METHOD = 'natural genetic variation'
 
 
@@ -156,6 +170,62 @@ def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
         f'has no `multiplexing_method` but linked samples with `multiplexing_barcodes`: '
         f'{sample_links}.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
+def audit_plate_based_library_samples_missing_rt_indexes(value, system):
+    '''
+    [
+        {
+            "audit_description": "Plate-based libraries are expected to have RT indexes on every linked sample.",
+            "audit_category": "missing RT indexes",
+            "audit_level": "WARNING"
+        }
+    ]
+    '''
+    missing = _samples_missing_rt_indexes(value.get('samples', []))
+    if not missing:
+        return
+    audit_message = get_audit_message(audit_plate_based_library_samples_missing_rt_indexes)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    lib_id = value['@id']
+    sample_links = join_obj_paths([sample['@id'] for sample in missing])
+    detail = (
+        f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
+        f'has linked samples missing `RT_indexes`: {sample_links}.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
+def audit_droplet_based_library_samples_unexpected_rt_indexes(value, system):
+    '''
+    [
+        {
+            "audit_description": "Droplet-based libraries are not expected to link samples that have RT indexes.",
+            "audit_category": "unexpected RT indexes",
+            "audit_level": "WARNING"
+        }
+    ]
+    '''
+    with_rt_indexes = _samples_with_rt_indexes(value.get('samples', []))
+    if not with_rt_indexes:
+        return
+    audit_message = get_audit_message(audit_droplet_based_library_samples_unexpected_rt_indexes)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    lib_id = value['@id']
+    sample_links = join_obj_paths([sample['@id'] for sample in with_rt_indexes])
+    detail = (
+        f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
+        f'has linked samples with `RT_indexes`: {sample_links}.'
     )
     yield AuditFailure(
         audit_message.get('audit_category', ''),
@@ -256,6 +326,7 @@ def audit_droplet_based_library_object_dispatcher(value, system):
 function_dispatcher_plate_based_library_embedded = {
     'audit_library_samples_missing_multiplexing_barcodes': audit_library_samples_missing_multiplexing_barcodes,
     'audit_library_samples_unexpected_multiplexing_barcodes': audit_library_samples_unexpected_multiplexing_barcodes,
+    'audit_plate_based_library_samples_missing_rt_indexes': audit_plate_based_library_samples_missing_rt_indexes,
 }
 
 
@@ -269,6 +340,7 @@ def audit_plate_based_library_embedded_dispatcher(value, system):
 function_dispatcher_droplet_based_library_embedded = {
     'audit_library_samples_missing_multiplexing_barcodes': audit_library_samples_missing_multiplexing_barcodes,
     'audit_library_samples_unexpected_multiplexing_barcodes': audit_library_samples_unexpected_multiplexing_barcodes,
+    'audit_droplet_based_library_samples_unexpected_rt_indexes': audit_droplet_based_library_samples_unexpected_rt_indexes,
 }
 
 

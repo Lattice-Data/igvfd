@@ -28,7 +28,7 @@ class Library(Item):
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
-        Path('samples', include=['@id', 'aliases', 'multiplexing_barcodes']),
+        Path('samples', include=['@id', 'aliases', 'multiplexing_barcodes', 'RT_indexes']),
         Path('library_construction_technology', include=['@id', 'term_name']),
     ]
 

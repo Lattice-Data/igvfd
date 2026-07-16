@@ -54,6 +54,7 @@
         "aliases",
         "description",
         "multiplexing_barcodes",
+        "RT_indexes",
         "sample_terms.term_name",
         "developmental_stages.term_name"
     ],

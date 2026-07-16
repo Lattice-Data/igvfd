@@ -189,6 +189,57 @@ def test_biosample_multiplexing_barcodes_invalid(
     'biosample_type',
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
+@pytest.mark.parametrize(
+    'RT_indexes',
+    [
+        ['SCALEQUANT-A1'],
+        ['SCALEQUANT-A1', 'SCALEQUANT-A2', 'SCALEQUANT-A3', 'SCALEQUANT-A4'],
+        ['P01-A1', 'P01-A2'],
+        ['P01-A1', 'P01-B12', 'P02-C3'],
+    ],
+)
+def test_biosample_rt_indexes_valid(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, RT_indexes
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['RT_indexes'] = RT_indexes
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['RT_indexes'] == RT_indexes
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+@pytest.mark.parametrize(
+    'RT_indexes',
+    [
+        [],
+        [''],
+        [' '],
+        ['P01 A1'],
+        [' P01-A1'],
+        ['P01-A1 '],
+        ['P01-'],
+        ['-A1'],
+        ['P01'],
+        ['---'],
+    ],
+)
+def test_biosample_rt_indexes_invalid(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, RT_indexes
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['RT_indexes'] = RT_indexes
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
 def test_biosample_date_obtained_accepts_valid_date(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type
 ):

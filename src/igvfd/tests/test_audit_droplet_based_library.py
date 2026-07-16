@@ -1,5 +1,6 @@
 from igvfd.audit.library import (
     audit_dual_cardinality_self_linked_library,
+    audit_droplet_based_library_samples_unexpected_rt_indexes,
     audit_library_samples_missing_multiplexing_barcodes,
     audit_library_samples_unexpected_multiplexing_barcodes,
     audit_single_cardinality_unexpected_linked_libraries,
@@ -269,6 +270,53 @@ def test_droplet_based_library_fixture_unexpected_multiplexing_barcodes(
     errors_list = _audit_errors(res)
     assert any(
         error['category'] == 'unexpected multiplexing barcodes'
+        for error in errors_list
+    )
+
+
+def test_droplet_based_library_samples_without_rt_indexes_no_audit():
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+            },
+        ],
+    }
+    failures = list(audit_droplet_based_library_samples_unexpected_rt_indexes(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_sample_with_rt_indexes_audit():
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+                'RT_indexes': ['SCALEQUANT-A1'],
+            },
+        ],
+    }
+    failures = list(audit_droplet_based_library_samples_unexpected_rt_indexes(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'unexpected RT indexes'
+
+
+def test_droplet_based_library_fixture_unexpected_rt_indexes(
+    testapp,
+    indexer_testapp,
+    droplet_based_library,
+):
+    tissue_id = droplet_based_library['samples'][0]
+    testapp.patch_json(tissue_id, {'RT_indexes': ['SCALEQUANT-A1']}, status=200)
+    res = indexer_testapp.get(droplet_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert any(
+        error['category'] == 'unexpected RT indexes'
         for error in errors_list
     )
 

@@ -1,6 +1,6 @@
 {
-    "hash": "3125f39be54ee334d419ea80916f79c0",
-    "index_name": "tissue_3125f39b",
+    "hash": "40da22a1e2058885bb0d3d7123b26d1e",
+    "index_name": "tissue_40da22a1",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -146,6 +146,10 @@
                     },
                     "@type": {
                         "copy_to": "_exact",
+                        "type": "keyword"
+                    },
+                    "RT_indexes": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "age_units": {

@@ -48,6 +48,9 @@ def primary_cell_culture():
             'multiplexing_barcodes': {
                 'title': 'Multiplexing Barcodes'
             },
+            'RT_indexes': {
+                'title': 'RT Indexes'
+            },
             'passage_number': {
                 'title': 'Passage Number'
             },

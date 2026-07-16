@@ -645,12 +645,27 @@
             "submissionExample": {
                 "appscript": "[\"P01-A1\"]"
             }
+        },
+        "RT_indexes": {
+            "title": "RT Indexes",
+            "description": "Reverse-transcription index identifier(s) for this biosample in a plate-based library. Multiple values are valid when more than one well/index is assigned to the same biosample.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "type": "string",
+                "pattern": "^[^\\s-]+-[^\\s-]+$"
+            },
+            "submissionExample": {
+                "appscript": "[\"SCALEQUANT-A1\", \"SCALEQUANT-A2\"]"
+            }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
         "multiplexing_barcodes",
+        "RT_indexes",
         "sample_terms.term_name",
         "developmental_stages.term_name",
         "sources.title"

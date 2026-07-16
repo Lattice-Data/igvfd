@@ -23,6 +23,10 @@
         "preservation_method": "frozen",
         "multiplexing_barcodes": [
             "P01-A1"
+        ],
+        "RT_indexes": [
+            "SCALEQUANT-A1",
+            "SCALEQUANT-A2"
         ]
     },
     {

@@ -1,6 +1,6 @@
 {
-    "hash": "0446e547a8bc5d80dbc2c66d3d9bc67c",
-    "index_name": "organoid_0446e547",
+    "hash": "bcfe9a360eba364a7c2c26945a98618b",
+    "index_name": "organoid_bcfe9a36",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -146,6 +146,10 @@
                     },
                     "@type": {
                         "copy_to": "_exact",
+                        "type": "keyword"
+                    },
+                    "RT_indexes": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "aliases": {

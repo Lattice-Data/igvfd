@@ -6,6 +6,7 @@
 
 ## Minor changes since schema version 3
 
+* Add RT_indexes.
 * Add calculated property `libraries`.
 
 ## Minor changes since schema version 2
