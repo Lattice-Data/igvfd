@@ -1,6 +1,6 @@
 {
-    "hash": "3e5e8721a5e7be7675450c7e81111be3",
-    "index_name": "sequence_file_set_3e5e8721",
+    "hash": "d461d7c0a12ff9ca8b6b6ded6bd75640",
+    "index_name": "sequence_file_set_d461d7c0",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -303,6 +303,10 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "is_pilot_order": {
+                        "store": true,
+                        "type": "boolean"
                     },
                     "lab": {
                         "properties": {

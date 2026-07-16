@@ -60,6 +60,7 @@ def sequence_file_set_with_cro_order(testapp, other_lab, sequence_file, droplet_
         'run_cardinality': 'single-end',
         'read1': sequence_file['@id'],
         'CRO_order': 'AN00012345',
+        'is_pilot_order': False,
         'status': 'current',
     }
     return testapp.post_json('/sequence_file_set', item, status=201).json['@graph'][0]

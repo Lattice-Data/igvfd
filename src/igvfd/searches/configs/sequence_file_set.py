@@ -13,6 +13,9 @@ def sequence_file_set():
             'sequencing_platform': {
                 'title': 'Sequencing Platform'
             },
+            'is_pilot_order': {
+                'title': 'Is Pilot Order'
+            },
             'lab.title': {
                 'title': 'Lab'
             },
@@ -50,6 +53,9 @@ def sequence_file_set():
             },
             'CRO_order': {
                 'title': 'CRO Order'
+            },
+            'is_pilot_order': {
+                'title': 'Is Pilot Order'
             },
             'lab': {
                 'title': 'Lab'
