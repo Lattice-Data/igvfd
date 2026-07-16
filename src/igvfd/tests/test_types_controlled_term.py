@@ -161,6 +161,18 @@ def test_controlled_term_hancestro_create(testapp):
     assert graph['ontology_source'] == 'HANCESTRO'
 
 
+def test_controlled_term_zfs_create(testapp):
+    item = {
+        'term_id': 'ZFS:0000001',
+        'ontology_source': 'ZFS',
+        'status': 'current',
+    }
+    res = testapp.post_json('/controlled_term', item, status=201)
+    graph = res.json['@graph'][0]
+    assert graph['term_id'] == 'ZFS:0000001'
+    assert graph['ontology_source'] == 'ZFS'
+
+
 @pytest.mark.parametrize(
     'prefix,term_id',
     [

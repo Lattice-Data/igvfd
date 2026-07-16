@@ -150,6 +150,16 @@
         ]
     },
     {
+        "term_id": "ZFS:0000001",
+        "ontology_source": "ZFS",
+        "uuid": "b8e2f4a1-3c7d-4e9b-8f12-6d5a4c3b2e10",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:term-dev-stage-zebrafish-zygote-1-cell"
+        ]
+    },
+    {
         "term_id": "WBbt:0006796",
         "ontology_source": "WBbt",
         "uuid": "acc4254b-183f-440d-a8f3-bd106d02de69",

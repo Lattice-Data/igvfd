@@ -16,7 +16,7 @@ ALLOWED_DEVELOPMENTAL_STAGE_ONTOLOGY_SOURCES = {
     'MmusDv',
     'FBdv',
     'WBls',
-    'ZFA',
+    'ZFS',
 }
 
 

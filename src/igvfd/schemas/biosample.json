@@ -122,7 +122,7 @@
             "items": {
                 "title": "Developmental Stage",
                 "description": "Reference to a developmental-stage ontology term.",
-                "comment": "Link to a ControlledTerm with a developmental-stage ontology (e.g. HsapDv, MmusDv). See controlled_term.json for available identifiers.",
+                "comment": "Link to a ControlledTerm with a developmental-stage ontology (e.g. HsapDv, MmusDv, FBdv, WBls, ZFS). See controlled_term.json for available identifiers.",
                 "type": "string",
                 "linkTo": "ControlledTerm",
                 "submissionExample": {
