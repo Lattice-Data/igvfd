@@ -2,6 +2,8 @@
 
 ### Minor changes since schema version 2
 
+* Extend ontology_source enum list to include ZFS.
+* Update term_id regex to accept ZFS prefix.
 * Update dbxrefs regex to accept CAS Registry Numbers.
 
 ### Schema version 2

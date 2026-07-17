@@ -31,7 +31,7 @@
             "description": "An ontology identifier from the specified ontology source.",
             "type": "string",
             "uniqueKey": "controlled_term:term_id",
-            "pattern": "^(CL|EFO|MONDO|UBERON|HANCESTRO|HsapDv|MmusDv|PATO|NCBITaxon|FBbt|FBdv|ZFA|WBbt|WBls|CVCL|CHEBI|uniprot|anti-uniprot)[:_][A-Za-z0-9_]+$"
+            "pattern": "^(CL|EFO|MONDO|UBERON|HANCESTRO|HsapDv|MmusDv|PATO|NCBITaxon|FBbt|FBdv|ZFA|ZFS|WBbt|WBls|CVCL|CHEBI|uniprot|anti-uniprot)[:_][A-Za-z0-9_]+$"
         },
         "ontology_source": {
             "title": "Ontology Source",
@@ -50,6 +50,7 @@
                 "FBbt",
                 "FBdv",
                 "ZFA",
+                "ZFS",
                 "WBbt",
                 "WBls",
                 "CVCL",

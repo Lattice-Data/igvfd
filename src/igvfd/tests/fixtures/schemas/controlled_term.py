@@ -83,6 +83,16 @@ def controlled_term_dev_stage_human(testapp):
 
 
 @pytest.fixture
+def controlled_term_dev_stage_zebrafish(testapp):
+    item = {
+        'term_id': 'ZFS:0000001',
+        'ontology_source': 'ZFS',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
 def controlled_term_brain(testapp):
     item = {
         'term_id': 'UBERON:0000955',

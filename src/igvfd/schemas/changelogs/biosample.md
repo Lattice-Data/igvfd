@@ -6,6 +6,7 @@
 
 ## Minor changes since schema version 3
 
+* Update developmental_stages comment to include ZFS and other stage ontologies.
 * Add RT_indexes.
 * Add calculated property `libraries`.
 
