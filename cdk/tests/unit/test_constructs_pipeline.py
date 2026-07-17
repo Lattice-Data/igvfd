@@ -1253,7 +1253,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                     'Name': 'SynthStep_Output'
                                 }
                             ],
-                            'Name': 'FeatureFlags_DeleteAllHostedConfigurationVersionsOnCleanUp_Code',
+                            'Name': 'Postgres_LatestSnapshotFromDB_GetLatestRDSSnapshotID_Code',
                             'RoleArn': {
                                 'Fn::GetAtt': [
                                     'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
@@ -1279,7 +1279,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                     'Name': 'SynthStep_Output'
                                 }
                             ],
-                            'Name': 'FeatureFlags_Provider_framework-onEvent_Code',
+                            'Name': 'Postgres_LatestSnapshotFromDB_Provider_framework-onEvent_Code',
                             'RoleArn': {
                                 'Fn::GetAtt': [
                                     'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
@@ -1331,7 +1331,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                     'Name': 'SynthStep_Output'
                                 }
                             ],
-                            'Name': 'Backend_BatchUpgrade_UpgradeFolder',
+                            'Name': 'FeatureFlags_DeleteAllHostedConfigurationVersionsOnCleanUp_Code',
                             'RoleArn': {
                                 'Fn::GetAtt': [
                                     'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
@@ -1357,7 +1357,7 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                     'Name': 'SynthStep_Output'
                                 }
                             ],
-                            'Name': 'Backend_UpdateMapping_MappingFolder',
+                            'Name': 'Backend_BatchUpgrade_UpgradeFolder',
                             'RoleArn': {
                                 'Fn::GetAtt': [
                                     'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
@@ -1374,14 +1374,16 @@ def test_constructs_pipeline_initialize_production_deployment_pipeline_construct
                                 'Version': '1'
                             },
                             'Configuration': {
-                                'ProjectName': Match.any_value()
+                                'ProjectName': {
+                                    'Ref': 'TestProductionDeploymentPipelineCodePipelineAssetsFileAsset7533594B1'
+                                }
                             },
                             'InputArtifacts': [
                                 {
                                     'Name': 'SynthStep_Output'
                                 }
                             ],
-                            'Name': 'Postgres_LatestSnapshotFromDB_GetLatestRDSSnapshotID_Code',
+                            'Name': 'Backend_UpdateMapping_MappingFolder',
                             'RoleArn': {
                                 'Fn::GetAtt': [
                                     'TestProductionDeploymentPipelineCodePipelineCodeBuildActionRole650FEAB8',
