@@ -1,5 +1,10 @@
 # Plate Based Library Changelog
 
+### Schema version 3
+
+* Add *library_cardinality* (required; inherited from abstract Library schema).
+* Add *linked_libraries* (inherited from abstract Library schema; linkTo restricted to PlateBasedLibrary).
+
 ### Schema version 2
 
 * Merge *dependentSchemas* from abstract Library schema (including *multiplexing_method* requiring at least two samples).

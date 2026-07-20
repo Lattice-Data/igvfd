@@ -50,3 +50,9 @@ def droplet_based_library_1_2(value, system):
 def plate_based_library_1_2(value, system):
     _drop_properties(value, PLATE_REMOVED_PROPERTIES)
     _upgrade_multiplexing_method(value)
+
+
+@upgrade_step('plate_based_library', '2', '3')
+def plate_based_library_2_3(value, system):
+    if 'library_cardinality' not in value:
+        value['library_cardinality'] = 'single'

@@ -533,6 +533,7 @@ def test_biosample_libraries_reverse_link_multiple_libraries(
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'status': 'current',
         },
         status=201,
@@ -591,6 +592,7 @@ def test_biosample_libraries_reverse_link_inherited(
         {
             'lab': other_lab['@id'],
             'samples': [biosample['@id']],
+            'library_cardinality': 'single',
             'status': 'current',
         },
         status=201,

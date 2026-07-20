@@ -1,6 +1,6 @@
 {
-    "hash": "322ff4970602a61d1b5e4a06b4df08a3",
-    "index_name": "plate_based_library_322ff497",
+    "hash": "51acfb2072f72d7f8fb1c5280c52e308",
+    "index_name": "plate_based_library_51acfb20",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -228,6 +228,9 @@
                         },
                         "type": "object"
                     },
+                    "library_cardinality": {
+                        "type": "keyword"
+                    },
                     "library_construction_technology": {
                         "properties": {
                             "@id": {
@@ -286,6 +289,9 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "linked_libraries": {
+                        "type": "keyword"
                     },
                     "multiplexing_method": {
                         "type": "keyword"

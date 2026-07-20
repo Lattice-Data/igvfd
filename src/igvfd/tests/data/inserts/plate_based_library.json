@@ -5,7 +5,7 @@
             "a1a04974-a183-4fdf-9df0-eeab9bd9a2dc"
         ],
         "uuid": "f1a2b3c4-d5e6-7890-abcd-ef1234567890",
-        "schema_version": "2",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:plate-library-basic"
@@ -14,6 +14,7 @@
             "GEO:GSM12345"
         ],
         "description": "Test plate-based library 1",
+        "library_cardinality": "single",
         "CRO_group_identifier": "INSERT-PLATE-CRO-GROUP-1"
     },
     {
@@ -22,7 +23,7 @@
             "a1a04974-a183-4fdf-9df0-eeab9bd9a2dc"
         ],
         "uuid": "f2b3c4d5-e6f7-8901-bcde-f23456789012",
-        "schema_version": "2",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:plate-library-quantumscale",
@@ -31,7 +32,8 @@
         "library_construction_technology": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
         "feature_types": [
             "Gene Expression"
-        ]
+        ],
+        "library_cardinality": "single"
     },
     {
         "lab": "teri-klein",
@@ -40,7 +42,7 @@
             "2cc69a5c-eb1f-4e32-b62d-bb53eb396726"
         ],
         "uuid": "f3c4d5e6-f7a8-9012-cdef-345678901234",
-        "schema_version": "2",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:plate-library-scirna-seq3"
@@ -51,7 +53,8 @@
         ],
         "multiplexing_method": [
             "combinatorial indexing"
-        ]
+        ],
+        "library_cardinality": "single"
     },
     {
         "lab": "teri-klein",
@@ -59,11 +62,47 @@
             "a1a04974-a183-4fdf-9df0-eeab9bd9a2dc"
         ],
         "uuid": "6f708192-0314-2345-f012-666666666666",
-        "schema_version": "2",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:plate-library-treated-tissue"
         ],
-        "description": "Plate library from tissue with treatments and experimental conditions"
+        "description": "Plate library from tissue with treatments and experimental conditions",
+        "library_cardinality": "single"
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "a1a04974-a183-4fdf-9df0-eeab9bd9a2dc"
+        ],
+        "uuid": "a8b9c0d1-e2f3-4567-a890-123456789012",
+        "schema_version": "3",
+        "status": "current",
+        "aliases": [
+            "lattice:plate-library-dual-partner"
+        ],
+        "feature_types": [
+            "Gene Expression"
+        ],
+        "library_cardinality": "dual"
+    },
+    {
+        "lab": "teri-klein",
+        "samples": [
+            "a1a04974-a183-4fdf-9df0-eeab9bd9a2dc"
+        ],
+        "uuid": "b9c0d1e2-f3a4-5678-b901-234567890123",
+        "schema_version": "3",
+        "status": "current",
+        "aliases": [
+            "lattice:plate-library-dual-linked"
+        ],
+        "feature_types": [
+            "Multiplexing Capture"
+        ],
+        "library_cardinality": "dual",
+        "linked_libraries": [
+            "a8b9c0d1-e2f3-4567-a890-123456789012"
+        ]
     }
 ]

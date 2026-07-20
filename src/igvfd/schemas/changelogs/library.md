@@ -2,6 +2,9 @@
 
 ### Minor changes since schema version 1
 
+* Add *library_cardinality*.
+* Add *linked_libraries*.
+* Require dual cardinality when *linked_libraries* is present.
 * Adjust *multiplexing_method* to be an array with a single value and extend enum list to include *antibody hashing*.
 * Adjust *multiplexing_method* to be an array with a single value and extend enum list to include *lipid hashing*.
 * Adjust *multiplexing_method* to be an array with a single value and extend enum list to include *chemical hashing*.

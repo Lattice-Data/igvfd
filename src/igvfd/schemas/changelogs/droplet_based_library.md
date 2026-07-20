@@ -10,6 +10,8 @@
 
 ### Minor changes since schema version 1
 
+* Add *library_cardinality* (inherited from abstract Library schema).
+* Add *linked_libraries* (inherited from abstract Library schema; linkTo restricted to DropletBasedLibrary).
 * Add `library_construction_technology` (inherited from abstract Library schema).
 
 * Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract library profile).
