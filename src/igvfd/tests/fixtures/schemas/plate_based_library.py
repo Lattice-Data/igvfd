@@ -75,24 +75,6 @@ def plate_based_library_dual_with_linked_library(
 
 
 @pytest.fixture
-def plate_based_library_dual_pair(testapp, other_lab, tissue):
-    """Two dual libraries where the second links to the first (for pairing tests)."""
-    base_item = {
-        'lab': other_lab['@id'],
-        'samples': [tissue['@id']],
-        'library_cardinality': 'dual',
-        'status': 'current',
-    }
-    partner = testapp.post_json('/plate_based_library', base_item, status=201).json['@graph'][0]
-    linked_item = {
-        **base_item,
-        'linked_libraries': [partner['@id']],
-    }
-    linked = testapp.post_json('/plate_based_library', linked_item, status=201).json['@graph'][0]
-    return {'partner': partner, 'linked': linked}
-
-
-@pytest.fixture
 def plate_based_library_with_library_construction_technology(testapp, other_lab, tissue, controlled_term_efo):
     item = {
         'lab': other_lab['@id'],

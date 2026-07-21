@@ -308,7 +308,7 @@ def audit_dual_cardinality_linked_libraries_count(value, system):
         )
 
 
-function_dispatcher_droplet_based_library_object = {
+function_dispatcher_library_object = {
     'audit_single_cardinality_unexpected_linked_libraries': audit_single_cardinality_unexpected_linked_libraries,
     'audit_dual_cardinality_missing_linked_libraries': audit_dual_cardinality_missing_linked_libraries,
     'audit_dual_cardinality_self_linked_library': audit_dual_cardinality_self_linked_library,
@@ -318,23 +318,15 @@ function_dispatcher_droplet_based_library_object = {
 
 @audit_checker('DropletBasedLibrary', frame='object')
 def audit_droplet_based_library_object_dispatcher(value, system):
-    for function_name in function_dispatcher_droplet_based_library_object:
-        for failure in function_dispatcher_droplet_based_library_object[function_name](value, system):
+    for function_name in function_dispatcher_library_object:
+        for failure in function_dispatcher_library_object[function_name](value, system):
             yield failure
-
-
-function_dispatcher_plate_based_library_object = {
-    'audit_single_cardinality_unexpected_linked_libraries': audit_single_cardinality_unexpected_linked_libraries,
-    'audit_dual_cardinality_missing_linked_libraries': audit_dual_cardinality_missing_linked_libraries,
-    'audit_dual_cardinality_self_linked_library': audit_dual_cardinality_self_linked_library,
-    'audit_dual_cardinality_linked_libraries_count': audit_dual_cardinality_linked_libraries_count,
-}
 
 
 @audit_checker('PlateBasedLibrary', frame='object')
 def audit_plate_based_library_object_dispatcher(value, system):
-    for function_name in function_dispatcher_plate_based_library_object:
-        for failure in function_dispatcher_plate_based_library_object[function_name](value, system):
+    for function_name in function_dispatcher_library_object:
+        for failure in function_dispatcher_library_object[function_name](value, system):
             yield failure
 
 
