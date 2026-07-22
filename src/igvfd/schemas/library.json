@@ -42,6 +42,19 @@
                     "const": "dual"
                 }
             }
+        },
+        "guide_rna_files": {
+            "required": [
+                "feature_types"
+            ],
+            "properties": {
+                "feature_types": {
+                    "contains": {
+                        "const": "CRISPR Guide Capture"
+                    },
+                    "minItems": 1
+                }
+            }
         }
     },
     "properties": {
@@ -113,11 +126,31 @@
                 "type": "string",
                 "enum": [
                     "Gene Expression",
-                    "Multiplexing Capture"
+                    "Multiplexing Capture",
+                    "CRISPR Guide Capture"
                 ]
             },
             "submissionExample": {
                 "appscript": "[\"Gene Expression\"]"
+            }
+        },
+        "guide_rna_files": {
+            "title": "Guide RNA Files",
+            "description": "Tabular file(s) listing CRISPR guide RNAs used in this library (e.g. guide names, genomic coordinates, targeted genes).",
+            "comment": "This property is affected by dependencies. See library.json.",
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Guide RNA File",
+                "description": "A tabular file containing CRISPR guide RNA information.",
+                "comment": "See tabular_file.json for available identifiers.",
+                "type": "string",
+                "linkTo": "TabularFile"
+            },
+            "submissionExample": {
+                "appscript": "[\"igvfd-files:guide-rna-table\"]"
             }
         },
         "CRO_group_identifier": {

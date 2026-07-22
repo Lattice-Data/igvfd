@@ -80,6 +80,7 @@ def test_plate_based_library_feature_types_enum(testapp, other_lab, tissue):
     [
         'Gene Expression',
         'Multiplexing Capture',
+        'CRISPR Guide Capture',
     ]
 )
 def test_plate_based_library_create_with_feature_type_enum_values(
@@ -384,3 +385,57 @@ def test_plate_based_library_single_cardinality_without_linked_libraries_succeed
     res = testapp.post_json('/plate_based_library', item, status=201)
     assert res.json['@graph'][0]['library_cardinality'] == 'single'
     assert 'linked_libraries' not in res.json['@graph'][0] or res.json['@graph'][0].get('linked_libraries') is None
+
+
+def test_plate_based_library_guide_rna_files_with_crispr_guide_capture(
+    testapp, other_lab, tissue, tabular_file
+):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'feature_types': ['CRISPR Guide Capture'],
+        'guide_rna_files': [tabular_file['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    assert res.json['@graph'][0]['guide_rna_files'] == [tabular_file['@id']]
+
+
+@pytest.mark.parametrize(
+    'feature_types',
+    [
+        ['Gene Expression'],
+        ['Multiplexing Capture'],
+        ['Gene Expression', 'Multiplexing Capture'],
+    ]
+)
+def test_plate_based_library_guide_rna_files_rejected_without_crispr_guide_capture(
+    testapp, other_lab, tissue, tabular_file, feature_types
+):
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'feature_types': feature_types,
+            'guide_rna_files': [tabular_file['@id']],
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_plate_based_library_guide_rna_files_max_items(
+    testapp, other_lab, tissue, tabular_file, tabular_file_tsv
+):
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'feature_types': ['CRISPR Guide Capture'],
+            'guide_rna_files': [tabular_file['@id'], tabular_file_tsv['@id']],
+            'status': 'current',
+        },
+        status=422,
+    )

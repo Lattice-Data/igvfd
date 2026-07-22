@@ -6,6 +6,9 @@
 * Add *library_cardinality*.
 * Add *linked_libraries*.
 * Require dual cardinality when *linked_libraries* is present.
+* Add *guide_rna_files*.
+* Extend *feature_types* enum list to include *CRISPR Guide Capture*.
+* Require *feature_types* to include *CRISPR Guide Capture* when *guide_rna_files* is submitted.
 * Adjust *multiplexing_method* to be an array with a single value and extend enum list to include *antibody hashing*.
 * Adjust *multiplexing_method* to be an array with a single value and extend enum list to include *lipid hashing*.
 * Adjust *multiplexing_method* to be an array with a single value and extend enum list to include *chemical hashing*.
