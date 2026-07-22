@@ -27,7 +27,7 @@ EXPECTED_AUDIT_COLUMNS = [
 
 
 def _parse_tsv(response):
-    lines = [line for line in response.text.strip().split('\n') if line]
+    lines = [line for line in response.text.strip().splitlines() if line]
     return [line.split('\t') for line in lines]
 
 
