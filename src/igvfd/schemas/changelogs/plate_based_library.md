@@ -1,9 +1,5 @@
 # Plate Based Library Changelog
 
-### Minor changes since schema version 3
-
-* Require *library_cardinality* on abstract Library schema.
-
 ### Schema version 3
 
 * Add *library_cardinality* (required; inherited from abstract Library schema).

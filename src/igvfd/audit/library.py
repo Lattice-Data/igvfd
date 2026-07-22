@@ -316,15 +316,8 @@ function_dispatcher_library_object = {
 }
 
 
-@audit_checker('DropletBasedLibrary', frame='object')
-def audit_droplet_based_library_object_dispatcher(value, system):
-    for function_name in function_dispatcher_library_object:
-        for failure in function_dispatcher_library_object[function_name](value, system):
-            yield failure
-
-
-@audit_checker('PlateBasedLibrary', frame='object')
-def audit_plate_based_library_object_dispatcher(value, system):
+@audit_checker('Library', frame='object')
+def audit_library_object_dispatcher(value, system):
     for function_name in function_dispatcher_library_object:
         for failure in function_dispatcher_library_object[function_name](value, system):
             yield failure
