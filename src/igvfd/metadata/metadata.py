@@ -257,9 +257,11 @@ class MetadataReport:
     def _get_audit_data(self, grouped_audits_for_file, grouped_other_audits):
         return {
             audit_column: ', '.join(
-                set(
-                    grouped_audits_for_file.get(audit_type, [])
-                    + grouped_other_audits.get(audit_type, [])
+                sorted(
+                    set(
+                        grouped_audits_for_file.get(audit_type, [])
+                        + grouped_other_audits.get(audit_type, [])
+                    )
                 )
             ) for audit_type, audit_column in METADATA_AUDIT_TO_AUDIT_COLUMN_MAPPING
         }

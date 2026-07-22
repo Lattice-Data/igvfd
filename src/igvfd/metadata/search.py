@@ -1,4 +1,4 @@
-from igvfd.search_views import search_generator
+from igvfd.searches.generator import search_generator
 from snosearch.parsers import QueryString
 
 

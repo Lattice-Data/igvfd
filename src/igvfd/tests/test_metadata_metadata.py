@@ -69,7 +69,57 @@ def test_metadata_report_type_cell_includes_concrete_type(dummy_request):
         '@type': ['MatrixFileSet', 'FileSet', 'Item'],
         'status': 'current',
     })
-    assert 'MatrixFileSet' in experiment_data['File set type']
+    assert experiment_data['File set type'] == 'FileSet, Item, MatrixFileSet'
+
+
+def test_make_experiment_cell_type_order_is_deterministic():
+    from igvfd.metadata.serializers import make_experiment_cell
+    experiment = {
+        '@type': ['MatrixFileSet', 'FileSet', 'Item'],
+    }
+    assert make_experiment_cell(['@type'], experiment) == 'FileSet, Item, MatrixFileSet'
+
+
+def test_get_audit_data_category_order_is_deterministic(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = 'type=MatrixFileSet'
+    report = MetadataReport(dummy_request)
+    report._initialize_report()
+    audit_data = report._get_audit_data(
+        {
+            'WARNING': ['zebra audit', 'alpha audit'],
+        },
+        {
+            'WARNING': ['middle audit'],
+        },
+    )
+    assert audit_data['Audit WARNING'] == 'alpha audit, middle audit, zebra audit'
+
+
+def test_metadata_report_parses_file_inequality_filters(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = (
+        'type=MatrixFileSet&files.observation_count=gte:12000'
+    )
+    report = MetadataReport(dummy_request)
+    report._initialize_report()
+    assert list(report.positive_file_inequalities) == ['observation_count']
+    assert not report._should_not_report_file({'observation_count': 12000})
+    assert report._should_not_report_file({'observation_count': 11500})
+
+
+def test_metadata_report_drops_file_inequality_params_from_search_query(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = (
+        'type=MatrixFileSet&files.observation_count=gte:12000'
+    )
+    report = MetadataReport(dummy_request)
+    report._initialize_report()
+    report._build_params()
+    report._build_query_string()
+    params = report.query_string.params_to_list()
+    assert ('files.observation_count', 'gte:12000') not in params
+    assert report.positive_file_inequalities['observation_count']
 
 
 def test_metadata_report_output_sorted_row_matches_header(dummy_request):

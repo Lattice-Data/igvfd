@@ -85,3 +85,15 @@ def test_matrix_file_set_metadata_file_format_filter(workbook, testapp):
     assert len(rows) > 1, 'expected at least one h5ad file row'
     formats = {row[2] for row in rows[1:]}
     assert formats == {'h5ad'}
+
+
+def test_matrix_file_set_metadata_observation_count_inequality_filter(workbook, testapp):
+    r = testapp.get(
+        '/matrix-file-set-metadata/?type=MatrixFileSet'
+        '&files.observation_count=gte:12000'
+    )
+    rows = _parse_tsv(r)
+    assert len(rows) > 1, 'expected at least one matching file row'
+    file_ids = [row[0] for row in rows[1:]]
+    assert all('/raw_matrix_files/' in file_id for file_id in file_ids)
+    assert not any('/processed_matrix_files/' in file_id for file_id in file_ids)

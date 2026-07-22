@@ -16,7 +16,7 @@ def make_experiment_cell(paths, experiment):
             ]
         else:
             last = cell_value
-    return ', '.join(set(last))
+    return ', '.join(sorted(set(last)))
 
 
 def make_file_cell(paths, file_):
