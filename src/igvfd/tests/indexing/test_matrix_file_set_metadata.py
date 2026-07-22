@@ -76,28 +76,37 @@ def test_matrix_file_set_metadata_rejects_wrong_type(workbook, testapp):
     testapp.get('/matrix-file-set-metadata/', status=400)
 
 
+def test_matrix_file_set_metadata_rejects_legacy_files_filter(workbook, testapp):
+    testapp.get(
+        '/matrix-file-set-metadata/?type=MatrixFileSet&files.file_format=h5ad',
+        status=400,
+    )
+
+
 def test_matrix_file_set_metadata_rejects_negated_file_filter(workbook, testapp):
     testapp.get(
-        '/matrix-file-set-metadata/?type=MatrixFileSet&files.file_format!=h5ad',
+        '/matrix-file-set-metadata/?type=MatrixFileSet&processed_matrix_files.file_format!=h5ad',
         status=400,
     )
 
 
 def test_matrix_file_set_metadata_file_format_filter(workbook, testapp):
     r = testapp.get(
-        '/matrix-file-set-metadata/?type=MatrixFileSet&files.file_format=h5ad'
+        '/matrix-file-set-metadata/?type=MatrixFileSet&processed_matrix_files.file_format=h5ad'
     )
     rows = _parse_tsv(r)
     assert rows[0][2] == 'File format'
     assert len(rows) > 1, 'expected at least one h5ad file row'
     formats = {row[2] for row in rows[1:]}
     assert formats == {'h5ad'}
+    file_ids = [row[0] for row in rows[1:]]
+    assert all('/processed_matrix_files/' in file_id for file_id in file_ids)
 
 
 def test_matrix_file_set_metadata_observation_count_inequality_filter(workbook, testapp):
     r = testapp.get(
         '/matrix-file-set-metadata/?type=MatrixFileSet'
-        '&files.observation_count=gte:12000'
+        '&raw_matrix_files.observation_count=gte:12000'
     )
     rows = _parse_tsv(r)
     assert len(rows) > 1, 'expected at least one matching file row'

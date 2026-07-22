@@ -2,18 +2,20 @@ from collections import OrderedDict
 
 MATRIX_FILE_SET_METADATA_ALLOWED_TYPES = ['MatrixFileSet']
 
-# Typed file-link properties the engine flattens into one file iterable.
 MATRIX_FILE_SET_FILE_LINK_FIELDS = [
     'raw_matrix_files',
     'processed_matrix_files',
 ]
 
-# Column header -> field path. 'files.' prefix marks file-level columns.
-# Restricted to already-embedded fields (no new embedding this ticket).
-FROM_MATRIX_FILE_SET_FIELDS = OrderedDict([
-    ('File ID', ['files.@id']),
-    ('File aliases', ['files.aliases']),
-    ('File format', ['files.file_format']),
+# Columns populated from each embedded matrix file object.
+FROM_MATRIX_FILE_COLUMNS = OrderedDict([
+    ('File ID', ['@id']),
+    ('File aliases', ['aliases']),
+    ('File format', ['file_format']),
+])
+
+# Columns populated from the MatrixFileSet object.
+FROM_MATRIX_FILE_SET_COLUMNS = OrderedDict([
     ('File set ID', ['@id']),
     ('File set type', ['@type']),
     ('File set aliases', ['aliases']),
@@ -24,6 +26,10 @@ FROM_MATRIX_FILE_SET_FIELDS = OrderedDict([
     ('Submitted by', ['submitted_by.title']),
     ('Creation timestamp', ['creation_timestamp']),
 ])
+
+FROM_MATRIX_FILE_SET_FIELDS = OrderedDict()
+FROM_MATRIX_FILE_SET_FIELDS.update(FROM_MATRIX_FILE_COLUMNS)
+FROM_MATRIX_FILE_SET_FIELDS.update(FROM_MATRIX_FILE_SET_COLUMNS)
 
 METADATA_AUDIT_TO_AUDIT_COLUMN_MAPPING = [
     ('WARNING', 'Audit WARNING'),

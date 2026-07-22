@@ -29,7 +29,7 @@ def test_iter_matrix_file_set_files_accepts_single_non_list_value():
     assert iter_matrix_file_set_files({'raw_matrix_files': raw}) == [raw]
 
 
-def test_metadata_report_splits_files_prefix_columns(dummy_request):
+def test_metadata_report_splits_file_and_file_set_columns(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = 'type=MatrixFileSet'
     report = MetadataReport(dummy_request)
@@ -99,27 +99,39 @@ def test_get_audit_data_category_order_is_deterministic(dummy_request):
 def test_metadata_report_parses_file_inequality_filters(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (
-        'type=MatrixFileSet&files.observation_count=gte:12000'
+        'type=MatrixFileSet&raw_matrix_files.observation_count=gte:12000'
     )
     report = MetadataReport(dummy_request)
     report._initialize_report()
-    assert list(report.positive_file_inequalities) == ['observation_count']
-    assert not report._should_not_report_file({'observation_count': 12000})
-    assert report._should_not_report_file({'observation_count': 11500})
+    assert list(report.positive_file_inequalities_by_link['raw_matrix_files']) == [
+        'observation_count',
+    ]
+    assert not report._should_not_report_file(
+        {'observation_count': 12000},
+        'raw_matrix_files',
+    )
+    assert report._should_not_report_file(
+        {'observation_count': 11500},
+        'raw_matrix_files',
+    )
+    assert not report._should_not_report_file(
+        {'observation_count': 11500},
+        'processed_matrix_files',
+    )
 
 
 def test_metadata_report_drops_file_inequality_params_from_search_query(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (
-        'type=MatrixFileSet&files.observation_count=gte:12000'
+        'type=MatrixFileSet&raw_matrix_files.observation_count=gte:12000'
     )
     report = MetadataReport(dummy_request)
     report._initialize_report()
     report._build_params()
     report._build_query_string()
     params = report.query_string.params_to_list()
-    assert ('files.observation_count', 'gte:12000') not in params
-    assert report.positive_file_inequalities['observation_count']
+    assert ('raw_matrix_files.observation_count', 'gte:12000') not in params
+    assert report.positive_file_inequalities_by_link['raw_matrix_files']['observation_count']
 
 
 def test_metadata_report_output_sorted_row_matches_header(dummy_request):
@@ -151,10 +163,20 @@ def test_metadata_report_output_sorted_row_matches_header(dummy_request):
             assert value == f'exp-{column}'
 
 
+def test_metadata_report_rejects_legacy_files_filters(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = (
+        'type=MatrixFileSet&files.file_format=h5ad'
+    )
+    report = MetadataReport(dummy_request)
+    with pytest.raises(HTTPBadRequest):
+        report._initialize_report()
+
+
 def test_metadata_report_rejects_negated_file_format_filter(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (
-        'type=MatrixFileSet&files.file_format!=h5ad'
+        'type=MatrixFileSet&processed_matrix_files.file_format!=h5ad'
     )
     report = MetadataReport(dummy_request)
     with pytest.raises(HTTPBadRequest):
@@ -164,7 +186,7 @@ def test_metadata_report_rejects_negated_file_format_filter(dummy_request):
 def test_metadata_report_rejects_not_exists_file_filter(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (
-        'type=MatrixFileSet&files.file_format!=*'
+        'type=MatrixFileSet&raw_matrix_files.file_format!=*'
     )
     report = MetadataReport(dummy_request)
     with pytest.raises(HTTPBadRequest):
@@ -174,22 +196,25 @@ def test_metadata_report_rejects_not_exists_file_filter(dummy_request):
 def test_metadata_report_allows_positive_file_format_filter(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (
-        'type=MatrixFileSet&files.file_format=h5ad'
+        'type=MatrixFileSet&processed_matrix_files.file_format=h5ad'
     )
     report = MetadataReport(dummy_request)
     report._initialize_report()
-    assert report.positive_file_param_set == {'file_format': {'h5ad'}}
+    assert report.positive_file_param_set_by_link['processed_matrix_files'] == {
+        'file_format': {'h5ad'},
+    }
 
 
 def test_metadata_report_should_not_report_file_param_filter(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (
-        'type=MatrixFileSet&files.file_format=h5'
+        'type=MatrixFileSet&raw_matrix_files.file_format=h5'
     )
     report = MetadataReport(dummy_request)
     report._initialize_report()
-    assert not report._should_not_report_file({'file_format': 'h5'})
-    assert report._should_not_report_file({'file_format': 'h5ad'})
+    assert not report._should_not_report_file({'file_format': 'h5'}, 'raw_matrix_files')
+    assert report._should_not_report_file({'file_format': 'h5ad'}, 'raw_matrix_files')
+    assert not report._should_not_report_file({'file_format': 'h5ad'}, 'processed_matrix_files')
 
 
 def test_matrix_file_set_metadata_allowed_types_decorator():
@@ -238,15 +263,17 @@ def test_group_audits_by_files_and_type_uses_lattice_paths():
     assert other_audits['WARNING'] == ['something else']
 
 
-def test_metadata_report_drops_files_prefix_params_from_search_query(dummy_request):
+def test_metadata_report_drops_file_link_filter_params_from_search_query(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (
-        'type=MatrixFileSet&files.file_format=h5ad'
+        'type=MatrixFileSet&processed_matrix_files.file_format=h5ad'
     )
     report = MetadataReport(dummy_request)
     report._initialize_report()
     report._build_params()
     report._build_query_string()
     params = report.query_string.params_to_list()
-    assert ('files.file_format', 'h5ad') not in params
-    assert report.positive_file_param_set == {'file_format': {'h5ad'}}
+    assert ('processed_matrix_files.file_format', 'h5ad') not in params
+    assert report.positive_file_param_set_by_link['processed_matrix_files'] == {
+        'file_format': {'h5ad'},
+    }

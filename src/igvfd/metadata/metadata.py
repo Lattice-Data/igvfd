@@ -1,6 +1,8 @@
 from collections import defaultdict
 from collections import OrderedDict
 
+from igvfd.metadata.constants import FROM_MATRIX_FILE_COLUMNS
+from igvfd.metadata.constants import FROM_MATRIX_FILE_SET_COLUMNS
 from igvfd.metadata.constants import FROM_MATRIX_FILE_SET_FIELDS
 from igvfd.metadata.constants import MATRIX_FILE_SET_FILE_LINK_FIELDS
 from igvfd.metadata.constants import MATRIX_FILE_SET_METADATA_ALLOWED_TYPES
@@ -35,6 +37,14 @@ FILE_AUDIT_PATH_MARKERS = (
 )
 
 
+def parse_file_link_filter_key(key):
+    for link_field in MATRIX_FILE_SET_FILE_LINK_FIELDS:
+        prefix = f'{link_field}.'
+        if key.startswith(prefix):
+            return link_field, key[len(prefix):]
+    return None, None
+
+
 def iter_matrix_file_set_files(file_set):
     files = []
     for field in MATRIX_FILE_SET_FILE_LINK_FIELDS:
@@ -46,11 +56,8 @@ def iter_matrix_file_set_files(file_set):
 
 
 def file_matches_file_params(file_, positive_file_param_set):
-    # Expects file_param_set where FILES_PREFIX (e.g. 'files.') has been
-    # stripped off of key (files.file_type -> file_type).
-    # Negated files.* params are rejected with HTTPBadRequest during report init.
-    # Param values should be coerced to ints ('2' -> 2) or booleans ('true' -> True)
-    # and put into a set for comparison with file values.
+    # Expects positive_file_param_set keyed by file property names on the
+    # embedded file object. Negated link filters are rejected during report init.
     for field, set_of_param_values in positive_file_param_set.items():
         file_value = list(simple_path_ids(file_, field))
         if not file_value:
@@ -108,7 +115,7 @@ class MetadataReport:
     ]
     CONTENT_TYPE = 'text/tsv'
     CONTENT_DISPOSITION = 'attachment; filename="matrix_file_set_metadata.tsv"'
-    FILES_PREFIX = 'files.'
+    LEGACY_FILES_PREFIX = 'files.'
     _UNSUPPORTED_FILE_FILTER_BUCKETS = (MUST_NOT, NOT_EXISTS, NOT_RANGES)
 
     def __init__(self, request):
@@ -116,8 +123,12 @@ class MetadataReport:
         self.query_string = QueryString(request)
         self.param_list = self.query_string.group_values_by_key()
         self.split_file_filters = {}
-        self.positive_file_param_set = {}
-        self.positive_file_inequalities = {}
+        self.positive_file_param_set_by_link = {
+            link_field: {} for link_field in MATRIX_FILE_SET_FILE_LINK_FIELDS
+        }
+        self.positive_file_inequalities_by_link = {
+            link_field: {} for link_field in MATRIX_FILE_SET_FILE_LINK_FIELDS
+        }
         self.header = []
         self.experiment_column_to_fields_mapping = OrderedDict()
         self.file_column_to_fields_mapping = OrderedDict()
@@ -134,22 +145,28 @@ class MetadataReport:
             self.header.append(column)
 
     def _split_column_and_fields_by_experiment_and_file(self):
-        for column, fields in self._get_column_to_fields_mapping().items():
-            if fields[0].startswith(self.FILES_PREFIX):
-                self.file_column_to_fields_mapping[column] = [
-                    field.replace(self.FILES_PREFIX, '')
-                    for field in fields
-                ]
-            else:
-                self.experiment_column_to_fields_mapping[column] = fields
+        self.file_column_to_fields_mapping = OrderedDict(FROM_MATRIX_FILE_COLUMNS)
+        self.experiment_column_to_fields_mapping = OrderedDict(FROM_MATRIX_FILE_SET_COLUMNS)
 
     def _set_split_file_filters(self):
         file_params = self.query_string.get_filters_by_condition(
-            key_and_value_condition=lambda k, _: k.startswith(self.FILES_PREFIX)
+            key_and_value_condition=lambda k, _: parse_file_link_filter_key(k)[0] is not None
         )
         self.split_file_filters = self.query_string.split_filters(
             params=file_params
         )
+
+    def _reject_legacy_files_filters(self):
+        legacy_filters = self.query_string.get_filters_by_condition(
+            key_and_value_condition=lambda k, _: k.startswith(self.LEGACY_FILES_PREFIX)
+        )
+        if legacy_filters:
+            raise HTTPBadRequest(
+                explanation=(
+                    'files.* filters are not supported. '
+                    'Use raw_matrix_files.* or processed_matrix_files.* instead.'
+                )
+            )
 
     def _reject_unsupported_file_filters(self):
         unsupported = []
@@ -157,40 +174,42 @@ class MetadataReport:
             unsupported.extend(self.split_file_filters.get(bucket, []))
         if unsupported:
             raise HTTPBadRequest(
-                explanation='Negated files.* filters are not supported.'
+                explanation='Negated raw_matrix_files.* and processed_matrix_files.* filters are not supported.'
             )
 
     def _set_positive_file_param_set(self):
         grouped_positive_file_params = self.query_string.group_values_by_key(
             params=self.split_file_filters[MUST] + self.split_file_filters[EXISTS]
         )
-        self.positive_file_param_set = {
-            k.replace(self.FILES_PREFIX, ''): set(map_strings_to_booleans_and_ints(v))
-            for k, v in grouped_positive_file_params.items()
-        }
+        for key, values in grouped_positive_file_params.items():
+            link_field, file_field = parse_file_link_filter_key(key)
+            if link_field is None:
+                continue
+            self.positive_file_param_set_by_link[link_field][file_field] = set(
+                map_strings_to_booleans_and_ints(values)
+            )
 
     def _set_positive_file_inequalities(self):
         grouped_positive_file_inequalities = self.query_string.group_values_by_key(
             params=self.split_file_filters[RANGES]
         )
-        self.positive_file_inequalities = {
-            k.replace(self.FILES_PREFIX, ''): map_param_values_to_inequalities(v)
-            for k, v in grouped_positive_file_inequalities.items()
-        }
+        for key, values in grouped_positive_file_inequalities.items():
+            link_field, file_field = parse_file_link_filter_key(key)
+            if link_field is None:
+                continue
+            self.positive_file_inequalities_by_link[link_field][file_field] = (
+                map_param_values_to_inequalities(values)
+            )
 
     def _add_fields_to_param_list(self):
         self.param_list['field'] = self.param_list.get('field', [])
-        for column, fields in self._get_column_to_fields_mapping().items():
-            # Skip logical files.* columns; typed link fields are in DEFAULT_PARAMS.
-            if fields[0].startswith(self.FILES_PREFIX):
-                continue
+        for column, fields in self.experiment_column_to_fields_mapping.items():
             self.param_list['field'].extend(fields)
 
-    def _drop_file_prefix_params_from_query_string(self):
-        # Lattice has no files.* property; keep those params for Python-side
-        # filtering only and remove them before the OpenSearch request.
+    def _drop_file_link_filter_params_from_query_string(self):
+        # Nested link filters are applied in Python; remove them before OpenSearch.
         file_params = self.query_string.get_filters_by_condition(
-            key_and_value_condition=lambda k, _: k.startswith(self.FILES_PREFIX)
+            key_and_value_condition=lambda k, _: parse_file_link_filter_key(k)[0] is not None
         )
         for key in {k for k, _ in file_params}:
             self.query_string.drop(key)
@@ -227,7 +246,7 @@ class MetadataReport:
     def _build_query_string(self):
         self.query_string.drop('limit')
         self.query_string.drop('option')
-        self._drop_file_prefix_params_from_query_string()
+        self._drop_file_link_filter_params_from_query_string()
         self.query_string.extend(
             self._get_default_params()
             + self._get_field_params()
@@ -248,11 +267,20 @@ class MetadataReport:
             self._build_new_request()
         ).results()
 
-    def _should_not_report_file(self, file_):
-        conditions = [
-            not file_matches_file_params(file_, self.positive_file_param_set),
-            not file_satisfies_inequality_constraints(file_, self.positive_file_inequalities),
-        ]
+    def _should_not_report_file(self, file_, link_field):
+        positive_file_param_set = self.positive_file_param_set_by_link.get(link_field, {})
+        positive_file_inequalities = self.positive_file_inequalities_by_link.get(link_field, {})
+        if not positive_file_param_set and not positive_file_inequalities:
+            return False
+        conditions = []
+        if positive_file_param_set:
+            conditions.append(
+                not file_matches_file_params(file_, positive_file_param_set)
+            )
+        if positive_file_inequalities:
+            conditions.append(
+                not file_satisfies_inequality_constraints(file_, positive_file_inequalities)
+            )
         return any(conditions)
 
     def _get_experiment_data(self, experiment):
@@ -293,32 +321,39 @@ class MetadataReport:
     def _generate_rows(self):
         yield self.csv.writerow(self.header)
         for file_set in self._get_search_results_generator():
-            files = iter_matrix_file_set_files(file_set)
-            if not files:
+            if not any(
+                file_set.get(link_field)
+                for link_field in MATRIX_FILE_SET_FILE_LINK_FIELDS
+            ):
                 continue
             grouped_file_audits, grouped_other_audits = group_audits_by_files_and_type(
                 file_set.get('audit', {})
             )
             experiment_data = self._get_experiment_data(file_set)
-            for file_ in files:
-                # Skip unresolved link strings; only report embedded file objects.
-                if not isinstance(file_, dict):
+            for link_field in MATRIX_FILE_SET_FILE_LINK_FIELDS:
+                value = file_set.get(link_field)
+                if not value:
                     continue
-                if self._should_not_report_file(file_):
-                    continue
-                file_data = self._get_file_data(file_)
-                audit_data = self._get_audit_data(
-                    grouped_file_audits.get(file_.get('@id'), {}),
-                    grouped_other_audits
-                )
-                file_data.update(audit_data)
-                yield self.csv.writerow(
-                    self._output_sorted_row(experiment_data, file_data)
-                )
+                for file_ in value if isinstance(value, list) else [value]:
+                    # Skip unresolved link strings; only report embedded file objects.
+                    if not isinstance(file_, dict):
+                        continue
+                    if self._should_not_report_file(file_, link_field):
+                        continue
+                    file_data = self._get_file_data(file_)
+                    audit_data = self._get_audit_data(
+                        grouped_file_audits.get(file_.get('@id'), {}),
+                        grouped_other_audits
+                    )
+                    file_data.update(audit_data)
+                    yield self.csv.writerow(
+                        self._output_sorted_row(experiment_data, file_data)
+                    )
 
     def _initialize_report(self):
         self._build_header()
         self._split_column_and_fields_by_experiment_and_file()
+        self._reject_legacy_files_filters()
         self._set_split_file_filters()
         self._reject_unsupported_file_filters()
         self._set_positive_file_param_set()
