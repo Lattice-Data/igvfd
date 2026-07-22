@@ -84,7 +84,10 @@
         "feature_types": [
             "Gene Expression"
         ],
-        "library_cardinality": "dual"
+        "library_cardinality": "dual",
+        "linked_libraries": [
+            "b9c0d1e2-f3a4-5678-b901-234567890123"
+        ]
     },
     {
         "lab": "teri-klein",

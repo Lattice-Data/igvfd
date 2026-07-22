@@ -1,5 +1,9 @@
 # Droplet Based Library Changelog
 
+### Minor changes since schema version 2
+
+* Require *library_cardinality* on abstract Library schema.
+
 ### Schema version 2
 
 * Merge *dependentSchemas* from abstract Library schema (including *multiplexing_method* requiring at least two samples).

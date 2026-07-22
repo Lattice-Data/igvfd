@@ -6,7 +6,8 @@
     "type": "object",
     "required": [
         "lab",
-        "samples"
+        "samples",
+        "library_cardinality"
     ],
     "identifyingProperties": [
         "uuid",
