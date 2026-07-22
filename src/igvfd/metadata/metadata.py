@@ -14,11 +14,15 @@ from igvfd.metadata.serializers import make_experiment_cell
 from igvfd.metadata.serializers import make_file_cell
 from igvfd.metadata.serializers import map_strings_to_booleans_and_ints
 
+from pyramid.exceptions import HTTPBadRequest
 from pyramid.response import Response
 from pyramid.view import view_config
 
 from snosearch.interfaces import EXISTS
 from snosearch.interfaces import MUST
+from snosearch.interfaces import MUST_NOT
+from snosearch.interfaces import NOT_EXISTS
+from snosearch.interfaces import NOT_RANGES
 from snosearch.interfaces import RANGES
 from snosearch.parsers import QueryString
 from snovault.util import simple_path_ids
@@ -43,10 +47,9 @@ def iter_matrix_file_set_files(file_set):
 
 def file_matches_file_params(file_, positive_file_param_set):
     # Expects file_param_set where FILES_PREFIX (e.g. 'files.') has been
-    # stripped off of key (files.file_type -> file_type)
-    # and params with field negation (i.e. file_type!=bigWig)
-    # have been filtered out. Param values should be
-    # coerced to ints ('2' -> 2) or booleans ('true' -> True)
+    # stripped off of key (files.file_type -> file_type).
+    # Negated files.* params are rejected with HTTPBadRequest during report init.
+    # Param values should be coerced to ints ('2' -> 2) or booleans ('true' -> True)
     # and put into a set for comparison with file values.
     for field, set_of_param_values in positive_file_param_set.items():
         file_value = list(simple_path_ids(file_, field))
@@ -106,6 +109,7 @@ class MetadataReport:
     CONTENT_TYPE = 'text/tsv'
     CONTENT_DISPOSITION = 'attachment; filename="matrix_file_set_metadata.tsv"'
     FILES_PREFIX = 'files.'
+    _UNSUPPORTED_FILE_FILTER_BUCKETS = (MUST_NOT, NOT_EXISTS, NOT_RANGES)
 
     def __init__(self, request):
         self.request = request
@@ -146,6 +150,15 @@ class MetadataReport:
         self.split_file_filters = self.query_string.split_filters(
             params=file_params
         )
+
+    def _reject_unsupported_file_filters(self):
+        unsupported = []
+        for bucket in self._UNSUPPORTED_FILE_FILTER_BUCKETS:
+            unsupported.extend(self.split_file_filters.get(bucket, []))
+        if unsupported:
+            raise HTTPBadRequest(
+                explanation='Negated files.* filters are not supported.'
+            )
 
     def _set_positive_file_param_set(self):
         grouped_positive_file_params = self.query_string.group_values_by_key(
@@ -307,6 +320,7 @@ class MetadataReport:
         self._build_header()
         self._split_column_and_fields_by_experiment_and_file()
         self._set_split_file_filters()
+        self._reject_unsupported_file_filters()
         self._set_positive_file_param_set()
         self._set_positive_file_inequalities()
 

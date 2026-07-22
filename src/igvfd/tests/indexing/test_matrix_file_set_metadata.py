@@ -76,6 +76,13 @@ def test_matrix_file_set_metadata_rejects_wrong_type(workbook, testapp):
     testapp.get('/matrix-file-set-metadata/', status=400)
 
 
+def test_matrix_file_set_metadata_rejects_negated_file_filter(workbook, testapp):
+    testapp.get(
+        '/matrix-file-set-metadata/?type=MatrixFileSet&files.file_format!=h5ad',
+        status=400,
+    )
+
+
 def test_matrix_file_set_metadata_file_format_filter(workbook, testapp):
     r = testapp.get(
         '/matrix-file-set-metadata/?type=MatrixFileSet&files.file_format=h5ad'

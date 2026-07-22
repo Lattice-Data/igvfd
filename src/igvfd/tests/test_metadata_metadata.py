@@ -151,6 +151,36 @@ def test_metadata_report_output_sorted_row_matches_header(dummy_request):
             assert value == f'exp-{column}'
 
 
+def test_metadata_report_rejects_negated_file_format_filter(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = (
+        'type=MatrixFileSet&files.file_format!=h5ad'
+    )
+    report = MetadataReport(dummy_request)
+    with pytest.raises(HTTPBadRequest):
+        report._initialize_report()
+
+
+def test_metadata_report_rejects_not_exists_file_filter(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = (
+        'type=MatrixFileSet&files.file_format!=*'
+    )
+    report = MetadataReport(dummy_request)
+    with pytest.raises(HTTPBadRequest):
+        report._initialize_report()
+
+
+def test_metadata_report_allows_positive_file_format_filter(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = (
+        'type=MatrixFileSet&files.file_format=h5ad'
+    )
+    report = MetadataReport(dummy_request)
+    report._initialize_report()
+    assert report.positive_file_param_set == {'file_format': {'h5ad'}}
+
+
 def test_metadata_report_should_not_report_file_param_filter(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (
