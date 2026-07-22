@@ -43,8 +43,8 @@ def test_matrix_file_set_metadata_get(workbook, testapp):
     # Workbook includes a MatrixFileSet with both raw and processed files.
     assert len(rows) >= 3  # header + at least two file rows overall
     file_ids = [row[0] for row in rows[1:]]
-    assert any('/raw-matrix-files/' in file_id for file_id in file_ids)
-    assert any('/processed-matrix-files/' in file_id for file_id in file_ids)
+    assert any('/raw_matrix_files/' in file_id for file_id in file_ids)
+    assert any('/processed_matrix_files/' in file_id for file_id in file_ids)
     type_cells = [row[4] for row in rows[1:]]
     assert all('MatrixFileSet' in cell for cell in type_cells)
 
@@ -66,8 +66,8 @@ def test_matrix_file_set_metadata_post_with_elements(workbook, testapp):
     # One MatrixFileSet with one raw + one processed file -> two data rows.
     assert len(rows) == 3
     file_ids = {row[0] for row in rows[1:]}
-    assert any('/raw-matrix-files/' in file_id for file_id in file_ids)
-    assert any('/processed-matrix-files/' in file_id for file_id in file_ids)
+    assert any('/raw_matrix_files/' in file_id for file_id in file_ids)
+    assert any('/processed_matrix_files/' in file_id for file_id in file_ids)
     assert all(row[3] == file_set_id for row in rows[1:])
 
 
@@ -82,5 +82,6 @@ def test_matrix_file_set_metadata_file_format_filter(workbook, testapp):
     )
     rows = _parse_tsv(r)
     assert rows[0][2] == 'File format'
+    assert len(rows) > 1, 'expected at least one h5ad file row'
     formats = {row[2] for row in rows[1:]}
     assert formats == {'h5ad'}

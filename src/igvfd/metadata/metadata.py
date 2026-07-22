@@ -24,10 +24,10 @@ from snosearch.parsers import QueryString
 from snovault.util import simple_path_ids
 
 
-# Lattice matrix files use typed collection paths, not IGVF's /files/.
+# Lattice collection @ids use underscores (not IGVF kebab-case).
 FILE_AUDIT_PATH_MARKERS = (
-    '/raw-matrix-files/',
-    '/processed-matrix-files/',
+    '/raw_matrix_files/',
+    '/processed_matrix_files/',
 )
 
 
@@ -165,16 +165,6 @@ class MetadataReport:
             for k, v in grouped_positive_file_inequalities.items()
         }
 
-    def _add_positive_file_filters_as_fields_to_param_list(self):
-        self.param_list['field'] = self.param_list.get('field', [])
-        self.param_list['field'].extend(
-            (
-                k
-                for k, v in self.query_string._get_original_params()
-                if k.startswith(self.FILES_PREFIX) and '!' not in k
-            )
-        )
-
     def _add_fields_to_param_list(self):
         self.param_list['field'] = self.param_list.get('field', [])
         for column, fields in self._get_column_to_fields_mapping().items():
@@ -182,7 +172,15 @@ class MetadataReport:
             if fields[0].startswith(self.FILES_PREFIX):
                 continue
             self.param_list['field'].extend(fields)
-        self._add_positive_file_filters_as_fields_to_param_list()
+
+    def _drop_file_prefix_params_from_query_string(self):
+        # Lattice has no files.* property; keep those params for Python-side
+        # filtering only and remove them before the OpenSearch request.
+        file_params = self.query_string.get_filters_by_condition(
+            key_and_value_condition=lambda k, _: k.startswith(self.FILES_PREFIX)
+        )
+        for key in {k for k, _ in file_params}:
+            self.query_string.drop(key)
 
     def _initialize_at_id_param(self):
         self.param_list['@id'] = self.param_list.get('@id', [])
@@ -216,6 +214,7 @@ class MetadataReport:
     def _build_query_string(self):
         self.query_string.drop('limit')
         self.query_string.drop('option')
+        self._drop_file_prefix_params_from_query_string()
         self.query_string.extend(
             self._get_default_params()
             + self._get_field_params()

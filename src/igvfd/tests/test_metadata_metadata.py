@@ -5,8 +5,8 @@ from pyramid.exceptions import HTTPBadRequest
 
 def test_iter_matrix_file_set_files_flattens_both_link_lists():
     from igvfd.metadata.metadata import iter_matrix_file_set_files
-    raw = {'@id': '/raw-matrix-files/a/', 'file_format': 'h5'}
-    processed = {'@id': '/processed-matrix-files/b/', 'file_format': 'h5ad'}
+    raw = {'@id': '/raw_matrix_files/a/', 'file_format': 'h5'}
+    processed = {'@id': '/processed_matrix_files/b/', 'file_format': 'h5ad'}
     file_set = {
         'raw_matrix_files': [raw],
         'processed_matrix_files': [processed],
@@ -16,7 +16,7 @@ def test_iter_matrix_file_set_files_flattens_both_link_lists():
 
 def test_iter_matrix_file_set_files_skips_absent_and_empty():
     from igvfd.metadata.metadata import iter_matrix_file_set_files
-    raw = {'@id': '/raw-matrix-files/a/', 'file_format': 'h5'}
+    raw = {'@id': '/raw_matrix_files/a/', 'file_format': 'h5'}
     assert iter_matrix_file_set_files({'raw_matrix_files': [raw]}) == [raw]
     assert iter_matrix_file_set_files({'raw_matrix_files': []}) == []
     assert iter_matrix_file_set_files({'processed_matrix_files': None}) == []
@@ -25,7 +25,7 @@ def test_iter_matrix_file_set_files_skips_absent_and_empty():
 
 def test_iter_matrix_file_set_files_accepts_single_non_list_value():
     from igvfd.metadata.metadata import iter_matrix_file_set_files
-    raw = {'@id': '/raw-matrix-files/a/', 'file_format': 'h5'}
+    raw = {'@id': '/raw_matrix_files/a/', 'file_format': 'h5'}
     assert iter_matrix_file_set_files({'raw_matrix_files': raw}) == [raw]
 
 
@@ -138,21 +138,35 @@ def test_group_audits_by_files_and_type_uses_lattice_paths():
         'WARNING': [
             {
                 'category': 'missing software version',
-                'path': '/raw-matrix-files/abc/',
+                'path': '/raw_matrix_files/abc/',
             },
             {
                 'category': 'something else',
-                'path': '/matrix-file-sets/xyz/',
+                'path': '/matrix_file_sets/xyz/',
             },
         ],
         'ERROR': [
             {
                 'category': 'bad thing',
-                'path': '/processed-matrix-files/def/',
+                'path': '/processed_matrix_files/def/',
             },
         ],
     }
     file_audits, other_audits = group_audits_by_files_and_type(audits)
-    assert file_audits['/raw-matrix-files/abc/']['WARNING'] == ['missing software version']
-    assert file_audits['/processed-matrix-files/def/']['ERROR'] == ['bad thing']
+    assert file_audits['/raw_matrix_files/abc/']['WARNING'] == ['missing software version']
+    assert file_audits['/processed_matrix_files/def/']['ERROR'] == ['bad thing']
     assert other_audits['WARNING'] == ['something else']
+
+
+def test_metadata_report_drops_files_prefix_params_from_search_query(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = (
+        'type=MatrixFileSet&files.file_format=h5ad'
+    )
+    report = MetadataReport(dummy_request)
+    report._initialize_report()
+    report._build_params()
+    report._build_query_string()
+    params = report.query_string.params_to_list()
+    assert ('files.file_format', 'h5ad') not in params
+    assert report.positive_file_param_set == {'file_format': {'h5ad'}}
