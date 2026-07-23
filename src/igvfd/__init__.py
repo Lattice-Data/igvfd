@@ -262,6 +262,7 @@ def main(global_config, **local_config):
 
     config.include('.ontology')
     config.include('.report')
+    config.include('.metadata')
     config.include('.verify_email')
 
     if 'elasticsearch.server' in config.registry.settings:

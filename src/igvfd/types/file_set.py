@@ -90,8 +90,8 @@ class MatrixFileSet(FileSet):
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
-        Path('raw_matrix_files', include=['@id', 'aliases', 'file_format']),
-        Path('processed_matrix_files', include=['@id', 'aliases', 'file_format']),
+        Path('raw_matrix_files', include=['@id', 'aliases', 'file_format', 'observation_count']),
+        Path('processed_matrix_files', include=['@id', 'aliases', 'file_format', 'observation_count']),
     ]
 
     @calculated_property(
