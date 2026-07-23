@@ -6,7 +6,8 @@
     "type": "object",
     "required": [
         "lab",
-        "file_format"
+        "file_format",
+        "content_type"
     ],
     "identifyingProperties": [
         "uuid",
@@ -36,7 +37,7 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "3"
+            "default": "4"
         },
         "file_format": {
             "title": "File Format",
@@ -48,6 +49,21 @@
             ],
             "submissionExample": {
                 "appscript": "csv"
+            }
+        },
+        "content_type": {
+            "title": "Content Type",
+            "description": "Describes the content of the tabular file.",
+            "comment": "Content Type describes the content of the file.",
+            "type": "string",
+            "enum": [
+                "guide RNA sequences"
+            ],
+            "enum_descriptions": {
+                "guide RNA sequences": "The sequences of guide RNAs designed for genome editing using CRISPR."
+            },
+            "submissionExample": {
+                "appscript": "guide RNA sequences"
             }
         }
     },

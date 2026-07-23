@@ -1,6 +1,6 @@
 {
-    "hash": "a9c05b8595fd180129a2e9a0217133eb",
-    "index_name": "tabular_file_a9c05b85",
+    "hash": "fcc9665f29045740ff909fdd344d74c1",
+    "index_name": "tabular_file_fcc9665f",
     "item_type": "tabular_file",
     "mapping": {
         "dynamic_templates": [
@@ -150,6 +150,9 @@
                     },
                     "aliases": {
                         "copy_to": "_fuzzy",
+                        "type": "keyword"
+                    },
+                    "content_type": {
                         "type": "keyword"
                     },
                     "crc64nvme_base64": {

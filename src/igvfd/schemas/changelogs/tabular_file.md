@@ -1,5 +1,10 @@
 ## Changelog for tabular_file.json
 
+### Schema version 4
+
+* Add `content_type`.
+* Require `content_type`.
+
 ### Schema version 3
 
 * Remove md5sum.
