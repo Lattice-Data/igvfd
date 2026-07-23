@@ -1,6 +1,6 @@
 {
-    "hash": "d461d7c0a12ff9ca8b6b6ded6bd75640",
-    "index_name": "sequence_file_set_d461d7c0",
+    "hash": "d38131c3ca2c0042be5f186daea87185",
+    "index_name": "sequence_file_set_d38131c3",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -392,6 +392,9 @@
                                 "type": "text"
                             },
                             "feature_types": {
+                                "type": "keyword"
+                            },
+                            "guide_rna_files": {
                                 "type": "keyword"
                             },
                             "lab": {

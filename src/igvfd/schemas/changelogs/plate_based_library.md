@@ -15,6 +15,9 @@
 
 ### Minor changes since schema version 1
 
+* Add *guide_rna_files* (inherited from abstract Library schema).
+* Extend *feature_types* enum list to include *CRISPR Guide Capture* (inherited from abstract Library schema).
+* Require *feature_types* to include *CRISPR Guide Capture* when *guide_rna_files* is submitted (inherited from abstract Library schema).
 * Add `library_construction_technology` (inherited from abstract Library schema).
 
 * Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract library profile).

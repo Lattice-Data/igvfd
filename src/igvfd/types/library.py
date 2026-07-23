@@ -30,6 +30,7 @@ class Library(Item):
         Path('submitted_by', include=['@id', 'title']),
         Path('samples', include=['@id', 'aliases', 'multiplexing_barcodes', 'RT_indexes']),
         Path('library_construction_technology', include=['@id', 'term_name']),
+        Path('guide_rna_files', include=['@id', 'aliases', 'file_format']),
     ]
 
 

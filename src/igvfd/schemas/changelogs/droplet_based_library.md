@@ -12,6 +12,8 @@
 
 * Add *library_cardinality* (inherited from abstract Library schema).
 * Add *linked_libraries* (inherited from abstract Library schema; linkTo restricted to DropletBasedLibrary).
+* Add *guide_rna_files* (inherited from abstract Library schema).
+* Require *feature_types* to include *CRISPR Guide Capture* when *guide_rna_files* is submitted (inherited from abstract Library schema).
 * Add `library_construction_technology` (inherited from abstract Library schema).
 
 * Add `author_metadata` via `mixins.json#/author_metadata` (shared with abstract library profile).

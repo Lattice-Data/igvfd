@@ -492,3 +492,60 @@ def test_droplet_based_library_create_with_library_construction_technology(
 ):
     res = testapp.get(droplet_based_library_with_library_construction_technology['@id'])
     assert res.json['library_construction_technology']['@id'] == controlled_term_efo['@id']
+
+
+def test_droplet_based_library_guide_rna_files_with_crispr_guide_capture(
+    testapp, other_lab, tissue, tabular_file
+):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['CRISPR Guide Capture'],
+        'guide_rna_files': [tabular_file['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    assert res.json['@graph'][0]['guide_rna_files'] == [tabular_file['@id']]
+
+
+@pytest.mark.parametrize(
+    'feature_types',
+    [
+        ['Gene Expression'],
+        ['ATAC'],
+        ['Gene Expression', 'ATAC'],
+    ]
+)
+def test_droplet_based_library_guide_rna_files_rejected_without_crispr_guide_capture(
+    testapp, other_lab, tissue, tabular_file, feature_types
+):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
+            'feature_types': feature_types,
+            'guide_rna_files': [tabular_file['@id']],
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_droplet_based_library_guide_rna_files_max_items(
+    testapp, other_lab, tissue, tabular_file, tabular_file_tsv
+):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
+            'feature_types': ['CRISPR Guide Capture'],
+            'guide_rna_files': [tabular_file['@id'], tabular_file_tsv['@id']],
+            'status': 'current',
+        },
+        status=422,
+    )
