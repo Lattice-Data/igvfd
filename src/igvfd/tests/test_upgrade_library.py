@@ -172,3 +172,28 @@ def test_plate_based_library_upgrade_1_2_preserves_list_multiplexing_method_with
     )
     assert result['schema_version'] == '2'
     assert result['multiplexing_method'] == ['combinatorial indexing']
+
+
+def test_plate_based_library_upgrade_2_3_defaults_library_cardinality_single(upgrader):
+    value = {
+        'schema_version': '2',
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'plate_based_library', value, current_version='2', target_version='3'
+    )
+    assert result['schema_version'] == '3'
+    assert result['library_cardinality'] == 'single'
+
+
+def test_plate_based_library_upgrade_2_3_preserves_library_cardinality_dual(upgrader):
+    value = {
+        'schema_version': '2',
+        'library_cardinality': 'dual',
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'plate_based_library', value, current_version='2', target_version='3'
+    )
+    assert result['schema_version'] == '3'
+    assert result['library_cardinality'] == 'dual'

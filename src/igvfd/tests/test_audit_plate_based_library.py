@@ -1,7 +1,9 @@
 from igvfd.audit.library import (
+    audit_dual_cardinality_self_linked_library,
     audit_library_samples_missing_multiplexing_barcodes,
     audit_library_samples_unexpected_multiplexing_barcodes,
     audit_plate_based_library_samples_missing_rt_indexes,
+    audit_single_cardinality_unexpected_linked_libraries,
 )
 
 
@@ -182,6 +184,7 @@ def test_plate_based_library_fixture_with_multiplexing_method_missing_barcodes(
     library_item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
+        'library_cardinality': 'single',
         'multiplexing_method': ['combinatorial indexing'],
         'status': 'current',
     }
@@ -220,6 +223,7 @@ def test_plate_based_library_fixture_with_multiplexing_barcodes_clean(
     library_item = {
         'lab': other_lab['@id'],
         'samples': [tissue_one['@id'], tissue_two['@id']],
+        'library_cardinality': 'single',
         'multiplexing_method': ['antibody hashing'],
         'status': 'current',
     }
@@ -302,5 +306,116 @@ def test_plate_based_library_fixture_with_rt_indexes_clean(
     errors_list = _audit_errors(res)
     assert not any(
         error['category'] == 'missing RT indexes'
+        for error in errors_list
+    )
+
+
+def test_plate_single_cardinality_unexpected_linked_libraries():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'linked_libraries': ['/plate-based-libraries/IGVFDTEST0002/'],
+    }
+    failures = list(audit_single_cardinality_unexpected_linked_libraries(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'unexpected linked libraries'
+
+
+def test_plate_dual_cardinality_self_linked_library_audit():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'dual',
+        'linked_libraries': ['/plate-based-libraries/IGVFDTEST0001/'],
+    }
+    failures = list(audit_dual_cardinality_self_linked_library(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'self linked library'
+
+
+def test_plate_dual_cardinality_missing_linked_libraries(testapp, indexer_testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'status': 'current',
+    }
+    dual_library = testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]
+    res = indexer_testapp.get(dual_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert any(
+        error['category'] == 'missing linked libraries'
+        for error in errors_list
+    )
+
+
+def test_plate_dual_cardinality_multiple_linked_libraries(
+    testapp,
+    indexer_testapp,
+    other_lab,
+    tissue,
+    plate_based_library,
+    plate_based_library_with_feature_types,
+):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'linked_libraries': [
+            plate_based_library['@id'],
+            plate_based_library_with_feature_types['@id'],
+        ],
+        'status': 'current',
+    }
+    dual_library = testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]
+    res = indexer_testapp.get(dual_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert any(
+        error['category'] == 'unexpected number of linked libraries'
+        for error in errors_list
+    )
+
+
+def test_plate_dual_cardinality_exactly_one_linked_library(
+    indexer_testapp,
+    plate_based_library_dual_with_linked_library,
+):
+    dual_library = plate_based_library_dual_with_linked_library
+    res = indexer_testapp.get(dual_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] == 'missing linked libraries'
+        for error in errors_list
+    )
+    assert not any(
+        error['category'] == 'unexpected number of linked libraries'
+        for error in errors_list
+    )
+    assert not any(
+        error['category'] == 'unexpected linked libraries'
+        for error in errors_list
+    )
+    assert not any(
+        error['category'] == 'self linked library'
+        for error in errors_list
+    )
+
+
+def test_plate_dual_cardinality_self_linked_library(
+    testapp,
+    indexer_testapp,
+    plate_based_library_dual,
+):
+    dual_library = plate_based_library_dual
+    testapp.patch_json(
+        dual_library['@id'],
+        {'linked_libraries': [dual_library['@id']]},
+        status=200,
+    )
+    res = indexer_testapp.get(dual_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert any(
+        error['category'] == 'self linked library'
         for error in errors_list
     )

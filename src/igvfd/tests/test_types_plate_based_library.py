@@ -23,6 +23,7 @@ def test_plate_based_library_required_fields(testapp, other_lab, tissue):
         '/plate_based_library',
         {
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
         },
         status=422
     )
@@ -31,6 +32,16 @@ def test_plate_based_library_required_fields(testapp, other_lab, tissue):
         '/plate_based_library',
         {
             'lab': other_lab['@id'],
+            'library_cardinality': 'single',
+        },
+        status=422
+    )
+    # Missing library_cardinality
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
         },
         status=422
     )
@@ -42,6 +53,7 @@ def test_plate_based_library_feature_types_min_items(testapp, other_lab, tissue)
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'feature_types': [],
             'status': 'current',
         },
@@ -55,6 +67,7 @@ def test_plate_based_library_feature_types_enum(testapp, other_lab, tissue):
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'feature_types': ['ATAC'],
             'status': 'current',
         },
@@ -75,6 +88,7 @@ def test_plate_based_library_create_with_feature_type_enum_values(
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'feature_types': [feature_type],
         'status': 'current',
     }
@@ -88,6 +102,7 @@ def test_plate_based_library_multiplexing_method_requires_two_samples(testapp, o
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'multiplexing_method': ['combinatorial indexing'],
             'status': 'current',
         },
@@ -112,6 +127,7 @@ def test_plate_based_library_create_with_multiplexing_method_enum_values(
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
+        'library_cardinality': 'single',
         'multiplexing_method': [multiplexing_method],
         'status': 'current',
     }
@@ -123,6 +139,7 @@ def test_plate_based_library_create_success(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
@@ -134,6 +151,7 @@ def test_plate_based_library_dbxrefs_valid(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'dbxrefs': ['EGA:EGAX12345', 'GEO:GSM67890'],
         'status': 'current',
     }
@@ -145,6 +163,7 @@ def test_plate_based_library_dbxrefs_invalid(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'dbxrefs': ['BioSample:SAMEA1234567'],
         'status': 'current',
     }
@@ -163,6 +182,7 @@ def test_plate_based_library_cro_group_identifier_valid(testapp, other_lab, tiss
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'CRO_group_identifier': cro_group_identifier,
         'status': 'current',
     }
@@ -183,6 +203,7 @@ def test_plate_based_library_cro_group_identifier_invalid(testapp, other_lab, ti
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'CRO_group_identifier': cro_group_identifier,
             'status': 'current',
         },
@@ -196,6 +217,7 @@ def test_plate_based_library_create_with_all_optional_fields(
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
+        'library_cardinality': 'single',
         'feature_types': ['Gene Expression', 'Multiplexing Capture'],
         'multiplexing_method': ['antibody hashing'],
         'description': 'Complete plate-based library',
@@ -213,6 +235,7 @@ def test_plate_based_library_author_metadata(testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'author_metadata': {
             'library_batch': 'PL-42',
             'plate_id': 'P001',
@@ -239,3 +262,125 @@ def test_plate_based_library_create_with_library_construction_technology(
 ):
     res = testapp.get(plate_based_library_with_library_construction_technology['@id'])
     assert res.json['library_construction_technology']['@id'] == controlled_term_efo['@id']
+
+
+def test_plate_based_library_linked_libraries_min_items(testapp, other_lab, tissue):
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'dual',
+            'linked_libraries': [],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_plate_based_library_linked_libraries_unique_items(testapp, other_lab, tissue, plate_based_library):
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'dual',
+            'linked_libraries': [plate_based_library['@id'], plate_based_library['@id']],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_plate_based_library_linked_libraries_linkto_validation(
+    testapp, other_lab, tissue, droplet_based_library
+):
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'dual',
+            'linked_libraries': [droplet_based_library['@id']],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_plate_based_library_create_with_linked_libraries(testapp, other_lab, tissue, plate_based_library):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'linked_libraries': [plate_based_library['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    assert res.json['@graph'][0]['linked_libraries'] == [plate_based_library['@id']]
+
+
+def test_plate_based_library_create_with_multiple_linked_libraries(
+    testapp,
+    other_lab,
+    tissue,
+    plate_based_library,
+    plate_based_library_with_feature_types,
+):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'linked_libraries': [
+            plate_based_library['@id'],
+            plate_based_library_with_feature_types['@id'],
+        ],
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    assert len(res.json['@graph'][0]['linked_libraries']) == 2
+    assert plate_based_library['@id'] in res.json['@graph'][0]['linked_libraries']
+    assert plate_based_library_with_feature_types['@id'] in res.json['@graph'][0]['linked_libraries']
+
+
+def test_plate_based_library_linked_libraries_requires_dual_cardinality(
+    testapp, other_lab, tissue, plate_based_library
+):
+    testapp.post_json(
+        '/plate_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
+            'linked_libraries': [plate_based_library['@id']],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+def test_plate_based_library_linked_libraries_with_dual_cardinality_succeeds(
+    testapp, other_lab, tissue, plate_based_library
+):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'dual',
+        'linked_libraries': [plate_based_library['@id']],
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    assert res.json['@graph'][0]['library_cardinality'] == 'dual'
+    assert res.json['@graph'][0]['linked_libraries'] == [plate_based_library['@id']]
+
+
+def test_plate_based_library_single_cardinality_without_linked_libraries_succeeds(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    assert res.json['@graph'][0]['library_cardinality'] == 'single'
+    assert 'linked_libraries' not in res.json['@graph'][0] or res.json['@graph'][0].get('linked_libraries') is None

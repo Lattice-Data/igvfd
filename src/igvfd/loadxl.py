@@ -546,6 +546,7 @@ PHASE1_PIPELINES = {
         skip_rows_missing_all_keys(*BIOSAMPLE_CONCRETE_REQUIRED_KEYS),
     ],
     'plate_based_library': [
+        remove_keys('linked_libraries'),
         skip_rows_missing_all_keys('lab', 'samples'),
     ],
     'droplet_based_library': [
@@ -616,7 +617,7 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS),
     ],
     'plate_based_library': [
-        skip_rows_missing_all_keys('lab', 'samples'),
+        skip_rows_missing_all_keys('linked_libraries'),
     ],
     'droplet_based_library': [
         skip_rows_missing_all_keys('linked_libraries'),

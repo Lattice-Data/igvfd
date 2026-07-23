@@ -460,6 +460,22 @@ def test_droplet_based_library_single_cardinality_without_linked_libraries_succe
     assert 'linked_libraries' not in res.json['@graph'][0] or res.json['@graph'][0].get('linked_libraries') is None
 
 
+def test_droplet_based_library_linked_libraries_rejects_plate_library(
+    testapp, other_lab, tissue, plate_based_library
+):
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'dual',
+            'linked_libraries': [plate_based_library['@id']],
+            'status': 'current',
+        },
+        status=422
+    )
+
+
 def test_droplet_based_library_patch_library_construction_technology(
     testapp, droplet_based_library, controlled_term_efo
 ):

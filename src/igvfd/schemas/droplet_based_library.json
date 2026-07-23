@@ -34,14 +34,7 @@
     "dependentSchemas": {
         "$merge": [
             "library.json#/dependentSchemas"
-        ],
-        "linked_libraries": {
-            "properties": {
-                "library_cardinality": {
-                    "const": "dual"
-                }
-            }
-        }
+        ]
     },
     "properties": {
         "schema_version": {
@@ -66,15 +59,6 @@
                 ]
             }
         },
-        "library_cardinality": {
-            "title": "Library Cardinality",
-            "description": "Cardinality of the library (single or dual).",
-            "type": "string",
-            "enum": [
-                "single",
-                "dual"
-            ]
-        },
         "linked_libraries": {
             "title": "Linked Libraries",
             "description": "Droplet-based libraries that are grouped with this library.",
@@ -87,6 +71,9 @@
                 "comment": "See droplet_based_library.json for available identifiers. This property is affected by dependencies. Requires library_cardinality to be 'dual'.",
                 "type": "string",
                 "linkTo": "DropletBasedLibrary"
+            },
+            "submissionExample": {
+                "appscript": "[\"lattice:droplet-library-partner-a\"]"
             }
         }
     },
