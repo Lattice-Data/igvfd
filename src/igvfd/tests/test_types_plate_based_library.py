@@ -393,6 +393,7 @@ def test_plate_based_library_guide_rna_files_with_crispr_guide_capture(
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
+        'library_cardinality': 'single',
         'feature_types': ['CRISPR Guide Capture'],
         'guide_rna_files': [tabular_file['@id']],
         'status': 'current',
@@ -417,6 +418,7 @@ def test_plate_based_library_guide_rna_files_rejected_without_crispr_guide_captu
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'feature_types': feature_types,
             'guide_rna_files': [tabular_file['@id']],
             'status': 'current',
@@ -433,6 +435,7 @@ def test_plate_based_library_guide_rna_files_max_items(
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'library_cardinality': 'single',
             'feature_types': ['CRISPR Guide Capture'],
             'guide_rna_files': [tabular_file['@id'], tabular_file_tsv['@id']],
             'status': 'current',

@@ -1,6 +1,6 @@
 {
-    "hash": "bf1689f08672594bdeaa929cbedf9413",
-    "index_name": "droplet_based_library_bf1689f0",
+    "hash": "b741e7d84d7f4f63861dc1c8fc03f9b7",
+    "index_name": "droplet_based_library_b741e7d8",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -171,6 +171,70 @@
                     },
                     "feature_types": {
                         "type": "keyword"
+                    },
+                    "guide_rna_files": {
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "crc64nvme_base64": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "derived_from": {
+                                "type": "keyword"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "file_format": {
+                                "type": "keyword"
+                            },
+                            "file_size": {
+                                "store": true,
+                                "type": "long"
+                            },
+                            "lab": {
+                                "type": "keyword"
+                            },
+                            "no_file_available": {
+                                "store": true,
+                                "type": "boolean"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "s3_uri": {
+                                "type": "keyword"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            }
+                        },
+                        "type": "object"
                     },
                     "lab": {
                         "properties": {
