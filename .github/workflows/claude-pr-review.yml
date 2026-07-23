@@ -29,11 +29,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         with:
-          # TEMPORARY (diagnostic): full output surfaces each tool call and its
-          # permission result in the Actions log, so we can see exactly which
-          # commands hit the allowlist wall (18 denials failed a review run at
-          # the 40-turn cap). Revert once the allowlist/prompt is tuned.
-          show_full_output: true
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             REPO: ${{ github.repository }}
@@ -43,6 +38,21 @@ jobs:
             exactly to review this pull request. The PR branch is already checked
             out in the current working directory. Use the REPO and PR NUMBER above
             for the skill's `gh pr view` and `gh pr diff` calls.
+
+            TOOLING CONSTRAINTS (this is a static review in a restricted sandbox):
+            - Use the Read, Grep, and Glob tools for ALL file and code inspection.
+              This includes reading installed dependencies to confirm a library's
+              API - their source is under /opt/venv/lib/python3.11/site-packages
+              (e.g. snosearch, snovault). Do not use shell `grep`/`find`; use the
+              Grep/Glob tools instead.
+            - Do NOT execute code or package managers: no `python3`, no `pip`, no
+              running the app or the test suite. This is a read-only review.
+            - The ONLY shell commands available are `gh pr view`, `gh pr diff`,
+              `gh pr comment`, and `git show`. Any other shell command will be
+              denied and waste a turn, so do not attempt them.
+            - If you cannot confirm something without executing code (e.g. whether
+              an import resolves at runtime), state the assumption and raise it as
+              a [Q] finding rather than trying to run it.
 
             IMPORTANT OVERRIDE: this run is non-interactive. The skill says to
             present the review and wait to be asked before posting. Do NOT wait.
@@ -58,5 +68,5 @@ jobs:
             human decision.
           claude_args: |
             --model claude-sonnet-5
-            --max-turns 40
+            --max-turns 60
             --allowedTools "Read,Write,Grep,Glob,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(git show:*)"
