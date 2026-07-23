@@ -16,7 +16,7 @@ from igvfd.metadata.serializers import make_experiment_cell
 from igvfd.metadata.serializers import make_file_cell
 from igvfd.metadata.serializers import map_strings_to_booleans_and_ints
 
-from pyramid.exceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.response import Response
 from pyramid.view import view_config
 
@@ -43,16 +43,6 @@ def parse_file_link_filter_key(key):
         if key.startswith(prefix):
             return link_field, key[len(prefix):]
     return None, None
-
-
-def iter_matrix_file_set_files(file_set):
-    files = []
-    for field in MATRIX_FILE_SET_FILE_LINK_FIELDS:
-        value = file_set.get(field)
-        if not value:
-            continue
-        files.extend(value if isinstance(value, list) else [value])
-    return files
 
 
 def file_matches_file_params(file_, positive_file_param_set):

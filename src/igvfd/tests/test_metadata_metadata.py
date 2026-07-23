@@ -1,32 +1,6 @@
 import pytest
 
-from pyramid.exceptions import HTTPBadRequest
-
-
-def test_iter_matrix_file_set_files_flattens_both_link_lists():
-    from igvfd.metadata.metadata import iter_matrix_file_set_files
-    raw = {'@id': '/raw_matrix_files/a/', 'file_format': 'h5'}
-    processed = {'@id': '/processed_matrix_files/b/', 'file_format': 'h5ad'}
-    file_set = {
-        'raw_matrix_files': [raw],
-        'processed_matrix_files': [processed],
-    }
-    assert iter_matrix_file_set_files(file_set) == [raw, processed]
-
-
-def test_iter_matrix_file_set_files_skips_absent_and_empty():
-    from igvfd.metadata.metadata import iter_matrix_file_set_files
-    raw = {'@id': '/raw_matrix_files/a/', 'file_format': 'h5'}
-    assert iter_matrix_file_set_files({'raw_matrix_files': [raw]}) == [raw]
-    assert iter_matrix_file_set_files({'raw_matrix_files': []}) == []
-    assert iter_matrix_file_set_files({'processed_matrix_files': None}) == []
-    assert iter_matrix_file_set_files({}) == []
-
-
-def test_iter_matrix_file_set_files_accepts_single_non_list_value():
-    from igvfd.metadata.metadata import iter_matrix_file_set_files
-    raw = {'@id': '/raw_matrix_files/a/', 'file_format': 'h5'}
-    assert iter_matrix_file_set_files({'raw_matrix_files': raw}) == [raw]
+from pyramid.httpexceptions import HTTPBadRequest
 
 
 def test_metadata_report_splits_file_and_file_set_columns(dummy_request):

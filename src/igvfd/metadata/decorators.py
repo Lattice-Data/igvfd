@@ -1,5 +1,5 @@
 from functools import wraps
-from pyramid.exceptions import HTTPBadRequest
+from pyramid.httpexceptions import HTTPBadRequest
 from snosearch.parsers import QueryString
 
 
