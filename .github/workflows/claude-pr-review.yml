@@ -29,6 +29,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         with:
+          # TEMPORARY (diagnostic): full output surfaces each tool call and its
+          # permission result in the Actions log, so we can see exactly which
+          # commands hit the allowlist wall (18 denials failed a review run at
+          # the 40-turn cap). Revert once the allowlist/prompt is tuned.
+          show_full_output: true
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             REPO: ${{ github.repository }}
