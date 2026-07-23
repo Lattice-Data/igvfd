@@ -113,3 +113,17 @@ def test_matrix_file_set_metadata_observation_count_inequality_filter(workbook, 
     file_ids = [row[0] for row in rows[1:]]
     assert all('/raw_matrix_files/' in file_id for file_id in file_ids)
     assert not any('/processed_matrix_files/' in file_id for file_id in file_ids)
+
+
+def test_matrix_file_set_metadata_both_link_fields_filtered(workbook, testapp):
+    r = testapp.get(
+        '/matrix-file-set-metadata/?type=MatrixFileSet'
+        '&raw_matrix_files.file_format=h5'
+        '&processed_matrix_files.file_format=h5ad'
+    )
+    rows = _parse_tsv(r)
+    assert len(rows) > 1, 'expected matching rows from both link fields'
+    file_ids = [row[0] for row in rows[1:]]
+    # Both arrays are filtered, so both are reported (each scoped to its filter).
+    assert any('/raw_matrix_files/' in file_id for file_id in file_ids)
+    assert any('/processed_matrix_files/' in file_id for file_id in file_ids)

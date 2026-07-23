@@ -129,6 +129,7 @@ class MetadataReport:
         self.positive_file_inequalities_by_link = {
             link_field: {} for link_field in MATRIX_FILE_SET_FILE_LINK_FIELDS
         }
+        self.filtered_link_fields = set()
         self.header = []
         self.experiment_column_to_fields_mapping = OrderedDict()
         self.file_column_to_fields_mapping = OrderedDict()
@@ -267,7 +268,20 @@ class MetadataReport:
             self._build_new_request()
         ).results()
 
+    def _set_filtered_link_fields(self):
+        # Link fields that carry at least one positive filter. When any exist, a
+        # filter naming one array (e.g. processed_matrix_files.*) scopes output to
+        # that array only; files in unfiltered link fields are excluded entirely.
+        self.filtered_link_fields = {
+            link_field
+            for link_field in MATRIX_FILE_SET_FILE_LINK_FIELDS
+            if self.positive_file_param_set_by_link.get(link_field)
+            or self.positive_file_inequalities_by_link.get(link_field)
+        }
+
     def _should_not_report_file(self, file_, link_field):
+        if self.filtered_link_fields and link_field not in self.filtered_link_fields:
+            return True
         positive_file_param_set = self.positive_file_param_set_by_link.get(link_field, {})
         positive_file_inequalities = self.positive_file_inequalities_by_link.get(link_field, {})
         if not positive_file_param_set and not positive_file_inequalities:
@@ -358,6 +372,7 @@ class MetadataReport:
         self._reject_unsupported_file_filters()
         self._set_positive_file_param_set()
         self._set_positive_file_inequalities()
+        self._set_filtered_link_fields()
 
     def _build_params(self):
         self._add_fields_to_param_list()
