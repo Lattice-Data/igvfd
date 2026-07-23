@@ -114,7 +114,9 @@ def test_metadata_report_parses_file_inequality_filters(dummy_request):
         {'observation_count': 11500},
         'raw_matrix_files',
     )
-    assert not report._should_not_report_file(
+    # A filter on raw_matrix_files scopes output to that array, so files in the
+    # unfiltered processed_matrix_files array are excluded entirely.
+    assert report._should_not_report_file(
         {'observation_count': 11500},
         'processed_matrix_files',
     )
@@ -214,7 +216,8 @@ def test_metadata_report_should_not_report_file_param_filter(dummy_request):
     report._initialize_report()
     assert not report._should_not_report_file({'file_format': 'h5'}, 'raw_matrix_files')
     assert report._should_not_report_file({'file_format': 'h5ad'}, 'raw_matrix_files')
-    assert not report._should_not_report_file({'file_format': 'h5ad'}, 'processed_matrix_files')
+    # Only raw_matrix_files is filtered, so processed_matrix_files files are excluded.
+    assert report._should_not_report_file({'file_format': 'h5ad'}, 'processed_matrix_files')
 
 
 def test_matrix_file_set_metadata_allowed_types_decorator():
