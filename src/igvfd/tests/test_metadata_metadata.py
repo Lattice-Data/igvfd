@@ -195,6 +195,16 @@ def test_metadata_report_rejects_not_exists_file_filter(dummy_request):
         report._initialize_report()
 
 
+def test_metadata_report_rejects_negated_inequality_file_filter(dummy_request):
+    from igvfd.metadata.metadata import MetadataReport
+    dummy_request.environ['QUERY_STRING'] = (
+        'type=MatrixFileSet&raw_matrix_files.observation_count!=gte:12000'
+    )
+    report = MetadataReport(dummy_request)
+    with pytest.raises(HTTPBadRequest):
+        report._initialize_report()
+
+
 def test_metadata_report_allows_positive_file_format_filter(dummy_request):
     from igvfd.metadata.metadata import MetadataReport
     dummy_request.environ['QUERY_STRING'] = (

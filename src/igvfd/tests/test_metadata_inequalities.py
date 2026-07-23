@@ -32,6 +32,14 @@ def test_try_to_evaluate_inequality_returns_false_on_type_error():
     assert try_to_evaluate_inequality(inequalities[0], 'not-a-number') is False
 
 
+def test_map_param_values_to_inequalities_parses_underscore_separated_int():
+    # A right operand written with an underscore separator must parse to an int
+    # so it compares numerically instead of raising TypeError (int vs str).
+    inequalities = map_param_values_to_inequalities(['gte:12_000'])
+    assert try_to_evaluate_inequality(inequalities[0], 12000) is True
+    assert try_to_evaluate_inequality(inequalities[0], 11999) is False
+
+
 def test_some_value_satisfies_inequalities_any_value_matches():
     inequalities = map_param_values_to_inequalities(['gte:12000'])
     assert some_value_satisfies_inequalities([11000, 12000], inequalities) is True

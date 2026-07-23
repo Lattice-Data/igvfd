@@ -105,8 +105,7 @@ def group_audits_by_files_and_type(audits):
 class MetadataReport:
 
     SEARCH_PATH = '/search/'
-    EXCLUDED_COLUMNS = (
-    )
+    EXCLUDED_COLUMNS = ()
     DEFAULT_PARAMS = [
         ('field', 'audit'),
         ('field', 'raw_matrix_files'),

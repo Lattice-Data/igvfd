@@ -43,8 +43,10 @@ def make_file_cell(paths, file_):
 
 
 def maybe_int(value):
+    # int() natively accepts underscore digit separators (int('12_000') == 12000)
+    # and rejects non-integer strings, which then fall through unchanged.
     try:
-        return int(value.replace('_', ' '))
+        return int(value)
     except Exception:
         return value
 
