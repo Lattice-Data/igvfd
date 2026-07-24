@@ -54,7 +54,7 @@
         "content_type": {
             "title": "Content Type",
             "description": "Describes the content of the tabular file.",
-            "comment": "Content Type describes the content of the file.",
+            "comment": "Additional enum values will be added as new tabular content types are supported.",
             "type": "string",
             "enum": [
                 "guide RNA sequences"
