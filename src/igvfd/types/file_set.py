@@ -90,8 +90,13 @@ class MatrixFileSet(FileSet):
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
-        Path('raw_matrix_files', include=['@id', 'aliases', 'file_format', 'observation_count']),
-        Path('processed_matrix_files', include=['@id', 'aliases', 'file_format', 'observation_count']),
+        # 'samples' stays in the parent include lists so the key survives the parent
+        # frame filter and the nested paths below have something to expand. Nested
+        # paths must follow their parent path.
+        Path('raw_matrix_files', include=['@id', 'aliases', 'file_format', 'observation_count', 'samples']),
+        Path('processed_matrix_files', include=['@id', 'aliases', 'file_format', 'observation_count', 'samples']),
+        Path('raw_matrix_files.samples', include=['@id', 'aliases', 'summary']),
+        Path('processed_matrix_files.samples', include=['@id', 'aliases', 'summary']),
     ]
 
     @calculated_property(

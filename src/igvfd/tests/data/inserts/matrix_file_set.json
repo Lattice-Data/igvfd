@@ -40,5 +40,31 @@
             "lattice:mfs-raw-and-processed"
         ],
         "description": "Matrix file set with both raw and processed files"
+    },
+    {
+        "lab": "teri-klein",
+        "processed_matrix_files": [
+            "f8a9b0c1-d2e3-4567-f012-890123456789"
+        ],
+        "uuid": "c3647586-9708-9012-6789-cccccccccccc",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:mfs-no-samples"
+        ],
+        "description": "Matrix file set whose only file has no samples. samples is required on raw_matrix_file, so the empty-sample case is only reachable through a processed matrix file."
+    },
+    {
+        "lab": "teri-klein",
+        "processed_matrix_files": [
+            "92031425-3647-5678-2345-999999999999"
+        ],
+        "uuid": "d4758697-a819-0123-789a-dddddddddddd",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:mfs-multi-sample"
+        ],
+        "description": "Matrix file set reaching three distinct biosamples of three concrete types, so sample-centric output covers multiple rows and the Tissue, CellLine and Organoid column rules."
     }
 ]

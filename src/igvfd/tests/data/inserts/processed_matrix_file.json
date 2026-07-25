@@ -61,6 +61,11 @@
                 "feature_count": 19000
             }
         ],
+        "samples": [
+            "2b3c4d5e-6f70-8901-bcde-222222222222",
+            "9b6df595-2291-46cb-8a20-4c52bb1a2dcb",
+            "71f2bbec-5b91-4782-82bb-f1e8c92a7f01"
+        ],
         "uuid": "92031425-3647-5678-2345-999999999999",
         "schema_version": "4",
         "status": "current",

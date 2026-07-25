@@ -1,6 +1,6 @@
 {
-    "hash": "fdce9d9a46e74cc59465bc2806cda0ea",
-    "index_name": "matrix_file_set_fdce9d9a",
+    "hash": "5b6bb3ccbfe6521168ba4cfc0c5a4ba6",
+    "index_name": "matrix_file_set_5b6bb3cc",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -288,7 +288,162 @@
                                 "type": "keyword"
                             },
                             "samples": {
-                                "type": "keyword"
+                                "properties": {
+                                    "@id": {
+                                        "type": "keyword"
+                                    },
+                                    "@type": {
+                                        "type": "keyword"
+                                    },
+                                    "RT_indexes": {
+                                        "type": "keyword"
+                                    },
+                                    "age_units": {
+                                        "type": "keyword"
+                                    },
+                                    "aliases": {
+                                        "type": "keyword"
+                                    },
+                                    "author_metadata": {
+                                        "properties": {},
+                                        "type": "object"
+                                    },
+                                    "collection_geographical_location": {
+                                        "type": "keyword"
+                                    },
+                                    "creation_timestamp": {
+                                        "type": "date"
+                                    },
+                                    "date_obtained": {
+                                        "type": "keyword"
+                                    },
+                                    "dbxrefs": {
+                                        "type": "keyword"
+                                    },
+                                    "depleted_cell_types": {
+                                        "type": "keyword"
+                                    },
+                                    "description": {
+                                        "type": "text"
+                                    },
+                                    "developmental_stages": {
+                                        "type": "keyword"
+                                    },
+                                    "diseases": {
+                                        "type": "keyword"
+                                    },
+                                    "donors": {
+                                        "type": "keyword"
+                                    },
+                                    "enriched_cell_types": {
+                                        "type": "keyword"
+                                    },
+                                    "experimental_conditions": {
+                                        "type": "keyword"
+                                    },
+                                    "genetic_modification": {
+                                        "type": "keyword"
+                                    },
+                                    "host": {
+                                        "type": "keyword"
+                                    },
+                                    "host_tissue": {
+                                        "type": "keyword"
+                                    },
+                                    "intended_cell_types": {
+                                        "type": "keyword"
+                                    },
+                                    "lab": {
+                                        "type": "keyword"
+                                    },
+                                    "libraries": {
+                                        "type": "keyword"
+                                    },
+                                    "lower_bound_age": {
+                                        "store": true,
+                                        "type": "float"
+                                    },
+                                    "multiplexing_barcodes": {
+                                        "type": "keyword"
+                                    },
+                                    "notes": {
+                                        "type": "text"
+                                    },
+                                    "orientation": {
+                                        "type": "keyword"
+                                    },
+                                    "origin_cell_types": {
+                                        "type": "keyword"
+                                    },
+                                    "passage_number": {
+                                        "store": true,
+                                        "type": "long"
+                                    },
+                                    "preservation_method": {
+                                        "type": "keyword"
+                                    },
+                                    "sample_procurement_interval": {
+                                        "store": true,
+                                        "type": "long"
+                                    },
+                                    "sample_procurement_interval_units": {
+                                        "type": "keyword"
+                                    },
+                                    "sample_terms": {
+                                        "type": "keyword"
+                                    },
+                                    "schema_version": {
+                                        "type": "keyword"
+                                    },
+                                    "selection_kits": {
+                                        "type": "keyword"
+                                    },
+                                    "selection_markers": {
+                                        "type": "keyword"
+                                    },
+                                    "selection_methods": {
+                                        "type": "keyword"
+                                    },
+                                    "sources": {
+                                        "type": "keyword"
+                                    },
+                                    "spatial_information": {
+                                        "type": "keyword"
+                                    },
+                                    "status": {
+                                        "type": "keyword"
+                                    },
+                                    "submitted_by": {
+                                        "type": "keyword"
+                                    },
+                                    "submitter_comment": {
+                                        "type": "keyword"
+                                    },
+                                    "summary": {
+                                        "type": "keyword"
+                                    },
+                                    "suspension_type": {
+                                        "type": "keyword"
+                                    },
+                                    "thickness": {
+                                        "store": true,
+                                        "type": "float"
+                                    },
+                                    "thickness_units": {
+                                        "type": "keyword"
+                                    },
+                                    "treatments": {
+                                        "type": "keyword"
+                                    },
+                                    "upper_bound_age": {
+                                        "store": true,
+                                        "type": "float"
+                                    },
+                                    "uuid": {
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "object"
                             },
                             "schema_version": {
                                 "type": "keyword"
@@ -384,7 +539,162 @@
                                 "type": "keyword"
                             },
                             "samples": {
-                                "type": "keyword"
+                                "properties": {
+                                    "@id": {
+                                        "type": "keyword"
+                                    },
+                                    "@type": {
+                                        "type": "keyword"
+                                    },
+                                    "RT_indexes": {
+                                        "type": "keyword"
+                                    },
+                                    "age_units": {
+                                        "type": "keyword"
+                                    },
+                                    "aliases": {
+                                        "type": "keyword"
+                                    },
+                                    "author_metadata": {
+                                        "properties": {},
+                                        "type": "object"
+                                    },
+                                    "collection_geographical_location": {
+                                        "type": "keyword"
+                                    },
+                                    "creation_timestamp": {
+                                        "type": "date"
+                                    },
+                                    "date_obtained": {
+                                        "type": "keyword"
+                                    },
+                                    "dbxrefs": {
+                                        "type": "keyword"
+                                    },
+                                    "depleted_cell_types": {
+                                        "type": "keyword"
+                                    },
+                                    "description": {
+                                        "type": "text"
+                                    },
+                                    "developmental_stages": {
+                                        "type": "keyword"
+                                    },
+                                    "diseases": {
+                                        "type": "keyword"
+                                    },
+                                    "donors": {
+                                        "type": "keyword"
+                                    },
+                                    "enriched_cell_types": {
+                                        "type": "keyword"
+                                    },
+                                    "experimental_conditions": {
+                                        "type": "keyword"
+                                    },
+                                    "genetic_modification": {
+                                        "type": "keyword"
+                                    },
+                                    "host": {
+                                        "type": "keyword"
+                                    },
+                                    "host_tissue": {
+                                        "type": "keyword"
+                                    },
+                                    "intended_cell_types": {
+                                        "type": "keyword"
+                                    },
+                                    "lab": {
+                                        "type": "keyword"
+                                    },
+                                    "libraries": {
+                                        "type": "keyword"
+                                    },
+                                    "lower_bound_age": {
+                                        "store": true,
+                                        "type": "float"
+                                    },
+                                    "multiplexing_barcodes": {
+                                        "type": "keyword"
+                                    },
+                                    "notes": {
+                                        "type": "text"
+                                    },
+                                    "orientation": {
+                                        "type": "keyword"
+                                    },
+                                    "origin_cell_types": {
+                                        "type": "keyword"
+                                    },
+                                    "passage_number": {
+                                        "store": true,
+                                        "type": "long"
+                                    },
+                                    "preservation_method": {
+                                        "type": "keyword"
+                                    },
+                                    "sample_procurement_interval": {
+                                        "store": true,
+                                        "type": "long"
+                                    },
+                                    "sample_procurement_interval_units": {
+                                        "type": "keyword"
+                                    },
+                                    "sample_terms": {
+                                        "type": "keyword"
+                                    },
+                                    "schema_version": {
+                                        "type": "keyword"
+                                    },
+                                    "selection_kits": {
+                                        "type": "keyword"
+                                    },
+                                    "selection_markers": {
+                                        "type": "keyword"
+                                    },
+                                    "selection_methods": {
+                                        "type": "keyword"
+                                    },
+                                    "sources": {
+                                        "type": "keyword"
+                                    },
+                                    "spatial_information": {
+                                        "type": "keyword"
+                                    },
+                                    "status": {
+                                        "type": "keyword"
+                                    },
+                                    "submitted_by": {
+                                        "type": "keyword"
+                                    },
+                                    "submitter_comment": {
+                                        "type": "keyword"
+                                    },
+                                    "summary": {
+                                        "type": "keyword"
+                                    },
+                                    "suspension_type": {
+                                        "type": "keyword"
+                                    },
+                                    "thickness": {
+                                        "store": true,
+                                        "type": "float"
+                                    },
+                                    "thickness_units": {
+                                        "type": "keyword"
+                                    },
+                                    "treatments": {
+                                        "type": "keyword"
+                                    },
+                                    "upper_bound_age": {
+                                        "store": true,
+                                        "type": "float"
+                                    },
+                                    "uuid": {
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "object"
                             },
                             "schema_version": {
                                 "type": "keyword"

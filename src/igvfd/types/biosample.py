@@ -30,14 +30,35 @@ class Biosample(Item):
         'plate_based_libraries': ('PlateBasedLibrary', 'samples'),
         'droplet_based_libraries': ('DropletBasedLibrary', 'samples'),
     }
+    # A nested Path must follow its parent Path, and the intermediate key must stay
+    # in the parent's include list so it survives the parent frame filter.
+    # 'title' was dropped from the donors and treatments includes: neither Donor nor
+    # Treatment has a title property or a title calculated property, so it was a no-op.
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
-        Path('donors', include=['@id', 'title', 'aliases']),
+        Path('donors', include=['@id', 'aliases', 'taxa', 'sex', 'ethnicity']),
+        Path('donors.ethnicity', include=['@id', 'term_name']),
         Path('sample_terms', include=['@id', 'term_name']),
         Path('developmental_stages', include=['@id', 'term_name', 'ontology_source']),
-        Path('treatments', include=['@id', 'title', 'summary']),
+        Path('diseases', include=['@id', 'term_name']),
+        Path('enriched_cell_types', include=['@id', 'term_name']),
+        Path('genetic_modification', include=['@id', 'strategy']),
+        Path('experimental_conditions', include=['@id', 'condition', 'value', 'units', 'text_value']),
+        Path('treatments', include=[
+            '@id', 'summary', 'ontological_term', 'amount', 'amount_units',
+            'lower_bound_duration', 'upper_bound_duration', 'duration_units',
+        ]),
+        Path('treatments.ontological_term', include=['@id', 'term_name']),
         Path('sources', include=['@id', 'title']),
+        # Reverse-link embed. 'libraries' is a calculated property over the rev links
+        # declared above; items.linkFrom is what makes it embeddable at all (the
+        # mapping generator only treats a path segment as a link when its schema
+        # declares linkFrom or linkTo). Embedding it changes the rendered value from
+        # a list of @id strings to a list of objects, same as every other embedded
+        # link. No embed cycle with Library.samples: each Path expands the target at
+        # its object frame, so only the named properties are pulled in.
+        Path('libraries', include=['@id', 'CRO_group_identifier']),
     ]
 
     @calculated_property(
@@ -49,6 +70,7 @@ class Biosample(Item):
             'items': {
                 'title': 'Library',
                 'type': 'string',
+                'linkFrom': 'Library.samples',
             },
         }
     )

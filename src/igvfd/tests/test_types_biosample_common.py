@@ -511,18 +511,24 @@ def test_biosample_author_metadata(
     assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']
 
 
+def get_library_ids(res):
+    # libraries is an embedded reverse link, so the embedded frame renders it as
+    # objects rather than @id strings (see Biosample.embedded_with_frame).
+    return [library['@id'] for library in res.json['libraries']]
+
+
 def test_biosample_libraries_reverse_link_plate_based_library(
     testapp, tissue, plate_based_library,
 ):
     res = testapp.get(tissue['@id'])
-    assert plate_based_library['@id'] in res.json['libraries']
+    assert plate_based_library['@id'] in get_library_ids(res)
 
 
 def test_biosample_libraries_reverse_link_droplet_based_library(
     testapp, tissue, droplet_based_library,
 ):
     res = testapp.get(tissue['@id'])
-    assert droplet_based_library['@id'] in res.json['libraries']
+    assert droplet_based_library['@id'] in get_library_ids(res)
 
 
 def test_biosample_libraries_reverse_link_multiple_libraries(
@@ -540,7 +546,7 @@ def test_biosample_libraries_reverse_link_multiple_libraries(
     ).json['@graph'][0]
 
     res = testapp.get(tissue['@id'])
-    libraries = res.json['libraries']
+    libraries = get_library_ids(res)
     assert len(libraries) == 3
     assert plate_based_library['@id'] in libraries
     assert droplet_based_library['@id'] in libraries
@@ -599,4 +605,4 @@ def test_biosample_libraries_reverse_link_inherited(
     ).json['@graph'][0]
 
     res = testapp.get(biosample['@id'])
-    assert linked_library['@id'] in res.json['libraries']
+    assert linked_library['@id'] in get_library_ids(res)
