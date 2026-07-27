@@ -2,6 +2,7 @@
 
 ### Minor changes since schema version 1
 
+* Extend *feature_types* enum list to include *CRISPR Guide Capture*.
 * Require *library_cardinality*.
 * Add *library_cardinality*.
 * Add *linked_libraries*.
