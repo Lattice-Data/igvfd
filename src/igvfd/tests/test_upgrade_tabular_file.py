@@ -73,3 +73,34 @@ def test_tabular_file_upgrade_2_3_handles_missing_md5sum(upgrader):
     )
     assert result['schema_version'] == '3'
     assert 'md5sum' not in result
+
+
+def test_tabular_file_upgrade_3_4_adds_content_type(upgrader):
+    value = {
+        'schema_version': '3',
+        'lab': '/labs/test/',
+        'file_format': 'csv',
+        's3_uri': 's3://bucket/path.csv',
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+    }
+    result = upgrader.upgrade(
+        'tabular_file', value, current_version='3', target_version='4'
+    )
+    assert result['schema_version'] == '4'
+    assert result['content_type'] == 'guide RNA sequences'
+
+
+def test_tabular_file_upgrade_3_4_preserves_existing_content_type(upgrader):
+    value = {
+        'schema_version': '3',
+        'lab': '/labs/test/',
+        'file_format': 'csv',
+        's3_uri': 's3://bucket/path.csv',
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+        'content_type': 'guide RNA sequences',
+    }
+    result = upgrader.upgrade(
+        'tabular_file', value, current_version='3', target_version='4'
+    )
+    assert result['schema_version'] == '4'
+    assert result['content_type'] == 'guide RNA sequences'

@@ -15,3 +15,12 @@ def tabular_file_1_2(value, system):
 @upgrade_step('tabular_file', '2', '3')
 def tabular_file_2_3(value, system):
     value.pop('md5sum', None)
+
+
+_CONTENT_TYPE_DEFAULT = 'guide RNA sequences'
+
+
+@upgrade_step('tabular_file', '3', '4')
+def tabular_file_3_4(value, system):
+    if 'content_type' not in value:
+        value['content_type'] = _CONTENT_TYPE_DEFAULT

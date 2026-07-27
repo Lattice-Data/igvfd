@@ -2,6 +2,7 @@ import pytest
 
 SEQUENCE_FILE_READ_COUNT = 15_000_000
 CRC64NVME_BASE64_VALID = 'AAAAAAAAAAA'
+TABULAR_FILE_CONTENT_TYPE = 'guide RNA sequences'
 RAW_MATRIX_FILE_METADATA = {
     'software': 'Cell Ranger',
     'software_version': '7.1.0',
@@ -17,6 +18,8 @@ PROCESSED_MATRIX_FILE_METADATA = {
 def _file_post_body(file_type, item, tissue=None):
     """Augment POST bodies for sequence_file read_count and file-available crc64nvme_base64."""
     out = dict(item)
+    if file_type == 'tabular_file':
+        out.setdefault('content_type', TABULAR_FILE_CONTENT_TYPE)
     if file_type == 'raw_matrix_file':
         for key, value in RAW_MATRIX_FILE_METADATA.items():
             out.setdefault(key, value)
@@ -39,6 +42,8 @@ def _file_post_body(file_type, item, tissue=None):
 def _augment_matrix_file_post(file_type, item, tissue=None):
     """Add matrix file required metadata when building matrix file POST bodies."""
     out = dict(item)
+    if file_type == 'tabular_file':
+        out.setdefault('content_type', TABULAR_FILE_CONTENT_TYPE)
     if file_type == 'raw_matrix_file':
         out.update(RAW_MATRIX_FILE_METADATA)
         if tissue is not None:
@@ -145,6 +150,35 @@ def test_file_required_fields(testapp, other_lab, file_type):
             },
         ),
         status=422
+    )
+
+
+def test_tabular_file_requires_content_type(testapp, other_lab):
+    testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            's3_uri': 's3://lattice-test-data/tabular/required-content-type.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_tabular_file_content_type_enum(testapp, other_lab):
+    testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            'content_type': 'invalid content type',
+            's3_uri': 's3://lattice-test-data/tabular/invalid-content-type.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=422,
     )
 
 
@@ -618,6 +652,7 @@ def test_tabular_file_omits_read_count(testapp, other_lab):
         {
             'lab': other_lab['@id'],
             'file_format': 'csv',
+            'content_type': TABULAR_FILE_CONTENT_TYPE,
             's3_uri': 's3://lattice-test-data/tabular/no-read-count.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'status': 'current',
@@ -655,6 +690,7 @@ def test_tabular_file_rejects_read_count(testapp, other_lab):
         {
             'lab': other_lab['@id'],
             'file_format': 'csv',
+            'content_type': TABULAR_FILE_CONTENT_TYPE,
             's3_uri': 's3://lattice-test-data/tabular/read-count-not-allowed.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'read_count': 100,

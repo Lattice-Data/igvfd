@@ -10,6 +10,9 @@ def tabular_file():
             'file_format': {
                 'title': 'File Format'
             },
+            'content_type': {
+                'title': 'Content Type'
+            },
             'no_file_available': {
                 'title': 'No File Available'
             },
@@ -41,6 +44,9 @@ def tabular_file():
             },
             'file_format': {
                 'title': 'File Format'
+            },
+            'content_type': {
+                'title': 'Content Type'
             },
             's3_uri': {
                 'title': 'S3 URI'
