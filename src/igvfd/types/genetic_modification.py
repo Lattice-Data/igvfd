@@ -20,7 +20,7 @@ class GeneticModification(Item):
     item_type = 'genetic_modification'
     schema = load_schema('igvfd:schemas/genetic_modification.json')
     embedded_with_frame = [
-        Path('guide_rna_files', include=['@id', 'aliases', 'file_format']),
+        Path('guide_rna_files', include=['@id', 'aliases', 'file_format', 's3_uri']),
     ]
 
     @calculated_property(

@@ -140,6 +140,7 @@ def test_genetic_modification_guide_rna_files_embed(testapp, tabular_file):
     embedded = res.json['guide_rna_files'][0]
     assert embedded['@id'] == tabular_file['@id']
     assert embedded['file_format'] == tabular_file['file_format']
+    assert embedded['s3_uri'] == tabular_file['s3_uri']
 
 
 def test_genetic_modification_targeted_genes_knockout_mutation(testapp):
