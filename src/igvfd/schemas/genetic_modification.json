@@ -50,7 +50,7 @@
         },
         "guide_rna_files": {
             "title": "Guide RNA Files",
-            "description": "TSV file(s) listing the guide RNAs and associated metadata used to generate this genetic modification.",
+            "description": "Tabular file(s) listing the guide RNAs and associated metadata used to generate this genetic modification.",
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,

@@ -3,10 +3,10 @@ from snovault import (
     load_schema,
     calculated_property,
 )
+from snovault.util import Path
 from .base import (
     Item,
 )
-from snovault.util import Path
 
 
 @collection(
