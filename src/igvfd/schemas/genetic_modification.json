@@ -67,7 +67,7 @@
         },
         "targeted_genes": {
             "title": "Targeted Genes",
-            "description": "Gene(s) targeted by the genetic modification. Applicable only when strategy is 'knockout mutation'.",
+            "description": "Gene(s) targeted by the genetic modification. Applicable only when strategy is 'knockout mutation'. Identifiers listed here should match the guide_id values in the guide_rna_files.",
             "comment": "This property is affected by dependencies. See genetic_modification.json.",
             "type": "array",
             "minItems": 1,
