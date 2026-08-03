@@ -80,6 +80,7 @@ def test_plate_based_library_feature_types_enum(testapp, other_lab, tissue):
     [
         'Gene Expression',
         'Multiplexing Capture',
+        'CRISPR Guide Capture',
     ]
 )
 def test_plate_based_library_create_with_feature_type_enum_values(

@@ -1,5 +1,11 @@
 # Genetic Modification Changelog
 
+### Minor changes since schema version 2
+
+* Add *guide_rna_files*.
+* Add *targeted_genes*.
+* Require *strategy* to be *knockout mutation* when *targeted_genes* is submitted.
+
 ## Schema version 2
 
 - Rename modality to strategy.

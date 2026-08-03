@@ -3,6 +3,7 @@ from snovault import (
     load_schema,
     calculated_property,
 )
+from snovault.util import Path
 from .base import (
     Item,
 )
@@ -18,6 +19,9 @@ from .base import (
 class GeneticModification(Item):
     item_type = 'genetic_modification'
     schema = load_schema('igvfd:schemas/genetic_modification.json')
+    embedded_with_frame = [
+        Path('guide_rna_files', include=['@id', 'aliases', 'file_format', 's3_uri']),
+    ]
 
     @calculated_property(
         schema={

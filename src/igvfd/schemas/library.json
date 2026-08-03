@@ -113,7 +113,8 @@
                 "type": "string",
                 "enum": [
                     "Gene Expression",
-                    "Multiplexing Capture"
+                    "Multiplexing Capture",
+                    "CRISPR Guide Capture"
                 ]
             },
             "submissionExample": {

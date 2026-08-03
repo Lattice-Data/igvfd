@@ -42,6 +42,12 @@ def genetic_modification():
             'summary': {
                 'title': 'Summary'
             },
+            'guide_rna_files': {
+                'title': 'Guide RNA Files'
+            },
+            'targeted_genes': {
+                'title': 'Targeted Genes'
+            },
             'status': {
                 'title': 'Status'
             },

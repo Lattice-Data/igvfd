@@ -45,6 +45,9 @@
     {
         "strategy": "knockout mutation",
         "description": "Knockout mutation without a pooled screen.",
+        "targeted_genes": [
+            "TP53"
+        ],
         "uuid": "d5e6f7a8-b9c0-1234-efab-567890123045",
         "schema_version": "2",
         "status": "current",
