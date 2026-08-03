@@ -185,6 +185,7 @@ def test_plate_based_library_fixture_with_multiplexing_method_missing_barcodes(
         'lab': other_lab['@id'],
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'multiplexing_method': ['combinatorial indexing'],
         'status': 'current',
     }
@@ -224,6 +225,7 @@ def test_plate_based_library_fixture_with_multiplexing_barcodes_clean(
         'lab': other_lab['@id'],
         'samples': [tissue_one['@id'], tissue_two['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'multiplexing_method': ['antibody hashing'],
         'status': 'current',
     }
@@ -339,6 +341,7 @@ def test_plate_dual_cardinality_missing_linked_libraries(testapp, indexer_testap
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     dual_library = testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]
@@ -362,6 +365,7 @@ def test_plate_dual_cardinality_multiple_linked_libraries(
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'linked_libraries': [
             plate_based_library['@id'],
             plate_based_library_with_feature_types['@id'],

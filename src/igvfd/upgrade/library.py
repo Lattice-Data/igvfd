@@ -19,6 +19,13 @@ PLATE_REMOVED_PROPERTIES = (
     'indexing_rounds',
 )
 
+DEFAULT_FEATURE_TYPES = ['Gene Expression']
+
+
+def _default_feature_types(value):
+    if not value.get('feature_types'):
+        value['feature_types'] = list(DEFAULT_FEATURE_TYPES)
+
 
 def _upgrade_multiplexing_method(value):
     legacy = value.pop('multiplexing_method', None)
@@ -56,3 +63,13 @@ def plate_based_library_1_2(value, system):
 def plate_based_library_2_3(value, system):
     if 'library_cardinality' not in value:
         value['library_cardinality'] = 'single'
+
+
+@upgrade_step('droplet_based_library', '2', '3')
+def droplet_based_library_2_3(value, system):
+    _default_feature_types(value)
+
+
+@upgrade_step('plate_based_library', '3', '4')
+def plate_based_library_3_4(value, system):
+    _default_feature_types(value)
