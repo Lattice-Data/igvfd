@@ -1,6 +1,6 @@
 {
-    "hash": "086d49f99f9a44e7a15362427f4ad737",
-    "index_name": "genetic_modification_086d49f9",
+    "hash": "e4e81bfb265a740462db5f98fb0c2a63",
+    "index_name": "genetic_modification_e4e81bfb",
     "item_type": "genetic_modification",
     "mapping": {
         "dynamic_templates": [
@@ -191,6 +191,9 @@
                             "file_size": {
                                 "store": true,
                                 "type": "long"
+                            },
+                            "guides_signature": {
+                                "type": "keyword"
                             },
                             "lab": {
                                 "type": "keyword"

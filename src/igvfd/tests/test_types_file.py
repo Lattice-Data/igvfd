@@ -1,8 +1,18 @@
+import itertools
 import pytest
 
 SEQUENCE_FILE_READ_COUNT = 15_000_000
 CRC64NVME_BASE64_VALID = 'AAAAAAAAAAA'
 TABULAR_FILE_CONTENT_TYPE = 'guide RNA sequences'
+# guides_signature is unique across the portal, so every POSTed tabular file needs its own.
+_GUIDES_SIGNATURE_COUNTER = itertools.count(1)
+
+
+def _guides_signature():
+    """Distinct valid signature per call: gsig1:set:n=1:000...001, ...002, ...003."""
+    return f'gsig1:set:n=1:{next(_GUIDES_SIGNATURE_COUNTER):032x}'
+
+
 RAW_MATRIX_FILE_METADATA = {
     'software': 'Cell Ranger',
     'software_version': '7.1.0',
@@ -20,6 +30,7 @@ def _file_post_body(file_type, item, tissue=None):
     out = dict(item)
     if file_type == 'tabular_file':
         out.setdefault('content_type', TABULAR_FILE_CONTENT_TYPE)
+        out.setdefault('guides_signature', _guides_signature())
     if file_type == 'raw_matrix_file':
         for key, value in RAW_MATRIX_FILE_METADATA.items():
             out.setdefault(key, value)
@@ -44,6 +55,7 @@ def _augment_matrix_file_post(file_type, item, tissue=None):
     out = dict(item)
     if file_type == 'tabular_file':
         out.setdefault('content_type', TABULAR_FILE_CONTENT_TYPE)
+        out.setdefault('guides_signature', _guides_signature())
     if file_type == 'raw_matrix_file':
         out.update(RAW_MATRIX_FILE_METADATA)
         if tissue is not None:
@@ -159,6 +171,7 @@ def test_tabular_file_requires_content_type(testapp, other_lab):
         {
             'lab': other_lab['@id'],
             'file_format': 'csv',
+            'guides_signature': _guides_signature(),
             's3_uri': 's3://lattice-test-data/tabular/required-content-type.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'status': 'current',
@@ -174,12 +187,143 @@ def test_tabular_file_content_type_enum(testapp, other_lab):
             'lab': other_lab['@id'],
             'file_format': 'csv',
             'content_type': 'invalid content type',
+            'guides_signature': _guides_signature(),
             's3_uri': 's3://lattice-test-data/tabular/invalid-content-type.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'status': 'current',
         },
         status=422,
     )
+
+
+def test_tabular_file_requires_guides_signature(testapp, other_lab):
+    testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            'content_type': TABULAR_FILE_CONTENT_TYPE,
+            's3_uri': 's3://lattice-test-data/tabular/required-guides-signature.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+@pytest.mark.parametrize(
+    'index,guides_signature',
+    enumerate([
+        'gsig1:set:n=0:00000000000000000000000000000000',
+        'gsig1:set:n=1:0123456789abcdef0123456789abcdef',
+        'gsig1:set:n=1000000:ffffffffffffffffffffffffffffffff',
+    ]),
+)
+def test_tabular_file_guides_signature_valid(testapp, other_lab, index, guides_signature):
+    res = testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            'content_type': TABULAR_FILE_CONTENT_TYPE,
+            'guides_signature': guides_signature,
+            's3_uri': f's3://lattice-test-data/tabular/valid-signature-{index}.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert testapp.get(res.json['@graph'][0]['@id']).json['guides_signature'] == guides_signature
+
+
+@pytest.mark.parametrize(
+    'index,guides_signature',
+    enumerate([
+        'gsig1:set:n=:0123456789abcdef0123456789abcdef',        # no count
+        'gsig1:set:n=-1:0123456789abcdef0123456789abcdef',      # negative count
+        'gsig1:set:1:0123456789abcdef0123456789abcdef',         # missing n=
+        'gsig1:set:n=1:0123456789ABCDEF0123456789ABCDEF',       # uppercase hex
+        'gsig1:set:n=1:0123456789abcdef0123456789abcde',        # 31 characters
+        'gsig1:set:n=1:0123456789abcdef0123456789abcdef0',      # 33 characters
+        'gsig1:set:n=1:0123456789abcdef0123456789abcdeg',       # non-hex character
+        'gsig2:set:n=1:0123456789abcdef0123456789abcdef',       # wrong version prefix
+        'gsig1:list:n=1:0123456789abcdef0123456789abcdef',      # wrong kind
+        ' gsig1:set:n=1:0123456789abcdef0123456789abcdef',      # leading space
+        'gsig1:set:n=1:0123456789abcdef0123456789abcdef ',      # trailing space
+        '',
+    ]),
+)
+def test_tabular_file_guides_signature_invalid(testapp, other_lab, index, guides_signature):
+    testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            'content_type': TABULAR_FILE_CONTENT_TYPE,
+            'guides_signature': guides_signature,
+            's3_uri': f's3://lattice-test-data/tabular/invalid-signature-{index}.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_tabular_file_guides_signature_patch(testapp, tabular_file):
+    updated = _guides_signature()
+    res = testapp.patch_json(tabular_file['@id'], {'guides_signature': updated}, status=200)
+    assert res.json['@graph'][0]['guides_signature'] == updated
+    testapp.patch_json(tabular_file['@id'], {'guides_signature': 'not-a-signature'}, status=422)
+
+
+def test_tabular_file_guides_signature_unique(testapp, other_lab, tabular_file):
+    # A duplicate unique key is a key conflict, not a validation failure.
+    testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            'content_type': TABULAR_FILE_CONTENT_TYPE,
+            'guides_signature': tabular_file['guides_signature'],
+            's3_uri': 's3://lattice-test-data/tabular/duplicate-signature.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=409,
+    )
+
+
+def test_tabular_file_guides_signature_unique_on_patch(testapp, tabular_file, tabular_file_tsv):
+    testapp.patch_json(
+        tabular_file_tsv['@id'],
+        {'guides_signature': tabular_file['guides_signature']},
+        status=409,
+    )
+
+
+def test_tabular_file_guides_signature_released_after_delete(testapp, other_lab, tabular_file):
+    signature = tabular_file['guides_signature']
+    testapp.patch_json(tabular_file['@id'], {'status': 'deleted'}, status=200)
+    testapp.post_json(
+        '/tabular_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            'content_type': TABULAR_FILE_CONTENT_TYPE,
+            'guides_signature': signature,
+            's3_uri': 's3://lattice-test-data/tabular/signature-reused-after-delete.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=201,
+    )
+
+
+def test_tabular_file_resolvable_by_guides_signature(testapp, tabular_file):
+    res = testapp.get(
+        f'/tabular_files/{tabular_file["guides_signature"]}/?frame=object'
+    ).maybe_follow(status=200)
+    assert res.json['@id'] == tabular_file['@id']
 
 
 @pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
@@ -653,6 +797,7 @@ def test_tabular_file_omits_read_count(testapp, other_lab):
             'lab': other_lab['@id'],
             'file_format': 'csv',
             'content_type': TABULAR_FILE_CONTENT_TYPE,
+            'guides_signature': _guides_signature(),
             's3_uri': 's3://lattice-test-data/tabular/no-read-count.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'status': 'current',
@@ -691,6 +836,7 @@ def test_tabular_file_rejects_read_count(testapp, other_lab):
             'lab': other_lab['@id'],
             'file_format': 'csv',
             'content_type': TABULAR_FILE_CONTENT_TYPE,
+            'guides_signature': _guides_signature(),
             's3_uri': 's3://lattice-test-data/tabular/read-count-not-allowed.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'read_count': 100,

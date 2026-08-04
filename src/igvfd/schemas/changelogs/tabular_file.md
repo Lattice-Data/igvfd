@@ -1,5 +1,11 @@
 ## Changelog for tabular_file.json
 
+### Schema version 5
+
+* Add `guides_signature`.
+* Require `guides_signature` when `content_type` is `guide RNA sequences`.
+* Require `guides_signature` to be unique across the portal.
+
 ### Schema version 4
 
 * Add `content_type`.
