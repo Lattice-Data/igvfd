@@ -6,6 +6,7 @@
 
 ## Minor changes since schema version 3
 
+* Update multiplexing_barcodes regex to allow a paired 10x Flex probe and CRISPR Flex barcode, such as BC001+CR001.
 * Update developmental_stages comment to include ZFS and other stage ontologies.
 * Add RT_indexes.
 * Add calculated property `libraries`.
