@@ -141,6 +141,10 @@ def test_biosample_dbxrefs_rejects_invalid_values(
         ['A-A01'],
         ['9A-9C'],
         ['A0251'],
+        ['BC001+CR001'],
+        ['BC016+CR016'],
+        ['BC001+CR001', 'BC002+CR002'],
+        ['BC001', 'BC001+CR001'],
     ],
 )
 def test_biosample_multiplexing_barcodes_valid(
@@ -174,6 +178,13 @@ def test_biosample_multiplexing_barcodes_valid(
         ['x'],
         ['group_A-1'],
         ['A1_B2'],
+        ['CR001+BC001'],
+        ['BC001+BC002'],
+        ['BC001+CR017'],
+        ['BC001+'],
+        ['+CR001'],
+        ['BC001+CR001+CR002'],
+        ['BC001 + CR001'],
     ],
 )
 def test_biosample_multiplexing_barcodes_invalid(
