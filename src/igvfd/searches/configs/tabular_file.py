@@ -48,6 +48,9 @@ def tabular_file():
             'content_type': {
                 'title': 'Content Type'
             },
+            'guides_signature': {
+                'title': 'Guides Signature'
+            },
             's3_uri': {
                 'title': 'S3 URI'
             },

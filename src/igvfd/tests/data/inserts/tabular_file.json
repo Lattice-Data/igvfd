@@ -3,10 +3,11 @@
         "lab": "teri-klein",
         "file_format": "csv",
         "content_type": "guide RNA sequences",
+        "guides_signature": "gsig1:set:n=4:1f3a9c2e7b40d85fa61c0e93b7d24586",
         "s3_uri": "s3://lattice-test-data/tabular/csv-001.csv",
         "crc64nvme_base64": "AAAAAAAAAAA",
         "uuid": "a3b4c5d6-e7f8-9012-abcd-345678901234",
-        "schema_version": "4",
+        "schema_version": "5",
         "status": "current",
         "aliases": [
             "lattice:tabular-file-csv-001"
@@ -17,10 +18,11 @@
         "lab": "teri-klein",
         "file_format": "tsv",
         "content_type": "guide RNA sequences",
+        "guides_signature": "gsig1:set:n=12:c47b0e91a3d6f28e5b1740ca9f3e82d1",
         "s3_uri": "s3://lattice-test-data/tabular/tsv-001.tsv",
         "crc64nvme_base64": "AAAAAAAAAAA",
         "uuid": "b4c5d6e7-f8a9-0123-bcde-456789012345",
-        "schema_version": "4",
+        "schema_version": "5",
         "status": "current",
         "aliases": [
             "lattice:tabular-file-tsv-001"

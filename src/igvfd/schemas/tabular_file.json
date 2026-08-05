@@ -11,7 +11,8 @@
     ],
     "identifyingProperties": [
         "uuid",
-        "aliases"
+        "aliases",
+        "guides_signature"
     ],
     "additionalProperties": false,
     "mixinProperties": [
@@ -35,9 +36,27 @@
             ]
         }
     ],
+    "dependentSchemas": {
+        "content_type": {
+            "if": {
+                "properties": {
+                    "content_type": {
+                        "enum": [
+                            "guide RNA sequences"
+                        ]
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "guides_signature"
+                ]
+            }
+        }
+    },
     "properties": {
         "schema_version": {
-            "default": "4"
+            "default": "5"
         },
         "file_format": {
             "title": "File Format",
@@ -65,6 +84,16 @@
             "submissionExample": {
                 "appscript": "guide RNA sequences"
             }
+        },
+        "guides_signature": {
+            "title": "Guides Signature",
+            "description": "A signature identifying the exact set of guide RNA sequences contained in the file.",
+            "comment": "Required when content_type is guide RNA sequences. The value has the form gsig1:set:n=<number of guides>:<32-character lowercase hexadecimal digest>, and must be unique across the portal - two files cannot declare the same guide set. This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "pattern": "^gsig1:set:n=\\d+:[0-9a-f]{32}$",
+            "submissionExample": {
+                "appscript": "gsig1:set:n=1000:7d41ba0e63c95f28a04e1db7f6c3820a"
+            }
         }
     },
     "fuzzy_searchable_fields": [
@@ -72,7 +101,8 @@
         "description"
     ],
     "exact_searchable_fields": [
-        "@type"
+        "@type",
+        "guides_signature"
     ],
     "changelog": "/profiles/changelogs/tabular_file.md"
 }

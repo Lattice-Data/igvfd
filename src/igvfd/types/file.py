@@ -99,6 +99,12 @@ class TabularFile(File):
     schema = load_schema('igvfd:schemas/tabular_file.json')
     embedded_with_frame = File.embedded_with_frame
 
+    def unique_keys(self, properties):
+        keys = super(TabularFile, self).unique_keys(properties)
+        if properties.get('status') != 'deleted' and 'guides_signature' in properties:
+            keys.setdefault('alias', []).append(properties['guides_signature'])
+        return keys
+
     @calculated_property(
         schema={
             'title': 'Summary',
