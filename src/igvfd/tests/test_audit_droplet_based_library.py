@@ -349,6 +349,7 @@ def test_droplet_based_library_fixture_multiplexed_clean(
         'samples': [tissue_one['@id'], tissue_two['@id']],
         'multiplexing_method': ['antibody hashing'],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     library = testapp.post_json('/droplet_based_library', library_item, status=201).json['@graph'][0]
@@ -369,6 +370,7 @@ def test_dual_cardinality_missing_linked_libraries(testapp, indexer_testapp, oth
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     dual_library = testapp.post_json('/droplet_based_library', item, status=201).json['@graph'][0]
@@ -392,6 +394,7 @@ def test_dual_cardinality_multiple_linked_libraries(
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'linked_libraries': [
             droplet_based_library['@id'],
             droplet_based_library_with_feature_types['@id'],

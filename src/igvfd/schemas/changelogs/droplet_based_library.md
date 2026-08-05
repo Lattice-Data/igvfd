@@ -1,5 +1,9 @@
 # Droplet Based Library Changelog
 
+### Schema version 3
+
+* Require *feature_types* (inherited from abstract Library schema).
+
 ### Schema version 2
 
 * Merge *dependentSchemas* from abstract Library schema (including *multiplexing_method* requiring at least two samples).

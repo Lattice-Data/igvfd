@@ -24,6 +24,7 @@ def test_droplet_based_library_required_fields(testapp, other_lab, tissue):
         {
             'samples': [tissue['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
         },
         status=422
     )
@@ -33,6 +34,7 @@ def test_droplet_based_library_required_fields(testapp, other_lab, tissue):
         {
             'lab': other_lab['@id'],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
         },
         status=422
     )
@@ -42,6 +44,17 @@ def test_droplet_based_library_required_fields(testapp, other_lab, tissue):
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
+            'feature_types': ['Gene Expression'],
+        },
+        status=422
+    )
+    # Missing feature_types
+    testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'library_cardinality': 'single',
         },
         status=422
     )
@@ -96,6 +109,7 @@ def test_droplet_based_library_library_cardinality_enum(testapp, other_lab, tiss
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
             'library_cardinality': 'invalid_cardinality',
+            'feature_types': ['Gene Expression'],
             'status': 'current',
         },
         status=422
@@ -109,6 +123,7 @@ def test_droplet_based_library_multiplexing_method_min_items(testapp, other_lab,
             'lab': other_lab['@id'],
             'samples': [tissue['@id'], tissue_with_aliases['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
             'multiplexing_method': [],
             'status': 'current',
         },
@@ -123,6 +138,7 @@ def test_droplet_based_library_multiplexing_method_max_items(testapp, other_lab,
             'lab': other_lab['@id'],
             'samples': [tissue['@id'], tissue_with_aliases['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
             'multiplexing_method': ['antibody hashing', 'lipid hashing'],
             'status': 'current',
         },
@@ -137,6 +153,7 @@ def test_droplet_based_library_multiplexing_method_requires_two_samples(testapp,
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
             'multiplexing_method': ['antibody hashing'],
             'status': 'current',
         },
@@ -151,6 +168,7 @@ def test_droplet_based_library_multiplexing_method_enum(testapp, other_lab, tiss
             'lab': other_lab['@id'],
             'samples': [tissue['@id'], tissue_with_aliases['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
             'multiplexing_method': ['invalid method'],
             'status': 'current',
         },
@@ -176,6 +194,7 @@ def test_droplet_based_library_create_with_multiplexing_method_enum_values(
         'lab': other_lab['@id'],
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'multiplexing_method': [multiplexing_method],
         'status': 'current',
     }
@@ -216,6 +235,7 @@ def test_droplet_based_library_create_with_library_cardinality_enum_values(testa
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': library_cardinality,
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
@@ -227,6 +247,7 @@ def test_droplet_based_library_create_success(testapp, other_lab, tissue):
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
@@ -240,6 +261,7 @@ def test_droplet_based_library_dbxrefs_valid(testapp, other_lab, tissue):
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'dbxrefs': ['ENA:ERX12345', 'SRA:SRX67890'],
         'status': 'current',
     }
@@ -252,6 +274,7 @@ def test_droplet_based_library_dbxrefs_invalid(testapp, other_lab, tissue):
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'dbxrefs': ['EGA:EGAN12345'],
         'status': 'current',
     }
@@ -272,6 +295,7 @@ def test_droplet_based_library_cro_group_identifier_valid(testapp, other_lab, ti
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'CRO_group_identifier': cro_group_identifier,
         'status': 'current',
     }
@@ -298,6 +322,7 @@ def test_droplet_based_library_cro_group_identifier_invalid(testapp, other_lab, 
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
             'CRO_group_identifier': cro_group_identifier,
             'status': 'current',
         },
@@ -310,6 +335,7 @@ def test_droplet_based_library_author_metadata(testapp, other_lab, tissue):
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'author_metadata': {
             'run_id': 'DR-009',
             'lane': 'L2',
@@ -348,6 +374,7 @@ def test_droplet_based_library_linked_libraries_min_items(testapp, other_lab, ti
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
             'linked_libraries': [],
             'status': 'current',
         },
@@ -362,6 +389,7 @@ def test_droplet_based_library_linked_libraries_unique_items(testapp, other_lab,
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
             'linked_libraries': [droplet_based_library['@id'], droplet_based_library['@id']],
             'status': 'current',
         },
@@ -376,6 +404,7 @@ def test_droplet_based_library_linked_libraries_linkto_validation(testapp, other
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
             'library_cardinality': 'dual',
+            'feature_types': ['Gene Expression'],
             'linked_libraries': ['/invalid/library/path/'],
             'status': 'current',
         },
@@ -388,6 +417,7 @@ def test_droplet_based_library_create_with_linked_libraries(testapp, other_lab, 
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'linked_libraries': [droplet_based_library['@id']],
         'status': 'current',
     }
@@ -406,6 +436,7 @@ def test_droplet_based_library_create_with_multiple_linked_libraries(
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'linked_libraries': [
             droplet_based_library['@id'],
             droplet_based_library_with_feature_types['@id'],
@@ -426,6 +457,7 @@ def test_droplet_based_library_linked_libraries_requires_dual_cardinality(testap
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
             'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
             'linked_libraries': [droplet_based_library['@id']],
             'status': 'current',
         },
@@ -439,6 +471,7 @@ def test_droplet_based_library_linked_libraries_with_dual_cardinality_succeeds(t
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'linked_libraries': [droplet_based_library['@id']],
         'status': 'current',
     }
@@ -453,6 +486,7 @@ def test_droplet_based_library_single_cardinality_without_linked_libraries_succe
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
@@ -469,6 +503,7 @@ def test_droplet_based_library_linked_libraries_rejects_plate_library(
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
             'library_cardinality': 'dual',
+            'feature_types': ['Gene Expression'],
             'linked_libraries': [plate_based_library['@id']],
             'status': 'current',
         },

@@ -2,6 +2,7 @@
 
 ### Minor changes since schema version 1
 
+* Require *feature_types*.
 * Require *library_cardinality*.
 * Add *library_cardinality*.
 * Add *linked_libraries*.

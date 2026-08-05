@@ -197,3 +197,66 @@ def test_plate_based_library_upgrade_2_3_preserves_library_cardinality_dual(upgr
     )
     assert result['schema_version'] == '3'
     assert result['library_cardinality'] == 'dual'
+
+
+def test_droplet_based_library_upgrade_2_3_defaults_feature_types(upgrader):
+    value = {
+        'schema_version': '2',
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library', value, current_version='2', target_version='3'
+    )
+    assert result['schema_version'] == '3'
+    assert result['feature_types'] == ['Gene Expression']
+
+
+def test_droplet_based_library_upgrade_2_3_preserves_feature_types(upgrader):
+    value = {
+        'schema_version': '2',
+        'feature_types': ['ATAC'],
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library', value, current_version='2', target_version='3'
+    )
+    assert result['schema_version'] == '3'
+    assert result['feature_types'] == ['ATAC']
+
+
+def test_droplet_based_library_upgrade_2_3_replaces_empty_feature_types(upgrader):
+    value = {
+        'schema_version': '2',
+        'feature_types': [],
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library', value, current_version='2', target_version='3'
+    )
+    assert result['schema_version'] == '3'
+    assert result['feature_types'] == ['Gene Expression']
+
+
+def test_plate_based_library_upgrade_3_4_defaults_feature_types(upgrader):
+    value = {
+        'schema_version': '3',
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'plate_based_library', value, current_version='3', target_version='4'
+    )
+    assert result['schema_version'] == '4'
+    assert result['feature_types'] == ['Gene Expression']
+
+
+def test_plate_based_library_upgrade_3_4_preserves_feature_types(upgrader):
+    value = {
+        'schema_version': '3',
+        'feature_types': ['Multiplexing Capture'],
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'plate_based_library', value, current_version='3', target_version='4'
+    )
+    assert result['schema_version'] == '4'
+    assert result['feature_types'] == ['Multiplexing Capture']

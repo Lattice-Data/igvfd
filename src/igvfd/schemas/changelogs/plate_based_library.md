@@ -1,5 +1,9 @@
 # Plate Based Library Changelog
 
+### Schema version 4
+
+* Require *feature_types* (inherited from abstract Library schema).
+
 ### Minor changes since schema version 3
 
 * Extend *feature_types* enum list to include *CRISPR Guide Capture* (inherited from abstract Library schema).

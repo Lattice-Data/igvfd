@@ -7,6 +7,7 @@ def plate_based_library(testapp, other_lab, tissue):
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     return testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]
@@ -18,6 +19,7 @@ def plate_based_library_with_description(testapp, other_lab, tissue):
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'description': 'Test plate-based library',
         'status': 'current',
     }
@@ -30,6 +32,7 @@ def plate_based_library_with_aliases(testapp, other_lab, tissue):
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'aliases': ['lattice:pytest-plate-library-basic'],
         'status': 'current',
     }
@@ -54,6 +57,7 @@ def plate_based_library_dual(testapp, other_lab, tissue):
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'status': 'current',
     }
     return testapp.post_json('/plate_based_library', item, status=201).json['@graph'][0]
@@ -68,6 +72,7 @@ def plate_based_library_dual_with_linked_library(
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'dual',
+        'feature_types': ['Gene Expression'],
         'linked_libraries': [plate_based_library['@id']],
         'status': 'current',
     }
@@ -80,6 +85,7 @@ def plate_based_library_with_library_construction_technology(testapp, other_lab,
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
         'library_construction_technology': controlled_term_efo['@id'],
         'status': 'current',
     }
