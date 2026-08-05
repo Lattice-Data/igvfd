@@ -140,3 +140,6 @@ dmypy.json
 **/.pytest_cache
 **/.DS_Store
 **/*.egg-info
+
+# Generated at image build time by make-audit-docstring-json
+src/igvfd/static/doc/

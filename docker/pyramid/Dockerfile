@@ -66,14 +66,8 @@ RUN make-reference-db
 
 COPY --chown=igvfd:igvfd . .
 
-RUN mkdir -p src/igvfd/static/doc/
-
-RUN chown -R igvfd:igvfd src/igvfd/static/doc
-
-RUN touch src/igvfd/static/doc/auditdoc.json
-
-RUN chown -R igvfd:igvfd src/igvfd/static/doc/auditdoc.json
-
+# Runs as igvfd (see USER above) and creates src/igvfd/static/doc/ itself. Must stay
+# after the COPY above, which is what puts igvfd/audit/ in place for the audit registry scan.
 RUN make-audit-docstring-json
 
 EXPOSE 6543
