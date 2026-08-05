@@ -19,7 +19,7 @@ Guide to where to edit Source Code
 Adding a new aduit
 ----------------
 
-1. To add a new audit, navigate to the *audit** directory. Determine what metadata is needed to implement the consistency and integrity check. This helps to determine which object has the appropriate metadata available and where to place the new audit. In the directory make a new python file or edit an exisiting python file named after the determined object.
+1. To add a new audit, navigate to the *audit** directory. Determine what metadata is needed to implement the consistency and integrity check. This helps to determine which object has the appropriate metadata available and where to place the new audit. In the directory make a new python file or edit an exisiting python file named after the determined object. The file name is a convenience only; the type passed to `@audit_checker` in step 5 is what the audit actually runs against and what the audit documentation page groups by (see step 6).
 
 2. Make a new audit definition, using the metadata needed as a guide to fall into one these 2 categories:
 
@@ -80,14 +80,19 @@ The description, category, and level should be listed in the docstring of the au
 
 5. After writing the audit function add it to the function dispatcher located at the bottom of the audit script for its respective type and frame.
 
-6. Register the new audit module in `src/igvfd/commands/make_audit_docstring_json.py` so that its docstrings are included in the audit documentation page (`src/igvfd/static/doc/auditdoc.json`). Add an import for the new module and append it to `AUDIT_MODULES_TO_PROCESS`:
+6. There is nothing to register. `make-audit-docstring-json` discovers every module in `src/igvfd/audit/` automatically and reads the registered audit checkers, so a new audit module is picked up as soon as its function is added to a dispatcher. `EXCLUDED_MODULES` in `src/igvfd/commands/make_audit_docstring_json.py` is the only opt-out, and it exists for `item.py`, which audits the abstract `Item` type.
 
-        import igvfd.audit.{metadata_object}
+    What *does* matter is the type you pass to `@audit_checker`, because the audit documentation page groups audits by that type. The type must be one the page can render: it needs its own schema with `identifyingProperties`, or it needs child types. `Item` does not qualify. The audit module's **file name has no effect on the page** — name the file for whatever reads best.
 
-        AUDIT_MODULES_TO_PROCESS = [
-            igvfd.audit.library,
-            igvfd.audit.{metadata_object},
-        ]
+    `test_commands_make_audit_docstring_json.py` enforces this, so an audit registered against a type the page cannot render fails the test suite rather than silently disappearing from the page. Run those tests with:
+
+        docker compose -f docker-compose.test.yml run --rm --no-deps pyramid pytest -m 'not indexing' -k make_audit_docstring_json
+
+    To see the generated file, generate and inspect it in a single container. The pyramid services shadow `src/igvfd/static` with an anonymous volume, so the output does not reach your checkout and a second container would show the image's older copy:
+
+        docker compose -f docker-compose.test.yml run --rm --no-deps pyramid sh -c 'make-audit-docstring-json && python -m json.tool src/igvfd/static/doc/auditdoc.json'
+
+    The command prints the audit count and the types it emitted; confirm your audit is listed with the type you expect. The same summary line appears in `docker build` output, since the image build regenerates the file. After rebuilding, bring the stack up with `docker compose up -V` — Compose reuses that anonymous volume by default, which can otherwise keep serving the previous `auditdoc.json`.
 
 7. In the **tests** directory add audit test to an existing/new python file named ```test_audit_{metadata_object}.py```. This example shows the basic structure of setting up ```pytest.fixture``` and test that ```property_1``` is present if ```property_2``` is RNA:
 

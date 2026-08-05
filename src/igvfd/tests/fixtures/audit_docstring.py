@@ -49,3 +49,27 @@ def function_without_docstring():
 def function_with_non_json_docstring():
     '''This is a bad non-JSON docstring.'''
     pass
+
+
+def function_with_invalid_audit_level():
+    '''
+    [
+        {
+            "audit_description": "audit description",
+            "audit_category": "audit category",
+            "audit_level": "Warning"
+        }
+    ]
+    '''
+    pass
+
+
+def function_with_docstring_not_a_list():
+    '''
+    {
+        "audit_description": "audit description",
+        "audit_category": "audit category",
+        "audit_level": "WARNING"
+    }
+    '''
+    pass
