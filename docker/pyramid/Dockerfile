@@ -24,6 +24,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# graphviz pulls in libgd3, which hard-depends on libheif (DSA-6417-1). A cold build of the
+# layer above already resolves to the fixed version; this guards against a cached one.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends --only-upgrade \
+    libheif1 \
+    libheif-plugin-libde265 \
+    libheif-plugin-dav1d \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN python -m venv $VIRTUAL_ENV
 
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
