@@ -7,6 +7,9 @@ from snovault.elasticsearch.searches.configs import search_config
 def primary_cell_culture():
     return {
         'facets': {
+            'preservation_method': {
+                'title': 'Preservation Method'
+            },
             'passage_number': {
                 'title': 'Passage Number'
             },
@@ -53,6 +56,9 @@ def primary_cell_culture():
             },
             'passage_number': {
                 'title': 'Passage Number'
+            },
+            'preservation_method': {
+                'title': 'Preservation Method'
             },
             'date_obtained': {
                 'title': 'Date Obtained'

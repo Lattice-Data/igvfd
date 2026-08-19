@@ -278,6 +278,59 @@ def test_biosample_date_obtained_rejects_invalid_format(
     'biosample_type',
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
+@pytest.mark.parametrize(
+    'preservation_method',
+    [
+        'fresh',
+        'frozen',
+        'flash-frozen',
+        'fixed',
+        'fixed-frozen',
+        'cryopreserved',
+        'paraffin embedded',
+        'OCT embedded',
+    ],
+)
+def test_biosample_preservation_method_accepts_enum_values(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, preservation_method
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['preservation_method'] = preservation_method
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['preservation_method'] == preservation_method
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_preservation_method_rejects_invalid_enum(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['preservation_method'] = 'invalid_method'
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_preservation_method_is_optional(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0].get('preservation_method') is None
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
 def test_biosample_collection_geographical_location_accepts_valid_enum(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type
 ):

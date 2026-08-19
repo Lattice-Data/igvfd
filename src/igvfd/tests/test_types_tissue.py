@@ -1,20 +1,6 @@
 import pytest
 
 
-def test_tissue_preservation_method_enum(testapp, other_lab, human_donor, controlled_term_brain):
-    testapp.post_json(
-        '/tissue',
-        {
-            'lab': other_lab['@id'],
-            'donors': [human_donor['@id']],
-            'sample_terms': [controlled_term_brain['@id']],
-            'preservation_method': 'invalid_method',
-            'status': 'current',
-        },
-        status=422
-    )
-
-
 def test_tissue_orientation_enum(testapp, other_lab, human_donor, controlled_term_brain):
     testapp.post_json(
         '/tissue',
@@ -84,31 +70,6 @@ def test_tissue_thickness_minimum(testapp, other_lab, human_donor, controlled_te
         },
         status=422
     )
-
-
-@pytest.mark.parametrize(
-    'preservation_method',
-    [
-        'fresh',
-        'frozen',
-        'flash-frozen',
-        'fixed',
-        'fixed-frozen',
-        'cryopreserved',
-        'paraffin embedded',
-        'OCT embedded'
-    ]
-)
-def test_tissue_create_with_preservation_method_enum_values(testapp, other_lab, human_donor, controlled_term_brain, preservation_method):
-    item = {
-        'lab': other_lab['@id'],
-        'donors': [human_donor['@id']],
-        'sample_terms': [controlled_term_brain['@id']],
-        'preservation_method': preservation_method,
-        'status': 'current',
-    }
-    res = testapp.post_json('/tissue', item, status=201)
-    assert res.json['@graph'][0]['preservation_method'] == preservation_method
 
 
 @pytest.mark.parametrize(

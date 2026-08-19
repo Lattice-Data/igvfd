@@ -1,6 +1,6 @@
 {
-    "hash": "283f1b1bd4600a95c6661fe7b246cf1d",
-    "index_name": "cell_line_283f1b1b",
+    "hash": "06d63c7ad3ebc78d5873c3e818136485",
+    "index_name": "cell_line_06d63c7a",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -554,6 +554,9 @@
                     },
                     "notes": {
                         "type": "text"
+                    },
+                    "preservation_method": {
+                        "type": "keyword"
                     },
                     "sample_procurement_interval": {
                         "store": true,

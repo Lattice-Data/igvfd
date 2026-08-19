@@ -49,21 +49,6 @@
             "description": "Text about spatial information of the tissue.",
             "type": "string"
         },
-        "preservation_method": {
-            "title": "Preservation Method",
-            "description": "The method used to preserve the tissue sample.",
-            "type": "string",
-            "enum": [
-                "fresh",
-                "frozen",
-                "flash-frozen",
-                "fixed",
-                "fixed-frozen",
-                "cryopreserved",
-                "paraffin embedded",
-                "OCT embedded"
-            ]
-        },
         "thickness": {
             "title": "Thickness",
             "description": "The thickness of the tissue sample.",
