@@ -194,7 +194,7 @@ def collect(path):
 
 
 def human(n):
-    return f"{int(round(n)):,}"
+    return f'{int(round(n)):,}'
 
 
 # Supplied by the workflow. Absent when the script is run by hand, in which case
@@ -226,7 +226,7 @@ def data_comment(record):
     blob = json.dumps(record, sort_keys=True, separators=(',', ':'))
     while '--' in blob:
         blob = blob.replace('--', '-\\u002d')
-    return f"<!-- claude-cost-data: {blob} -->"
+    return f'<!-- claude-cost-data: {blob} -->'
 
 
 def render(token_totals, cost_totals, api_requests, parse_errors):
@@ -256,41 +256,44 @@ def render(token_totals, cost_totals, api_requests, parse_errors):
             row_total += value
             cells.append(human(value))
         grand_total += row_total
-        lines.append(f"| `{model}` | " + ' | '.join(cells) + f" | {human(row_total)} |")
+        lines.append(f'| `{model}` | ' + ' | '.join(cells) + f' | {human(row_total)} |')
 
     if len(models) > 1:
         # Blank cells for every token-type column, so the row lines up with the
         # header however many types are listed above.
         blanks = ' | '.join([''] * len(TOKEN_TYPES))
-        lines.append(f"| **All models** | {blanks} | **{human(grand_total)}** |")
+        lines.append(f'| **All models** | {blanks} | **{human(grand_total)}** |')
 
     lines.append('')
 
     total_cost = sum(cost_totals.values())
     if total_cost:
         lines.append(
-            f"Claude Code's own list-price estimate for this run: "
-            f"**${total_cost:,.4f}**."
+            'Claude Code\'s own list-price estimate for this run: '
+            f'**${total_cost:,.4f}**.'
         )
 
     durations = [as_number(r.get('duration_ms')) for r in api_requests]
     wall = sum(d for d in durations if d is not None) / 1000.0
     if api_requests:
-        lines.append(f"{len(api_requests)} API requests, {wall:,.1f}s of model time.")
+        lines.append(f'{len(api_requests)} API requests, {wall:,.1f}s of model time.')
 
     diff = diff_context()
     if diff:
         changed = diff.get('additions', 0) + diff.get('deletions', 0)
         files = diff.get('changed_files', 0)
+        plural = '' if files == 1 else 's'
+        additions = human(diff.get('additions', 0))
+        deletions = human(diff.get('deletions', 0))
         sentence = (
-            f"Diff reviewed: {human(files)} file{'' if files == 1 else 's'}, "
-            f"+{human(diff.get('additions', 0))}/-{human(diff.get('deletions', 0))} lines"
+            f'Diff reviewed: {human(files)} file{plural}, '
+            f'+{additions}/-{deletions} lines'
         )
         # Guard the ratio: a PR can legitimately change zero lines, e.g. a pure
         # rename or a mode change.
         if changed:
             sentence += (
-                f", about {human(grand_total / changed)} tokens per changed line"
+                f', about {human(grand_total / changed)} tokens per changed line'
             )
         lines.append(sentence + '.')
 
@@ -328,7 +331,7 @@ def render(token_totals, cost_totals, api_requests, parse_errors):
 
     if parse_errors:
         lines.append(
-            f"<sub>{parse_errors} telemetry line(s) could not be parsed.</sub>"
+            f'<sub>{parse_errors} telemetry line(s) could not be parsed.</sub>'
         )
 
     return '\n'.join(lines) + '\n'
@@ -344,7 +347,7 @@ def main():
     except OSError as exc:
         # A missing or unreadable file means the collector never wrote anything.
         # Report that, do not fail the job.
-        print(f"could not read {telemetry_path}: {exc}", file=sys.stderr)
+        print(f'could not read {telemetry_path}: {exc}', file=sys.stderr)
         token_totals, cost_totals, api_requests, parse_errors = {}, {}, [], 0
 
     report = render(token_totals, cost_totals, api_requests, parse_errors)
