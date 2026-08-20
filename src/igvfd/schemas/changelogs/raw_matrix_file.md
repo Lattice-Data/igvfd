@@ -6,6 +6,7 @@
 
 ### Minor changes since schema version 5
 
+* Define `feature_counts` `feature_type` enum list on the raw matrix file profile.
 * Extend `feature_counts` `feature_type` enum list to include "hash oligo".
 * Extend `file_format` enum list to include `mtx`.
 * Update inherited `file_size` and `crc64nvme_base64` comments from file profile.

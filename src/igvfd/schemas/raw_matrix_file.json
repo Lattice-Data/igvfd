@@ -67,6 +67,7 @@
         "feature_counts": {
             "title": "Feature Counts",
             "description": "Count of features by feature type in the matrix.",
+            "comment": "Allowed feature_type values are defined on the raw matrix file profile.",
             "type": "array",
             "uniqueItems": true,
             "items": {

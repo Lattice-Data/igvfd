@@ -1148,6 +1148,20 @@ def test_raw_matrix_file_mtx_format_accepted(testapp, other_lab, tissue):
     assert res.json['@graph'][0]['file_format'] == 'mtx'
 
 
+def test_processed_matrix_file_rejects_mtx_format(testapp, other_lab):
+    testapp.post_json(
+        '/processed_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'mtx',
+            'no_file_available': True,
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
 def test_processed_matrix_file_is_multiplexed_required(testapp, other_lab):
     testapp.post_json(
         '/processed_matrix_file',

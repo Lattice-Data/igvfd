@@ -42,6 +42,40 @@
         "schema_version": {
             "default": "4"
         },
+        "feature_counts": {
+            "title": "Feature Counts",
+            "description": "Count of features by feature type in the matrix.",
+            "comment": "Allowed feature_type values are defined on the processed matrix file profile.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Feature Count",
+                "type": "object",
+                "required": [
+                    "feature_type",
+                    "feature_count"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "feature_type": {
+                        "title": "Feature Type",
+                        "type": "string",
+                        "enum": [
+                            "antibody capture",
+                            "gene",
+                            "guide capture",
+                            "peak",
+                            "transcription factor"
+                        ]
+                    },
+                    "feature_count": {
+                        "title": "Feature Count",
+                        "type": "integer",
+                        "minimum": 0
+                    }
+                }
+            }
+        },
         "file_format": {
             "title": "File Format",
             "description": "The file format or extension of the file.",

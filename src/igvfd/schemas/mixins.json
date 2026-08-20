@@ -261,14 +261,9 @@
                 "properties": {
                     "feature_type": {
                         "title": "Feature Type",
-                        "type": "string",
-                        "enum": [
-                            "antibody capture",
-                            "gene",
-                            "guide capture",
-                            "peak",
-                            "transcription factor"
-                        ]
+                        "description": "The type of feature counted in the matrix.",
+                        "comment": "Allowed values are defined on each matrix file profile.",
+                        "type": "string"
                     },
                     "feature_count": {
                         "title": "Feature Count",
