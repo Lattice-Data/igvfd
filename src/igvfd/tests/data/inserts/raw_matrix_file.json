@@ -53,5 +53,41 @@
             "lattice:raw-matrix-file-002"
         ],
         "description": "Test raw matrix file with no file available"
+    },
+    {
+        "lab": "teri-klein",
+        "file_format": "mtx",
+        "software": "Cell Ranger",
+        "software_version": "7.1.0",
+        "genome_assembly": "GRCh38",
+        "is_multiplexed": false,
+        "s3_uri": "s3://lattice-test-data/matrix/raw-003.mtx",
+        "crc64nvme_base64": "AAAAAAAAAAA",
+        "feature_keys": [
+            "Ensembl gene ID",
+            "gene symbol",
+            "hash oligo"
+        ],
+        "observation_count": 11000,
+        "feature_counts": [
+            {
+                "feature_type": "gene",
+                "feature_count": 19000
+            },
+            {
+                "feature_type": "hash oligo",
+                "feature_count": 2500
+            }
+        ],
+        "samples": [
+            "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
+        ],
+        "uuid": "e8f9a0b1-c2d3-4567-f012-901234567890",
+        "schema_version": "5",
+        "status": "current",
+        "aliases": [
+            "lattice:raw-matrix-file-003"
+        ],
+        "description": "Test raw matrix file in MTX format"
     }
 ]
