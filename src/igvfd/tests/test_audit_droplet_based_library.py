@@ -3,6 +3,7 @@ from igvfd.audit.library import (
     audit_droplet_based_library_samples_unexpected_rt_indexes,
     audit_library_samples_missing_multiplexing_barcodes,
     audit_library_samples_unexpected_multiplexing_barcodes,
+    audit_library_single_sample_insufficient_multiplexing_barcodes,
     audit_single_cardinality_unexpected_linked_libraries,
 )
 
@@ -139,6 +140,78 @@ def test_droplet_based_library_with_multiplexing_method_all_samples_have_barcode
     unexpected_failures = list(audit_library_samples_unexpected_multiplexing_barcodes(value, {}))
     assert len(missing_failures) == 0
     assert len(unexpected_failures) == 0
+
+
+def test_droplet_based_library_single_sample_one_barcode_inconsistent_audit():
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'multiplexing_method': ['antibody hashing'],
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+                'multiplexing_barcodes': ['A0251'],
+            },
+        ],
+    }
+    failures = list(audit_library_single_sample_insufficient_multiplexing_barcodes(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'inconsistent multiplexing barcodes'
+
+
+def test_droplet_based_library_single_sample_two_barcodes_no_inconsistent_audit():
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'multiplexing_method': ['antibody hashing'],
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+                'multiplexing_barcodes': ['A0251', 'A0252'],
+            },
+        ],
+    }
+    failures = list(audit_library_single_sample_insufficient_multiplexing_barcodes(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_two_samples_no_inconsistent_audit():
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'multiplexing_method': ['antibody hashing'],
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+                'multiplexing_barcodes': ['A0251'],
+            },
+            {
+                '@id': '/tissues/IGVFDTEST0002/',
+                'multiplexing_barcodes': ['A0252'],
+            },
+        ],
+    }
+    failures = list(audit_library_single_sample_insufficient_multiplexing_barcodes(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_ngv_single_sample_no_inconsistent_audit():
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'multiplexing_method': ['natural genetic variation'],
+        'samples': [
+            {
+                '@id': '/tissues/IGVFDTEST0001/',
+            },
+        ],
+    }
+    failures = list(audit_library_single_sample_insufficient_multiplexing_barcodes(value, {}))
+    assert len(failures) == 0
 
 
 def test_droplet_based_library_with_multiplexing_method_missing_barcodes_audit():
@@ -361,6 +434,44 @@ def test_droplet_based_library_fixture_multiplexed_clean(
     )
     assert not any(
         error['category'] == 'unexpected multiplexing barcodes'
+        for error in errors_list
+    )
+
+
+def test_droplet_based_library_fixture_single_sample_multiplexed_clean(
+    testapp,
+    indexer_testapp,
+    other_lab,
+    human_donor,
+    controlled_term_brain,
+):
+    tissue = testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'multiplexing_barcodes': ['P01-A1', 'P01-A2'],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+    library = testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'multiplexing_method': ['antibody hashing'],
+            'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+    res = indexer_testapp.get(library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] == 'inconsistent multiplexing barcodes'
         for error in errors_list
     )
 

@@ -110,8 +110,8 @@ def test_plate_based_library_create_with_feature_type_enum_values(
     assert res.json['@graph'][0]['feature_types'] == [feature_type]
 
 
-def test_plate_based_library_multiplexing_method_requires_two_samples(testapp, other_lab, tissue):
-    testapp.post_json(
+def test_plate_based_library_multiplexing_method_with_one_sample(testapp, other_lab, tissue):
+    res = testapp.post_json(
         '/plate_based_library',
         {
             'lab': other_lab['@id'],
@@ -121,8 +121,9 @@ def test_plate_based_library_multiplexing_method_requires_two_samples(testapp, o
             'multiplexing_method': ['combinatorial indexing'],
             'status': 'current',
         },
-        status=422
+        status=201
     )
+    assert res.json['@graph'][0]['multiplexing_method'] == ['combinatorial indexing']
 
 
 @pytest.mark.parametrize(

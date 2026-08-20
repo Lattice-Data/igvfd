@@ -146,8 +146,8 @@ def test_droplet_based_library_multiplexing_method_max_items(testapp, other_lab,
     )
 
 
-def test_droplet_based_library_multiplexing_method_requires_two_samples(testapp, other_lab, tissue):
-    testapp.post_json(
+def test_droplet_based_library_multiplexing_method_with_one_sample(testapp, other_lab, tissue):
+    res = testapp.post_json(
         '/droplet_based_library',
         {
             'lab': other_lab['@id'],
@@ -157,8 +157,9 @@ def test_droplet_based_library_multiplexing_method_requires_two_samples(testapp,
             'multiplexing_method': ['antibody hashing'],
             'status': 'current',
         },
-        status=422
+        status=201
     )
+    assert res.json['@graph'][0]['multiplexing_method'] == ['antibody hashing']
 
 
 def test_droplet_based_library_multiplexing_method_enum(testapp, other_lab, tissue, tissue_with_aliases):

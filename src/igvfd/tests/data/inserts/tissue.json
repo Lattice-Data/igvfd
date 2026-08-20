@@ -101,5 +101,30 @@
         "lower_bound_age": 35,
         "upper_bound_age": 48,
         "age_units": "year"
+    },
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "c3d4e5f6-a7b8-9012-cdef-345678901234"
+        ],
+        "uuid": "c3d4e5f6-a7b8-9012-cdef-111111111111",
+        "schema_version": "3",
+        "status": "current",
+        "aliases": [
+            "lattice:tissue-single-sample-multiplexed"
+        ],
+        "description": "Tissue with multiple multiplexing barcodes for single-sample multiplexed libraries",
+        "preservation_method": "frozen",
+        "multiplexing_barcodes": [
+            "P01-A1",
+            "P01-A2"
+        ],
+        "RT_indexes": [
+            "SCALEQUANT-A1",
+            "SCALEQUANT-A2"
+        ]
     }
 ]

@@ -147,6 +147,43 @@ def audit_library_samples_missing_multiplexing_barcodes(value, system):
     )
 
 
+def audit_library_single_sample_insufficient_multiplexing_barcodes(value, system):
+    '''
+    [
+        {
+            "audit_description": "Libraries with a barcode-based multiplexing method and a single linked biosample are expected to have more than one multiplexing barcode on that biosample.",
+            "audit_category": "inconsistent multiplexing barcodes",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    if not _library_requires_sample_barcodes(value):
+        return
+    samples = value.get('samples', [])
+    if len(samples) != 1:
+        return
+    sample = samples[0]
+    if not isinstance(sample, dict):
+        return
+    barcodes = sample.get('multiplexing_barcodes') or []
+    if len(barcodes) >= 2:
+        return
+    audit_message = get_audit_message(audit_library_single_sample_insufficient_multiplexing_barcodes)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    lib_id = value['@id']
+    sample_links = join_obj_paths([sample['@id']])
+    detail = (
+        f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
+        f'has `multiplexing_method` and a single linked biosample {sample_links} '
+        f'with fewer than two `multiplexing_barcodes`.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
 def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
     '''
     [
@@ -325,6 +362,7 @@ def audit_library_object_dispatcher(value, system):
 
 function_dispatcher_plate_based_library_embedded = {
     'audit_library_samples_missing_multiplexing_barcodes': audit_library_samples_missing_multiplexing_barcodes,
+    'audit_library_single_sample_insufficient_multiplexing_barcodes': audit_library_single_sample_insufficient_multiplexing_barcodes,
     'audit_library_samples_unexpected_multiplexing_barcodes': audit_library_samples_unexpected_multiplexing_barcodes,
     'audit_plate_based_library_samples_missing_rt_indexes': audit_plate_based_library_samples_missing_rt_indexes,
 }
@@ -339,6 +377,7 @@ def audit_plate_based_library_embedded_dispatcher(value, system):
 
 function_dispatcher_droplet_based_library_embedded = {
     'audit_library_samples_missing_multiplexing_barcodes': audit_library_samples_missing_multiplexing_barcodes,
+    'audit_library_single_sample_insufficient_multiplexing_barcodes': audit_library_single_sample_insufficient_multiplexing_barcodes,
     'audit_library_samples_unexpected_multiplexing_barcodes': audit_library_samples_unexpected_multiplexing_barcodes,
     'audit_droplet_based_library_samples_unexpected_rt_indexes': audit_droplet_based_library_samples_unexpected_rt_indexes,
 }
