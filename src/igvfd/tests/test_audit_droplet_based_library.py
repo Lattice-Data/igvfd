@@ -476,6 +476,44 @@ def test_droplet_based_library_fixture_single_sample_multiplexed_clean(
     )
 
 
+def test_droplet_based_library_fixture_single_sample_multiplexed_inconsistent_barcodes(
+    testapp,
+    indexer_testapp,
+    other_lab,
+    human_donor,
+    controlled_term_brain,
+):
+    tissue = testapp.post_json(
+        '/tissue',
+        {
+            'lab': other_lab['@id'],
+            'donors': [human_donor['@id']],
+            'sample_terms': [controlled_term_brain['@id']],
+            'multiplexing_barcodes': ['P01-A1'],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+    library = testapp.post_json(
+        '/droplet_based_library',
+        {
+            'lab': other_lab['@id'],
+            'samples': [tissue['@id']],
+            'multiplexing_method': ['antibody hashing'],
+            'library_cardinality': 'single',
+            'feature_types': ['Gene Expression'],
+            'status': 'current',
+        },
+        status=201,
+    ).json['@graph'][0]
+    res = indexer_testapp.get(library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert any(
+        error['category'] == 'inconsistent multiplexing barcodes'
+        for error in errors_list
+    )
+
+
 def test_dual_cardinality_missing_linked_libraries(testapp, indexer_testapp, other_lab, tissue):
     item = {
         'lab': other_lab['@id'],
