@@ -30,13 +30,6 @@
         }
     ],
     "dependentSchemas": {
-        "multiplexing_method": {
-            "properties": {
-                "samples": {
-                    "minItems": 2
-                }
-            }
-        },
         "linked_libraries": {
             "properties": {
                 "library_cardinality": {
@@ -76,7 +69,6 @@
         "multiplexing_method": {
             "title": "Multiplexing Method",
             "description": "The mechanism by which sample (or donor) identity was encoded in this pooled library, enabling later computational demultiplexing. Describes the experimental design of the library, not the demultiplexing algorithm applied during analysis. Choose the value corresponding to how barcodes were introduced (or, for label-free designs, how identity is intrinsically encoded). Common reagents map as follows: BioLegend TotalSeq HTO and Stoeckius 'cell hashing' -> 'antibody hashing'; MULTI-seq and 10x CellPlex (CMO) -> 'lipid hashing'; ClickTags -> 'chemical hashing'; 10x Flex / Fixed RNA Profiling Probe Barcode (v1) or Sample Barcode (v2) -> 'probe barcoding'; demuxlet/freemuxlet/souporcell/vireo on pooled donors -> 'natural genetic variation'.",
-            "comment": "This property is affected by dependencies. See library.json.",
             "type": "array",
             "minItems": 1,
             "maxItems": 1,

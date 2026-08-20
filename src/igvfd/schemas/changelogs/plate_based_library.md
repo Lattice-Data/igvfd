@@ -1,5 +1,9 @@
 # Plate Based Library Changelog
 
+### Schema version 5
+
+* Remove requirement for at least two samples when *multiplexing_method* is present (inherited from abstract Library schema).
+
 ### Schema version 4
 
 * Require *feature_types* (inherited from abstract Library schema).

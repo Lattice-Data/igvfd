@@ -260,3 +260,33 @@ def test_plate_based_library_upgrade_3_4_preserves_feature_types(upgrader):
     )
     assert result['schema_version'] == '4'
     assert result['feature_types'] == ['Multiplexing Capture']
+
+
+def test_droplet_based_library_upgrade_3_4_preserves_multiplexing_method(upgrader):
+    value = {
+        'schema_version': '3',
+        'samples': SINGLE_SAMPLE,
+        'multiplexing_method': ['antibody hashing'],
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library', value, current_version='3', target_version='4'
+    )
+    assert result['schema_version'] == '4'
+    assert result['multiplexing_method'] == ['antibody hashing']
+    assert result['samples'] == SINGLE_SAMPLE
+
+
+def test_plate_based_library_upgrade_4_5_preserves_multiplexing_method(upgrader):
+    value = {
+        'schema_version': '4',
+        'samples': SINGLE_SAMPLE,
+        'multiplexing_method': ['combinatorial indexing'],
+        'status': 'current',
+    }
+    result = upgrader.upgrade(
+        'plate_based_library', value, current_version='4', target_version='5'
+    )
+    assert result['schema_version'] == '5'
+    assert result['multiplexing_method'] == ['combinatorial indexing']
+    assert result['samples'] == SINGLE_SAMPLE

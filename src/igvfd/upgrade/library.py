@@ -73,3 +73,13 @@ def droplet_based_library_2_3(value, system):
 @upgrade_step('plate_based_library', '3', '4')
 def plate_based_library_3_4(value, system):
     _default_feature_types(value)
+
+
+@upgrade_step('droplet_based_library', '3', '4')
+def droplet_based_library_3_4(value, system):
+    return
+
+
+@upgrade_step('plate_based_library', '4', '5')
+def plate_based_library_4_5(value, system):
+    return
