@@ -134,7 +134,8 @@
             "type": "string",
             "enum": [
                 "GRCh38",
-                "GRCm39"
+                "GRCm39",
+                "GRCz11"
             ],
             "submissionExample": {
                 "appscript": "GRCh38"

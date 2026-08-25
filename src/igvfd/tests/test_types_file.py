@@ -1269,7 +1269,7 @@ def test_raw_matrix_file_genome_assembly_enum(testapp, other_lab):
     )
 
 
-@pytest.mark.parametrize('genome_assembly', ['GRCh38', 'GRCm39'])
+@pytest.mark.parametrize('genome_assembly', ['GRCh38', 'GRCm39', 'GRCz11'])
 def test_raw_matrix_file_genome_assembly_values(testapp, other_lab, tissue, genome_assembly):
     res = testapp.post_json(
         '/raw_matrix_file',
