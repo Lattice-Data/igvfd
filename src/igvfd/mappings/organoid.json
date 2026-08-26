@@ -1,6 +1,6 @@
 {
-    "hash": "bcfe9a360eba364a7c2c26945a98618b",
-    "index_name": "organoid_bcfe9a36",
+    "hash": "1a0b2675951559f2e4f3f9387a401901",
+    "index_name": "organoid_1a0b2675",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -495,6 +495,9 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "preservation_method": {
+                        "type": "keyword"
                     },
                     "sample_procurement_interval": {
                         "store": true,

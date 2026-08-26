@@ -7,6 +7,9 @@ from snovault.elasticsearch.searches.configs import search_config
 def organoid():
     return {
         'facets': {
+            'preservation_method': {
+                'title': 'Preservation Method'
+            },
             'lab.title': {
                 'title': 'Lab'
             },
@@ -47,6 +50,9 @@ def organoid():
             },
             'RT_indexes': {
                 'title': 'RT Indexes'
+            },
+            'preservation_method': {
+                'title': 'Preservation Method'
             },
             'intended_cell_types': {
                 'title': 'Intended Cell Types'

@@ -38,12 +38,14 @@ def test_cell_line_create_with_all_optional_fields(
         'sample_terms': [controlled_term['@id']],
         'host': non_human_donor['@id'],
         'host_tissue': controlled_term['@id'],
+        'preservation_method': 'cryopreserved',
         'description': 'Test cell line with all fields',
         'status': 'current',
     }
     res = testapp.post_json('/cell_line', item, status=201)
     assert res.json['@graph'][0]['host'] == non_human_donor['@id']
     assert res.json['@graph'][0]['host_tissue'] == controlled_term['@id']
+    assert res.json['@graph'][0]['preservation_method'] == 'cryopreserved'
     assert res.json['@graph'][0]['description'] == 'Test cell line with all fields'
 
 

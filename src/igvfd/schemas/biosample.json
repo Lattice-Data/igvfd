@@ -154,6 +154,21 @@
             "type": "string",
             "format": "date"
         },
+        "preservation_method": {
+            "title": "Preservation Method",
+            "description": "The method used to preserve the sample.",
+            "type": "string",
+            "enum": [
+                "fresh",
+                "frozen",
+                "flash-frozen",
+                "fixed",
+                "fixed-frozen",
+                "cryopreserved",
+                "paraffin embedded",
+                "OCT embedded"
+            ]
+        },
         "collection_geographical_location": {
             "title": "Collection Geographical Location",
             "description": "The geographic location where the sample was collected. Enum values follow INSDC /geo_loc_name qualifier vocabulary: https://www.insdc.org/submitting-standards/geo_loc_name-qualifier-vocabulary/",

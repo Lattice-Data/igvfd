@@ -7,6 +7,9 @@ from snovault.elasticsearch.searches.configs import search_config
 def cell_line():
     return {
         'facets': {
+            'preservation_method': {
+                'title': 'Preservation Method'
+            },
             'host': {
                 'title': 'Host'
             },
@@ -50,6 +53,9 @@ def cell_line():
             },
             'RT_indexes': {
                 'title': 'RT Indexes'
+            },
+            'preservation_method': {
+                'title': 'Preservation Method'
             },
             'host': {
                 'title': 'Host'

@@ -16,10 +16,12 @@ def test_organoid_create_with_all_optional_fields(testapp, other_lab, human_dono
         'lab': other_lab['@id'],
         'donors': [human_donor['@id']],
         'sample_terms': [controlled_term_brain['@id']],
+        'preservation_method': 'fixed',
         'description': 'Test organoid with all fields',
         'status': 'current',
     }
     res = testapp.post_json('/organoid', item, status=201)
+    assert res.json['@graph'][0]['preservation_method'] == 'fixed'
     assert res.json['@graph'][0]['description'] == 'Test organoid with all fields'
 
 

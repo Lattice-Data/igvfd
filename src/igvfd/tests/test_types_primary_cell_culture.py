@@ -93,6 +93,7 @@ def test_primary_cell_culture_create_with_all_optional_fields(testapp, other_lab
         'sample_terms': [controlled_term_brain['@id']],
         'passage_number': 3,
         'date_obtained': '2024-02-20',
+        'preservation_method': 'fresh',
         'description': 'Human primary cell culture',
         'lower_bound_age': 5,
         'upper_bound_age': 7,
@@ -102,6 +103,7 @@ def test_primary_cell_culture_create_with_all_optional_fields(testapp, other_lab
     res = testapp.post_json('/primary_cell_culture', item, status=201)
     assert res.json['@graph'][0]['passage_number'] == 3
     assert res.json['@graph'][0]['date_obtained'] == '2024-02-20'
+    assert res.json['@graph'][0]['preservation_method'] == 'fresh'
     assert res.json['@graph'][0]['description'] == 'Human primary cell culture'
     assert res.json['@graph'][0]['lower_bound_age'] == 5
     assert res.json['@graph'][0]['upper_bound_age'] == 7
