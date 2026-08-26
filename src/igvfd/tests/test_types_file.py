@@ -84,7 +84,7 @@ FILE_TYPE_CONFIGS = {
     },
     'raw_matrix_file': {
         'endpoint': '/raw_matrix_file',
-        'formats': ['h5', 'h5ad'],
+        'formats': ['h5', 'h5ad', 'mtx'],
         'default_format': 'h5',
         's3_path': 'matrix',
         'has_matrix_fields': True,
@@ -979,6 +979,46 @@ def test_matrix_file_accepts_guide_capture_feature_type(testapp, other_lab, tiss
     assert res.json['@graph'][0]['feature_counts'][0]['feature_type'] == 'guide capture'
 
 
+def test_raw_matrix_file_accepts_hash_oligo_feature_type(testapp, other_lab, tissue):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        _augment_matrix_file_post(
+            'raw_matrix_file',
+            {
+                'lab': other_lab['@id'],
+                'file_format': 'h5',
+                's3_uri': 's3://lattice-test-data/matrix/hash-oligo.h5',
+                'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+                'feature_keys': ['hash oligo'],
+                'observation_count': 800,
+                'feature_counts': [{'feature_type': 'hash oligo', 'feature_count': 1500}],
+                'status': 'current',
+            },
+            tissue=tissue,
+        ),
+        status=201,
+    )
+    assert res.json['@graph'][0]['feature_counts'][0]['feature_type'] == 'hash oligo'
+
+
+def test_processed_matrix_file_rejects_hash_oligo_feature_type(testapp, other_lab):
+    testapp.post_json(
+        '/processed_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'h5ad',
+            's3_uri': 's3://lattice-test-data/matrix/reject-hash-oligo-feature-type.h5ad',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'feature_keys': ['Ensembl gene ID'],
+            'observation_count': 500,
+            'feature_counts': [{'feature_type': 'hash oligo', 'feature_count': 1000}],
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
 @pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
 def test_matrix_file_create_with_samples(testapp, other_lab, tissue, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
@@ -1089,6 +1129,39 @@ def test_raw_matrix_file_h5ad_format_accepted(testapp, other_lab, tissue):
     assert res.json['@graph'][0]['file_format'] == 'h5ad'
 
 
+def test_raw_matrix_file_mtx_format_accepted(testapp, other_lab, tissue):
+    res = testapp.post_json(
+        '/raw_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'mtx',
+            'no_file_available': True,
+            'software': 'Cell Ranger',
+            'software_version': '7.1.0',
+            'genome_assembly': 'GRCh38',
+            'is_multiplexed': False,
+            'samples': [tissue['@id']],
+            'status': 'current',
+        },
+        status=201,
+    )
+    assert res.json['@graph'][0]['file_format'] == 'mtx'
+
+
+def test_processed_matrix_file_rejects_mtx_format(testapp, other_lab):
+    testapp.post_json(
+        '/processed_matrix_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'mtx',
+            'no_file_available': True,
+            'is_multiplexed': False,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
 def test_processed_matrix_file_is_multiplexed_required(testapp, other_lab):
     testapp.post_json(
         '/processed_matrix_file',
@@ -1196,7 +1269,7 @@ def test_raw_matrix_file_genome_assembly_enum(testapp, other_lab):
     )
 
 
-@pytest.mark.parametrize('genome_assembly', ['GRCh38', 'GRCm39'])
+@pytest.mark.parametrize('genome_assembly', ['GRCh38', 'GRCm39', 'GRCz11'])
 def test_raw_matrix_file_genome_assembly_values(testapp, other_lab, tissue, genome_assembly):
     res = testapp.post_json(
         '/raw_matrix_file',

@@ -2,7 +2,7 @@
     "title": "Raw Matrix File",
     "$id": "/profiles/raw_matrix_file.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "A file containing a raw matrix in H5 or H5AD format.",
+    "description": "A file containing a raw matrix in H5, H5AD, or MTX format.",
     "type": "object",
     "required": [
         "lab",
@@ -64,13 +64,49 @@
                 ]
             }
         },
+        "feature_counts": {
+            "title": "Feature Counts",
+            "description": "Count of features by feature type in the matrix.",
+            "comment": "Allowed feature_type values are defined on the raw matrix file profile.",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "Feature Count",
+                "type": "object",
+                "required": [
+                    "feature_type",
+                    "feature_count"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "feature_type": {
+                        "title": "Feature Type",
+                        "type": "string",
+                        "enum": [
+                            "antibody capture",
+                            "gene",
+                            "guide capture",
+                            "hash oligo",
+                            "peak",
+                            "transcription factor"
+                        ]
+                    },
+                    "feature_count": {
+                        "title": "Feature Count",
+                        "type": "integer",
+                        "minimum": 0
+                    }
+                }
+            }
+        },
         "file_format": {
             "title": "File Format",
             "description": "The file format or extension of the file.",
             "type": "string",
             "enum": [
                 "h5",
-                "h5ad"
+                "h5ad",
+                "mtx"
             ],
             "submissionExample": {
                 "appscript": "h5"
@@ -98,7 +134,8 @@
             "type": "string",
             "enum": [
                 "GRCh38",
-                "GRCm39"
+                "GRCm39",
+                "GRCz11"
             ],
             "submissionExample": {
                 "appscript": "GRCh38"
