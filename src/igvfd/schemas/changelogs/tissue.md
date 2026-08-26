@@ -6,6 +6,7 @@
 
 ## Minor changes since schema version 3
 
+* Extend orientation enum list to include perpendicular.
 * Use inherited `preservation_method` from abstract biosample profile.
 * Update multiplexing_barcodes regex to allow a paired 10x Flex probe and CRISPR Flex barcode, such as BC001+CR001.
 * Add RT_indexes.

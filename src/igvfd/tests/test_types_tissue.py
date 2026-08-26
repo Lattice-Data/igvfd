@@ -78,6 +78,7 @@ def test_tissue_thickness_minimum(testapp, other_lab, human_donor, controlled_te
         'coronal',
         'lateral',
         'longitudinal',
+        'perpendicular',
         'sagittal',
         'transverse'
     ]

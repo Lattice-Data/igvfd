@@ -73,6 +73,7 @@
                 "coronal",
                 "lateral",
                 "longitudinal",
+                "perpendicular",
                 "sagittal",
                 "transverse"
             ]

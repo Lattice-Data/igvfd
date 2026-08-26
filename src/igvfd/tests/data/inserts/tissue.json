@@ -21,6 +21,7 @@
         ],
         "description": "Test tissue sample 1",
         "preservation_method": "frozen",
+        "orientation": "perpendicular",
         "multiplexing_barcodes": [
             "P01-A1"
         ],
