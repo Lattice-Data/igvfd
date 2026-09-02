@@ -346,6 +346,7 @@
                 "Illumina HiSeq 2000",
                 "Illumina NextSeq 500",
                 "Illumina NextSeq 1000",
+                "Illumina NovaSeq X Plus",
                 "Ultima Genomics UG 100"
             ],
             "submissionExample": {

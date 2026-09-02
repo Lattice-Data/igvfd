@@ -1,5 +1,9 @@
 # Sequence File Set Changelog
 
+## Minor changes since schema version 2
+
+* Extend sequencing_platform enum list to include Illumina NovaSeq X Plus.
+
 ## Schema version 2
 
 * Add is_pilot_order.
