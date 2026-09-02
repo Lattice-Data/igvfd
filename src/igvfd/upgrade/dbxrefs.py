@@ -28,6 +28,4 @@ def preserve_invalid_dbxrefs(value, valid_pattern: Pattern[str]):
         f'{", ".join(invalid_dbxrefs)}.'
     )
     existing_notes = value.get('notes', '').strip()
-    if upgrade_note in existing_notes:
-        return
     value['notes'] = f'{existing_notes} {upgrade_note}'.strip()
