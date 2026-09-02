@@ -27,28 +27,32 @@ Accepted sample-level identifiers:
 - `SRA:SRS12345`
 - `ENA:ERS12345`
 
-BioSample accessions such as NCBI `SAMN` and EBI `SAMEA` are deliberately
-excluded from Biosample. IGVF models these external biomaterial records on
-Library using the `Biomaterial:` prefix.
+BioSample accessions from every archive (`SAMN`, `SAMEA`, `SAMEG`, `SAMD`) are
+deliberately excluded from Biosample. IGVF models these external biomaterial
+records on Library using the `Biomaterial:` prefix.
 
 ## Library
 
 Concrete DropletBasedLibrary and PlateBasedLibrary objects inherit:
 
 ```regex
-^(Biomaterial:SAMN\d+|Biomaterial:SAMEA\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$
+^(Biomaterial:SAM(E|N|D)(A|G)?\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$
 ```
 
 Accepted identifiers:
 
 - NCBI biomaterial and sample records: `Biomaterial:SAMN53299868`, `SRA:SRS12345`
 - EBI biomaterial and ENA sample counterparts: `Biomaterial:SAMEA1234567`, `ENA:ERS12345`
+- EBI biomaterial groups: `Biomaterial:SAMEG1234567`
+- DDBJ biomaterial records: `Biomaterial:SAMD1234567`
 - GEO samples: `GEO:GSM12345`
 - SRA/ENA experiments: `SRA:SRX12345`, `ENA:ERX12345`
 
 `Biomaterial:` is an IGVF modeling prefix that makes the Library placement of
-the archive-issued SAMN/SAMEA accession explicit; it is not an archive-issued
-accession prefix.
+the archive-issued BioSample accession explicit; it is not an archive-issued
+accession prefix. The alternation mirrors the BioSample forms the Biosample
+schema previously accepted, so every legacy `BioSample:SAM*` value has a
+Library counterpart to be re-filed under.
 
 SRX and ERX remain on Library because SRA and ENA experiments describe library
 and sequencing metadata. An experiment can own multiple runs, so SRX/ERX must
@@ -71,13 +75,14 @@ identifiers such as `ENA:ERR123456`.
 ## MatrixFileSet
 
 ```regex
-^(GEO:GSE\d+|ENA:ERP\d+)$
+^(GEO:GSE\d+|SRA:SRP\d+|ENA:ERP\d+)$
 ```
 
-MatrixFileSet accepts GEO series identifiers such as `GEO:GSE12345` and
-same-level ENA study identifiers such as `ENA:ERP123456`. GSE and ERP are not
-guaranteed to be one-to-one; an ERP should be supplied only when the matrix
-dataset has a corresponding ENA study.
+MatrixFileSet accepts GEO series identifiers such as `GEO:GSE12345` plus the
+study-level accessions on both archive sides: `SRA:SRP123456` and
+`ENA:ERP123456`. These are not guaranteed to be one-to-one; a study accession
+should be supplied only when the matrix dataset has a corresponding archive
+study.
 
 ## ControlledTerm
 
@@ -100,4 +105,6 @@ It accepts literature and chemical-registry identifiers such as
   property instead of submitting an empty array.
 - Upgrade logic does not move identifiers between related IGVF objects because
   the correct target cannot be inferred reliably. It preserves rejected values
-  in admin-only `notes` for manual reconciliation.
+  in admin-only `notes` for manual reconciliation. A legacy Biosample
+  `BioSample:SAM*` value is re-filed by hand on the relevant Library as
+  `Biomaterial:SAM*`, which the Library pattern accepts.

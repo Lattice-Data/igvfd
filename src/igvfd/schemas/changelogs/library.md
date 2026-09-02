@@ -2,7 +2,7 @@
 
 ### Minor changes since schema version 1
 
-* Update dbxrefs regex to accept SRS, ERS, and Biomaterial-prefixed SAMN and SAMEA identifiers while excluding EGA and obsolete GEO identifiers.
+* Update dbxrefs regex to accept SRS, ERS, and Biomaterial-prefixed BioSample identifiers (SAMN, SAMEA, SAMEG, SAMD) while excluding EGA and obsolete GEO identifiers.
 * Retain SRX and ERX experiment identifiers in dbxrefs.
 * Require at least one dbxref when dbxrefs is submitted.
 

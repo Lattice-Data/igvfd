@@ -54,7 +54,7 @@ def test_matrix_file_set_success_minimal(testapp, other_lab):
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
 
 
-@pytest.mark.parametrize('dbxref', ['GEO:GSE12345', 'ENA:ERP123456'])
+@pytest.mark.parametrize('dbxref', ['GEO:GSE12345', 'SRA:SRP123456', 'ENA:ERP123456'])
 def test_matrix_file_set_dbxrefs_valid(testapp, other_lab, dbxref):
     item = {
         'lab': other_lab['@id'],
@@ -67,7 +67,7 @@ def test_matrix_file_set_dbxrefs_valid(testapp, other_lab, dbxref):
 
 @pytest.mark.parametrize(
     'dbxref',
-    ['GEO:GSM12345', 'SRA:SRR123456', 'SRA:SRP123456', 'ENA:ERR123456'],
+    ['GEO:GSM12345', 'SRA:SRR123456', 'SRA:SRX123456', 'ENA:ERR123456'],
 )
 def test_matrix_file_set_dbxrefs_invalid(testapp, other_lab, dbxref):
     item = {
