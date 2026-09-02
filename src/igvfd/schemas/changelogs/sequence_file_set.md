@@ -2,7 +2,10 @@
 
 ## Minor changes since schema version 2
 
+* Extend sequencing_platform enum list to include Illumina NovaSeq 6000.
+* Extend sequencing_platform enum list to include Illumina NovaSeq X.
 * Extend sequencing_platform enum list to include Illumina NovaSeq X Plus.
+* Extend sequencing_platform enum list to include Ultima Genomics UG 200.
 
 ## Schema version 2
 
