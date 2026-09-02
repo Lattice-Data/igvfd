@@ -129,3 +129,44 @@ def test_upgrade_without_hash_index(upgrader, item_type):
     assert result['schema_version'] == '3'
     assert 'multiplexing_barcodes' not in result
     assert 'hash_index' not in result
+
+
+@pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
+def test_upgrade_biosample_3_4_preserves_invalid_dbxrefs_in_submitter_comment(
+    upgrader, item_type
+):
+    value = {
+        'schema_version': '3',
+        'dbxrefs': ['SRA:SRS12345', 'BioSample:SAMN53299868'],
+        'submitter_comment': 'Existing submitter context.',
+    }
+    result = upgrader.upgrade(item_type, value, current_version='3', target_version='4')
+    assert result['schema_version'] == '4'
+    assert result['dbxrefs'] == ['SRA:SRS12345']
+    assert result['submitter_comment'] == (
+        'Existing submitter context. '
+        'Legacy dbxrefs removed during schema upgrade: BioSample:SAMN53299868.'
+    )
+
+
+def test_upgrade_biosample_3_4_removes_all_invalid_dbxrefs(upgrader):
+    value = {
+        'schema_version': '3',
+        'dbxrefs': ['BioSample:SAMN53299868', 'BioSample:SAMNA12345'],
+    }
+    result = upgrader.upgrade('tissue', value, current_version='3', target_version='4')
+    assert 'dbxrefs' not in result
+    assert result['submitter_comment'] == (
+        'Legacy dbxrefs removed during schema upgrade: '
+        'BioSample:SAMN53299868, BioSample:SAMNA12345.'
+    )
+
+
+@pytest.mark.parametrize('dbxrefs', [None, []])
+def test_upgrade_biosample_3_4_without_dbxrefs_does_not_add_comment(upgrader, dbxrefs):
+    value = {'schema_version': '3'}
+    if dbxrefs is not None:
+        value['dbxrefs'] = dbxrefs
+    result = upgrader.upgrade('cell_line', value, current_version='3', target_version='4')
+    assert result.get('dbxrefs') == dbxrefs
+    assert 'submitter_comment' not in result

@@ -291,6 +291,40 @@ def test_sequence_file_set_platform_enum_values(testapp, other_lab, sequence_fil
     assert res.json['@graph'][0]['sequencing_platform'] == platform
 
 
+@pytest.mark.parametrize('dbxref', ['SRA:SRR123456', 'ENA:ERR123456'])
+def test_sequence_file_set_dbxrefs_valid(
+    testapp, other_lab, sequence_file, droplet_based_library, dbxref
+):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'dbxrefs': [dbxref],
+        'status': 'current',
+    }
+    res = testapp.post_json('/sequence_file_set', item, status=201)
+    assert res.json['@graph'][0]['dbxrefs'] == [dbxref]
+
+
+@pytest.mark.parametrize(
+    'dbxref',
+    ['SRA:SRX123456', 'ENA:ERX123456', 'SRA:SRS123456', 'GEO:GSE123456'],
+)
+def test_sequence_file_set_dbxrefs_invalid(
+    testapp, other_lab, sequence_file, droplet_based_library, dbxref
+):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'dbxrefs': [dbxref],
+        'status': 'current',
+    }
+    testapp.post_json('/sequence_file_set', item, status=422)
+
+
 @pytest.mark.parametrize(
     'cro_order',
     [

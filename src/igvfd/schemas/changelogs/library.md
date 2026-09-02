@@ -2,6 +2,9 @@
 
 ### Minor changes since schema version 1
 
+* Update dbxrefs regex to accept SRS, SAMN, ERS, and SAMEA sample identifiers while excluding EGA and obsolete GEO identifiers.
+* Retain SRX and ERX experiment identifiers in dbxrefs.
+
 * Remove requirement for at least two samples when *multiplexing_method* is present.
 
 * Require *feature_types*.

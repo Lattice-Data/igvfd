@@ -1,5 +1,10 @@
 # Changelog for organoid.json
 
+## Schema version 4
+
+* Update inherited dbxrefs regex to exclude BioSample:SAMN identifiers and invalid BioSample prefixes.
+* Preserve dbxrefs rejected by the updated regex in submitter_comment during upgrade.
+
 ## Schema version 3
 
 * Rename hash_index to multiplexing_barcodes.

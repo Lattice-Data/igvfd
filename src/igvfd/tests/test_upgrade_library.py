@@ -290,3 +290,65 @@ def test_plate_based_library_upgrade_4_5_preserves_multiplexing_method(upgrader)
     assert result['schema_version'] == '5'
     assert result['multiplexing_method'] == ['combinatorial indexing']
     assert result['samples'] == SINGLE_SAMPLE
+
+
+@pytest.mark.parametrize(
+    ('item_type', 'current_version', 'target_version'),
+    [
+        ('droplet_based_library', '4', '5'),
+        ('plate_based_library', '5', '6'),
+    ],
+)
+def test_library_upgrade_preserves_invalid_dbxrefs_in_submitter_comment(
+    upgrader, item_type, current_version, target_version
+):
+    value = {
+        'schema_version': current_version,
+        'dbxrefs': ['SRA:SRX67890', 'GEO:GSM12345', 'EGA:EGAX12345'],
+        'submitter_comment': 'Existing submitter context.',
+    }
+    result = upgrader.upgrade(
+        item_type,
+        value,
+        current_version=current_version,
+        target_version=target_version,
+    )
+    assert result['schema_version'] == target_version
+    assert result['dbxrefs'] == ['SRA:SRX67890', 'GEO:GSM12345']
+    assert result['submitter_comment'] == (
+        'Existing submitter context. '
+        'Legacy dbxrefs removed during schema upgrade: EGA:EGAX12345.'
+    )
+
+
+def test_library_upgrade_removes_all_invalid_dbxrefs(upgrader):
+    value = {
+        'schema_version': '4',
+        'dbxrefs': ['EGA:EGAX12345', 'GEO-obsolete:GSM12345'],
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert 'dbxrefs' not in result
+    assert result['submitter_comment'] == (
+        'Legacy dbxrefs removed during schema upgrade: '
+        'EGA:EGAX12345, GEO-obsolete:GSM12345.'
+    )
+
+
+@pytest.mark.parametrize('dbxrefs', [None, []])
+def test_library_upgrade_without_dbxrefs_does_not_add_comment(upgrader, dbxrefs):
+    value = {'schema_version': '5'}
+    if dbxrefs is not None:
+        value['dbxrefs'] = dbxrefs
+    result = upgrader.upgrade(
+        'plate_based_library',
+        value,
+        current_version='5',
+        target_version='6',
+    )
+    assert result.get('dbxrefs') == dbxrefs
+    assert 'submitter_comment' not in result

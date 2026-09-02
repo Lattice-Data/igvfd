@@ -166,25 +166,40 @@ def test_plate_based_library_create_success(testapp, other_lab, tissue):
 
 
 def test_plate_based_library_dbxrefs_valid(testapp, other_lab, tissue):
+    dbxrefs = [
+        'BioSample:SAMN53299868',
+        'BioSample:SAMEA1234567',
+        'SRA:SRS12345',
+        'ENA:ERS12345',
+        'GEO:GSM67890',
+        'SRA:SRX12345',
+        'ENA:ERX12345',
+    ]
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['EGA:EGAX12345', 'GEO:GSM67890'],
+        'dbxrefs': dbxrefs,
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
-    assert res.json['@graph'][0]['dbxrefs'] == ['EGA:EGAX12345', 'GEO:GSM67890']
+    assert res.json['@graph'][0]['dbxrefs'] == dbxrefs
 
 
-def test_plate_based_library_dbxrefs_invalid(testapp, other_lab, tissue):
+@pytest.mark.parametrize(
+    'invalid_dbxref',
+    ['EGA:EGAX12345', 'GEO-obsolete:GSM12345', 'SRA:SRR12345'],
+)
+def test_plate_based_library_dbxrefs_invalid(
+    testapp, other_lab, tissue, invalid_dbxref
+):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['BioSample:SAMEA1234567'],
+        'dbxrefs': [invalid_dbxref],
         'status': 'current',
     }
     testapp.post_json('/plate_based_library', item, status=422)

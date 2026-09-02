@@ -1,5 +1,10 @@
 # Droplet Based Library Changelog
 
+### Schema version 5
+
+* Update inherited dbxrefs regex to accept SRS, SAMN, ERS, and SAMEA sample identifiers while excluding EGA and obsolete GEO identifiers.
+* Preserve dbxrefs rejected by the updated regex in submitter_comment during upgrade.
+
 ### Schema version 4
 
 * Remove requirement for at least two samples when *multiplexing_method* is present (inherited from abstract Library schema).

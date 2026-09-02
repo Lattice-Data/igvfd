@@ -109,21 +109,37 @@ def test_biosample_dbxrefs_accepts_valid_values(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type
 ):
     endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
-    payload['dbxrefs'] = ['BioSample:SAMEA1234567', 'SRA:SRS12345']
+    payload['dbxrefs'] = [
+        'EGA:EGAN12345',
+        'BioSample:SAMEA1234567',
+        'BioSample:SAMEG1234567',
+        'BioSample:SAMD1234567',
+        'SRA:SRS12345',
+        'ENA:ERS12345',
+    ]
     payload['status'] = 'current'
     res = testapp.post_json(endpoint, payload, status=201)
-    assert res.json['@graph'][0]['dbxrefs'] == ['BioSample:SAMEA1234567', 'SRA:SRS12345']
+    assert res.json['@graph'][0]['dbxrefs'] == payload['dbxrefs']
 
 
+@pytest.mark.parametrize(
+    'invalid_dbxref',
+    [
+        'BioSample:SAMN53299868',
+        'BioSample:SAMNA12345',
+        'GEO:GSM12345',
+        'SRA:SRR12345',
+    ],
+)
 @pytest.mark.parametrize(
     'biosample_type',
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
 def test_biosample_dbxrefs_rejects_invalid_values(
-    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, invalid_dbxref
 ):
     endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
-    payload['dbxrefs'] = ['GEO:GSM12345']
+    payload['dbxrefs'] = [invalid_dbxref]
     payload['status'] = 'current'
     testapp.post_json(endpoint, payload, status=422)
 

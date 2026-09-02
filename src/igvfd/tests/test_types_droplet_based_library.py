@@ -258,25 +258,40 @@ def test_droplet_based_library_create_success(testapp, other_lab, tissue):
 
 
 def test_droplet_based_library_dbxrefs_valid(testapp, other_lab, tissue):
+    dbxrefs = [
+        'BioSample:SAMN53299868',
+        'BioSample:SAMEA1234567',
+        'SRA:SRS12345',
+        'ENA:ERS12345',
+        'GEO:GSM12345',
+        'SRA:SRX67890',
+        'ENA:ERX12345',
+    ]
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['ENA:ERX12345', 'SRA:SRX67890'],
+        'dbxrefs': dbxrefs,
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
-    assert res.json['@graph'][0]['dbxrefs'] == ['ENA:ERX12345', 'SRA:SRX67890']
+    assert res.json['@graph'][0]['dbxrefs'] == dbxrefs
 
 
-def test_droplet_based_library_dbxrefs_invalid(testapp, other_lab, tissue):
+@pytest.mark.parametrize(
+    'invalid_dbxref',
+    ['EGA:EGAX12345', 'GEO-obsolete:GSM12345', 'SRA:SRR12345'],
+)
+def test_droplet_based_library_dbxrefs_invalid(
+    testapp, other_lab, tissue, invalid_dbxref
+):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['EGA:EGAN12345'],
+        'dbxrefs': [invalid_dbxref],
         'status': 'current',
     }
     testapp.post_json('/droplet_based_library', item, status=422)

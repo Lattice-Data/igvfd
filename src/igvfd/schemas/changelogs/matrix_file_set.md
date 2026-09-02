@@ -1,5 +1,9 @@
 ## Changelog for matrix_file_set.json
 
+### Minor changes since schema version 2
+
+* Add optional dbxrefs for GEO series and ENA study identifiers.
+
 ### Schema version 2
 
 * Remove experiment_ids.

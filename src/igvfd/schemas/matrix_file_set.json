@@ -23,12 +23,28 @@
             "$ref": "mixins.json#/shared_status"
         },
         {
+            "$ref": "mixins.json#/dbxrefs"
+        },
+        {
             "$ref": "file_set.json#/properties"
         }
     ],
     "properties": {
         "schema_version": {
             "default": "2"
+        },
+        "dbxrefs": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "title": "External identifier",
+                "description": "An identifier for the matrix dataset in an external resource.",
+                "type": "string",
+                "pattern": "^(GEO:GSE\\d+|ENA:ERP\\d+)$"
+            },
+            "submissionExample": {
+                "appscript": "[\"GEO:GSE12345\"]"
+            }
         },
         "raw_matrix_files": {
             "title": "Raw Matrix Files",

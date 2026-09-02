@@ -5,6 +5,9 @@
         "run_cardinality": "single-end",
         "read1": "f1a2b3c4-d5e6-7890-abcd-1234567890ab",
         "sequencing_platform": "Illumina NovaSeq X Plus",
+        "dbxrefs": [
+            "SRA:SRR123456"
+        ],
         "CRO_order": "AN00012345",
         "is_pilot_order": true,
         "uuid": "a1b2c3d4-e5f6-7890-abcd-111111111111",

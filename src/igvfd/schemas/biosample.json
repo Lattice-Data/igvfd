@@ -60,7 +60,7 @@
     },
     "properties": {
         "schema_version": {
-            "default": "3"
+            "default": "4"
         },
         "dbxrefs": {
             "type": "array",
@@ -69,7 +69,7 @@
                 "title": "External identifier",
                 "description": "An identifier from external resource.",
                 "type": "string",
-                "pattern": "^((EGA:EGAN\\d+)|(BioSample:SAM(E|N|D)(A|G)?\\d+)|(SRA:SRS\\d+)|(ENA:ERS\\d+))$"
+                "pattern": "^(EGA:EGAN\\d+|BioSample:SAM(EA|EG|D)\\d+|SRA:SRS\\d+|ENA:ERS\\d+)$"
             }
         },
         "donors": {

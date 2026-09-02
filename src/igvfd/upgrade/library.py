@@ -1,5 +1,14 @@
+import re
+
 from snovault.upgrader import upgrade_step
 
+from .dbxrefs import preserve_invalid_dbxrefs
+
+
+LIBRARY_DBXREF_PATTERN = re.compile(
+    r'^(BioSample:SAMN\d+|BioSample:SAMEA\d+|SRA:SRS\d+|ENA:ERS\d+|'
+    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$'
+)
 
 MULTIPLEXING_METHOD_MAP = {
     'cell hashing': 'antibody hashing',
@@ -83,3 +92,13 @@ def droplet_based_library_3_4(value, system):
 @upgrade_step('plate_based_library', '4', '5')
 def plate_based_library_4_5(value, system):
     return
+
+
+@upgrade_step('droplet_based_library', '4', '5')
+def droplet_based_library_4_5(value, system):
+    preserve_invalid_dbxrefs(value, LIBRARY_DBXREF_PATTERN)
+
+
+@upgrade_step('plate_based_library', '5', '6')
+def plate_based_library_5_6(value, system):
+    preserve_invalid_dbxrefs(value, LIBRARY_DBXREF_PATTERN)
