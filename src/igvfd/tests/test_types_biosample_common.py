@@ -148,6 +148,24 @@ def test_biosample_dbxrefs_rejects_invalid_values(
     'biosample_type',
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
+def test_biosample_dbxrefs_rejects_empty_array(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(
+        other_lab,
+        human_donor,
+        controlled_term_brain,
+        biosample_type,
+    )
+    payload['dbxrefs'] = []
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
 @pytest.mark.parametrize(
     'multiplexing_barcodes',
     [

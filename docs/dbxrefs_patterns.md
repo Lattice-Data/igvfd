@@ -55,7 +55,7 @@ not be treated as one-to-one aliases for SRR/ERR.
 
 The previous `EGA:EGAX` and `GEO-obsolete:GSM` forms are no longer accepted.
 During schema upgrade, rejected legacy values are removed from `dbxrefs` and
-copied verbatim into `submitter_comment`.
+copied verbatim into admin-only `notes`.
 
 ## SequenceFileSet
 
@@ -95,6 +95,8 @@ It accepts literature and chemical-registry identifiers such as
 - Patterns are anchored and do not tolerate leading or trailing whitespace.
 - Archive accession digit counts remain `\d+`, matching the existing repository
   convention. Enforcing documented accession widths is outside this change.
+- `dbxrefs` arrays require at least one identifier; submitters must omit the
+  property instead of submitting an empty array.
 - Upgrade logic does not move identifiers between related IGVF objects because
   the correct target cannot be inferred reliably. It preserves rejected values
-  in `submitter_comment` for manual reconciliation.
+  in admin-only `notes` for manual reconciliation.

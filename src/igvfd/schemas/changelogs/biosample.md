@@ -3,7 +3,8 @@
 ## Schema version 4
 
 * Update dbxrefs regex to exclude BioSample:SAMN identifiers and invalid BioSample prefixes.
-* Preserve dbxrefs rejected by the updated regex in submitter_comment during upgrade.
+* Require at least one dbxref when dbxrefs is submitted.
+* Preserve dbxrefs rejected by the updated regex in notes during upgrade.
 
 ## Schema version 3
 

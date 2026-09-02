@@ -299,13 +299,13 @@ def test_plate_based_library_upgrade_4_5_preserves_multiplexing_method(upgrader)
         ('plate_based_library', '5', '6'),
     ],
 )
-def test_library_upgrade_preserves_invalid_dbxrefs_in_submitter_comment(
+def test_library_upgrade_preserves_invalid_dbxrefs_in_notes(
     upgrader, item_type, current_version, target_version
 ):
     value = {
         'schema_version': current_version,
         'dbxrefs': ['SRA:SRX67890', 'GEO:GSM12345', 'EGA:EGAX12345'],
-        'submitter_comment': 'Existing submitter context.',
+        'notes': 'Existing internal context.',
     }
     result = upgrader.upgrade(
         item_type,
@@ -315,8 +315,8 @@ def test_library_upgrade_preserves_invalid_dbxrefs_in_submitter_comment(
     )
     assert result['schema_version'] == target_version
     assert result['dbxrefs'] == ['SRA:SRX67890', 'GEO:GSM12345']
-    assert result['submitter_comment'] == (
-        'Existing submitter context. '
+    assert result['notes'] == (
+        'Existing internal context. '
         'Legacy dbxrefs removed during schema upgrade: EGA:EGAX12345.'
     )
 
@@ -333,14 +333,14 @@ def test_library_upgrade_removes_all_invalid_dbxrefs(upgrader):
         target_version='5',
     )
     assert 'dbxrefs' not in result
-    assert result['submitter_comment'] == (
+    assert result['notes'] == (
         'Legacy dbxrefs removed during schema upgrade: '
         'EGA:EGAX12345, GEO-obsolete:GSM12345.'
     )
 
 
 @pytest.mark.parametrize('dbxrefs', [None, []])
-def test_library_upgrade_without_dbxrefs_does_not_add_comment(upgrader, dbxrefs):
+def test_library_upgrade_without_dbxrefs_does_not_add_notes(upgrader, dbxrefs):
     value = {'schema_version': '5'}
     if dbxrefs is not None:
         value['dbxrefs'] = dbxrefs
@@ -350,5 +350,5 @@ def test_library_upgrade_without_dbxrefs_does_not_add_comment(upgrader, dbxrefs)
         current_version='5',
         target_version='6',
     )
-    assert result.get('dbxrefs') == dbxrefs
-    assert 'submitter_comment' not in result
+    assert 'dbxrefs' not in result
+    assert 'notes' not in result

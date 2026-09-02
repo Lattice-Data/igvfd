@@ -325,6 +325,20 @@ def test_sequence_file_set_dbxrefs_invalid(
     testapp.post_json('/sequence_file_set', item, status=422)
 
 
+def test_sequence_file_set_dbxrefs_rejects_empty_array(
+    testapp, other_lab, sequence_file, droplet_based_library
+):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'dbxrefs': [],
+        'status': 'current',
+    }
+    testapp.post_json('/sequence_file_set', item, status=422)
+
+
 @pytest.mark.parametrize(
     'cro_order',
     [

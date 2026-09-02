@@ -78,6 +78,15 @@ def test_matrix_file_set_dbxrefs_invalid(testapp, other_lab, dbxref):
     testapp.post_json('/matrix_file_set', item, status=422)
 
 
+def test_matrix_file_set_dbxrefs_rejects_empty_array(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'dbxrefs': [],
+        'status': 'current',
+    }
+    testapp.post_json('/matrix_file_set', item, status=422)
+
+
 def test_matrix_file_set_raw_matrix_file_linkto_validation(testapp, other_lab):
     testapp.post_json(
         '/matrix_file_set',

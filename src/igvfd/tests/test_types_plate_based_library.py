@@ -205,6 +205,18 @@ def test_plate_based_library_dbxrefs_invalid(
     testapp.post_json('/plate_based_library', item, status=422)
 
 
+def test_plate_based_library_dbxrefs_rejects_empty_array(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'dbxrefs': [],
+        'status': 'current',
+    }
+    testapp.post_json('/plate_based_library', item, status=422)
+
+
 @pytest.mark.parametrize(
     'cro_group_identifier',
     [

@@ -3,7 +3,8 @@
 ### Schema version 5
 
 * Update inherited dbxrefs regex to accept SRS, SAMN, ERS, and SAMEA sample identifiers while excluding EGA and obsolete GEO identifiers.
-* Preserve dbxrefs rejected by the updated regex in submitter_comment during upgrade.
+* Require at least one dbxref when inherited dbxrefs is submitted.
+* Preserve dbxrefs rejected by the updated regex in notes during upgrade.
 
 ### Schema version 4
 

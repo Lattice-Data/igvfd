@@ -3,7 +3,10 @@ from re import Pattern
 
 def preserve_invalid_dbxrefs(value, valid_pattern: Pattern[str]):
     dbxrefs = value.get('dbxrefs')
+    if dbxrefs is None:
+        return
     if not dbxrefs:
+        value.pop('dbxrefs')
         return
 
     valid_dbxrefs = []
@@ -20,11 +23,11 @@ def preserve_invalid_dbxrefs(value, valid_pattern: Pattern[str]):
     if not invalid_dbxrefs:
         return
 
-    upgrade_comment = (
+    upgrade_note = (
         'Legacy dbxrefs removed during schema upgrade: '
         f'{", ".join(invalid_dbxrefs)}.'
     )
-    existing_comment = value.get('submitter_comment', '').strip()
-    if upgrade_comment in existing_comment:
+    existing_notes = value.get('notes', '').strip()
+    if upgrade_note in existing_notes:
         return
-    value['submitter_comment'] = f'{existing_comment} {upgrade_comment}'.strip()
+    value['notes'] = f'{existing_notes} {upgrade_note}'.strip()
