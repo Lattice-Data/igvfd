@@ -50,7 +50,7 @@
                 "title": "External identifier",
                 "description": "Identifier from an external resource that may have 1-to-1 or 1-to-many relationships with ENCODE objects.",
                 "type": "string",
-                "pattern": "^(Biomaterial:SAM(E|N|D)(A|G)?\\d+|SRA:SRS\\d+|ENA:ERS\\d+|GEO:GSM\\d+|SRA:SRX\\d+|ENA:ERX\\d+)$"
+                "pattern": "^(Biomaterial:SAM(N|D|E[ADG])\\d+|SRA:SRS\\d+|ENA:ERS\\d+|GEO:GSM\\d+|SRA:SRX\\d+|ENA:ERX\\d+)$"
             },
             "submissionExample": {
                 "appscript": "[\"Biomaterial:SAMN53299868\", \"GEO:GSM12345\"]"

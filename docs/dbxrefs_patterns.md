@@ -27,32 +27,34 @@ Accepted sample-level identifiers:
 - `SRA:SRS12345`
 - `ENA:ERS12345`
 
-BioSample accessions from every archive (`SAMN`, `SAMEA`, `SAMEG`, `SAMD`) are
-deliberately excluded from Biosample. IGVF models these external biomaterial
-records on Library using the `Biomaterial:` prefix.
+BioSample accessions from every archive (`SAMN`, `SAMD`, `SAMEA`, `SAMED`,
+`SAMEG`) are deliberately excluded from Biosample. IGVF models these external
+biomaterial records on Library using the `Biomaterial:` prefix.
 
 ## Library
 
 Concrete DropletBasedLibrary and PlateBasedLibrary objects inherit:
 
 ```regex
-^(Biomaterial:SAM(E|N|D)(A|G)?\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$
+^(Biomaterial:SAM(N|D|E[ADG])\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$
 ```
 
 Accepted identifiers:
 
-- NCBI biomaterial and sample records: `Biomaterial:SAMN53299868`, `SRA:SRS12345`
-- EBI biomaterial and ENA sample counterparts: `Biomaterial:SAMEA1234567`, `ENA:ERS12345`
-- EBI biomaterial groups: `Biomaterial:SAMEG1234567`
-- DDBJ biomaterial records: `Biomaterial:SAMD1234567`
+- NCBI BioSample records and SRA samples: `Biomaterial:SAMN53299868`, `SRA:SRS12345`
+- DDBJ BioSample records: `Biomaterial:SAMD1234567`
+- EBI BioSamples records and ENA sample counterparts: `Biomaterial:SAMEA1234567`, `Biomaterial:SAMED1234567`, `ENA:ERS12345`
+- EBI BioSamples groups: `Biomaterial:SAMEG1234567`
 - GEO samples: `GEO:GSM12345`
 - SRA/ENA experiments: `SRA:SRX12345`, `ENA:ERX12345`
 
 `Biomaterial:` is an IGVF modeling prefix that makes the Library placement of
 the archive-issued BioSample accession explicit; it is not an archive-issued
-accession prefix. The alternation mirrors the BioSample forms the Biosample
-schema previously accepted, so every legacy `BioSample:SAM*` value has a
-Library counterpart to be re-filed under.
+accession prefix. The alternation enumerates exactly the five BioSample
+prefixes the archives issue, so forms such as `SAME`, `SAMNA`, or `SAMDG` are
+rejected. It is a superset of the BioSample forms the Biosample schema
+previously accepted, so every legacy `BioSample:SAM*` value has a Library
+counterpart to be re-filed under.
 
 SRX and ERX remain on Library because SRA and ENA experiments describe library
 and sequencing metadata. An experiment can own multiple runs, so SRX/ERX must

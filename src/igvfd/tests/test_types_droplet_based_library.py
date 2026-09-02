@@ -261,6 +261,7 @@ def test_droplet_based_library_dbxrefs_valid(testapp, other_lab, tissue):
     dbxrefs = [
         'Biomaterial:SAMN53299868',
         'Biomaterial:SAMEA1234567',
+        'Biomaterial:SAMED1234567',
         'Biomaterial:SAMEG1234567',
         'Biomaterial:SAMD1234567',
         'SRA:SRS12345',
@@ -286,6 +287,9 @@ def test_droplet_based_library_dbxrefs_valid(testapp, other_lab, tissue):
     [
         'BioSample:SAMN53299868',
         'BioSample:SAMEA1234567',
+        'Biomaterial:SAME1234567',
+        'Biomaterial:SAMNA12345',
+        'Biomaterial:SAMDG12345',
         'EGA:EGAX12345',
         'GEO-obsolete:GSM12345',
         'SRA:SRR12345',
