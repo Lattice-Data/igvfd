@@ -259,7 +259,11 @@ def test_sequence_file_set_platform_enum(testapp, other_lab, sequence_file, drop
         'Illumina HiSeq 2000',
         'Illumina NextSeq 500',
         'Illumina NextSeq 1000',
+        'Illumina NovaSeq 6000',
+        'Illumina NovaSeq X',
+        'Illumina NovaSeq X Plus',
         'Ultima Genomics UG 100',
+        'Ultima Genomics UG 200',
     ]
 )
 def test_sequence_file_set_platform_enum_values(testapp, other_lab, sequence_file,
