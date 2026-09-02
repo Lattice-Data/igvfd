@@ -14,7 +14,7 @@
             "lattice:cell-line-reference"
         ],
         "dbxrefs": [
-            "BioSample:SAMEA1234567"
+            "SRA:SRS12346"
         ],
         "description": "Test cell line sample",
         "preservation_method": "cryopreserved",

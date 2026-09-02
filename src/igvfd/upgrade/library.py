@@ -6,7 +6,7 @@ from .dbxrefs import preserve_invalid_dbxrefs
 
 
 LIBRARY_DBXREF_PATTERN = re.compile(
-    r'^(BioSample:SAMN\d+|BioSample:SAMEA\d+|SRA:SRS\d+|ENA:ERS\d+|'
+    r'^(Biomaterial:SAMN\d+|Biomaterial:SAMEA\d+|SRA:SRS\d+|ENA:ERS\d+|'
     r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$'
 )
 

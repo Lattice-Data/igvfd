@@ -2,7 +2,7 @@
 
 ## Schema version 4
 
-* Update inherited dbxrefs regex to exclude BioSample:SAMN identifiers and invalid BioSample prefixes.
+* Update inherited dbxrefs regex to exclude BioSample identifiers.
 * Require at least one dbxref when inherited dbxrefs is submitted.
 * Preserve dbxrefs rejected by the updated regex in notes during upgrade.
 

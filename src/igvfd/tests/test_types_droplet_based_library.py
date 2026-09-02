@@ -259,8 +259,8 @@ def test_droplet_based_library_create_success(testapp, other_lab, tissue):
 
 def test_droplet_based_library_dbxrefs_valid(testapp, other_lab, tissue):
     dbxrefs = [
-        'BioSample:SAMN53299868',
-        'BioSample:SAMEA1234567',
+        'Biomaterial:SAMN53299868',
+        'Biomaterial:SAMEA1234567',
         'SRA:SRS12345',
         'ENA:ERS12345',
         'GEO:GSM12345',
@@ -281,7 +281,13 @@ def test_droplet_based_library_dbxrefs_valid(testapp, other_lab, tissue):
 
 @pytest.mark.parametrize(
     'invalid_dbxref',
-    ['EGA:EGAX12345', 'GEO-obsolete:GSM12345', 'SRA:SRR12345'],
+    [
+        'BioSample:SAMN53299868',
+        'BioSample:SAMEA1234567',
+        'EGA:EGAX12345',
+        'GEO-obsolete:GSM12345',
+        'SRA:SRR12345',
+    ],
 )
 def test_droplet_based_library_dbxrefs_invalid(
     testapp, other_lab, tissue, invalid_dbxref

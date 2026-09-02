@@ -111,9 +111,6 @@ def test_biosample_dbxrefs_accepts_valid_values(
     endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
     payload['dbxrefs'] = [
         'EGA:EGAN12345',
-        'BioSample:SAMEA1234567',
-        'BioSample:SAMEG1234567',
-        'BioSample:SAMD1234567',
         'SRA:SRS12345',
         'ENA:ERS12345',
     ]
@@ -126,6 +123,9 @@ def test_biosample_dbxrefs_accepts_valid_values(
     'invalid_dbxref',
     [
         'BioSample:SAMN53299868',
+        'BioSample:SAMEA1234567',
+        'BioSample:SAMEG1234567',
+        'BioSample:SAMD1234567',
         'BioSample:SAMNA12345',
         'GEO:GSM12345',
         'SRA:SRR12345',

@@ -137,7 +137,11 @@ def test_upgrade_biosample_3_4_preserves_invalid_dbxrefs_in_notes(
 ):
     value = {
         'schema_version': '3',
-        'dbxrefs': ['SRA:SRS12345', 'BioSample:SAMN53299868'],
+        'dbxrefs': [
+            'SRA:SRS12345',
+            'BioSample:SAMN53299868',
+            'BioSample:SAMEA1234567',
+        ],
         'notes': 'Existing internal context.',
     }
     result = upgrader.upgrade(item_type, value, current_version='3', target_version='4')
@@ -145,20 +149,26 @@ def test_upgrade_biosample_3_4_preserves_invalid_dbxrefs_in_notes(
     assert result['dbxrefs'] == ['SRA:SRS12345']
     assert result['notes'] == (
         'Existing internal context. '
-        'Legacy dbxrefs removed during schema upgrade: BioSample:SAMN53299868.'
+        'Legacy dbxrefs removed during schema upgrade: '
+        'BioSample:SAMN53299868, BioSample:SAMEA1234567.'
     )
 
 
 def test_upgrade_biosample_3_4_removes_all_invalid_dbxrefs(upgrader):
     value = {
         'schema_version': '3',
-        'dbxrefs': ['BioSample:SAMN53299868', 'BioSample:SAMNA12345'],
+        'dbxrefs': [
+            'BioSample:SAMN53299868',
+            'BioSample:SAMEA1234567',
+            'BioSample:SAMNA12345',
+        ],
     }
     result = upgrader.upgrade('tissue', value, current_version='3', target_version='4')
     assert 'dbxrefs' not in result
     assert result['notes'] == (
         'Legacy dbxrefs removed during schema upgrade: '
-        'BioSample:SAMN53299868, BioSample:SAMNA12345.'
+        'BioSample:SAMN53299868, BioSample:SAMEA1234567, '
+        'BioSample:SAMNA12345.'
     )
 
 

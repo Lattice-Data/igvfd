@@ -70,7 +70,10 @@
                 "title": "External identifier",
                 "description": "An identifier from external resource.",
                 "type": "string",
-                "pattern": "^(EGA:EGAN\\d+|BioSample:SAM(EA|EG|D)\\d+|SRA:SRS\\d+|ENA:ERS\\d+)$"
+                "pattern": "^(EGA:EGAN\\d+|SRA:SRS\\d+|ENA:ERS\\d+)$"
+            },
+            "submissionExample": {
+                "appscript": "[\"SRA:SRS12345\", \"ENA:ERS12345\"]"
             }
         },
         "donors": {

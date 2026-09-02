@@ -18,36 +18,37 @@ ControlledTerm defines `dbxrefs` locally and is unchanged by this model.
 Concrete Tissue, PrimaryCellCulture, Organoid, and CellLine objects inherit:
 
 ```regex
-^(EGA:EGAN\d+|BioSample:SAM(EA|EG|D)\d+|SRA:SRS\d+|ENA:ERS\d+)$
+^(EGA:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+)$
 ```
 
 Accepted sample-level identifiers:
 
 - `EGA:EGAN12345`
-- `BioSample:SAMEA1234567`
-- `BioSample:SAMEG1234567`
-- `BioSample:SAMD1234567`
 - `SRA:SRS12345`
 - `ENA:ERS12345`
 
-`BioSample:SAMN` is deliberately excluded from Biosample and accepted on
-Library. The explicit BioSample alternatives also prevent invalid combinations
-such as `SAMNA` and `SAMNG`.
+BioSample accessions such as NCBI `SAMN` and EBI `SAMEA` are deliberately
+excluded from Biosample. IGVF models these external biomaterial records on
+Library using the `Biomaterial:` prefix.
 
 ## Library
 
 Concrete DropletBasedLibrary and PlateBasedLibrary objects inherit:
 
 ```regex
-^(BioSample:SAMN\d+|BioSample:SAMEA\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$
+^(Biomaterial:SAMN\d+|Biomaterial:SAMEA\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$
 ```
 
 Accepted identifiers:
 
-- NCBI sample records: `BioSample:SAMN53299868`, `SRA:SRS12345`
-- ENA sample counterparts: `BioSample:SAMEA1234567`, `ENA:ERS12345`
+- NCBI biomaterial and sample records: `Biomaterial:SAMN53299868`, `SRA:SRS12345`
+- EBI biomaterial and ENA sample counterparts: `Biomaterial:SAMEA1234567`, `ENA:ERS12345`
 - GEO samples: `GEO:GSM12345`
 - SRA/ENA experiments: `SRA:SRX12345`, `ENA:ERX12345`
+
+`Biomaterial:` is an IGVF modeling prefix that makes the Library placement of
+the archive-issued SAMN/SAMEA accession explicit; it is not an archive-issued
+accession prefix.
 
 SRX and ERX remain on Library because SRA and ENA experiments describe library
 and sequencing metadata. An experiment can own multiple runs, so SRX/ERX must

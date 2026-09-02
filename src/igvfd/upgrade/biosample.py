@@ -6,7 +6,7 @@ from .dbxrefs import preserve_invalid_dbxrefs
 
 
 BIOSAMPLE_DBXREF_PATTERN = re.compile(
-    r'^(EGA:EGAN\d+|BioSample:SAM(EA|EG|D)\d+|SRA:SRS\d+|ENA:ERS\d+)$'
+    r'^(EGA:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+)$'
 )
 
 ENRICHMENT_METHOD_TO_SELECTION_METHOD = {
