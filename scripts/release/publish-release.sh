@@ -2,17 +2,17 @@
 # Step 12 of docs/staging_deploy.md: publish the GitHub Release from the tag created in
 # step 9. Run this only after the Slack check (step 10) and the AWS approval (step 11).
 #
-# Usage: scripts/release/publish-release.sh X.Y.Z NOTES_FILE [--yes] [--dry-run]
+# Usage: scripts/release/publish-release.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 parse_release_args "$@"
-version="${POSITIONAL[0]:?usage: publish-release.sh X.Y.Z NOTES_FILE [--yes] [--dry-run]}"
-notes_file="${POSITIONAL[1]:?usage: publish-release.sh X.Y.Z NOTES_FILE [--yes] [--dry-run]}"
+version="${POSITIONAL[0]:?usage: publish-release.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]}"
+notes_file="${POSITIONAL[1]:?usage: publish-release.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]}"
+expect_positional_count 2
 tag="v${version}"
 
-# Resolve before the cd, or a relative path from a subdirectory is reported as missing.
-notes_file=$(cd "$(dirname "${notes_file}")" 2>/dev/null && printf '%s/%s' "$(pwd)" "$(basename "${notes_file}")") \
+notes_file=$(resolve_path "${notes_file}") \
     || { echo "ERROR: notes file '${POSITIONAL[1]}' does not resolve." >&2; exit 1; }
 
 cd "$(git rev-parse --show-toplevel)"
@@ -42,7 +42,9 @@ fi
 # Derive the repo from the checkout so the release cannot be created somewhere the tag
 # was never pushed.
 repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
-target=$(git rev-list -n1 "${tag}")
+# From the remote, so a stale local tag cannot make the confirmation line lie.
+target=$(git ls-remote --tags origin "refs/tags/${tag}^{}" | cut -f1)
+[ -n "${target}" ] || target=$(git ls-remote --tags origin "refs/tags/${tag}" | cut -f1)
 
 if gh release view "${tag}" --repo "${repo}" >/dev/null 2>&1; then
     echo "ERROR: a GitHub Release for ${tag} already exists on ${repo}. Nothing to do." >&2
@@ -52,7 +54,7 @@ fi
 echo
 echo "About to publish a public GitHub Release ${tag} on ${repo} at $(git rev-parse --short "${target}")."
 echo
-require_confirmation "${tag}"
+require_confirmation "${tag}" "publish:${version}" "${target}"
 
 if ! run gh release create "${tag}" \
     --repo "${repo}" \
@@ -66,9 +68,10 @@ if ! run gh release create "${tag}" \
     exit 1
 fi
 
-echo
 if [ "${dry_run}" = "1" ]; then
-    echo "Dry run complete. Every guard passed; nothing was published."
+    print_dry_run_footer "publish:${version}" "${target}" \
+        "scripts/release/publish-release.sh ${version} ${notes_file}"
     exit 0
 fi
+echo
 echo "Released ${tag}."

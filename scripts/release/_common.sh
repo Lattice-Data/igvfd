@@ -1,20 +1,40 @@
+# shellcheck shell=bash
 # Shared helpers for the release scripts. Sourced, not executed.
 
-# --yes and --dry-run in any position, so 'merge-to-main.sh --yes 12.0.0' works too.
-# Sets: assume_yes, dry_run, and POSITIONAL (the non-flag arguments).
+# --yes, --dry-run and --confirm-token=X in any position, so 'merge-to-main.sh --yes
+# 12.0.0' works too. Sets: assume_yes, dry_run, confirm_token, POSITIONAL.
 parse_release_args() {
     assume_yes=0
     dry_run=0
+    confirm_token=
     POSITIONAL=()
     while [ $# -gt 0 ]; do
         case "$1" in
             --yes) assume_yes=1 ;;
             --dry-run) dry_run=1 ;;
+            --confirm-token=*) confirm_token="${1#*=}" ;;
             -*) echo "ERROR: unknown flag '$1'" >&2; exit 1 ;;
             *) POSITIONAL+=("$1") ;;
         esac
         shift
     done
+}
+
+# A flag that lost its leading dashes lands in POSITIONAL and would otherwise be ignored.
+expect_positional_count() {
+    if [ "${#POSITIONAL[@]}" -gt "$1" ]; then
+        echo "ERROR: unexpected extra argument '${POSITIONAL[$1]}'." >&2
+        exit 1
+    fi
+}
+
+# Resolve a path before any cd to the repo root, so relative paths given from a
+# subdirectory still work. CDPATH= because a set CDPATH makes cd echo to stdout.
+resolve_path() {
+    local dir base
+    dir=$(CDPATH= cd -- "$(dirname -- "$1")" 2>/dev/null && pwd) || return 1
+    base=$(basename -- "$1")
+    printf '%s/%s' "${dir}" "${base}"
 }
 
 # Runs a side-effecting command, or prints it under --dry-run. Every push, tag and
@@ -27,16 +47,63 @@ run() {
     fi
 }
 
-# --abbrev-ref prints the literal 'HEAD' when detached, which would make the restore trap
+# --abbrev-ref prints the literal 'HEAD' when detached, which would make a restore trap
 # quietly leave the operator somewhere else. Fall back to the sha so restore still works.
 current_ref() {
     git symbolic-ref -q --short HEAD || git rev-parse HEAD
 }
 
-# Asks the operator to type a value back. Not reachable when stdin is not a tty; callers
-# must have handled that case already.
-confirm_by_typing() {
-    local expected="$1" reply
+read_version_from() {
+    local v
+    # sed -n exits 0 on no match, so an unparsed version would otherwise sail through as
+    # an empty string and compare equal to another empty string.
+    v=$(git show "$1:src/igvfd/__init__.py" | sed -n "s/^__version__ = '\(.*\)'\$/\1/p")
+    if [ -z "${v}" ]; then
+        echo "ERROR: could not parse __version__ from $1:src/igvfd/__init__.py" >&2
+        exit 1
+    fi
+    printf '%s' "${v}"
+}
+
+# Ties a confirmation to one exact action on one exact commit. Printed by --dry-run and
+# required by a non-interactive caller, so the dry run cannot be skipped -- and if the
+# target moves between the dry run and the real run, the token stops matching.
+release_token() {
+    printf '%s:%s' "$1" "$2" | shasum -a 256 | cut -c1-8
+}
+
+# The confirmation gate.
+#
+#   at a terminal   -- type the value back (or --yes to skip the prompt)
+#   non-interactive -- must pass the --confirm-token printed by an immediately preceding
+#                      --dry-run of the same action against the same commit
+#
+# On the non-interactive path this forces the dry run to have happened; it cannot force
+# anyone to have read it. An agent driving these scripts is still trusted to show the
+# output and get a real answer, and the operator approving the command is the outer gate.
+require_confirmation() {
+    local expected="$1" scope="$2" sha="$3" token reply
+    [ "${dry_run}" = "1" ] && return 0
+    token=$(release_token "${scope}" "${sha}")
+
+    if [ -n "${confirm_token}" ]; then
+        if [ "${confirm_token}" = "${token}" ]; then
+            return 0
+        fi
+        echo "ERROR: --confirm-token does not match this action." >&2
+        echo "       The target has probably moved since the dry run. Re-run --dry-run." >&2
+        exit 1
+    fi
+
+    if [ ! -t 0 ]; then
+        echo "ERROR: stdin is not a tty, so there is no way to confirm interactively." >&2
+        echo "       Re-run with --dry-run, show the operator what it would do, and once" >&2
+        echo "       they agree re-run with the --confirm-token it prints." >&2
+        echo "       Do not reach for --yes to get past this message." >&2
+        exit 1
+    fi
+
+    [ "${assume_yes}" = "1" ] && return 0
     read -r -p "Type ${expected} to confirm: " reply
     if [ "${reply}" != "${expected}" ]; then
         echo "Aborted." >&2
@@ -44,29 +111,11 @@ confirm_by_typing() {
     fi
 }
 
-# The confirmation gate. A human at a terminal is prompted. A non-interactive caller (an
-# agent running this through a tool, CI) must pass --yes, which means the confirmation
-# happened elsewhere -- in conversation, where the operator also approved this very
-# command. Under --dry-run nothing happens, so no confirmation is needed.
-require_confirmation() {
-    local expected="$1"
-    [ "${dry_run}" = "1" ] && return 0
-    [ "${assume_yes}" = "1" ] && return 0
-    if [ ! -t 0 ]; then
-        echo "ERROR: stdin is not a tty and --yes was not given." >&2
-        echo "       Re-run with --yes once the operator has confirmed this step, or run" >&2
-        echo "       --dry-run first to see exactly what would happen." >&2
-        exit 1
-    fi
-    confirm_by_typing "${expected}"
-}
-
-read_version_from() {
-    local v
-    v=$(git show "$1:src/igvfd/__init__.py" | sed -n "s/^__version__ = '\(.*\)'\$/\1/p")
-    if [ -z "${v}" ]; then
-        echo "ERROR: could not parse __version__ from $1:src/igvfd/__init__.py" >&2
-        exit 1
-    fi
-    printf '%s' "${v}"
+# Closing line for a dry run: how to actually do it.
+print_dry_run_footer() {
+    local scope="$1" sha="$2" cmd="$3"
+    echo
+    echo "Dry run complete. Every guard passed; nothing was changed."
+    echo "To perform it for real:"
+    echo "  ${cmd} --confirm-token=$(release_token "${scope}" "${sha}")"
 }

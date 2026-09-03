@@ -1,11 +1,12 @@
 > **Automated path:** run the `staging-release` skill (`.claude/skills/staging-release/`)
-> to have Claude drive steps 2-9 and 12, stopping at each human gate. The guarded helper
+> to have Claude drive steps 3-9 and 12, stopping at each human gate. The guarded helper
 > scripts it calls live in `scripts/release/` and can also be run by hand. Steps 1 (JIRA),
 > 10 (Slack `#aws-igvf-staging`) and 11 (AWS approve/reject) stay manual. You always pick
 > the version number yourself; nothing derives it.
 >
 > Scripts: `preflight.sh` (survey), `merge-to-main.sh` (step 6),
-> `tag.sh` (step 9), `publish-release.sh` (step 12).
+> `tag.sh` (step 9), `publish-release.sh` (step 12). Each takes `--dry-run`.
+> `test-release-scripts.sh` covers their guards.
 
 1. Clean up `igvfd` JIRA release
     * Make sure all tickets merged to `dev` branch
@@ -53,7 +54,7 @@ $ git checkout main
 $ git fetch origin -p
 $ git pull
 
-verify main is what you expect before tagging:
+# verify main is what you expect before tagging:
 $ git log -1 --oneline
 
 $ git tag -a vX.Y.Z # Add vX.Y.Z to details

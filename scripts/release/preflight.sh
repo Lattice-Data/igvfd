@@ -4,33 +4,23 @@
 # Usage: scripts/release/preflight.sh
 set -euo pipefail
 
+source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
+
 cd "$(git rev-parse --show-toplevel)"
 
-if [ -n "$(git status --porcelain)" ]; then
-    echo "ERROR: working tree is dirty. Commit or stash before releasing." >&2
-    git status --short >&2
+# Untracked files are deliberately tolerated: the release notes live in the worktree
+# between steps 9 and 12, and an untracked file cannot affect a checkout, an ff-only
+# merge or a tag.
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+    echo "ERROR: working tree has uncommitted changes. Commit or stash before releasing." >&2
+    git status --short --untracked-files=no >&2
     exit 1
 fi
 
 git fetch origin -p --tags
 
-read_version() {
-    local v
-    v=$(git show "$1:src/igvfd/__init__.py" | sed -n "s/^__version__ = '\(.*\)'\$/\1/p")
-    # sed -n exits 0 on no match, so an unparsed version would otherwise sail through as
-    # an empty string and compare equal to the other empty string.
-    if [ -z "${v}" ]; then
-        echo "ERROR: could not parse __version__ from $1:src/igvfd/__init__.py" >&2
-        exit 1
-    fi
-    printf '%s' "${v}"
-}
-
-# Read from the remote refs, not the working tree: mid-release the operator is often
-# sitting on the bump branch, where the working tree would report the new version as
-# though it were already released.
-main_version=$(read_version origin/main)
-dev_version=$(read_version origin/dev)
+main_version=$(read_version_from origin/main)
+dev_version=$(read_version_from origin/dev)
 # Not piped into head, which can take SIGPIPE and trip pipefail.
 last_tag=$(git tag --list 'v*' --sort=-v:refname)
 last_tag=${last_tag%%$'\n'*}
@@ -42,11 +32,24 @@ echo
 
 if ! git merge-base --is-ancestor origin/main origin/dev; then
     echo "ERROR: origin/main is NOT an ancestor of origin/dev. The branches have diverged" >&2
-    echo "       and 'git merge dev --ff-only' will fail. A merge commit on main (rather" >&2
-    echo "       than a fast-forward) is the usual cause; merging main back into dev" >&2
-    echo "       restores the invariant." >&2
+    echo "       and 'git merge dev --ff-only' will fail. Anything that rewrites or adds" >&2
+    echo "       commits on main -- a merge commit, or GitHub's rebase-and-merge -- causes" >&2
+    echo "       this. Merging main back into dev restores the invariant." >&2
     exit 1
 fi
+
+# Resolved up front rather than inside the conditional below, so a gh failure surfaces as
+# itself instead of being read as "no Release exists".
+repo=""
+gh_ok=0
+if repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null); then
+    gh_ok=1
+fi
+
+released() {
+    [ "${gh_ok}" = "1" ] || return 2
+    gh release view "$1" --repo "${repo}" >/dev/null 2>&1
+}
 
 # Phase detection. The tag has to be consulted before the version comparison: right after
 # step 6 main and dev are both at the NEW version, which is indistinguishable from "no
@@ -57,10 +60,14 @@ if [ "${main_version}" != "${dev_version}" ]; then
 elif [ "${last_tag}" != "v${main_version}" ]; then
     echo "NEXT: main is at ${main_version} and untagged -> step 9 (tag.sh)."
     echo "      If you have not pushed main yet, this is instead steps 2-3 (pick a version, bump PR)."
-elif gh release view "${last_tag}" --repo "$(gh repo view --json nameWithOwner --jq .nameWithOwner)" >/dev/null 2>&1; then
-    echo "NEXT: ${last_tag} is tagged and released -> nothing in flight; steps 2-3 for the next release."
 else
-    echo "NEXT: ${last_tag} is tagged but has no GitHub Release -> step 12 (publish-release.sh)."
+    released "${last_tag}"
+    case $? in
+        0) echo "NEXT: ${last_tag} is tagged and released -> nothing in flight; steps 2-3 for the next release." ;;
+        1) echo "NEXT: ${last_tag} is tagged but has no GitHub Release -> step 12 (publish-release.sh)." ;;
+        *) echo "NEXT: ${last_tag} is tagged. Could not reach gh to check for a GitHub Release --"
+           echo "      check by hand whether step 12 is still outstanding." ;;
+    esac
 fi
 echo
 

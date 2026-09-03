@@ -5,12 +5,13 @@
 # Pushing main deploys staging unconditionally -- the AWS manual approval later in the
 # runbook gates the production/sandbox promotion, not this.
 #
-# Usage: scripts/release/merge-to-main.sh X.Y.Z [--yes] [--dry-run]
+# Usage: scripts/release/merge-to-main.sh X.Y.Z [--dry-run] [--yes|--confirm-token=X]
 set -euo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 parse_release_args "$@"
-version="${POSITIONAL[0]:?usage: merge-to-main.sh X.Y.Z [--yes] [--dry-run]}"
+version="${POSITIONAL[0]:?usage: merge-to-main.sh X.Y.Z [--dry-run] [--yes|--confirm-token=X]}"
+expect_positional_count 1
 
 cd "$(git rev-parse --show-toplevel)"
 start_ref=$(current_ref)
@@ -20,8 +21,10 @@ start_ref=$(current_ref)
 restore_ref() { git checkout -q "${start_ref}" 2>/dev/null || true; }
 trap restore_ref EXIT
 
-if [ -n "$(git status --porcelain)" ]; then
-    echo "ERROR: working tree is dirty. Commit or stash first." >&2
+# Untracked files are tolerated: the release notes live in the worktree between steps 9
+# and 12, and an untracked file cannot affect a checkout or an ff-only merge.
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+    echo "ERROR: working tree has uncommitted changes. Commit or stash first." >&2
     exit 1
 fi
 
@@ -47,14 +50,20 @@ if [ "${dev_version}" != "${version}" ]; then
     exit 1
 fi
 
+repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
 target=$(git rev-parse --short origin/dev)
 count=$(git rev-list --count origin/main..origin/dev)
+
+if [ "${count}" = "0" ]; then
+    echo "Nothing to do: origin/main is already at origin/dev (${target})."
+    exit 0
+fi
 
 echo
 echo "About to fast-forward main to ${target} (${count} commit(s)) and push."
 echo "This DEPLOYS STAGING immediately. It does not touch production."
 echo
-require_confirmation "${version}"
+require_confirmation "${version}" "merge-to-main:${version}" "$(git rev-parse origin/dev)"
 
 # Advancing local dev and main to match their remotes mirrors the runbook's step 6
 # verbatim. More working-tree churn than the fast-forward strictly needs, but it keeps
@@ -80,17 +89,21 @@ if ! run git push origin main; then
     echo "ERROR: push to main was rejected, most likely by branch protection." >&2
     echo "       Local main was fast-forwarded but NOT pushed; nothing is deployed." >&2
     echo >&2
-    echo "       If you fall back to merging the dev -> main PR on GitHub, use a method" >&2
-    echo "       that keeps main a fast-forward of dev -- 'gh pr merge <PR> --rebase'." >&2
-    echo "       A merge commit ('--merge') makes main stop being an ancestor of dev, and" >&2
-    echo "       preflight.sh will then fail on every later release until main is merged" >&2
-    echo "       back into dev." >&2
+    echo "       Do NOT fall back to 'gh pr merge'. Both --merge and --rebase stop main" >&2
+    echo "       from being a fast-forward of dev: --merge adds a merge commit, --rebase" >&2
+    echo "       rewrites the commits with new shas. Either way preflight.sh fails on" >&2
+    echo "       every later release until main is merged back into dev." >&2
+    echo >&2
+    echo "       To move main while preserving the shas, update the ref directly:" >&2
+    echo "         gh api -X PATCH repos/${repo}/git/refs/heads/main \\" >&2
+    echo "           -f sha=$(git rev-parse origin/dev)" >&2
     exit 1
 fi
 
-echo
 if [ "${dry_run}" = "1" ]; then
-    echo "Dry run complete. Every guard passed; nothing was merged or pushed."
+    print_dry_run_footer "merge-to-main:${version}" "$(git rev-parse origin/dev)" \
+        "scripts/release/merge-to-main.sh ${version}"
     exit 0
 fi
+echo
 echo "Pushed. Staging is deploying. Monitor #aws-igvf-staging for batch-upgrade errors (step 10)."

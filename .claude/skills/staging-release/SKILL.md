@@ -21,14 +21,18 @@ it, not a replacement. If the two ever disagree, the doc wins -- say so and stop
   `main`, pushing a tag, and publishing a release are all outward-facing.
 
   How this works when *you* run the scripts: stdin is not a tty, so the interactive
-  prompt cannot reach the user and the script refuses rather than guessing. So the
-  confirmation has to happen in the conversation, and then you pass `--yes`. The sequence
-  is always: run with `--dry-run` first, show the user exactly what it would do, get an
-  explicit yes for that specific step, then re-run with `--yes`.
+  prompt cannot reach the user. The scripts require a `--confirm-token` instead, and the
+  only place to get one is a `--dry-run` of that same action against that same commit.
+  So the sequence is fixed:
 
-  Be honest about what that means: on this path the gate is you, plus the user approving
-  the command itself. `--yes` is not a rubber stamp to reach for when a script complains
-  about a tty. A human running these by hand gets the real typed prompt instead.
+  1. Run with `--dry-run`.
+  2. Show the user its output -- the exact commands, and what they would change.
+  3. Get an explicit yes for that specific step.
+  4. Re-run with the `--confirm-token=` the dry run printed.
+
+  `--yes` does not work without a tty; do not go looking for a way around the token. If
+  the token is rejected the target moved since the dry run, so start again at step 1.
+  A human running these by hand gets the real typed prompt and never needs a token.
 - **Stop immediately on any script error.** The scripts fail loudly and leave nothing
   half-pushed. Report the error verbatim; do not work around it.
 - Steps 1 (JIRA cleanup) and 10 (Slack `#aws-igvf-staging`) are the user's to do. Remind
@@ -47,8 +51,10 @@ side-effecting one confirms interactively unless given `--yes`:
 | `publish-release.sh X.Y.Z NOTES` | 12 | Publishes the GitHub Release from that tag. |
 
 The three side-effecting ones take `--dry-run` (runs every guard, prints the commands it
-would run, changes nothing) and `--yes` (skips the interactive prompt). `_common.sh` holds
-the shared argument parsing and confirmation logic and is sourced, not run.
+would run and a `--confirm-token`, changes nothing). `_common.sh` holds the shared
+argument parsing and confirmation logic and is sourced, not run.
+`test-release-scripts.sh` covers the phase detection and the guards; run it after
+changing any of them.
 
 ## Phase A -- survey, then the human picks the version
 
@@ -99,9 +105,12 @@ Everything downstream takes the version as an explicit argument. Nothing derives
    now. Say plainly that this deploys staging immediately.
 2. Run `scripts/release/merge-to-main.sh X.Y.Z`.
 3. If the push is rejected by branch protection, the script says so and has pushed
-   nothing. Report it. The fallback is `gh pr merge <PR> --rebase` -- **not** `--merge`,
-   which puts a merge commit on `main` and breaks the fast-forward invariant every later
-   release depends on.
+   nothing. Report it, and do **not** reach for `gh pr merge`: `--merge` adds a merge
+   commit and `--rebase` rewrites the shas, and either one stops `main` being a
+   fast-forward of `dev`, which breaks every later release until `main` is merged back
+   into `dev`. The script prints a `gh api -X PATCH .../git/refs/heads/main` command that
+   moves the ref while preserving the shas. That is a direct write to `main`; hand it to
+   the user rather than running it yourself.
 
 ## Phase E -- tag (doc steps 8, 9)
 
@@ -110,8 +119,12 @@ Everything downstream takes the version as an explicit argument. Nothing derives
    Group by JIRA ticket where the subjects carry one (`DB2-nn: ...`); keep the rest under
    a short "Other" heading. Show the user the notes and let them edit.
 2. **Gate:** confirm the notes.
-3. Write them to a file and run `scripts/release/tag.sh X.Y.Z <notes-file>`.
-4. Keep the notes file; step 12 needs it.
+3. Write the notes **outside the working tree** -- `"$(git rev-parse --git-dir)"/release-notes-X.Y.Z.md`
+   is a good spot. A notes file inside the checkout is untracked clutter that step 12
+   will still need two human gates later, and it will show up in every `git status` the
+   user runs in between.
+4. Run `scripts/release/tag.sh X.Y.Z <notes-file>` (dry run first, per the rules above).
+5. Keep the notes file; step 12 needs it.
 
 ## Phase F -- STOP. Human gates (doc steps 10, 11)
 
