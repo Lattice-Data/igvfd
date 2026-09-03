@@ -46,7 +46,7 @@ unrepresentable.
 Concrete DropletBasedLibrary and PlateBasedLibrary objects inherit:
 
 ```regex
-^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$
+^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)(?![\s\S])
 ```
 
 Accepted sample-level identifiers:
@@ -96,7 +96,7 @@ aliases for SRR/ERR.
 ## SequenceFileSet
 
 ```regex
-^(SRA:SRR\d+|ENA:ERR\d+)$
+^(SRA:SRR\d+|ENA:ERR\d+)(?![\s\S])
 ```
 
 SequenceFileSet represents the files from a sequencing run, so it accepts NCBI
@@ -106,7 +106,7 @@ identifiers such as `ENA:ERR123456`.
 ## MatrixFileSet
 
 ```regex
-^(GEO:GSE\d+|SRA:SRP\d+|ENA:ERP\d+)$
+^(GEO:GSE\d+|SRA:SRP\d+|ENA:ERP\d+)(?![\s\S])
 ```
 
 MatrixFileSet accepts GEO series identifiers such as `GEO:GSE12345` plus the
@@ -203,23 +203,24 @@ body rather than the prefix.
 ## Notes
 
 - Prefixes are case-sensitive and mandatory.
-- Patterns are anchored, so leading whitespace and surrounding text are rejected.
-  A value with a single trailing newline is a special case, and the reason is a
-  Python implementation detail rather than JSON Schema semantics. `jsonschema`
-  compiles `pattern` with Python `re`, where `$` also matches immediately before a
-  trailing newline, so `GEO:GSM1` plus a newline validates on this server. ECMA-262
-  — the dialect JSON Schema actually specifies — matches `$` only at end of input
-  without the `m` flag, and rejects it. Verified on both engines. So the same
-  published profile means two different things depending on who validates it, and
-  `uniqueItems` treats the two strings as distinct, which allows one object to carry
-  the same accession twice.
-- The upgrade helper uses `search` to agree with this server's validator rather than
-  with the spec, so it never migrates a value the server accepts into `notes`.
-- The divergence *can* be closed portably, but not with `\Z`: ECMA-262 has no `\Z`
-  anchor and in JavaScript it matches a literal `Z`. Ending each pattern with
-  `(?![\s\S])` instead of `$` is a negative lookahead for any character, i.e. true
-  end of input, and behaves identically in Python `re` and ECMA-262 (verified on
-  both). That would also let the helper use `fullmatch` and remove the shim.
+- Patterns are anchored at both ends, so leading and trailing whitespace and any
+  surrounding text are rejected. The closing assertion is `(?![\s\S])`, a negative
+  lookahead for any character, rather than `$`. This matters: `jsonschema` compiles
+  `pattern` with Python `re`, where `$` also matches immediately before a trailing
+  newline, while ECMA-262 — the dialect JSON Schema specifies — matches `$` only at
+  end of input without the `m` flag. With `$` the same published profile therefore
+  validated differently depending on the consumer, and because `uniqueItems` treats
+  `GEO:GSM1` and the same value plus a newline as distinct strings, one object could
+  carry the same accession twice. `(?![\s\S])` behaves identically in Python `re` and
+  ECMA-262 — verified on both engines — so the profile now means one thing. Note
+  ECMA-262 has no `\Z` anchor; in JavaScript it matches a literal `Z`, so it is not
+  the construct to reach for.
+- The upgrade helper filters with `search`, matching how `jsonschema` applies
+  `pattern`, so it accepts exactly what the validator accepts. With the patterns
+  anchored at true end of input, `search` and `fullmatch` coincide.
+- ControlledTerm's `dbxrefs` still ends with `$` and is out of scope here. Narrowing
+  it would need its own version bump and upgrade step, since unlike the two new
+  file-set properties it may already hold data.
 - Archive accession digit counts remain `\d+`, matching the existing repository
   convention. Enforcing documented accession widths is outside this change.
 - The Library, SequenceFileSet, and MatrixFileSet `dbxrefs` arrays require at

@@ -4,6 +4,7 @@
 
 * Update inherited *dbxrefs* regex to accept Biomaterial-prefixed BioSample sample identifiers (SAME, SAMN, SAMD, each optionally followed by A or G) and EGA sample identifiers (EGAN), alongside SRS and ERS sample identifiers and GSM, SRX, ERX, and EGAX experiment identifiers, while excluding obsolete GEO identifiers.
 * Require at least one dbxref when inherited *dbxrefs* is submitted.
+* Anchor *dbxrefs* at true end of input with `(?![\s\S])` rather than `$`, rejecting trailing whitespace consistently across regex dialects.
 * Preserve *dbxrefs* rejected by the updated regex in *notes* during upgrade.
 
 ### Schema version 4

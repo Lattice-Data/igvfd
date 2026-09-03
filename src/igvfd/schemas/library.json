@@ -50,7 +50,7 @@
                 "title": "External identifier",
                 "description": "Identifier from an external resource that may have 1-to-1 or 1-to-many relationships with Lattice objects.",
                 "type": "string",
-                "pattern": "^(Biomaterial:SAM(E|N|D)(A|G)?\\d+|Biomaterial:EGAN\\d+|SRA:SRS\\d+|ENA:ERS\\d+|GEO:GSM\\d+|SRA:SRX\\d+|ENA:ERX\\d+|EGA:EGAX\\d+)$"
+                "pattern": "^(Biomaterial:SAM(E|N|D)(A|G)?\\d+|Biomaterial:EGAN\\d+|SRA:SRS\\d+|ENA:ERS\\d+|GEO:GSM\\d+|SRA:SRX\\d+|ENA:ERX\\d+|EGA:EGAX\\d+)(?![\\s\\S])"
             },
             "submissionExample": {
                 "appscript": "[\"Biomaterial:SAMN53299868\", \"GEO:GSM12345\"]"

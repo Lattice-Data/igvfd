@@ -13,7 +13,7 @@ from .dbxrefs import preserve_invalid_dbxrefs
 # test_library_upgrade_dbxref_pattern_matches_schema.
 LIBRARY_DBXREF_PATTERN = re.compile(
     r'^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
-    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$'
+    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)(?![\s\S])'
 )
 
 MULTIPLEXING_METHOD_MAP = {

@@ -235,7 +235,7 @@
                 "title": "External identifier",
                 "description": "An identifier for the sequencing run in an external resource.",
                 "type": "string",
-                "pattern": "^(SRA:SRR\\d+|ENA:ERR\\d+)$"
+                "pattern": "^(SRA:SRR\\d+|ENA:ERR\\d+)(?![\\s\\S])"
             },
             "submissionExample": {
                 "appscript": "[\"SRA:SRR123456\"]"

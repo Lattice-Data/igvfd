@@ -41,7 +41,7 @@
                 "title": "External identifier",
                 "description": "An identifier for the matrix dataset in an external resource.",
                 "type": "string",
-                "pattern": "^(GEO:GSE\\d+|SRA:SRP\\d+|ENA:ERP\\d+)$"
+                "pattern": "^(GEO:GSE\\d+|SRA:SRP\\d+|ENA:ERP\\d+)(?![\\s\\S])"
             },
             "submissionExample": {
                 "appscript": "[\"GEO:GSE12345\"]"

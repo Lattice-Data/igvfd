@@ -2,7 +2,7 @@
 
 ## Minor changes since schema version 2
 
-* Add *dbxrefs*, accepting SRA and ENA run identifiers and requiring at least one identifier when submitted.
+* Add *dbxrefs*, accepting SRA and ENA run identifiers requiring at least one identifier when submitted, and anchored at true end of input.
 * Extend sequencing_platform enum list to include Illumina NovaSeq 6000.
 * Extend sequencing_platform enum list to include Illumina NovaSeq X.
 * Extend sequencing_platform enum list to include Illumina NovaSeq X Plus.

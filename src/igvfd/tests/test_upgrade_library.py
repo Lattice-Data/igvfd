@@ -364,7 +364,7 @@ def test_library_upgrade_without_dbxrefs_does_not_add_notes(upgrader, dbxrefs):
 # The Library dbxrefs pattern as released with droplet_based_library 5 / plate_based_library 6.
 LIBRARY_DBXREF_PATTERN_AS_RELEASED = (
     r'^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
-    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$'
+    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)(?![\s\S])'
 )
 
 
@@ -428,13 +428,10 @@ def test_library_upgrade_handles_null_notes(upgrader):
     )
 
 
-def test_library_upgrade_currently_does_not_strip_trailing_newline(upgrader):
-    # Compatibility shim, not an endorsement. A trailing newline in a dbxref is dirty
-    # data, but this server's validator accepts it: jsonschema compiles `pattern` with
-    # Python `re`, where `$` also matches before a trailing newline. That is a Python
-    # detail, not JSON Schema semantics -- ECMA-262 rejects it. The upgrade agrees with
-    # the validator rather than quietly moving an accepted value into admin-only notes.
-    # If the patterns adopt `(?![\s\S])`, this flips to asserting removal.
+def test_library_upgrade_strips_trailing_newline(upgrader):
+    # Now that the pattern ends with `(?![\s\S])` the validator rejects a trailing
+    # newline, so the upgrade must migrate such a value out rather than leave behind
+    # something the schema will not accept.
     value = {
         'schema_version': '4',
         'dbxrefs': ['GEO:GSM12345\n'],
@@ -445,8 +442,10 @@ def test_library_upgrade_currently_does_not_strip_trailing_newline(upgrader):
         current_version='4',
         target_version='5',
     )
-    assert result['dbxrefs'] == ['GEO:GSM12345\n']
-    assert 'notes' not in result
+    assert 'dbxrefs' not in result
+    assert result['notes'] == (
+        'Legacy dbxrefs removed during schema upgrade: GEO:GSM12345\n.'
+    )
 
 
 @pytest.mark.parametrize(

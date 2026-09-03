@@ -597,26 +597,23 @@ def test_droplet_based_library_dbxrefs_patch(testapp, other_lab, tissue):
     testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSM1', 'GEO:GSM1']}, status=422)
 
 
-def test_droplet_based_library_dbxrefs_validator_currently_accepts_trailing_newline(
+def test_droplet_based_library_dbxrefs_rejects_surrounding_whitespace(
     testapp, other_lab, tissue
 ):
-    # Characterizes current behaviour, and deliberately not an endorsement of it. The
-    # upgrade helper uses `search` rather than `fullmatch`, which is only correct if this
-    # server's validator really accepts a single trailing newline -- so it is asserted
-    # end-to-end rather than assumed. The acceptance is a Python detail: jsonschema
-    # compiles with Python `re`, where `$` matches before a trailing newline. ECMA-262,
-    # the dialect JSON Schema specifies, rejects it, so this profile currently means two
-    # different things to two validators. See docs/dbxrefs_patterns.md; adopting
-    # `(?![\s\S])` in the four patterns would close it and retire this test.
+    # The patterns end with `(?![\s\S])`, a negative lookahead for any character, so they
+    # anchor at true end of input. `$` alone would accept a single trailing newline under
+    # Python `re` while ECMA-262 rejected it, meaning the published profile validated
+    # differently depending on the consumer -- and uniqueItems treated 'GEO:GSM1' and the
+    # same value plus a newline as two distinct entries on one object.
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['GEO:GSM12345\n'],
+        'dbxrefs': ['GEO:GSM12345'],
         'status': 'current',
     }
     testapp.post_json('/droplet_based_library', item, status=201)
-    # Two newlines, leading whitespace, and trailing text remain rejected.
-    for bad in ['GEO:GSM12345\n\n', ' GEO:GSM12345', 'GEO:GSM12345x']:
+    for bad in ['GEO:GSM12345\n', 'GEO:GSM12345\n\n', ' GEO:GSM12345',
+                'GEO:GSM12345 ', 'GEO:GSM12345x']:
         testapp.post_json('/droplet_based_library', {**item, 'dbxrefs': [bad]}, status=422)
