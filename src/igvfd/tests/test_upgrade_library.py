@@ -425,9 +425,12 @@ def test_library_upgrade_handles_null_notes(upgrader):
     )
 
 
-def test_library_upgrade_keeps_values_the_schema_accepts(upgrader):
-    # JSON Schema `pattern` is an unanchored search and `$` matches before a trailing
-    # newline, so this value validates. The upgrade must not strip it into notes.
+def test_library_upgrade_does_not_strip_what_the_validator_accepts(upgrader):
+    # Compatibility shim, not an endorsement: a trailing newline in a dbxref is dirty
+    # data, but JSON Schema `pattern` is an unanchored search in which `$` matches before
+    # one, so the validator accepts it. The upgrade must agree with the validator rather
+    # than quietly moving a value the schema permits into admin-only notes. If the
+    # patterns are ever changed to `\Z`, this test should flip to asserting removal.
     value = {
         'schema_version': '4',
         'dbxrefs': ['GEO:GSM12345\n'],

@@ -5,9 +5,9 @@ def preserve_invalid_dbxrefs(value, valid_pattern=None):
     every value is rejected. notes is admin_only, so preserved values are visible
     to admins for manual reconciliation.
     """
-    dbxrefs = value.get('dbxrefs')
-    if dbxrefs is None:
+    if 'dbxrefs' not in value:
         return
+    dbxrefs = value['dbxrefs']
     if not dbxrefs:
         value.pop('dbxrefs')
         return
@@ -35,6 +35,8 @@ def preserve_invalid_dbxrefs(value, valid_pattern=None):
         f'{", ".join(invalid_dbxrefs)}.'
     )
     existing_notes = (value.get('notes') or '').strip()
+    if existing_notes and existing_notes[-1] not in '.!?':
+        existing_notes = f'{existing_notes}.'
     value['notes'] = f'{existing_notes} {upgrade_note}'.strip()
 
 

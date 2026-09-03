@@ -22,8 +22,10 @@ any of them is rejected regardless of the value.
 
 Archive sample records are modeled on Library instead — under the `Biomaterial:`
 prefix for the sample registries, and under the archives' own `SRA:SRS` and
-`ENA:ERS` prefixes for SRA and ENA samples. Every accession therefore has exactly
-one valid home.
+`ENA:ERS` prefixes for SRA and ENA samples. No accession has two valid homes,
+which is the ambiguity this model removes. That is a statement about uniqueness,
+not coverage — see [Known gaps](#known-gaps) for archive levels that are not
+representable at all.
 
 ## Library
 
@@ -111,7 +113,7 @@ gone. The table below gives the re-filing target for each legacy form:
 | `BioSample:SAMN…`, `BioSample:SAMD…`, `BioSample:SAMEA…`, `BioSample:SAMEG…` | Biosample | `Biomaterial:SAMN…` etc. | Library |
 | `SRA:SRS12345`, `ENA:ERS12345` | Biosample | unchanged | Library |
 | `BioSample:SAME…`, `BioSample:SAMNA…`, `BioSample:SAMNG…`, `BioSample:SAMDA…`, `BioSample:SAMDG…` | Biosample | no target | — |
-| `GEO-obsolete:GSM12345` | Library | `GEO:GSM12345` | Library |
+| `GEO-obsolete:GSM12345` | Library | needs a decision, see below | Library |
 
 The five forms with no target are prefixes no archive issues. The old Biosample
 pattern was `BioSample:SAM(E|N|D)(A|G)?\d+`, whose optional `(A|G)` group admitted
@@ -119,6 +121,39 @@ them by accident alongside the four real prefixes. Values in those forms do not
 correspond to real accessions, so they remain in `notes` with nothing to re-file
 them as. Legacy `EGA:EGAX` and `GEO:GSM` values already on Library are unaffected
 by this change and are not migrated.
+
+`GEO-obsolete:GSM12345` is deliberately **not** rewritten to `GEO:GSM12345`, even
+though the digits are the same and the value stays on the same object and property.
+The `GEO-obsolete:` prefix is inherited vocabulary with no definition anywhere in
+this repository, so it is unknown whether it meant "a legacy spelling of a live GEO
+accession" or "an accession GEO has since obsoleted". Rewriting it would assert the
+former. Until the meaning is settled, these values are preserved in `notes` and a
+human must confirm the accession is still live before re-filing it as `GEO:GSM`. If
+the prefix turns out to be merely a legacy spelling, this is mechanically migratable
+in the Library upgrade steps and should be done there.
+
+## Known gaps
+
+Coverage is complete for NCBI and EBI, and partial elsewhere. These archive levels
+are currently not representable on any object:
+
+| Archive | Missing level(s) |
+| --- | --- |
+| EGA | run (`EGAR`), study (`EGAS`), dataset (`EGAD`) |
+| DDBJ | sample (`DRS`), experiment (`DRX`), run (`DRR`), study (`DRP`) |
+
+DDBJ BioSample records are accepted at the sample level as `Biomaterial:SAMD`, so
+DDBJ is representable at that one level only. An EGA-only or DDBJ-only submission
+can therefore record part of the hierarchy and not the rest. Whether to add these
+depends on which archives Lattice actually deposits to at each level.
+
+Prefixes are also not registered in `namespaces.json`, which maps a CURIE prefix to
+a resolvable URL. `GEO` is registered; `Biomaterial`, `SRA`, `ENA`, and `EGA` are
+not, so a consumer cannot expand these identifiers to URLs. `SRA`/`ENA`/`EGA` were
+already unregistered before this change; `Biomaterial` adds one more. Note that
+`Biomaterial:` intentionally covers several registries at once (five BioSample
+prefixes plus EGA's `EGAN`), so resolving it requires switching on the accession
+body rather than the prefix.
 
 ## Notes
 
@@ -137,5 +172,17 @@ by this change and are not migrated.
   an empty array. ControlledTerm's `dbxrefs` is unchanged and still permits an
   empty array.
 - `src/igvfd/upgrade/library.py` keeps a compiled copy of the Library pattern for
-  the upgrade filter. `test_library_upgrade_dbxref_pattern_matches_schema` asserts
-  it equals the schema pattern, so widening one without the other fails CI.
+  the upgrade filter, guarded from both directions.
+  `test_library_upgrade_dbxref_pattern_matches_schema` asserts it equals the current
+  schema pattern, so widening one without the other fails CI.
+  `test_library_upgrade_dbxref_pattern_is_frozen` pins it to a literal, so the
+  released 4→5 and 5→6 steps cannot be made to strip something different after the
+  fact. When the schema pattern next changes, freeze the constant under a versioned
+  name for the existing steps and add a new constant plus step for the new pattern.
+- Objects carrying preserved values can be found by the marker string `Legacy dbxrefs
+  removed during schema upgrade`, which is stable and should not be reworded. `notes`
+  is indexed as `type: text` at `embedded.notes`, so it is queryable in OpenSearch,
+  but it is not exposed in `src/igvfd/searches/configs/`, so it is not available as a
+  search facet or column. Extract the affected objects and their original values
+  *before* running the batchupgrade: afterwards the only record is free text, which
+  cannot be queried per identifier.

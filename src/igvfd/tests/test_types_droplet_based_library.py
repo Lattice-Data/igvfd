@@ -572,3 +572,22 @@ def test_droplet_based_library_create_with_library_construction_technology(
 ):
     res = testapp.get(droplet_based_library_with_library_construction_technology['@id'])
     assert res.json['library_construction_technology']['@id'] == controlled_term_efo['@id']
+
+
+def test_droplet_based_library_dbxrefs_patch(testapp, other_lab, tissue):
+    # Library's pattern is the one this change narrowed, so PATCH must enforce it too.
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(at_id, {'dbxrefs': ['Biomaterial:SAMN53299868']}, status=200)
+    assert patched.json['@graph'][0]['dbxrefs'] == ['Biomaterial:SAMN53299868']
+    testapp.patch_json(at_id, {'dbxrefs': ['GEO-obsolete:GSM12345']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': ['EGA:EGAN12345']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSM1', 'GEO:GSM1']}, status=422)
