@@ -18,9 +18,17 @@ it, not a replacement. If the two ever disagree, the doc wins -- say so and stop
   `ProductionAndSandboxDeployWave` (`cdk/infrastructure/constructs/pipeline.py`), so
   approving promotes to **production and sandbox**. That is emphatically a human's call.
 - **Never skip a confirmation gate**, even if the user seems to be in a hurry. Pushing
-  `main`, pushing a tag, and publishing a release are all outward-facing. The scripts
-  prompt for confirmation on their own; do not pass `--yes` unless the user has just said
-  in this conversation to go ahead with that specific step.
+  `main`, pushing a tag, and publishing a release are all outward-facing.
+
+  How this works when *you* run the scripts: stdin is not a tty, so the interactive
+  prompt cannot reach the user and the script refuses rather than guessing. So the
+  confirmation has to happen in the conversation, and then you pass `--yes`. The sequence
+  is always: run with `--dry-run` first, show the user exactly what it would do, get an
+  explicit yes for that specific step, then re-run with `--yes`.
+
+  Be honest about what that means: on this path the gate is you, plus the user approving
+  the command itself. `--yes` is not a rubber stamp to reach for when a script complains
+  about a tty. A human running these by hand gets the real typed prompt instead.
 - **Stop immediately on any script error.** The scripts fail loudly and leave nothing
   half-pushed. Report the error verbatim; do not work around it.
 - Steps 1 (JIRA cleanup) and 10 (Slack `#aws-igvf-staging`) are the user's to do. Remind
@@ -33,10 +41,14 @@ side-effecting one confirms interactively unless given `--yes`:
 
 | Script | Doc step | What it does |
 |---|---|---|
-| `preflight.sh` | -- | Read-only. Versions on main and dev, latest tag, pending commits, ff-ability. |
+| `preflight.sh` | -- | Read-only. Versions on main and dev, latest tag, **which step is next**, pending commits. |
 | `merge-to-main.sh X.Y.Z` | 6 | ff-only merge of dev into main, then push. Deploys staging. |
 | `tag.sh X.Y.Z NOTES` | 9 | Tags **main** and pushes the tag. |
 | `publish-release.sh X.Y.Z NOTES` | 12 | Publishes the GitHub Release from that tag. |
+
+The three side-effecting ones take `--dry-run` (runs every guard, prints the commands it
+would run, changes nothing) and `--yes` (skips the interactive prompt). `_common.sh` holds
+the shared argument parsing and confirmation logic and is sourced, not run.
 
 ## Phase A -- survey, then the human picks the version
 
@@ -69,9 +81,9 @@ Everything downstream takes the version as an explicit argument. Nothing derives
 2. Edit only the `__version__` line in `src/igvfd/__init__.py`.
 3. Commit as `Bump version to X.Y.Z` (matches existing history), push, and
    `gh pr create --base dev`.
-4. Hand the PR URL to the user. Branch protection on `main` requires `igvfd-pytest`,
-   `cdk-pytest`, `cdk-lambda-runtime-pytest` and `igvfd-check-opensearch-mappings`;
-   `lint` and `cdk-mypy` also run but are not required.
+4. Hand the PR URL to the user. Which checks are *required* lives in branch protection,
+   not in the checkout, so read the PR's own status rollup rather than trusting a list
+   written down here.
 5. Poll with `gh pr view <PR> --json state,reviewDecision,statusCheckRollup` rather than
    asking the user to babysit it.
 
@@ -122,13 +134,13 @@ Only after the user says the AWS step is done.
 ## Resuming mid-release
 
 Releases span human gates, so the user will often come back later. Re-run `preflight.sh`
-and orient from state rather than assuming. It prints the version on both `origin/main`
-and `origin/dev`, which is what identifies the phase:
+and orient from what it reports rather than assuming. It prints a `NEXT:` line naming the
+runbook step, worked out from the versions on `origin/main` and `origin/dev` *and* the
+latest tag -- the tag matters, because right after step 6 both branches carry the new
+version and that is otherwise indistinguishable from no bump having happened.
 
-- main and dev at the same version -> no bump yet; Phase A/B.
-- dev ahead of main with a newer version -> Phase C/D.
-- main carries the new version, no `vX.Y.Z` tag -> Phase E.
-- tag exists, no GitHub Release -> Phase F/G. Ask whether the AWS step is done.
+One thing `preflight.sh` cannot know: whether the AWS approval has happened. If it reports
+step 12, ask.
 
 Never re-derive the version from the repo when resuming without confirming it with the
 user first.

@@ -3,22 +3,22 @@
 # staging. Refuses to proceed unless everything is exactly as expected.
 #
 # Pushing main deploys staging unconditionally -- the AWS manual approval later in the
-# runbook gates the production/sandbox promotion, not this. So this script confirms
-# before pushing unless --yes is passed.
+# runbook gates the production/sandbox promotion, not this.
 #
-# Usage: scripts/release/merge-to-main.sh X.Y.Z [--yes]
+# Usage: scripts/release/merge-to-main.sh X.Y.Z [--yes] [--dry-run]
 set -euo pipefail
 
-version="${1:?usage: merge-to-main.sh X.Y.Z [--yes]}"
-assume_yes="${2:-}"
+source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
+parse_release_args "$@"
+version="${POSITIONAL[0]:?usage: merge-to-main.sh X.Y.Z [--yes] [--dry-run]}"
 
 cd "$(git rev-parse --show-toplevel)"
-start_branch=$(git rev-parse --abbrev-ref HEAD)
+start_ref=$(current_ref)
 
 # Any failure past this point returns the operator to where they started, so a failed
 # run never silently strands them on main or dev.
-restore_branch() { git checkout -q "${start_branch}" 2>/dev/null || true; }
-trap restore_branch EXIT
+restore_ref() { git checkout -q "${start_ref}" 2>/dev/null || true; }
+trap restore_ref EXIT
 
 if [ -n "$(git status --porcelain)" ]; then
     echo "ERROR: working tree is dirty. Commit or stash first." >&2
@@ -40,7 +40,7 @@ if ! git merge-base --is-ancestor origin/main origin/dev; then
 fi
 
 # The version bump (step 3) must already be merged to dev, or staging deploys the wrong number.
-dev_version=$(git show origin/dev:src/igvfd/__init__.py | sed -n "s/^__version__ = '\(.*\)'$/\1/p")
+dev_version=$(read_version_from origin/dev)
 if [ "${dev_version}" != "${version}" ]; then
     echo "ERROR: origin/dev has __version__ = '${dev_version}', expected '${version}'." >&2
     echo "       Merge the version bump PR to dev first (step 3)." >&2
@@ -54,33 +54,28 @@ echo
 echo "About to fast-forward main to ${target} (${count} commit(s)) and push."
 echo "This DEPLOYS STAGING immediately. It does not touch production."
 echo
-if [ "${assume_yes}" != "--yes" ]; then
-    if [ ! -t 0 ]; then
-        echo "ERROR: not a tty and --yes not given; refusing to deploy unconfirmed." >&2
-        exit 1
-    fi
-    read -r -p "Type the version to confirm (${version}): " reply
-    if [ "${reply}" != "${version}" ]; then
-        echo "Aborted; nothing pushed." >&2
-        exit 1
-    fi
-fi
+require_confirmation "${version}"
 
-git checkout dev
-git merge origin/dev --ff-only
-git checkout main
-git merge origin/main --ff-only
+# Advancing local dev and main to match their remotes mirrors the runbook's step 6
+# verbatim. More working-tree churn than the fast-forward strictly needs, but it keeps
+# the local branches in the state the rest of the runbook assumes.
+run git checkout dev
+run git merge origin/dev --ff-only
+run git checkout main
+run git merge origin/main --ff-only
 
 # --ff-only is the safety gate from the doc: it fails rather than creating a merge commit.
-if ! git merge dev --ff-only; then
+if ! run git merge dev --ff-only; then
     echo "ERROR: fast-forward merge failed. Do NOT push. Resolve manually." >&2
     exit 1
 fi
 
-echo
-echo "main is now at $(git rev-parse --short HEAD) ($(git log -1 --pretty=%s))"
+if [ "${dry_run}" != "1" ]; then
+    echo
+    echo "main is now at $(git rev-parse --short HEAD) ($(git log -1 --pretty=%s))"
+fi
 
-if ! git push origin main; then
+if ! run git push origin main; then
     echo >&2
     echo "ERROR: push to main was rejected, most likely by branch protection." >&2
     echo "       Local main was fast-forwarded but NOT pushed; nothing is deployed." >&2
@@ -94,4 +89,8 @@ if ! git push origin main; then
 fi
 
 echo
+if [ "${dry_run}" = "1" ]; then
+    echo "Dry run complete. Every guard passed; nothing was merged or pushed."
+    exit 0
+fi
 echo "Pushed. Staging is deploying. Monitor #aws-igvf-staging for batch-upgrade errors (step 10)."
