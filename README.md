@@ -24,7 +24,7 @@ Run all unit tests automatically and clean up:
 ```bash
 $ docker compose -f docker-compose.test.yml up --exit-code-from pyramid
 ....
-$ docker compose -f docker-compose.test.yml down -v
+$ docker compose -f docker-compose.test.yml down -v --remove-orphans
 ```
 
 Run all indexer tests automatically and clean up:

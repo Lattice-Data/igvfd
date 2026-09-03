@@ -147,13 +147,17 @@ jobs:
           sudo usermod -a -G igvfd $(id -gn)
           sudo chown -R $(id -gn):igvfd ./
           sudo chmod -R g+w ./
-          docker compose -f docker-compose.test.yml up --exit-code-from pyramid
-          # Both stacks publish 4566, 6543 and 8000 and, under one project name, the
-          # second up would inherit the first's containers, anonymous volumes and
-          # networks -- stale OpenSearch and Postgres state. Release them first.
-          docker compose -f docker-compose.test.yml down -v --remove-orphans
+          docker compose -p igvfd-app-tests -f docker-compose.test.yml up --exit-code-from pyramid
+          # The indexer stack runs under its own project, so it cannot inherit this
+          # one's containers, volumes or networks. What this teardown buys is host
+          # ports: both stacks publish 4566, 6543 and 8000, and if
+          # --abort-on-container-exit left anything up the indexer stack would fail
+          # to bind. Cheap insurance -- do not remove it as redundant.
+          docker compose -p igvfd-app-tests -f docker-compose.test.yml down -v --remove-orphans
           # The wrapper runs the indexer suite in its own Compose project and cleans up
-          # before and after. --no-rebuild reuses the images built above.
+          # before and after. --no-rebuild only skips forcing a rebuild; the prebuild
+          # steps above warm the buildkit cache rather than populating the image store,
+          # so compose still builds. See docker/run-indexer-tests.sh.
           ./docker/run-indexer-tests.sh --no-rebuild
 
   igvfd-check-opensearch-mappings:
