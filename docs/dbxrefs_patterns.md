@@ -106,13 +106,15 @@ It accepts literature and chemical-registry identifiers such as
 
 ## Migration
 
-Upgrades do not move identifiers between related IGVF objects, because the
-correct target object cannot be inferred reliably. Rejected values are removed
-from `dbxrefs` and appended verbatim to `notes`, which is `admin_only`, and
-`dbxrefs` is dropped entirely when nothing valid remains. Re-filing is manual.
+No production object currently carries `dbxrefs`, so these upgrades have nothing to
+migrate in practice. The preservation described here is a precaution rather than a
+migration plan: if a value does turn up, it is recorded instead of silently dropped.
 
-Every Biosample `dbxrefs` value is preserved this way, since the property is
-gone. The table below gives the re-filing target for each legacy form:
+Rejected values are removed from `dbxrefs` and appended verbatim to `notes`, which is
+`admin_only`, and `dbxrefs` is dropped entirely when nothing valid remains. Upgrades
+do not move identifiers between objects, because the correct target object cannot be
+inferred. Every Biosample `dbxrefs` value is preserved this way, since the property is
+gone. Should a value ever need re-filing by hand:
 
 | Legacy value | Held by | Re-file as | On |
 | --- | --- | --- | --- |
@@ -120,7 +122,6 @@ gone. The table below gives the re-filing target for each legacy form:
 | `BioSample:SAMN…`, `BioSample:SAMD…`, `BioSample:SAMEA…`, `BioSample:SAMEG…` | Biosample | `Biomaterial:SAMN…` etc. | Library |
 | `SRA:SRS12345`, `ENA:ERS12345` | Biosample | unchanged | Library |
 | `BioSample:SAME…`, `BioSample:SAMNA…`, `BioSample:SAMNG…`, `BioSample:SAMDA…`, `BioSample:SAMDG…` | Biosample | no target | — |
-| `GEO-obsolete:GSM12345` | Library | needs a decision, see below | Library |
 
 The five forms with no target are prefixes no archive issues. The old Biosample
 pattern was `BioSample:SAM(E|N|D)(A|G)?\d+`, whose optional `(A|G)` group admitted
@@ -128,16 +129,6 @@ them by accident alongside the four real prefixes. Values in those forms do not
 correspond to real accessions, so they remain in `notes` with nothing to re-file
 them as. Legacy `EGA:EGAX` and `GEO:GSM` values already on Library are unaffected
 by this change and are not migrated.
-
-`GEO-obsolete:GSM12345` is deliberately **not** rewritten to `GEO:GSM12345`, even
-though the digits are the same and the value stays on the same object and property.
-The `GEO-obsolete:` prefix is inherited vocabulary with no definition anywhere in
-this repository, so it is unknown whether it meant "a legacy spelling of a live GEO
-accession" or "an accession GEO has since obsoleted". Rewriting it would assert the
-former. Until the meaning is settled, these values are preserved in `notes` and a
-human must confirm the accession is still live before re-filing it as `GEO:GSM`. If
-the prefix turns out to be merely a legacy spelling, this is mechanically migratable
-in the Library upgrade steps and should be done there.
 
 ## Known gaps
 
@@ -190,10 +181,8 @@ body rather than the prefix.
   released 4→5 and 5→6 steps cannot be made to strip something different after the
   fact. When the schema pattern next changes, freeze the constant under a versioned
   name for the existing steps and add a new constant plus step for the new pattern.
-- Objects carrying preserved values can be found by the marker string `Legacy dbxrefs
-  removed during schema upgrade`, which is stable and should not be reworded. `notes`
-  is indexed as `type: text` at `embedded.notes`, so it is queryable in OpenSearch,
-  but it is not exposed in `src/igvfd/searches/configs/`, so it is not available as a
-  search facet or column. Extract the affected objects and their original values
-  *before* running the batchupgrade: afterwards the only record is free text, which
-  cannot be queried per identifier.
+- Should a preserved value ever appear, it can be found by the marker string `Legacy
+  dbxrefs removed during schema upgrade`, which is stable and should not be reworded.
+  `notes` is indexed as `type: text` at `embedded.notes`, so it is queryable in
+  OpenSearch, though it is not exposed in `src/igvfd/searches/configs/` and so is not
+  available as a search facet or column.
