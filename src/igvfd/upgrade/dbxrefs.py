@@ -1,15 +1,18 @@
-def preserve_invalid_dbxrefs(value, valid_pattern=None):
+def preserve_invalid_dbxrefs(value, valid_pattern):
     """Drop dbxrefs the current schema rejects, preserving them verbatim in notes.
 
-    A valid_pattern of None means the schema no longer defines dbxrefs at all, so
-    every value is rejected. notes is admin_only, so preserved values are visible
-    to admins for manual reconciliation.
+    valid_pattern is required, and passing None means the schema no longer defines
+    dbxrefs at all, so every value is rejected -- go through remove_all_dbxrefs rather
+    than relying on that. notes is admin_only, so preserved values are visible to
+    admins for manual reconciliation.
     """
     if 'dbxrefs' not in value:
         return
     dbxrefs = value['dbxrefs']
     if not dbxrefs or valid_pattern is None:
-        # No pattern means the schema no longer defines dbxrefs, so nothing is valid.
+        # Empty or null dbxrefs is dropped outright, with nothing to preserve. A None
+        # pattern means the property is gone from the schema, so every value is
+        # preserved instead.
         value.pop('dbxrefs')
         if dbxrefs:
             _append_upgrade_note(value, dbxrefs)

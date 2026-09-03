@@ -2,7 +2,7 @@
 
 ### Minor changes since schema version 1
 
-* Update dbxrefs regex to accept Biomaterial-prefixed BioSample (SAMN, SAMD, SAMEA, SAMED, SAMEG) and EGA sample (EGAN) identifiers alongside SRS, ERS, GSM, SRX, ERX, and EGAX experiment identifiers, while excluding obsolete GEO identifiers.
+* Update dbxrefs regex to accept Biomaterial-prefixed BioSample sample identifiers (SAME, SAMN, SAMD, each optionally followed by A or G) and EGA sample identifiers (EGAN), alongside SRS and ERS sample identifiers and GSM, SRX, ERX, and EGAX experiment identifiers, while excluding obsolete GEO identifiers.
 * Require at least one dbxref when dbxrefs is submitted.
 
 * Remove requirement for at least two samples when *multiplexing_method* is present.

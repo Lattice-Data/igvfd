@@ -30,8 +30,9 @@ MatrixFileSet. It is worth being precise about what this does *not* fix: the two
 patterns being replaced were already disjoint, so no accession string was ever
 accepted by both Biosample and Library, and there was no pre-existing dual-home
 ambiguity to remove. This is a modeling change, not a bug fix, and it is paid for
-with a breaking version bump on six types plus manual re-filing of every existing
-Biosample `dbxrefs` value. See [Known gaps](#known-gaps) for levels that remain
+with a breaking version bump on six types. No production object carries `dbxrefs`
+today, so no re-filing is actually pending; see [Migration](#migration) for how a
+stray value would be handled and [Known gaps](#known-gaps) for levels that remain
 unrepresentable.
 
 ## Library

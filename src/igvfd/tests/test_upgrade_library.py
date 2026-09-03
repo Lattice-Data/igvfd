@@ -4,6 +4,7 @@ import pytest
 
 from igvfd.upgrade.library import (
     DROPLET_REMOVED_PROPERTIES,
+    LIBRARY_DBXREF_PATTERN,
     MULTIPLEXING_METHOD_MAP,
     PLATE_REMOVED_PROPERTIES,
 )
@@ -370,8 +371,6 @@ def test_library_upgrade_dbxref_pattern_is_frozen():
     # The 4->5 and 5->6 steps are historical. Editing their pattern would retroactively
     # change which values they strip into admin-only notes, so it is pinned to a literal
     # rather than to whatever library.json currently says.
-    from igvfd.upgrade.library import LIBRARY_DBXREF_PATTERN
-
     assert LIBRARY_DBXREF_PATTERN.pattern == LIBRARY_DBXREF_PATTERN_AS_RELEASED, (
         'The released upgrade steps must keep stripping exactly what they stripped on '
         'release. Do not edit LIBRARY_DBXREF_PATTERN to match a new schema pattern; add '
@@ -383,8 +382,6 @@ def test_library_upgrade_dbxref_pattern_matches_schema():
     # Guards the other direction: at authoring time the constant must equal the schema it
     # filters for, so a widened schema cannot leave the upgrade stripping valid values.
     from snovault.schema_utils import load_schema
-
-    from igvfd.upgrade.library import LIBRARY_DBXREF_PATTERN
 
     schema = load_schema('igvfd:schemas/library.json')
     assert LIBRARY_DBXREF_PATTERN.pattern == schema['properties']['dbxrefs']['items']['pattern'], (
