@@ -597,7 +597,7 @@ def test_droplet_based_library_dbxrefs_patch(testapp, other_lab, tissue):
     testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSM1', 'GEO:GSM1']}, status=422)
 
 
-def test_droplet_based_library_dbxrefs_validator_accepts_trailing_newline(
+def test_droplet_based_library_dbxrefs_validator_currently_accepts_trailing_newline(
     testapp, other_lab, tissue
 ):
     # Characterizes current behaviour, and deliberately not an endorsement of it. The

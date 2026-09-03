@@ -428,7 +428,7 @@ def test_library_upgrade_handles_null_notes(upgrader):
     )
 
 
-def test_library_upgrade_does_not_strip_what_the_validator_accepts(upgrader):
+def test_library_upgrade_currently_does_not_strip_trailing_newline(upgrader):
     # Compatibility shim, not an endorsement. A trailing newline in a dbxref is dirty
     # data, but this server's validator accepts it: jsonschema compiles `pattern` with
     # Python `re`, where `$` also matches before a trailing newline. That is a Python
