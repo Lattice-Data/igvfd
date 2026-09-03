@@ -67,10 +67,18 @@ Accepted experiment-level identifiers:
 
 `Biomaterial:` is an IGVF modeling prefix that marks an archive sample-registry
 record placed on Library; it is not an archive-issued prefix. The BioSample part
-follows the [BioSamples accession format](https://www.ebi.ac.uk/biosamples/docs/faq)
-exactly: `SAM`, then `E`, `N`, or `D` for the archive the sample was first
-submitted to (EMBL-EBI, NCBI, DDBJ), then optionally `A` for an assay sample or
-`G` for a sample group, then digits. `Biomaterial:` also covers EGA's `EGAN`.
+follows the [BioSamples accession format](https://www.ebi.ac.uk/biosamples/docs/faq):
+`SAM`, then `E`, `N`, or `D` for the archive the sample was first submitted to
+(EMBL-EBI, NCBI, DDBJ), then optionally `A` for an assay sample or `G` for a sample
+group, then digits. `Biomaterial:` also covers EGA's `EGAN`.
+
+The optional `A`/`G` qualifier is accepted after any of the three archive letters.
+That matches the FAQ's wording and is narrower than
+[Bioregistry](https://bioregistry.io/registry/biosample), which registers
+`^SAM[NED](\w)?\d+$` — any word character after any archive letter. In practice the
+qualifier is seen mainly on the EBI letter (`SAMEA`, `SAMEG`), so `SAMNA`-style forms
+are accepted rather than expected; the pattern errs toward accepting a real accession
+over rejecting one.
 
 `SAMED` is *not* accepted, because the letter after `E`/`N`/`D` can only be `A` or
 `G`; `SAMED` is malformed rather than a DDBJ-via-EBI form. Every BioSample form the
