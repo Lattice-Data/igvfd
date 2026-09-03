@@ -39,15 +39,16 @@ unrepresentable.
 Concrete DropletBasedLibrary and PlateBasedLibrary objects inherit:
 
 ```regex
-^(Biomaterial:SAM(N|D|E[ADG])\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$
+^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$
 ```
 
 Accepted sample-level identifiers:
 
+- EBI BioSamples records: `Biomaterial:SAME1234567`
 - NCBI BioSample records: `Biomaterial:SAMN53299868`
 - DDBJ BioSample records: `Biomaterial:SAMD1234567`
-- EBI BioSamples records: `Biomaterial:SAMEA1234567`, `Biomaterial:SAMED1234567`
-- EBI BioSamples groups: `Biomaterial:SAMEG1234567`
+- Assay samples: `Biomaterial:SAMEA1234567`, `Biomaterial:SAMNA12345`, `Biomaterial:SAMDA12345`
+- Sample groups: `Biomaterial:SAMEG1234567`, `Biomaterial:SAMNG12345`, `Biomaterial:SAMDG12345`
 - EGA samples: `Biomaterial:EGAN12345`
 - SRA and ENA samples: `SRA:SRS12345`, `ENA:ERS12345`
 
@@ -58,10 +59,16 @@ Accepted experiment-level identifiers:
 - EGA experiments: `EGA:EGAX12345`
 
 `Biomaterial:` is an IGVF modeling prefix that marks an archive sample-registry
-record placed on Library; it is not an archive-issued prefix. It covers the five
-BioSample prefixes the archives issue — `SAMN` (NCBI), `SAMD` (DDBJ), and
-`SAMEA`/`SAMED`/`SAMEG` (EBI) — plus EGA's `EGAN`. Forms that no archive issues,
-such as `SAME`, `SAMNA`, and `SAMDG`, are rejected.
+record placed on Library; it is not an archive-issued prefix. The BioSample part
+follows the [BioSamples accession format](https://www.ebi.ac.uk/biosamples/docs/faq)
+exactly: `SAM`, then `E`, `N`, or `D` for the archive the sample was first
+submitted to (EMBL-EBI, NCBI, DDBJ), then optionally `A` for an assay sample or
+`G` for a sample group, then digits. `Biomaterial:` also covers EGA's `EGAN`.
+
+`SAMED` is *not* accepted, because the letter after `E`/`N`/`D` can only be `A` or
+`G`; `SAMED` is malformed rather than a DDBJ-via-EBI form. Every BioSample form the
+old Biosample pattern accepted is accepted here, so any legacy `BioSample:SAM*`
+value has a `Biomaterial:` counterpart.
 
 GEO samples sit at the experiment level because a GEO sample record describes a
 library and its sequencing, not a biosample. SRX and ERX are on Library for the
@@ -121,25 +128,28 @@ gone. Should a value ever need re-filing by hand:
 | `EGA:EGAN12345` | Biosample | `Biomaterial:EGAN12345` | Library |
 | `BioSample:SAMN…`, `BioSample:SAMD…`, `BioSample:SAMEA…`, `BioSample:SAMEG…` | Biosample | `Biomaterial:SAMN…` etc. | Library |
 | `SRA:SRS12345`, `ENA:ERS12345` | Biosample | unchanged | Library |
-| `BioSample:SAME…`, `BioSample:SAMNA…`, `BioSample:SAMNG…`, `BioSample:SAMDA…`, `BioSample:SAMDG…` | Biosample | no target | — |
 
-The five forms with no target are prefixes no archive issues. The old Biosample
-pattern was `BioSample:SAM(E|N|D)(A|G)?\d+`, whose optional `(A|G)` group admitted
-them by accident alongside the four real prefixes. Values in those forms do not
-correspond to real accessions, so they remain in `notes` with nothing to re-file
-them as. Legacy `EGA:EGAX` and `GEO:GSM` values already on Library are unaffected
-by this change and are not migrated.
+The Library pattern accepts every BioSample form the old Biosample pattern did, so
+each legacy `BioSample:SAM*` value re-files as `Biomaterial:SAM*` with the digits
+and letters unchanged. Legacy `EGA:EGAX` and `GEO:GSM` values already on Library
+remain valid and are not touched.
 
 ## Known gaps
 
-Coverage is complete for NCBI and EBI, and partial elsewhere. These archive levels
-are currently not representable on any object:
+Sample and experiment levels are well covered; higher and archive-specific levels
+are not. These are currently not representable on any object:
 
 | Archive | Missing level(s) |
 | --- | --- |
 | EGA | run (`EGAR`), study (`EGAS`), dataset (`EGAD`) |
 | DDBJ | DRA sample (`DRS`), experiment (`DRX`), run (`DRR`), study (`DRP`) |
 | NCBI / EBI | BioProject (`PRJNA`, `PRJEB`) |
+
+Study-level accessions (`GEO:GSE`, `SRA:SRP`, `ENA:ERP`) are also accepted only on
+MatrixFileSet. A submission with sequence data but no matrix files has nowhere to
+record the study that groups the `SRR`/`ERR` values on its SequenceFileSets. Moving
+the study level onto `file_set.json` so both concrete types inherit it would close
+that hole.
 
 DDBJ BioSample records are accepted as `Biomaterial:SAMD`, so DDBJ is representable
 at the BioSample-registry level only; its DRA accessions are not. BioProject

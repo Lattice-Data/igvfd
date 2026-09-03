@@ -12,7 +12,7 @@ from .dbxrefs import preserve_invalid_dbxrefs
 # existing steps and add a new constant for the new step. See
 # test_library_upgrade_dbxref_pattern_matches_schema.
 LIBRARY_DBXREF_PATTERN = re.compile(
-    r'^(Biomaterial:SAM(N|D|E[ADG])\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
+    r'^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
     r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$'
 )
 

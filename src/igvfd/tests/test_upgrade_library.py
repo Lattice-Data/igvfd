@@ -1,3 +1,5 @@
+import re
+
 import pytest
 
 from igvfd.upgrade.library import (
@@ -359,7 +361,7 @@ def test_library_upgrade_without_dbxrefs_does_not_add_notes(upgrader, dbxrefs):
 
 # The Library dbxrefs pattern as released with droplet_based_library 5 / plate_based_library 6.
 LIBRARY_DBXREF_PATTERN_AS_RELEASED = (
-    r'^(Biomaterial:SAM(N|D|E[ADG])\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
+    r'^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
     r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$'
 )
 
@@ -448,3 +450,44 @@ def test_library_upgrade_does_not_strip_what_the_validator_accepts(upgrader):
     )
     assert result['dbxrefs'] == ['GEO:GSM12345\n']
     assert 'notes' not in result
+
+
+@pytest.mark.parametrize(
+    'existing_notes',
+    [None, '', '   ', 'Existing context', 'Existing context.'],
+)
+def test_library_upgrade_note_satisfies_notes_schema(upgrader, existing_notes):
+    # The note is written as free text into `notes`, which is itself constrained by the
+    # schema (no leading/trailing whitespace). Nothing else validates the string the
+    # upgrade produces, so assert it against the real pattern for every starting state.
+    from snovault.schema_utils import load_schema
+
+    notes_pattern = re.compile(
+        load_schema('igvfd:schemas/library.json')['properties']['notes']['pattern']
+    )
+    value = {'schema_version': '4', 'dbxrefs': ['GEO-obsolete:GSM12345']}
+    if existing_notes is not None:
+        value['notes'] = existing_notes
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert notes_pattern.search(result['notes']), repr(result['notes'])
+
+
+def test_biosample_upgrade_note_satisfies_notes_schema(upgrader):
+    # Same guarantee for the Biosample path, where every value is preserved.
+    from snovault.schema_utils import load_schema
+
+    notes_pattern = re.compile(
+        load_schema('igvfd:schemas/tissue.json')['properties']['notes']['pattern']
+    )
+    result = upgrader.upgrade(
+        'tissue',
+        {'schema_version': '3', 'dbxrefs': ['BioSample:SAMN53299868', 'SRA:SRS12345']},
+        current_version='3',
+        target_version='4',
+    )
+    assert notes_pattern.search(result['notes']), repr(result['notes'])
