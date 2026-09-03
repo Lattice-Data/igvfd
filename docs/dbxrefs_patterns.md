@@ -164,9 +164,17 @@ accession, since Biosample no longer has `dbxrefs`.
 
 Study-level accessions (`GEO:GSE`, `SRA:SRP`, `ENA:ERP`) are also accepted only on
 MatrixFileSet. A submission with sequence data but no matrix files has nowhere to
-record the study that groups the `SRR`/`ERR` values on its SequenceFileSets. Moving
-the study level onto `file_set.json` so both concrete types inherit it would close
-that hole.
+record the study that groups the `SRR`/`ERR` values on its SequenceFileSets.
+
+Declaring `dbxrefs` on `file_set.json` does not close this cleanly, despite being
+the obvious move. `file_set.json` has exactly two concrete subtypes, but a locally
+declared property wins over the inherited one, so SequenceFileSet's run-only pattern
+would still shadow a study pattern on the parent; and dropping the local declaration
+would trade the run level away for the study level. The remaining options all cost
+something: put the union of run and study on the parent and accept that a study
+accession is then valid on two object types, add the study level to SequenceFileSet's
+own pattern with the same consequence, or leave the hole. That is a modeling decision
+rather than a mechanical fix, which is why it is recorded here instead of applied.
 
 DDBJ BioSample records are accepted as `Biomaterial:SAMD`, so DDBJ is representable
 at the BioSample-registry level only; its DRA accessions are not. BioProject
@@ -191,13 +199,17 @@ body rather than the prefix.
   JSON Schema `pattern` is a search and `$` also matches immediately before a
   trailing newline, so a value with a single trailing newline validates. The
   upgrade helper uses `search` for exactly this reason, so it accepts precisely
-  what the schema accepts and never migrates a valid value into `notes`. The gap
-  cannot be closed portably: JSON Schema specifies the ECMA-262 dialect for
-  `pattern`, and ECMA-262 has no `\Z` anchor — in JavaScript it matches a literal
-  `Z`. It would work here only because `jsonschema` compiles with Python `re`, so
-  reaching for it would silently break any JavaScript consumer of these profiles.
-  One consequence to be aware of: `GEO:GSM1` and `GEO:GSM1` plus a trailing
-  newline are two distinct strings under `uniqueItems`.
+  what the schema accepts and never migrates a valid value into `notes`. One
+  consequence to be aware of: `GEO:GSM1` and `GEO:GSM1` plus a trailing newline
+  are two distinct strings under `uniqueItems`.
+- The trailing-newline gap *can* be closed portably, but not with `\Z`. JSON Schema
+  specifies the ECMA-262 dialect for `pattern`, and ECMA-262 has no `\Z` anchor — in
+  JavaScript it matches a literal `Z`, so it would appear to work here only because
+  `jsonschema` compiles with Python `re`. Ending a pattern with `(?![\s\S])` instead
+  of `$` is a negative lookahead for any character, i.e. true end of input, and
+  behaves identically in Python `re` and ECMA-262 (verified in both). Applying it
+  across every pattern in the repository is outside this change, but that is the
+  construct to use.
 - Archive accession digit counts remain `\d+`, matching the existing repository
   convention. Enforcing documented accession widths is outside this change.
 - The Library, SequenceFileSet, and MatrixFileSet `dbxrefs` arrays require at
