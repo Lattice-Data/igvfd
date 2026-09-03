@@ -304,7 +304,7 @@ def test_library_upgrade_preserves_invalid_dbxrefs_in_notes(
 ):
     value = {
         'schema_version': current_version,
-        'dbxrefs': ['SRA:SRX67890', 'GEO:GSM12345', 'EGA:EGAX12345'],
+        'dbxrefs': ['SRA:SRX67890', 'GEO:GSM12345', 'GEO-obsolete:GSM12345'],
         'notes': 'Existing internal context.',
     }
     result = upgrader.upgrade(
@@ -317,14 +317,14 @@ def test_library_upgrade_preserves_invalid_dbxrefs_in_notes(
     assert result['dbxrefs'] == ['SRA:SRX67890', 'GEO:GSM12345']
     assert result['notes'] == (
         'Existing internal context. '
-        'Legacy dbxrefs removed during schema upgrade: EGA:EGAX12345.'
+        'Legacy dbxrefs removed during schema upgrade: GEO-obsolete:GSM12345.'
     )
 
 
 def test_library_upgrade_removes_all_invalid_dbxrefs(upgrader):
     value = {
         'schema_version': '4',
-        'dbxrefs': ['EGA:EGAX12345', 'GEO-obsolete:GSM12345'],
+        'dbxrefs': ['GEO-obsolete:GSM12345', 'GEO-obsolete:GSM67890'],
     }
     result = upgrader.upgrade(
         'droplet_based_library',
@@ -335,7 +335,7 @@ def test_library_upgrade_removes_all_invalid_dbxrefs(upgrader):
     assert 'dbxrefs' not in result
     assert result['notes'] == (
         'Legacy dbxrefs removed during schema upgrade: '
-        'EGA:EGAX12345, GEO-obsolete:GSM12345.'
+        'GEO-obsolete:GSM12345, GEO-obsolete:GSM67890.'
     )
 
 
@@ -352,3 +352,15 @@ def test_library_upgrade_without_dbxrefs_does_not_add_notes(upgrader, dbxrefs):
     )
     assert 'dbxrefs' not in result
     assert 'notes' not in result
+
+
+def test_library_upgrade_dbxref_pattern_matches_schema():
+    # The upgrade filters against a hand-maintained copy of the schema pattern. If the
+    # schema is widened without updating the constant, the upgrade would strip values
+    # that are valid under the new schema into admin-only notes.
+    from snovault.schema_utils import load_schema
+
+    from igvfd.upgrade.library import LIBRARY_DBXREF_PATTERN
+
+    schema = load_schema('igvfd:schemas/library.json')
+    assert LIBRARY_DBXREF_PATTERN.pattern == schema['properties']['dbxrefs']['items']['pattern']

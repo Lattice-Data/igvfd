@@ -1,6 +1,6 @@
 {
-    "hash": "1a0b2675951559f2e4f3f9387a401901",
-    "index_name": "organoid_1a0b2675",
+    "hash": "200c5f74e85339179bd6719647267f42",
+    "index_name": "organoid_200c5f74",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -167,9 +167,6 @@
                         "type": "date"
                     },
                     "date_obtained": {
-                        "type": "keyword"
-                    },
-                    "dbxrefs": {
                         "type": "keyword"
                     },
                     "depleted_cell_types": {

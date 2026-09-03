@@ -1,6 +1,6 @@
 {
-    "hash": "40da22a1e2058885bb0d3d7123b26d1e",
-    "index_name": "tissue_40da22a1",
+    "hash": "9753fe557ef325448b098b3fce69d14d",
+    "index_name": "tissue_9753fe55",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -170,9 +170,6 @@
                         "type": "date"
                     },
                     "date_obtained": {
-                        "type": "keyword"
-                    },
-                    "dbxrefs": {
                         "type": "keyword"
                     },
                     "depleted_cell_types": {

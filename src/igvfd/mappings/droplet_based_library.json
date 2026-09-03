@@ -1,6 +1,6 @@
 {
-    "hash": "bf1689f08672594bdeaa929cbedf9413",
-    "index_name": "droplet_based_library_bf1689f0",
+    "hash": "aebfd5070fbb14e6f6453ec4c6ac2af4",
+    "index_name": "droplet_based_library_aebfd507",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -327,9 +327,6 @@
                                 "type": "date"
                             },
                             "date_obtained": {
-                                "type": "keyword"
-                            },
-                            "dbxrefs": {
                                 "type": "keyword"
                             },
                             "depleted_cell_types": {

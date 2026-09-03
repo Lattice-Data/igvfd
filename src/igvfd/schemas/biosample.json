@@ -23,9 +23,6 @@
         },
         {
             "$ref": "mixins.json#/shared_status"
-        },
-        {
-            "$ref": "mixins.json#/dbxrefs"
         }
     ],
     "dependentSchemas": {
@@ -61,20 +58,6 @@
     "properties": {
         "schema_version": {
             "default": "4"
-        },
-        "dbxrefs": {
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": {
-                "title": "External identifier",
-                "description": "An identifier from external resource.",
-                "type": "string",
-                "pattern": "^(EGA:EGAN\\d+|SRA:SRS\\d+|ENA:ERS\\d+)$"
-            },
-            "submissionExample": {
-                "appscript": "[\"SRA:SRS12345\", \"ENA:ERS12345\"]"
-            }
         },
         "donors": {
             "title": "Donors",

@@ -132,43 +132,38 @@ def test_upgrade_without_hash_index(upgrader, item_type):
 
 
 @pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
-def test_upgrade_biosample_3_4_preserves_invalid_dbxrefs_in_notes(
-    upgrader, item_type
-):
+def test_upgrade_biosample_3_4_moves_all_dbxrefs_to_notes(upgrader, item_type):
+    # dbxrefs is gone from the Biosample schema, so every value is preserved in notes
+    # regardless of form, including ones the old pattern accepted.
     value = {
         'schema_version': '3',
         'dbxrefs': [
             'SRA:SRS12345',
+            'EGA:EGAN12345',
             'BioSample:SAMN53299868',
-            'BioSample:SAMEA1234567',
         ],
         'notes': 'Existing internal context.',
     }
     result = upgrader.upgrade(item_type, value, current_version='3', target_version='4')
     assert result['schema_version'] == '4'
-    assert result['dbxrefs'] == ['SRA:SRS12345']
+    assert 'dbxrefs' not in result
     assert result['notes'] == (
         'Existing internal context. '
         'Legacy dbxrefs removed during schema upgrade: '
-        'BioSample:SAMN53299868, BioSample:SAMEA1234567.'
+        'SRA:SRS12345, EGA:EGAN12345, BioSample:SAMN53299868.'
     )
 
 
-def test_upgrade_biosample_3_4_removes_all_invalid_dbxrefs(upgrader):
+def test_upgrade_biosample_3_4_creates_notes_when_absent(upgrader):
     value = {
         'schema_version': '3',
-        'dbxrefs': [
-            'BioSample:SAMN53299868',
-            'BioSample:SAMEA1234567',
-            'BioSample:SAMNA12345',
-        ],
+        'dbxrefs': ['BioSample:SAMEA1234567', 'ENA:ERS12345'],
     }
     result = upgrader.upgrade('tissue', value, current_version='3', target_version='4')
     assert 'dbxrefs' not in result
     assert result['notes'] == (
         'Legacy dbxrefs removed during schema upgrade: '
-        'BioSample:SAMN53299868, BioSample:SAMEA1234567, '
-        'BioSample:SAMNA12345.'
+        'BioSample:SAMEA1234567, ENA:ERS12345.'
     )
 
 

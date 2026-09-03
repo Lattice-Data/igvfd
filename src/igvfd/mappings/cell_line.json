@@ -1,6 +1,6 @@
 {
-    "hash": "06d63c7ad3ebc78d5873c3e818136485",
-    "index_name": "cell_line_06d63c7a",
+    "hash": "ece77c66b199d1eb5d5ba7ad0b45ae8b",
+    "index_name": "cell_line_ece77c66",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -167,9 +167,6 @@
                         "type": "date"
                     },
                     "date_obtained": {
-                        "type": "keyword"
-                    },
-                    "dbxrefs": {
                         "type": "keyword"
                     },
                     "depleted_cell_types": {

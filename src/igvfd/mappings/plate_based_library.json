@@ -1,6 +1,6 @@
 {
-    "hash": "7050ad9bf6f4fbef6b21c7d0739ae295",
-    "index_name": "plate_based_library_7050ad9b",
+    "hash": "8818efdc99f6f107119b64eb680fa65d",
+    "index_name": "plate_based_library_8818efdc",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -327,9 +327,6 @@
                                 "type": "date"
                             },
                             "date_obtained": {
-                                "type": "keyword"
-                            },
-                            "dbxrefs": {
                                 "type": "keyword"
                             },
                             "depleted_cell_types": {

@@ -1,13 +1,7 @@
-import re
-
 from snovault.upgrader import upgrade_step
 
-from .dbxrefs import preserve_invalid_dbxrefs
+from .dbxrefs import remove_all_dbxrefs
 
-
-BIOSAMPLE_DBXREF_PATTERN = re.compile(
-    r'^(EGA:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+)$'
-)
 
 ENRICHMENT_METHOD_TO_SELECTION_METHOD = {
     'FACS': 'FACS',
@@ -100,19 +94,19 @@ def cell_line_2_3(value, system):
 
 @upgrade_step('tissue', '3', '4')
 def tissue_3_4(value, system):
-    preserve_invalid_dbxrefs(value, BIOSAMPLE_DBXREF_PATTERN)
+    remove_all_dbxrefs(value)
 
 
 @upgrade_step('primary_cell_culture', '3', '4')
 def primary_cell_culture_3_4(value, system):
-    preserve_invalid_dbxrefs(value, BIOSAMPLE_DBXREF_PATTERN)
+    remove_all_dbxrefs(value)
 
 
 @upgrade_step('organoid', '3', '4')
 def organoid_3_4(value, system):
-    preserve_invalid_dbxrefs(value, BIOSAMPLE_DBXREF_PATTERN)
+    remove_all_dbxrefs(value)
 
 
 @upgrade_step('cell_line', '3', '4')
 def cell_line_3_4(value, system):
-    preserve_invalid_dbxrefs(value, BIOSAMPLE_DBXREF_PATTERN)
+    remove_all_dbxrefs(value)

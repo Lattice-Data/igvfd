@@ -1,7 +1,10 @@
-from re import Pattern
+def preserve_invalid_dbxrefs(value, valid_pattern=None):
+    """Drop dbxrefs the current schema rejects, preserving them verbatim in notes.
 
-
-def preserve_invalid_dbxrefs(value, valid_pattern: Pattern[str]):
+    A valid_pattern of None means the schema no longer defines dbxrefs at all, so
+    every value is rejected. notes is admin_only, so preserved values are visible
+    to admins for manual reconciliation.
+    """
     dbxrefs = value.get('dbxrefs')
     if dbxrefs is None:
         return
@@ -12,7 +15,8 @@ def preserve_invalid_dbxrefs(value, valid_pattern: Pattern[str]):
     valid_dbxrefs = []
     invalid_dbxrefs = []
     for dbxref in dbxrefs:
-        target = valid_dbxrefs if valid_pattern.fullmatch(dbxref) else invalid_dbxrefs
+        is_valid = valid_pattern is not None and valid_pattern.fullmatch(dbxref)
+        target = valid_dbxrefs if is_valid else invalid_dbxrefs
         target.append(dbxref)
 
     if valid_dbxrefs:
@@ -29,3 +33,8 @@ def preserve_invalid_dbxrefs(value, valid_pattern: Pattern[str]):
     )
     existing_notes = value.get('notes', '').strip()
     value['notes'] = f'{existing_notes} {upgrade_note}'.strip()
+
+
+def remove_all_dbxrefs(value):
+    """Drop the dbxrefs property entirely, preserving every value in notes."""
+    preserve_invalid_dbxrefs(value, valid_pattern=None)

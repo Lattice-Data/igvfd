@@ -6,8 +6,8 @@ from .dbxrefs import preserve_invalid_dbxrefs
 
 
 LIBRARY_DBXREF_PATTERN = re.compile(
-    r'^(Biomaterial:SAM(N|D|E[ADG])\d+|SRA:SRS\d+|ENA:ERS\d+|'
-    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+)$'
+    r'^(Biomaterial:SAM(N|D|E[ADG])\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
+    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$'
 )
 
 MULTIPLEXING_METHOD_MAP = {

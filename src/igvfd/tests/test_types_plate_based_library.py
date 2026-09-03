@@ -172,11 +172,13 @@ def test_plate_based_library_dbxrefs_valid(testapp, other_lab, tissue):
         'Biomaterial:SAMED1234567',
         'Biomaterial:SAMEG1234567',
         'Biomaterial:SAMD1234567',
+        'Biomaterial:EGAN12345',
         'SRA:SRS12345',
         'ENA:ERS12345',
         'GEO:GSM67890',
         'SRA:SRX12345',
         'ENA:ERX12345',
+        'EGA:EGAX12345',
     ]
     item = {
         'lab': other_lab['@id'],
@@ -198,7 +200,8 @@ def test_plate_based_library_dbxrefs_valid(testapp, other_lab, tissue):
         'Biomaterial:SAME1234567',
         'Biomaterial:SAMNA12345',
         'Biomaterial:SAMDG12345',
-        'EGA:EGAX12345',
+        'EGA:EGAN12345',
+        'Biomaterial:EGAX12345',
         'GEO-obsolete:GSM12345',
         'SRA:SRR12345',
     ],

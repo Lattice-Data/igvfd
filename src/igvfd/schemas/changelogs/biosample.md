@@ -2,9 +2,8 @@
 
 ## Schema version 4
 
-* Update dbxrefs regex to exclude BioSample identifiers.
-* Require at least one dbxref when dbxrefs is submitted.
-* Preserve dbxrefs rejected by the updated regex in notes during upgrade.
+* Remove dbxrefs. Archive identifiers are owned by Library, SequenceFileSet, and MatrixFileSet.
+* Preserve removed dbxrefs in notes during upgrade.
 
 ## Schema version 3
 

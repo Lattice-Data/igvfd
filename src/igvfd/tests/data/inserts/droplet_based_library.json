@@ -11,6 +11,7 @@
             "lattice:droplet-library-basic"
         ],
         "dbxrefs": [
+            "Biomaterial:SAMN53299868",
             "SRA:SRX12345"
         ],
         "description": "Test droplet-based library 1",
