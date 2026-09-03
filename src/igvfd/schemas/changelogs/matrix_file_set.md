@@ -2,7 +2,7 @@
 
 ### Minor changes since schema version 2
 
-* Add optional dbxrefs for GEO series, SRA study, and ENA study identifiers.
+* Add *dbxrefs*, accepting GEO series, SRA study, and ENA study identifiers and requiring at least one identifier when submitted.
 
 ### Schema version 2
 

@@ -191,9 +191,13 @@ body rather than the prefix.
   JSON Schema `pattern` is a search and `$` also matches immediately before a
   trailing newline, so a value with a single trailing newline validates. The
   upgrade helper uses `search` for exactly this reason, so it accepts precisely
-  what the schema accepts and never migrates a valid value into `notes`. Closing
-  the newline gap itself would mean `\Z` across every pattern in the repository,
-  which is outside this change.
+  what the schema accepts and never migrates a valid value into `notes`. The gap
+  cannot be closed portably: JSON Schema specifies the ECMA-262 dialect for
+  `pattern`, and ECMA-262 has no `\Z` anchor — in JavaScript it matches a literal
+  `Z`. It would work here only because `jsonschema` compiles with Python `re`, so
+  reaching for it would silently break any JavaScript consumer of these profiles.
+  One consequence to be aware of: `GEO:GSM1` and `GEO:GSM1` plus a trailing
+  newline are two distinct strings under `uniqueItems`.
 - Archive accession digit counts remain `\d+`, matching the existing repository
   convention. Enforcing documented accession widths is outside this change.
 - The Library, SequenceFileSet, and MatrixFileSet `dbxrefs` arrays require at

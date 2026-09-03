@@ -323,7 +323,7 @@ def test_library_upgrade_preserves_invalid_dbxrefs_in_notes(
     assert result['schema_version'] == target_version
     assert result['dbxrefs'] == ['SRA:SRX67890', 'GEO:GSM12345']
     assert result['notes'] == (
-        'Existing internal context. '
+        'Existing internal context.\n'
         'Legacy dbxrefs removed during schema upgrade: GEO-obsolete:GSM12345.'
     )
 
@@ -450,7 +450,7 @@ def test_library_upgrade_does_not_strip_what_the_validator_accepts(upgrader):
 
 @pytest.mark.parametrize(
     'existing_notes',
-    [None, '', '   ', 'Existing context', 'Existing context.'],
+    [ABSENT, None, '', '   ', 'Existing context', 'Existing context.'],
 )
 def test_library_upgrade_note_satisfies_notes_schema(upgrader, existing_notes):
     # The note is written as free text into `notes`, which is itself constrained by the
@@ -460,7 +460,7 @@ def test_library_upgrade_note_satisfies_notes_schema(upgrader, existing_notes):
         load_schema('igvfd:schemas/library.json')['properties']['notes']['pattern']
     )
     value = {'schema_version': '4', 'dbxrefs': ['GEO-obsolete:GSM12345']}
-    if existing_notes is not None:
+    if existing_notes is not ABSENT:
         value['notes'] = existing_notes
     result = upgrader.upgrade(
         'droplet_based_library',

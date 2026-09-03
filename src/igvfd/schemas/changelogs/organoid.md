@@ -2,8 +2,8 @@
 
 ## Schema version 4
 
-* Remove inherited dbxrefs.
-* Preserve removed dbxrefs in notes during upgrade.
+* Remove inherited *dbxrefs*.
+* Preserve removed *dbxrefs* in *notes* during upgrade.
 
 ## Schema version 3
 

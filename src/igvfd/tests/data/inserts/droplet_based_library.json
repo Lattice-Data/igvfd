@@ -5,7 +5,7 @@
             "414e5c99-e9db-43b1-b7e9-49979fc6efb6"
         ],
         "uuid": "d1e2f3a4-b5c6-7890-def1-234567890abc",
-        "schema_version": "5",
+        "schema_version": "4",
         "status": "current",
         "aliases": [
             "lattice:droplet-library-basic"

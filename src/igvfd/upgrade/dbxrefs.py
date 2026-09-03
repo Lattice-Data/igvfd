@@ -44,10 +44,10 @@ def _append_upgrade_note(value, removed_dbxrefs):
         'Legacy dbxrefs removed during schema upgrade: '
         f'{", ".join(removed_dbxrefs)}.'
     )
+    # Separate with a newline rather than a space so the appended sentence never runs
+    # into a pre-existing note, and without rewriting text the upgrade does not own.
     existing_notes = (value.get('notes') or '').strip()
-    if existing_notes and existing_notes[-1] not in '.!?':
-        existing_notes = f'{existing_notes}.'
-    value['notes'] = f'{existing_notes} {upgrade_note}'.strip()
+    value['notes'] = f'{existing_notes}\n{upgrade_note}'.strip() if existing_notes else upgrade_note
 
 
 def remove_all_dbxrefs(value):

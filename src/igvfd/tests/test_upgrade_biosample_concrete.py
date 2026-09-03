@@ -154,7 +154,7 @@ def test_upgrade_biosample_3_4_moves_all_dbxrefs_to_notes(upgrader, item_type):
     assert result['schema_version'] == '4'
     assert 'dbxrefs' not in result
     assert result['notes'] == (
-        'Existing internal context. '
+        'Existing internal context.\n'
         'Legacy dbxrefs removed during schema upgrade: '
         'SRA:SRS12345, EGA:EGAN12345, BioSample:SAMN53299868.'
     )
