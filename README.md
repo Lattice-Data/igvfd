@@ -54,7 +54,7 @@ $ pytest
 ```
 4. Stop and clean.
 ```bash
-docker compose down -v
+docker compose -f docker-compose.test.yml down -v --remove-orphans
 ```
 
 Or run indexer tests interactively:
@@ -74,7 +74,7 @@ $ pytest
 ```
 4. Stop and clean.
 ```bash
-docker compose down -v
+docker compose -f docker-compose.test-indexer.yml down -v --remove-orphans
 ```
 
 ## Automatic linting
