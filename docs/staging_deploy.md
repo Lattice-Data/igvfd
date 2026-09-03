@@ -1,3 +1,8 @@
+> **Automated path:** run the `staging-release` skill (`.claude/skills/staging-release/`)
+> to have Claude drive steps 2-8, 11 and 12, stopping at each human gate. The guarded
+> helper scripts it calls live in `scripts/release/` and can also be run by hand.
+> Steps 1 (JIRA), 9 (Slack `#aws-igvf-staging`) and 10 (AWS approve/reject) stay manual.
+
 1. Clean up `igvfd` JIRA release
     * Make sure all tickets merged to `dev` branch
 
@@ -33,17 +38,29 @@ $ git pull
 $ git log --pretty=%s
 ```
 
-9. After choosing the commits to be included in the tag. Make the tag for version `X.Y.Z`:
-```
-$ git checkout dev
-$ git tag -a vX.Y.Z # Add vX.Y.Z to details
-$ git push origin tags/vX.Y.Z
-```
-
-10. Monitor batch-upgrade errors and messages in slack channel #aws-igvf-staging
+9. Monitor batch-upgrade errors and messages in slack channel #aws-igvf-staging
 
 proceed ONLY if there are no batch-upgrade errors, and if there are no errors (Like dead letter queue) in the slack channel
 
-11. approve release on AWS or reject it in case there were problems
+10. approve release on AWS or reject it in case there were problems
+
+11. Only after the AWS release is approved, make the tag for version `X.Y.Z` from the
+    commits chosen in step 8.
+
+    Tag the commit that is actually on `main` (the one staging is running). Do **not**
+    tag `dev`: normally they are the same commit, since step 6 just fast-forwarded `main`
+    to `dev`, but if anything merged to `dev` in the meantime the tag would point at
+    commits that were never deployed:
+```
+$ git checkout main
+$ git fetch origin -p
+$ git pull
+
+verify main is what you expect before tagging:
+$ git log -1 --oneline
+
+$ git tag -a vX.Y.Z # Add vX.Y.Z to details
+$ git push origin tags/vX.Y.Z
+```
 
 12. On Github `Make a Release` from the tag, pasting the proper commits in the details.
