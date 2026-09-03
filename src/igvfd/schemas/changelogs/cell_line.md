@@ -1,5 +1,10 @@
 # Changelog for cell_line.json
 
+## Schema version 4
+
+* Remove inherited *dbxrefs*.
+* Preserve removed *dbxrefs* in *notes* during upgrade.
+
 ## Schema version 3
 
 * Rename hash_index to multiplexing_barcodes.

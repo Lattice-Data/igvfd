@@ -24,7 +24,7 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "2"
+            "default": "3"
         },
         "term_id": {
             "title": "Term ID",
@@ -62,12 +62,13 @@
             "title": "External References",
             "description": "External identifiers for this ontology term, including CAS Registry Numbers for chemical substances.",
             "type": "array",
+            "minItems": 1,
             "uniqueItems": true,
             "items": {
                 "title": "External Identifier",
                 "description": "An identifier from an external resource (PMID, DOI, or CAS Registry Number prefixed with CAS:).",
                 "type": "string",
-                "pattern": "^(PMID:[0-9]+|DOI:10\\.[0-9]+/.+|CAS:\\d{2,7}-\\d{2}-\\d)$"
+                "pattern": "^(PMID:[0-9]+|DOI:10\\.[0-9]+/.+|CAS:\\d{2,7}-\\d{2}-\\d)(?![\\s\\S])"
             },
             "submissionExample": {
                 "appscript": "[\"PMID:12345678\", \"CAS:50-00-0\"]"

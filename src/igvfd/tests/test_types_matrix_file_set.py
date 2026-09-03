@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_matrix_file_set_summary_with_aliases(testapp, matrix_file_set_with_aliases):
     res = testapp.get(matrix_file_set_with_aliases['@id'])
     assert res.json.get('summary') == 'lattice:matrix-file-set-001'
@@ -51,6 +54,39 @@ def test_matrix_file_set_success_minimal(testapp, other_lab):
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
 
 
+@pytest.mark.parametrize('dbxref', ['GEO:GSE12345', 'SRA:SRP123456', 'ENA:ERP123456'])
+def test_matrix_file_set_dbxrefs_valid(testapp, other_lab, dbxref):
+    item = {
+        'lab': other_lab['@id'],
+        'dbxrefs': [dbxref],
+        'status': 'current',
+    }
+    res = testapp.post_json('/matrix_file_set', item, status=201)
+    assert res.json['@graph'][0]['dbxrefs'] == [dbxref]
+
+
+@pytest.mark.parametrize(
+    'dbxref',
+    ['GEO:GSM12345', 'SRA:SRR123456', 'SRA:SRX123456', 'ENA:ERR123456'],
+)
+def test_matrix_file_set_dbxrefs_invalid(testapp, other_lab, dbxref):
+    item = {
+        'lab': other_lab['@id'],
+        'dbxrefs': [dbxref],
+        'status': 'current',
+    }
+    testapp.post_json('/matrix_file_set', item, status=422)
+
+
+def test_matrix_file_set_dbxrefs_rejects_empty_array(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'dbxrefs': [],
+        'status': 'current',
+    }
+    testapp.post_json('/matrix_file_set', item, status=422)
+
+
 def test_matrix_file_set_raw_matrix_file_linkto_validation(testapp, other_lab):
     testapp.post_json(
         '/matrix_file_set',
@@ -85,3 +121,23 @@ def test_matrix_file_set_rejects_removed_fields(testapp, other_lab):
         },
         status=422
     )
+
+
+def test_matrix_file_set_dbxrefs_patch(testapp, other_lab):
+    # The pattern must be enforced on PATCH, not just POST.
+    item = {'lab': other_lab['@id'], 'status': 'current'}
+    res = testapp.post_json('/matrix_file_set', item, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSE12345']}, status=200)
+    assert patched.json['@graph'][0]['dbxrefs'] == ['GEO:GSE12345']
+    testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSM12345']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
+
+
+def test_matrix_file_set_dbxrefs_rejects_duplicates(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'dbxrefs': ['GEO:GSE12345', 'GEO:GSE12345'],
+        'status': 'current',
+    }
+    testapp.post_json('/matrix_file_set', item, status=422)

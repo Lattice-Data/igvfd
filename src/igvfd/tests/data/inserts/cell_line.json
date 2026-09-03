@@ -13,9 +13,6 @@
         "aliases": [
             "lattice:cell-line-reference"
         ],
-        "dbxrefs": [
-            "BioSample:SAMEA1234567"
-        ],
         "description": "Test cell line sample",
         "preservation_method": "cryopreserved",
         "host": "f6a7b8c9-d0e1-2345-fa16-678901234567",

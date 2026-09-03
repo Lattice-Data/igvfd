@@ -1,5 +1,20 @@
+import re
+
 from snovault.upgrader import upgrade_step
 
+from .dbxrefs import preserve_invalid_dbxrefs
+
+
+# The dbxrefs pattern as of droplet_based_library 5 / plate_based_library 6. The steps
+# below are historical once released, so this value must not be edited to track a later
+# schema change: doing so would retroactively alter which values those steps strip. When
+# library.json's pattern next changes, freeze this constant under a versioned name for the
+# existing steps and add a new constant for the new step. See
+# test_library_upgrade_dbxref_pattern_matches_schema.
+LIBRARY_DBXREF_PATTERN = re.compile(
+    r'^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
+    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)(?![\s\S])'
+)
 
 MULTIPLEXING_METHOD_MAP = {
     'cell hashing': 'antibody hashing',
@@ -83,3 +98,13 @@ def droplet_based_library_3_4(value, system):
 @upgrade_step('plate_based_library', '4', '5')
 def plate_based_library_4_5(value, system):
     return
+
+
+@upgrade_step('droplet_based_library', '4', '5')
+def droplet_based_library_4_5(value, system):
+    preserve_invalid_dbxrefs(value, LIBRARY_DBXREF_PATTERN)
+
+
+@upgrade_step('plate_based_library', '5', '6')
+def plate_based_library_5_6(value, system):
+    preserve_invalid_dbxrefs(value, LIBRARY_DBXREF_PATTERN)

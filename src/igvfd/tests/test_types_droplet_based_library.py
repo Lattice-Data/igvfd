@@ -258,25 +258,73 @@ def test_droplet_based_library_create_success(testapp, other_lab, tissue):
 
 
 def test_droplet_based_library_dbxrefs_valid(testapp, other_lab, tissue):
+    dbxrefs = [
+        'Biomaterial:SAME1234567',
+        'Biomaterial:SAMEA1234567',
+        'Biomaterial:SAMEG1234567',
+        'Biomaterial:SAMN53299868',
+        'Biomaterial:SAMNA12345',
+        'Biomaterial:SAMNG12345',
+        'Biomaterial:SAMD1234567',
+        'Biomaterial:SAMDA12345',
+        'Biomaterial:SAMDG12345',
+        'Biomaterial:EGAN12345',
+        'SRA:SRS12345',
+        'ENA:ERS12345',
+        'GEO:GSM12345',
+        'SRA:SRX67890',
+        'ENA:ERX12345',
+        'EGA:EGAX12345',
+    ]
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['ENA:ERX12345', 'SRA:SRX67890'],
+        'dbxrefs': dbxrefs,
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
-    assert res.json['@graph'][0]['dbxrefs'] == ['ENA:ERX12345', 'SRA:SRX67890']
+    assert res.json['@graph'][0]['dbxrefs'] == dbxrefs
 
 
-def test_droplet_based_library_dbxrefs_invalid(testapp, other_lab, tissue):
+@pytest.mark.parametrize(
+    'invalid_dbxref',
+    [
+        'BioSample:SAMN53299868',
+        'BioSample:SAMEA1234567',
+        'Biomaterial:SAMED1234567',
+        'Biomaterial:SAMX1234567',
+        'Biomaterial:SAM1234567',
+        'EGA:EGAN12345',
+        'Biomaterial:EGAX12345',
+        'GEO-obsolete:GSM12345',
+        'SRA:SRR12345',
+    ],
+)
+def test_droplet_based_library_dbxrefs_invalid(
+    testapp, other_lab, tissue, invalid_dbxref
+):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['EGA:EGAN12345'],
+        'dbxrefs': [invalid_dbxref],
+        'status': 'current',
+    }
+    testapp.post_json('/droplet_based_library', item, status=422)
+
+
+def test_droplet_based_library_dbxrefs_rejects_empty_array(
+    testapp, other_lab, tissue
+):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'dbxrefs': [],
         'status': 'current',
     }
     testapp.post_json('/droplet_based_library', item, status=422)
@@ -528,3 +576,44 @@ def test_droplet_based_library_create_with_library_construction_technology(
 ):
     res = testapp.get(droplet_based_library_with_library_construction_technology['@id'])
     assert res.json['library_construction_technology']['@id'] == controlled_term_efo['@id']
+
+
+def test_droplet_based_library_dbxrefs_patch(testapp, other_lab, tissue):
+    # Library's pattern is the one this change narrowed, so PATCH must enforce it too.
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/droplet_based_library', item, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(at_id, {'dbxrefs': ['Biomaterial:SAMN53299868']}, status=200)
+    assert patched.json['@graph'][0]['dbxrefs'] == ['Biomaterial:SAMN53299868']
+    testapp.patch_json(at_id, {'dbxrefs': ['GEO-obsolete:GSM12345']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': ['EGA:EGAN12345']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSM1', 'GEO:GSM1']}, status=422)
+
+
+def test_droplet_based_library_dbxrefs_rejects_surrounding_whitespace(
+    testapp, other_lab, tissue
+):
+    # The patterns end with `(?![\s\S])`, a negative lookahead for any character, so they
+    # anchor at true end of input. `$` alone would accept a single trailing newline under
+    # Python `re` while ECMA-262 rejected it, meaning the published profile validated
+    # differently depending on the consumer -- and uniqueItems treated 'GEO:GSM1' and the
+    # same value plus a newline as two distinct entries on one object.
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'dbxrefs': ['GEO:GSM12345'],
+        'status': 'current',
+    }
+    testapp.post_json('/droplet_based_library', item, status=201)
+    for bad in ['GEO:GSM12345\n', 'GEO:GSM12345\n\n', ' GEO:GSM12345',
+                'GEO:GSM12345 ', 'GEO:GSM12345x']:
+        testapp.post_json('/droplet_based_library', {**item, 'dbxrefs': [bad]}, status=422)

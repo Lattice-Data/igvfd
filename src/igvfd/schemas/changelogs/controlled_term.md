@@ -1,5 +1,11 @@
 # Controlled Term Changelog
 
+### Schema version 3
+
+* Anchor *dbxrefs* at true end of input with `(?![\s\S])` rather than `$`, rejecting trailing whitespace consistently across regex dialects.
+* Require at least one dbxref when *dbxrefs* is submitted.
+* Preserve *dbxrefs* rejected by the updated regex in *notes* during upgrade.
+
 ### Minor changes since schema version 2
 
 * Extend ontology_source enum list to include ZFS.

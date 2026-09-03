@@ -13,9 +13,6 @@
         "aliases": [
             "lattice:organoid-brain"
         ],
-        "dbxrefs": [
-            "ENA:ERS12345"
-        ],
         "description": "Test organoid sample",
         "preservation_method": "fixed",
         "intended_cell_types": [

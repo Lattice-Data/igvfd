@@ -7,6 +7,10 @@
         "uuid": "970cc619-21d8-455e-ad08-82be7df83b61",
         "schema_version": "2",
         "status": "current",
+        "dbxrefs": [
+            "GEO:GSE12345",
+            "ENA:ERP123456"
+        ],
         "aliases": [
             "lattice:mfs-raw-001"
         ],

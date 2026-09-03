@@ -1,10 +1,17 @@
+import re
+
 import pytest
+from snovault.schema_utils import load_schema
 
 from igvfd.upgrade.library import (
     DROPLET_REMOVED_PROPERTIES,
+    LIBRARY_DBXREF_PATTERN,
     MULTIPLEXING_METHOD_MAP,
     PLATE_REMOVED_PROPERTIES,
 )
+
+# Distinguishes an absent dbxrefs key from an explicit null.
+ABSENT = object()
 
 MULTIPLEXED_SAMPLES = ['sample-a', 'sample-b']
 SINGLE_SAMPLE = ['sample-a']
@@ -290,3 +297,175 @@ def test_plate_based_library_upgrade_4_5_preserves_multiplexing_method(upgrader)
     assert result['schema_version'] == '5'
     assert result['multiplexing_method'] == ['combinatorial indexing']
     assert result['samples'] == SINGLE_SAMPLE
+
+
+@pytest.mark.parametrize(
+    ('item_type', 'current_version', 'target_version'),
+    [
+        ('droplet_based_library', '4', '5'),
+        ('plate_based_library', '5', '6'),
+    ],
+)
+def test_library_upgrade_preserves_invalid_dbxrefs_in_notes(
+    upgrader, item_type, current_version, target_version
+):
+    value = {
+        'schema_version': current_version,
+        'dbxrefs': ['SRA:SRX67890', 'GEO:GSM12345', 'GEO-obsolete:GSM12345'],
+        'notes': 'Existing internal context.',
+    }
+    result = upgrader.upgrade(
+        item_type,
+        value,
+        current_version=current_version,
+        target_version=target_version,
+    )
+    assert result['schema_version'] == target_version
+    assert result['dbxrefs'] == ['SRA:SRX67890', 'GEO:GSM12345']
+    assert result['notes'] == (
+        'Existing internal context.\n'
+        'Legacy dbxrefs removed during schema upgrade: GEO-obsolete:GSM12345.'
+    )
+
+
+def test_library_upgrade_removes_all_invalid_dbxrefs(upgrader):
+    value = {
+        'schema_version': '4',
+        'dbxrefs': ['GEO-obsolete:GSM12345', 'GEO-obsolete:GSM67890'],
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert 'dbxrefs' not in result
+    assert result['notes'] == (
+        'Legacy dbxrefs removed during schema upgrade: '
+        'GEO-obsolete:GSM12345, GEO-obsolete:GSM67890.'
+    )
+
+
+@pytest.mark.parametrize('dbxrefs', [ABSENT, None, []])
+def test_library_upgrade_without_dbxrefs_does_not_add_notes(upgrader, dbxrefs):
+    value = {'schema_version': '5'}
+    if dbxrefs is not ABSENT:
+        value['dbxrefs'] = dbxrefs
+    result = upgrader.upgrade(
+        'plate_based_library',
+        value,
+        current_version='5',
+        target_version='6',
+    )
+    assert 'dbxrefs' not in result
+    assert 'notes' not in result
+
+
+# The Library dbxrefs pattern as released with droplet_based_library 5 / plate_based_library 6.
+LIBRARY_DBXREF_PATTERN_AS_RELEASED = (
+    r'^(Biomaterial:SAM(E|N|D)(A|G)?\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
+    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)(?![\s\S])'
+)
+
+
+def test_library_upgrade_dbxref_pattern_is_frozen():
+    # The 4->5 and 5->6 steps are historical. Editing their pattern would retroactively
+    # change which values they strip into admin-only notes, so it is pinned to a literal
+    # rather than to whatever library.json currently says.
+    assert LIBRARY_DBXREF_PATTERN.pattern == LIBRARY_DBXREF_PATTERN_AS_RELEASED, (
+        'The released upgrade steps must keep stripping exactly what they stripped on '
+        'release. Do not edit LIBRARY_DBXREF_PATTERN to match a new schema pattern; add '
+        'a new constant and a new upgrade step instead.'
+    )
+
+
+def test_library_upgrade_dbxref_pattern_matches_schema():
+    # Guards the other direction: at authoring time the constant must equal the schema it
+    # filters for, so a widened schema cannot leave the upgrade stripping valid values.
+    schema = load_schema('igvfd:schemas/library.json')
+    assert LIBRARY_DBXREF_PATTERN.pattern == schema['properties']['dbxrefs']['items']['pattern'], (
+        'library.json dbxrefs pattern changed. Freeze the current constant under a '
+        'versioned name for the released steps, add a new constant plus upgrade step for '
+        'the new pattern, and point this test at the new constant. '
+        'test_library_upgrade_dbxref_pattern_is_frozen imports the constant by name, so '
+        'update its import and LIBRARY_DBXREF_PATTERN_AS_RELEASED in the same change.'
+    )
+
+
+def test_library_upgrade_keeps_valid_dbxrefs_and_leaves_notes_untouched(upgrader):
+    # Nothing to migrate: dbxrefs and any pre-existing notes must both survive verbatim.
+    value = {
+        'schema_version': '4',
+        'dbxrefs': ['Biomaterial:SAMN53299868', 'EGA:EGAX12345', 'GEO:GSM12345'],
+        'notes': 'Existing internal context.',
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert result['dbxrefs'] == ['Biomaterial:SAMN53299868', 'EGA:EGAX12345', 'GEO:GSM12345']
+    assert result['notes'] == 'Existing internal context.'
+
+
+def test_library_upgrade_handles_null_notes(upgrader):
+    # A legacy object can carry notes: null; the helper must not choke on it.
+    value = {
+        'schema_version': '4',
+        'dbxrefs': ['GEO-obsolete:GSM12345'],
+        'notes': None,
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert 'dbxrefs' not in result
+    assert result['notes'] == (
+        'Legacy dbxrefs removed during schema upgrade: GEO-obsolete:GSM12345.'
+    )
+
+
+def test_library_upgrade_strips_trailing_newline(upgrader):
+    # Now that the pattern ends with `(?![\s\S])` the validator rejects a trailing
+    # newline, so the upgrade must migrate such a value out rather than leave behind
+    # something the schema will not accept.
+    value = {
+        'schema_version': '4',
+        'dbxrefs': ['GEO:GSM12345\n'],
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert 'dbxrefs' not in result
+    assert result['notes'] == (
+        'Legacy dbxrefs removed during schema upgrade: GEO:GSM12345\n.'
+    )
+
+
+@pytest.mark.parametrize(
+    'existing_notes',
+    [ABSENT, None, '', '   ', 'Existing context', 'Existing context.'],
+)
+def test_library_upgrade_note_satisfies_notes_schema(upgrader, existing_notes):
+    # The note is written as free text into `notes`, which is itself constrained by the
+    # schema (no leading/trailing whitespace). Nothing else validates the string the
+    # upgrade produces, so assert it against the real pattern for every starting state.
+    notes_pattern = re.compile(
+        load_schema('igvfd:schemas/library.json')['properties']['notes']['pattern']
+    )
+    value = {'schema_version': '4', 'dbxrefs': ['GEO-obsolete:GSM12345']}
+    if existing_notes is not ABSENT:
+        value['notes'] = existing_notes
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert notes_pattern.search(result['notes']), repr(result['notes'])

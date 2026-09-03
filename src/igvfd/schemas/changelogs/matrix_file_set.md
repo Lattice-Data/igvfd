@@ -1,5 +1,9 @@
 ## Changelog for matrix_file_set.json
 
+### Minor changes since schema version 2
+
+* Add *dbxrefs*, accepting GEO series, SRA study, and ENA study identifiers requiring at least one identifier when submitted, and anchored at true end of input.
+
 ### Schema version 2
 
 * Remove experiment_ids.

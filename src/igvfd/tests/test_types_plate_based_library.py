@@ -166,25 +166,71 @@ def test_plate_based_library_create_success(testapp, other_lab, tissue):
 
 
 def test_plate_based_library_dbxrefs_valid(testapp, other_lab, tissue):
+    dbxrefs = [
+        'Biomaterial:SAME1234567',
+        'Biomaterial:SAMEA1234567',
+        'Biomaterial:SAMEG1234567',
+        'Biomaterial:SAMN53299868',
+        'Biomaterial:SAMNA12345',
+        'Biomaterial:SAMNG12345',
+        'Biomaterial:SAMD1234567',
+        'Biomaterial:SAMDA12345',
+        'Biomaterial:SAMDG12345',
+        'Biomaterial:EGAN12345',
+        'SRA:SRS12345',
+        'ENA:ERS12345',
+        'GEO:GSM67890',
+        'SRA:SRX12345',
+        'ENA:ERX12345',
+        'EGA:EGAX12345',
+    ]
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['EGA:EGAX12345', 'GEO:GSM67890'],
+        'dbxrefs': dbxrefs,
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
-    assert res.json['@graph'][0]['dbxrefs'] == ['EGA:EGAX12345', 'GEO:GSM67890']
+    assert res.json['@graph'][0]['dbxrefs'] == dbxrefs
 
 
-def test_plate_based_library_dbxrefs_invalid(testapp, other_lab, tissue):
+@pytest.mark.parametrize(
+    'invalid_dbxref',
+    [
+        'BioSample:SAMN53299868',
+        'BioSample:SAMEA1234567',
+        'Biomaterial:SAMED1234567',
+        'Biomaterial:SAMX1234567',
+        'Biomaterial:SAM1234567',
+        'EGA:EGAN12345',
+        'Biomaterial:EGAX12345',
+        'GEO-obsolete:GSM12345',
+        'SRA:SRR12345',
+    ],
+)
+def test_plate_based_library_dbxrefs_invalid(
+    testapp, other_lab, tissue, invalid_dbxref
+):
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'dbxrefs': ['BioSample:SAMEA1234567'],
+        'dbxrefs': [invalid_dbxref],
+        'status': 'current',
+    }
+    testapp.post_json('/plate_based_library', item, status=422)
+
+
+def test_plate_based_library_dbxrefs_rejects_empty_array(testapp, other_lab, tissue):
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'dbxrefs': [],
         'status': 'current',
     }
     testapp.post_json('/plate_based_library', item, status=422)
@@ -415,3 +461,22 @@ def test_plate_based_library_single_cardinality_without_linked_libraries_succeed
     res = testapp.post_json('/plate_based_library', item, status=201)
     assert res.json['@graph'][0]['library_cardinality'] == 'single'
     assert 'linked_libraries' not in res.json['@graph'][0] or res.json['@graph'][0].get('linked_libraries') is None
+
+
+def test_plate_based_library_dbxrefs_patch(testapp, other_lab, tissue):
+    # Mirrors test_droplet_based_library_dbxrefs_patch; same inherited pattern.
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/plate_based_library', item, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(at_id, {'dbxrefs': ['Biomaterial:SAME1234567']}, status=200)
+    assert patched.json['@graph'][0]['dbxrefs'] == ['Biomaterial:SAME1234567']
+    testapp.patch_json(at_id, {'dbxrefs': ['Biomaterial:SAMED1234567']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': ['GEO-obsolete:GSM12345']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSM1', 'GEO:GSM1']}, status=422)

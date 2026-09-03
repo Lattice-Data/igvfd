@@ -291,6 +291,54 @@ def test_sequence_file_set_platform_enum_values(testapp, other_lab, sequence_fil
     assert res.json['@graph'][0]['sequencing_platform'] == platform
 
 
+@pytest.mark.parametrize('dbxref', ['SRA:SRR123456', 'ENA:ERR123456'])
+def test_sequence_file_set_dbxrefs_valid(
+    testapp, other_lab, sequence_file, droplet_based_library, dbxref
+):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'dbxrefs': [dbxref],
+        'status': 'current',
+    }
+    res = testapp.post_json('/sequence_file_set', item, status=201)
+    assert res.json['@graph'][0]['dbxrefs'] == [dbxref]
+
+
+@pytest.mark.parametrize(
+    'dbxref',
+    ['SRA:SRX123456', 'ENA:ERX123456', 'SRA:SRS123456', 'GEO:GSE123456'],
+)
+def test_sequence_file_set_dbxrefs_invalid(
+    testapp, other_lab, sequence_file, droplet_based_library, dbxref
+):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'dbxrefs': [dbxref],
+        'status': 'current',
+    }
+    testapp.post_json('/sequence_file_set', item, status=422)
+
+
+def test_sequence_file_set_dbxrefs_rejects_empty_array(
+    testapp, other_lab, sequence_file, droplet_based_library
+):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'dbxrefs': [],
+        'status': 'current',
+    }
+    testapp.post_json('/sequence_file_set', item, status=422)
+
+
 @pytest.mark.parametrize(
     'cro_order',
     [
@@ -510,3 +558,36 @@ def test_sequence_file_set_is_pilot_order_invalid_type(testapp, other_lab, seque
         },
         status=422
     )
+
+
+def test_sequence_file_set_dbxrefs_patch(
+    testapp, other_lab, sequence_file, droplet_based_library
+):
+    # The pattern must be enforced on PATCH, not just POST.
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/sequence_file_set', item, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(at_id, {'dbxrefs': ['SRA:SRR123456']}, status=200)
+    assert patched.json['@graph'][0]['dbxrefs'] == ['SRA:SRR123456']
+    testapp.patch_json(at_id, {'dbxrefs': ['SRA:SRX123456']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
+
+
+def test_sequence_file_set_dbxrefs_rejects_duplicates(
+    testapp, other_lab, sequence_file, droplet_based_library
+):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'dbxrefs': ['SRA:SRR123456', 'SRA:SRR123456'],
+        'status': 'current',
+    }
+    testapp.post_json('/sequence_file_set', item, status=422)

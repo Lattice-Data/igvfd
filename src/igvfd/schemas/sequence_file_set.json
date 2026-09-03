@@ -25,6 +25,9 @@
             "$ref": "mixins.json#/shared_status"
         },
         {
+            "$ref": "mixins.json#/dbxrefs"
+        },
+        {
             "$ref": "file_set.json#/properties"
         }
     ],
@@ -223,6 +226,20 @@
     "properties": {
         "schema_version": {
             "default": "2"
+        },
+        "dbxrefs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "External identifier",
+                "description": "An identifier for the sequencing run in an external resource.",
+                "type": "string",
+                "pattern": "^(SRA:SRR\\d+|ENA:ERR\\d+)(?![\\s\\S])"
+            },
+            "submissionExample": {
+                "appscript": "[\"SRA:SRR123456\"]"
+            }
         },
         "library": {
             "title": "Library",

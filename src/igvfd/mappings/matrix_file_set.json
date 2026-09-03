@@ -1,6 +1,6 @@
 {
-    "hash": "fdce9d9a46e74cc59465bc2806cda0ea",
-    "index_name": "matrix_file_set_fdce9d9a",
+    "hash": "650493797bb02322667effe33b6c6977",
+    "index_name": "matrix_file_set_65049379",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -154,6 +154,9 @@
                     },
                     "creation_timestamp": {
                         "type": "date"
+                    },
+                    "dbxrefs": {
+                        "type": "keyword"
                     },
                     "description": {
                         "copy_to": "_fuzzy",
