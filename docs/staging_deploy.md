@@ -1,7 +1,11 @@
 > **Automated path:** run the `staging-release` skill (`.claude/skills/staging-release/`)
-> to have Claude drive steps 2-8, 11 and 12, stopping at each human gate. The guarded
-> helper scripts it calls live in `scripts/release/` and can also be run by hand.
-> Steps 1 (JIRA), 9 (Slack `#aws-igvf-staging`) and 10 (AWS approve/reject) stay manual.
+> to have Claude drive steps 2-9 and 12, stopping at each human gate. The guarded helper
+> scripts it calls live in `scripts/release/` and can also be run by hand. Steps 1 (JIRA),
+> 10 (Slack `#aws-igvf-staging`) and 11 (AWS approve/reject) stay manual. You always pick
+> the version number yourself; nothing derives it.
+>
+> Scripts: `preflight.sh` (survey), `merge-to-main.sh` (step 6),
+> `tag.sh` (step 9), `publish-release.sh` (step 12).
 
 1. Clean up `igvfd` JIRA release
     * Make sure all tickets merged to `dev` branch
@@ -38,14 +42,7 @@ $ git pull
 $ git log --pretty=%s
 ```
 
-9. Monitor batch-upgrade errors and messages in slack channel #aws-igvf-staging
-
-proceed ONLY if there are no batch-upgrade errors, and if there are no errors (Like dead letter queue) in the slack channel
-
-10. approve release on AWS or reject it in case there were problems
-
-11. Only after the AWS release is approved, make the tag for version `X.Y.Z` from the
-    commits chosen in step 8.
+9. After choosing the commits to be included in the tag. Make the tag for version `X.Y.Z`.
 
     Tag the commit that is actually on `main` (the one staging is running). Do **not**
     tag `dev`: normally they are the same commit, since step 6 just fast-forwarded `main`
@@ -62,5 +59,18 @@ $ git log -1 --oneline
 $ git tag -a vX.Y.Z # Add vX.Y.Z to details
 $ git push origin tags/vX.Y.Z
 ```
+
+10. Monitor batch-upgrade errors and messages in slack channel #aws-igvf-staging
+
+proceed ONLY if there are no batch-upgrade errors, and if there are no errors (Like dead letter queue) in the slack channel
+
+11. approve release on AWS or reject it in case there were problems
+
+    Note what this approval actually does: pushing `main` in step 6 already deployed
+    `staging` unconditionally. The `ProductionDeploymentManualApprovalStep` is the `pre`
+    step on `ProductionAndSandboxDeployWave`
+    (`cdk/infrastructure/constructs/pipeline.py`), so approving here promotes the release
+    to **production and sandbox**. Rejecting leaves staging as it is -- it does not roll
+    staging back.
 
 12. On Github `Make a Release` from the tag, pasting the proper commits in the details.
