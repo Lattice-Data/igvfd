@@ -6,6 +6,9 @@ from igvfd.upgrade.library import (
     PLATE_REMOVED_PROPERTIES,
 )
 
+# Distinguishes an absent dbxrefs key from an explicit null.
+ABSENT = object()
+
 MULTIPLEXED_SAMPLES = ['sample-a', 'sample-b']
 SINGLE_SAMPLE = ['sample-a']
 
@@ -339,10 +342,10 @@ def test_library_upgrade_removes_all_invalid_dbxrefs(upgrader):
     )
 
 
-@pytest.mark.parametrize('dbxrefs', [None, []])
+@pytest.mark.parametrize('dbxrefs', [ABSENT, None, []])
 def test_library_upgrade_without_dbxrefs_does_not_add_notes(upgrader, dbxrefs):
     value = {'schema_version': '5'}
-    if dbxrefs is not None:
+    if dbxrefs is not ABSENT:
         value['dbxrefs'] = dbxrefs
     result = upgrader.upgrade(
         'plate_based_library',
@@ -383,9 +386,11 @@ def test_library_upgrade_dbxref_pattern_matches_schema():
 
     schema = load_schema('igvfd:schemas/library.json')
     assert LIBRARY_DBXREF_PATTERN.pattern == schema['properties']['dbxrefs']['items']['pattern'], (
-        'library.json dbxrefs pattern changed. Freeze LIBRARY_DBXREF_PATTERN under a '
-        'versioned name for the existing steps, add a new constant plus upgrade step for '
-        'the new pattern, and point this test at the new constant.'
+        'library.json dbxrefs pattern changed. Freeze the current constant under a '
+        'versioned name for the released steps, add a new constant plus upgrade step for '
+        'the new pattern, and point this test at the new constant. '
+        'test_library_upgrade_dbxref_pattern_is_frozen imports the constant by name, so '
+        'update its import and LIBRARY_DBXREF_PATTERN_AS_RELEASED in the same change.'
     )
 
 

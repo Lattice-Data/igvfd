@@ -1,5 +1,8 @@
 import pytest
 
+# Distinguishes an absent dbxrefs key from an explicit null.
+ABSENT = object()
+
 BIOSAMPLE_CONCRETE_TYPES = ['tissue', 'primary_cell_culture', 'organoid', 'cell_line']
 
 
@@ -167,10 +170,10 @@ def test_upgrade_biosample_3_4_creates_notes_when_absent(upgrader):
     )
 
 
-@pytest.mark.parametrize('dbxrefs', [None, []])
+@pytest.mark.parametrize('dbxrefs', [ABSENT, None, []])
 def test_upgrade_biosample_3_4_without_dbxrefs_does_not_add_notes(upgrader, dbxrefs):
     value = {'schema_version': '3'}
-    if dbxrefs is not None:
+    if dbxrefs is not ABSENT:
         value['dbxrefs'] = dbxrefs
     result = upgrader.upgrade('cell_line', value, current_version='3', target_version='4')
     assert 'dbxrefs' not in result

@@ -22,10 +22,17 @@ any of them is rejected regardless of the value.
 
 Archive sample records are modeled on Library instead — under the `Biomaterial:`
 prefix for the sample registries, and under the archives' own `SRA:SRS` and
-`ENA:ERS` prefixes for SRA and ENA samples. No accession has two valid homes,
-which is the ambiguity this model removes. That is a statement about uniqueness,
-not coverage — see [Known gaps](#known-gaps) for archive levels that are not
-representable at all.
+`ENA:ERS` prefixes for SRA and ENA samples.
+
+The goal is that an accession's position in the archive hierarchy determines which
+object owns it, matching how the run and study levels sit on SequenceFileSet and
+MatrixFileSet. It is worth being precise about what this does *not* fix: the two
+patterns being replaced were already disjoint, so no accession string was ever
+accepted by both Biosample and Library, and there was no pre-existing dual-home
+ambiguity to remove. This is a modeling change, not a bug fix, and it is paid for
+with a breaking version bump on six types plus manual re-filing of every existing
+Biosample `dbxrefs` value. See [Known gaps](#known-gaps) for levels that remain
+unrepresentable.
 
 ## Library
 
@@ -140,12 +147,16 @@ are currently not representable on any object:
 | Archive | Missing level(s) |
 | --- | --- |
 | EGA | run (`EGAR`), study (`EGAS`), dataset (`EGAD`) |
-| DDBJ | sample (`DRS`), experiment (`DRX`), run (`DRR`), study (`DRP`) |
+| DDBJ | DRA sample (`DRS`), experiment (`DRX`), run (`DRR`), study (`DRP`) |
+| NCBI / EBI | BioProject (`PRJNA`, `PRJEB`) |
 
-DDBJ BioSample records are accepted at the sample level as `Biomaterial:SAMD`, so
-DDBJ is representable at that one level only. An EGA-only or DDBJ-only submission
-can therefore record part of the hierarchy and not the rest. Whether to add these
-depends on which archives Lattice actually deposits to at each level.
+DDBJ BioSample records are accepted as `Biomaterial:SAMD`, so DDBJ is representable
+at the BioSample-registry level only; its DRA accessions are not. BioProject
+accessions are alternate identifiers for the same study as `SRP`/`ERP`, so that
+level is covered, but a submitter holding only a `PRJNA` has nothing to submit. An
+EGA-only or DDBJ-only submission can record part of the hierarchy and not the rest.
+Whether to add any of these depends on which archives Lattice actually deposits to
+at each level.
 
 Prefixes are also not registered in `namespaces.json`, which maps a CURIE prefix to
 a resolvable URL. `GEO` is registered; `Biomaterial`, `SRA`, `ENA`, and `EGA` are
