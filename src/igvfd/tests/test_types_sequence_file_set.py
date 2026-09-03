@@ -558,3 +558,36 @@ def test_sequence_file_set_is_pilot_order_invalid_type(testapp, other_lab, seque
         },
         status=422
     )
+
+
+def test_sequence_file_set_dbxrefs_patch(
+    testapp, other_lab, sequence_file, droplet_based_library
+):
+    # The pattern must be enforced on PATCH, not just POST.
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/sequence_file_set', item, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(at_id, {'dbxrefs': ['SRA:SRR123456']}, status=200)
+    assert patched.json['@graph'][0]['dbxrefs'] == ['SRA:SRR123456']
+    testapp.patch_json(at_id, {'dbxrefs': ['SRA:SRX123456']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
+
+
+def test_sequence_file_set_dbxrefs_rejects_duplicates(
+    testapp, other_lab, sequence_file, droplet_based_library
+):
+    item = {
+        'lab': other_lab['@id'],
+        'library': droplet_based_library['@id'],
+        'run_cardinality': 'single-end',
+        'read1': sequence_file['@id'],
+        'dbxrefs': ['SRA:SRR123456', 'SRA:SRR123456'],
+        'status': 'current',
+    }
+    testapp.post_json('/sequence_file_set', item, status=422)

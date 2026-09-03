@@ -354,13 +354,89 @@ def test_library_upgrade_without_dbxrefs_does_not_add_notes(upgrader, dbxrefs):
     assert 'notes' not in result
 
 
+# The Library dbxrefs pattern as released with droplet_based_library 5 / plate_based_library 6.
+LIBRARY_DBXREF_PATTERN_AS_RELEASED = (
+    r'^(Biomaterial:SAM(N|D|E[ADG])\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
+    r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$'
+)
+
+
+def test_library_upgrade_dbxref_pattern_is_frozen():
+    # The 4->5 and 5->6 steps are historical. Editing their pattern would retroactively
+    # change which values they strip into admin-only notes, so it is pinned to a literal
+    # rather than to whatever library.json currently says.
+    from igvfd.upgrade.library import LIBRARY_DBXREF_PATTERN
+
+    assert LIBRARY_DBXREF_PATTERN.pattern == LIBRARY_DBXREF_PATTERN_AS_RELEASED, (
+        'The released upgrade steps must keep stripping exactly what they stripped on '
+        'release. Do not edit LIBRARY_DBXREF_PATTERN to match a new schema pattern; add '
+        'a new constant and a new upgrade step instead.'
+    )
+
+
 def test_library_upgrade_dbxref_pattern_matches_schema():
-    # The upgrade filters against a hand-maintained copy of the schema pattern. If the
-    # schema is widened without updating the constant, the upgrade would strip values
-    # that are valid under the new schema into admin-only notes.
+    # Guards the other direction: at authoring time the constant must equal the schema it
+    # filters for, so a widened schema cannot leave the upgrade stripping valid values.
     from snovault.schema_utils import load_schema
 
     from igvfd.upgrade.library import LIBRARY_DBXREF_PATTERN
 
     schema = load_schema('igvfd:schemas/library.json')
-    assert LIBRARY_DBXREF_PATTERN.pattern == schema['properties']['dbxrefs']['items']['pattern']
+    assert LIBRARY_DBXREF_PATTERN.pattern == schema['properties']['dbxrefs']['items']['pattern'], (
+        'library.json dbxrefs pattern changed. Freeze LIBRARY_DBXREF_PATTERN under a '
+        'versioned name for the existing steps, add a new constant plus upgrade step for '
+        'the new pattern, and point this test at the new constant.'
+    )
+
+
+def test_library_upgrade_keeps_valid_dbxrefs_and_leaves_notes_untouched(upgrader):
+    # Nothing to migrate: dbxrefs and any pre-existing notes must both survive verbatim.
+    value = {
+        'schema_version': '4',
+        'dbxrefs': ['Biomaterial:SAMN53299868', 'EGA:EGAX12345', 'GEO:GSM12345'],
+        'notes': 'Existing internal context.',
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert result['dbxrefs'] == ['Biomaterial:SAMN53299868', 'EGA:EGAX12345', 'GEO:GSM12345']
+    assert result['notes'] == 'Existing internal context.'
+
+
+def test_library_upgrade_handles_null_notes(upgrader):
+    # A legacy object can carry notes: null; the helper must not choke on it.
+    value = {
+        'schema_version': '4',
+        'dbxrefs': ['GEO-obsolete:GSM12345'],
+        'notes': None,
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert 'dbxrefs' not in result
+    assert result['notes'] == (
+        'Legacy dbxrefs removed during schema upgrade: GEO-obsolete:GSM12345.'
+    )
+
+
+def test_library_upgrade_keeps_values_the_schema_accepts(upgrader):
+    # JSON Schema `pattern` is an unanchored search and `$` matches before a trailing
+    # newline, so this value validates. The upgrade must not strip it into notes.
+    value = {
+        'schema_version': '4',
+        'dbxrefs': ['GEO:GSM12345\n'],
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library',
+        value,
+        current_version='4',
+        target_version='5',
+    )
+    assert result['dbxrefs'] == ['GEO:GSM12345\n']
+    assert 'notes' not in result

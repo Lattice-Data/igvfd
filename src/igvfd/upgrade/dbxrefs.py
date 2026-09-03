@@ -15,7 +15,10 @@ def preserve_invalid_dbxrefs(value, valid_pattern=None):
     valid_dbxrefs = []
     invalid_dbxrefs = []
     for dbxref in dbxrefs:
-        is_valid = valid_pattern is not None and valid_pattern.fullmatch(dbxref)
+        # search, not fullmatch: JSON Schema `pattern` is an unanchored search, and `$`
+        # also matches before a trailing newline. fullmatch would strip values the
+        # schema itself accepts, e.g. 'GEO:GSM123\n', into admin-only notes.
+        is_valid = valid_pattern is not None and valid_pattern.search(dbxref)
         target = valid_dbxrefs if is_valid else invalid_dbxrefs
         target.append(dbxref)
 
@@ -31,7 +34,7 @@ def preserve_invalid_dbxrefs(value, valid_pattern=None):
         'Legacy dbxrefs removed during schema upgrade: '
         f'{", ".join(invalid_dbxrefs)}.'
     )
-    existing_notes = value.get('notes', '').strip()
+    existing_notes = (value.get('notes') or '').strip()
     value['notes'] = f'{existing_notes} {upgrade_note}'.strip()
 
 

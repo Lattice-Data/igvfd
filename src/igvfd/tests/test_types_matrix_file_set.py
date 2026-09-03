@@ -121,3 +121,23 @@ def test_matrix_file_set_rejects_removed_fields(testapp, other_lab):
         },
         status=422
     )
+
+
+def test_matrix_file_set_dbxrefs_patch(testapp, other_lab):
+    # The pattern must be enforced on PATCH, not just POST.
+    item = {'lab': other_lab['@id'], 'status': 'current'}
+    res = testapp.post_json('/matrix_file_set', item, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSE12345']}, status=200)
+    assert patched.json['@graph'][0]['dbxrefs'] == ['GEO:GSE12345']
+    testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSM12345']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
+
+
+def test_matrix_file_set_dbxrefs_rejects_duplicates(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'dbxrefs': ['GEO:GSE12345', 'GEO:GSE12345'],
+        'status': 'current',
+    }
+    testapp.post_json('/matrix_file_set', item, status=422)

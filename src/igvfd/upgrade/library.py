@@ -5,6 +5,12 @@ from snovault.upgrader import upgrade_step
 from .dbxrefs import preserve_invalid_dbxrefs
 
 
+# The dbxrefs pattern as of droplet_based_library 5 / plate_based_library 6. The steps
+# below are historical once released, so this value must not be edited to track a later
+# schema change: doing so would retroactively alter which values those steps strip. When
+# library.json's pattern next changes, freeze this constant under a versioned name for the
+# existing steps and add a new constant for the new step. See
+# test_library_upgrade_dbxref_pattern_matches_schema.
 LIBRARY_DBXREF_PATTERN = re.compile(
     r'^(Biomaterial:SAM(N|D|E[ADG])\d+|Biomaterial:EGAN\d+|SRA:SRS\d+|ENA:ERS\d+|'
     r'GEO:GSM\d+|SRA:SRX\d+|ENA:ERX\d+|EGA:EGAX\d+)$'

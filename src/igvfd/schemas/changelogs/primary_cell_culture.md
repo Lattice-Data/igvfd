@@ -2,7 +2,8 @@
 
 ## Schema version 4
 
-* Remove inherited dbxrefs. Archive identifiers are owned by Library, SequenceFileSet, and MatrixFileSet.
+* Remove inherited dbxrefs.
+* Archive identifiers are owned by Library, SequenceFileSet, and MatrixFileSet.
 * Preserve removed dbxrefs in notes during upgrade.
 
 ## Schema version 3

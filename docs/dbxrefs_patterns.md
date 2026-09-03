@@ -126,8 +126,10 @@ by this change and are not migrated.
 - Patterns are anchored, so leading whitespace and surrounding text are rejected.
   JSON Schema `pattern` is a search and `$` also matches immediately before a
   trailing newline, so a value with a single trailing newline validates. The
-  upgrade helper uses `fullmatch` and is strict. Closing that gap would mean
-  `\Z` across every pattern in the repository, which is outside this change.
+  upgrade helper uses `search` for exactly this reason, so it accepts precisely
+  what the schema accepts and never migrates a valid value into `notes`. Closing
+  the newline gap itself would mean `\Z` across every pattern in the repository,
+  which is outside this change.
 - Archive accession digit counts remain `\d+`, matching the existing repository
   convention. Enforcing documented accession widths is outside this change.
 - The Library, SequenceFileSet, and MatrixFileSet `dbxrefs` arrays require at
