@@ -29,10 +29,13 @@ $ docker compose -f docker-compose.test.yml down -v
 
 Run all indexer tests automatically and clean up:
 ```bash
-$ docker compose -f docker-compose.test-indexer.yml up --exit-code-from indexer-tests
-....
-$ docker compose -f docker-compose.test-indexer.yml down -v
+$ ./docker/run-indexer-tests.sh
 ```
+The wrapper runs the suite in its own Compose project and clears containers,
+volumes and networks before and after, so a previous run cannot leave stale
+OpenSearch or Postgres state behind. Prefer it over calling `docker compose -f
+docker-compose.test-indexer.yml` directly, which shares the default Compose
+project with the other stacks.
 
 Or run unit tests interactively:
 1. Start `postgres` and `localstack` services (for use as fixtures).
