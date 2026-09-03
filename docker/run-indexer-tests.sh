@@ -8,11 +8,15 @@
 # and after every run, and uses a dedicated project name so it never collides
 # with a running dev stack (docker-compose.yml).
 #
-# Usage: ./docker/run-indexer-tests.sh [--no-build]
+# Usage: ./docker/run-indexer-tests.sh [--no-rebuild]
 #
-#   --no-build   Skip the image build. For callers that have already built the
-#                images, such as CI, which builds them up front with a shared
-#                layer cache; rebuilding inside compose would bypass that cache.
+#   --no-rebuild  Do not force a rebuild of images that already exist. For callers
+#                 that have already built them, such as CI, which builds them up
+#                 front with a shared layer cache; forcing a rebuild inside compose
+#                 would bypass that cache. Note this is not compose's --no-build:
+#                 `up` still builds any image that is missing locally, which is
+#                 deliberate, since failing outright on a missing image would be
+#                 worse than building it.
 #
 set -euo pipefail
 
@@ -23,12 +27,12 @@ cd "$(dirname "$0")/.."
 # splitting on an empty string expands to no argument, which is what is wanted here
 # and matches how $COMPOSE below is expanded.
 BUILD_ARG="--build"
-if [[ "${1:-}" == "--no-build" ]]; then
+if [[ "${1:-}" == "--no-rebuild" ]]; then
     BUILD_ARG=""
     shift
 fi
 if [[ $# -gt 0 ]]; then
-    echo "usage: $0 [--no-build]" >&2
+    echo "usage: $0 [--no-rebuild]" >&2
     exit 2
 fi
 

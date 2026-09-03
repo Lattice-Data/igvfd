@@ -105,6 +105,15 @@ jobs:
           tags: igvfd-localstack
           cache-from: type=gha,scope=localstack
           cache-to: type=gha,scope=localstack
+      - name: Build opensearch image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/opensearch/
+          file: docker/opensearch/Dockerfile
+          push: false
+          tags: igvfd-opensearch
+          cache-from: type=gha,scope=opensearch
+          cache-to: type=gha,scope=opensearch
       - name: Build nginx image
         uses: docker/build-push-action@v5
         with:
@@ -144,8 +153,8 @@ jobs:
           # networks -- stale OpenSearch and Postgres state. Release them first.
           docker compose -f docker-compose.test.yml down -v --remove-orphans
           # The wrapper runs the indexer suite in its own Compose project and cleans up
-          # before and after. --no-build reuses the images built above.
-          ./docker/run-indexer-tests.sh --no-build
+          # before and after. --no-rebuild reuses the images built above.
+          ./docker/run-indexer-tests.sh --no-rebuild
 
   igvfd-check-opensearch-mappings:
     runs-on: ubuntu-latest
