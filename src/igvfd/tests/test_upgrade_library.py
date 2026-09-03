@@ -429,11 +429,12 @@ def test_library_upgrade_handles_null_notes(upgrader):
 
 
 def test_library_upgrade_does_not_strip_what_the_validator_accepts(upgrader):
-    # Compatibility shim, not an endorsement: a trailing newline in a dbxref is dirty
-    # data, but JSON Schema `pattern` is an unanchored search in which `$` matches before
-    # one, so the validator accepts it. The upgrade must agree with the validator rather
-    # than quietly moving a value the schema permits into admin-only notes. If the
-    # patterns are ever changed to `\Z`, this test should flip to asserting removal.
+    # Compatibility shim, not an endorsement. A trailing newline in a dbxref is dirty
+    # data, but this server's validator accepts it: jsonschema compiles `pattern` with
+    # Python `re`, where `$` also matches before a trailing newline. That is a Python
+    # detail, not JSON Schema semantics -- ECMA-262 rejects it. The upgrade agrees with
+    # the validator rather than quietly moving an accepted value into admin-only notes.
+    # If the patterns adopt `(?![\s\S])`, this flips to asserting removal.
     value = {
         'schema_version': '4',
         'dbxrefs': ['GEO:GSM12345\n'],

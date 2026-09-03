@@ -204,20 +204,22 @@ body rather than the prefix.
 
 - Prefixes are case-sensitive and mandatory.
 - Patterns are anchored, so leading whitespace and surrounding text are rejected.
-  JSON Schema `pattern` is a search and `$` also matches immediately before a
-  trailing newline, so a value with a single trailing newline validates. The
-  upgrade helper uses `search` for exactly this reason, so it accepts precisely
-  what the schema accepts and never migrates a valid value into `notes`. One
-  consequence to be aware of: `GEO:GSM1` and `GEO:GSM1` plus a trailing newline
-  are two distinct strings under `uniqueItems`.
-- The trailing-newline gap *can* be closed portably, but not with `\Z`. JSON Schema
-  specifies the ECMA-262 dialect for `pattern`, and ECMA-262 has no `\Z` anchor — in
-  JavaScript it matches a literal `Z`, so it would appear to work here only because
-  `jsonschema` compiles with Python `re`. Ending a pattern with `(?![\s\S])` instead
-  of `$` is a negative lookahead for any character, i.e. true end of input, and
-  behaves identically in Python `re` and ECMA-262 (verified in both). Applying it
-  across every pattern in the repository is outside this change, but that is the
-  construct to use.
+  A value with a single trailing newline is a special case, and the reason is a
+  Python implementation detail rather than JSON Schema semantics. `jsonschema`
+  compiles `pattern` with Python `re`, where `$` also matches immediately before a
+  trailing newline, so `GEO:GSM1` plus a newline validates on this server. ECMA-262
+  — the dialect JSON Schema actually specifies — matches `$` only at end of input
+  without the `m` flag, and rejects it. Verified on both engines. So the same
+  published profile means two different things depending on who validates it, and
+  `uniqueItems` treats the two strings as distinct, which allows one object to carry
+  the same accession twice.
+- The upgrade helper uses `search` to agree with this server's validator rather than
+  with the spec, so it never migrates a value the server accepts into `notes`.
+- The divergence *can* be closed portably, but not with `\Z`: ECMA-262 has no `\Z`
+  anchor and in JavaScript it matches a literal `Z`. Ending each pattern with
+  `(?![\s\S])` instead of `$` is a negative lookahead for any character, i.e. true
+  end of input, and behaves identically in Python `re` and ECMA-262 (verified on
+  both). That would also let the helper use `fullmatch` and remove the shim.
 - Archive accession digit counts remain `\d+`, matching the existing repository
   convention. Enforcing documented accession widths is outside this change.
 - The Library, SequenceFileSet, and MatrixFileSet `dbxrefs` arrays require at

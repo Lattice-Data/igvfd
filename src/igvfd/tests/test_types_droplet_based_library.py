@@ -600,12 +600,14 @@ def test_droplet_based_library_dbxrefs_patch(testapp, other_lab, tissue):
 def test_droplet_based_library_dbxrefs_validator_accepts_trailing_newline(
     testapp, other_lab, tissue
 ):
-    # Closes the loop on preserve_invalid_dbxrefs using `search` rather than `fullmatch`:
-    # that choice is only correct if the validator really does accept a single trailing
-    # newline, which follows from JSON Schema `pattern` being an unanchored search with
-    # `$` matching before one. Asserted end-to-end rather than assumed, since the upgrade
-    # helper's behaviour is pinned to it. Trailing newlines are dirty data, not endorsed;
-    # if the patterns ever move to \Z, this and the upgrade test flip together.
+    # Characterizes current behaviour, and deliberately not an endorsement of it. The
+    # upgrade helper uses `search` rather than `fullmatch`, which is only correct if this
+    # server's validator really accepts a single trailing newline -- so it is asserted
+    # end-to-end rather than assumed. The acceptance is a Python detail: jsonschema
+    # compiles with Python `re`, where `$` matches before a trailing newline. ECMA-262,
+    # the dialect JSON Schema specifies, rejects it, so this profile currently means two
+    # different things to two validators. See docs/dbxrefs_patterns.md; adopting
+    # `(?![\s\S])` in the four patterns would close it and retire this test.
     item = {
         'lab': other_lab['@id'],
         'samples': [tissue['@id']],

@@ -24,9 +24,12 @@ def preserve_invalid_dbxrefs(value, valid_pattern):
     valid_dbxrefs = []
     invalid_dbxrefs = []
     for dbxref in dbxrefs:
-        # search, not fullmatch: JSON Schema `pattern` is an unanchored search, and `$`
-        # also matches before a trailing newline. fullmatch would strip values the
-        # schema itself accepts, e.g. 'GEO:GSM123\n', into admin-only notes.
+        # search, not fullmatch, to agree with the validator this filters for. Note the
+        # reason is a Python implementation detail, not JSON Schema semantics: jsonschema
+        # compiles with Python `re`, where `$` also matches before a trailing newline, so
+        # 'GEO:GSM123\n' validates here. ECMA-262 -- the dialect JSON Schema specifies --
+        # rejects it. fullmatch would strip values this server accepts into admin-only
+        # notes; see docs/dbxrefs_patterns.md for the divergence and the portable fix.
         target = valid_dbxrefs if valid_pattern.search(dbxref) else invalid_dbxrefs
         target.append(dbxref)
 
