@@ -127,14 +127,18 @@ study.
 
 ## ControlledTerm
 
-ControlledTerm remains unchanged:
+ControlledTerm accepts literature and chemical-registry identifiers:
 
 ```regex
-^(PMID:[0-9]+|DOI:10\.[0-9]+/.+|CAS:\d{2,7}-\d{2}-\d)$
+^(PMID:[0-9]+|DOI:10\.[0-9]+/.+|CAS:\d{2,7}-\d{2}-\d)(?![\s\S])
 ```
 
-It accepts literature and chemical-registry identifiers such as
-`PMID:12345678`, `DOI:10.1038/s41586-020-2649-2`, and `CAS:50-00-0`.
+Examples: `PMID:12345678`, `DOI:10.1038/s41586-020-2649-2`, `CAS:50-00-0`.
+
+ControlledTerm is not part of the archive hierarchy, so this change leaves its
+accepted identifiers alone. It does share the two array-level rules and the
+end-of-input anchoring, which required a `schema_version` bump to 3 and an upgrade
+step, since unlike the two new file-set properties it could already hold values.
 
 ## Migration
 
@@ -230,15 +234,12 @@ body rather than the prefix.
 - The upgrade helper filters with `search`, matching how `jsonschema` applies
   `pattern`, so it accepts exactly what the validator accepts. With the patterns
   anchored at true end of input, `search` and `fullmatch` coincide.
-- ControlledTerm's `dbxrefs` still ends with `$` and is out of scope here. Narrowing
-  it would need its own version bump and upgrade step, since unlike the two new
-  file-set properties it may already hold data.
+- All four `dbxrefs` patterns — Library, SequenceFileSet, MatrixFileSet and
+  ControlledTerm — end with `(?![\s\S])`, so none of them differ by dialect.
 - Archive accession digit counts remain `\d+`, matching the existing repository
   convention. Enforcing documented accession widths is outside this change.
-- The Library, SequenceFileSet, and MatrixFileSet `dbxrefs` arrays require at
-  least one identifier; submitters must omit the property instead of submitting
-  an empty array. ControlledTerm's `dbxrefs` is unchanged and still permits an
-  empty array.
+- Every `dbxrefs` array requires at least one identifier; submitters must omit the
+  property instead of submitting an empty array.
 - `src/igvfd/upgrade/library.py` keeps a compiled copy of the Library pattern for
   the upgrade filter, guarded from both directions.
   `test_library_upgrade_dbxref_pattern_matches_schema` asserts it equals the current

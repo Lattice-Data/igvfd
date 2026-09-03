@@ -204,3 +204,46 @@ def test_controlled_term_alias_prefixes_allowed(testapp, prefix, term_id):
     }
     res = testapp.post_json('/controlled_term', item, status=201)
     assert res.json['@graph'][0]['aliases'] == item['aliases']
+
+
+def test_controlled_term_dbxrefs_rejects_surrounding_whitespace(testapp):
+    # The pattern ends with `(?![\s\S])`, so it anchors at true end of input. With `$`
+    # alone a trailing newline validated under Python `re` while ECMA-262 rejected it,
+    # and uniqueItems treated the two strings as distinct entries on one object.
+    base = {'term_id': 'CHEBI:99997', 'ontology_source': 'CHEBI', 'status': 'current'}
+    res = testapp.post_json('/controlled_term', {**base, 'dbxrefs': ['PMID:12345678']}, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    for bad in ['PMID:12345678\n', 'PMID:12345678\n\n', ' PMID:12345678',
+                'PMID:12345678 ', 'PMID:12345678x']:
+        testapp.patch_json(at_id, {'dbxrefs': [bad]}, status=422)
+
+
+def test_controlled_term_dbxrefs_rejects_empty_array(testapp):
+    testapp.post_json(
+        '/controlled_term',
+        {'term_id': 'CHEBI:99996', 'ontology_source': 'CHEBI', 'dbxrefs': [], 'status': 'current'},
+        status=422,
+    )
+
+
+def test_controlled_term_dbxrefs_rejects_duplicates(testapp):
+    testapp.post_json(
+        '/controlled_term',
+        {
+            'term_id': 'CHEBI:99995',
+            'ontology_source': 'CHEBI',
+            'dbxrefs': ['PMID:12345678', 'PMID:12345678'],
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_controlled_term_dbxrefs_patch(testapp):
+    base = {'term_id': 'CHEBI:99994', 'ontology_source': 'CHEBI', 'status': 'current'}
+    res = testapp.post_json('/controlled_term', base, status=201)
+    at_id = res.json['@graph'][0]['@id']
+    patched = testapp.patch_json(at_id, {'dbxrefs': ['CAS:50-00-0']}, status=200)
+    assert patched.json['@graph'][0]['dbxrefs'] == ['CAS:50-00-0']
+    testapp.patch_json(at_id, {'dbxrefs': ['50-00-0']}, status=422)
+    testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
