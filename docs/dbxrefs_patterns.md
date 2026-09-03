@@ -11,6 +11,12 @@ anchored regular expression for its archive level.
 `uniqueItems: true`. It intentionally has no item pattern. Library,
 SequenceFileSet, and MatrixFileSet mix it in and define their own patterns.
 
+snovault merges `mixinProperties` per key rather than replacing the whole property,
+so redefining `dbxrefs` locally to add `items`/`minItems`/`submissionExample` still
+inherits `@type`, `rdfs:subPropertyOf`, `title`, and `description` from the mixin.
+Verified against `load_schema` for all three owners; the local `type` and
+`uniqueItems` restatements are therefore redundant but harmless.
+
 ControlledTerm defines `dbxrefs` locally and is unchanged by this model.
 
 ## Biosample
@@ -145,6 +151,16 @@ are not. These are currently not representable on any object:
 | EGA | run (`EGAR`), study (`EGAS`), dataset (`EGAD`) |
 | DDBJ | DRA sample (`DRS`), experiment (`DRX`), run (`DRR`), study (`DRP`) |
 | NCBI / EBI | BioProject (`PRJNA`, `PRJEB`) |
+
+A sample-level accession on a multiplexed Library is unconstrained. `samples` is
+`minItems: 1` with no upper bound, and multi-sample libraries are real, so a library
+prepared from several biosamples can carry several `Biomaterial:SAM*` values in one
+flat array with nothing recording which accession belongs to which entry in `samples`.
+JSON Schema cannot express "a sample-level dbxref implies exactly one sample", and no
+audit enforces it, so on a multiplexed library these values should be read as
+identifying the set of samples rather than any one of them. Relatedly, a Tissue or
+Organoid that is not yet part of a library has nowhere to record its BioSample
+accession, since Biosample no longer has `dbxrefs`.
 
 Study-level accessions (`GEO:GSE`, `SRA:SRP`, `ENA:ERP`) are also accepted only on
 MatrixFileSet. A submission with sequence data but no matrix files has nowhere to

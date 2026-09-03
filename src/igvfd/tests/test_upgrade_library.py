@@ -1,6 +1,7 @@
 import re
 
 import pytest
+from snovault.schema_utils import load_schema
 
 from igvfd.upgrade.library import (
     DROPLET_REMOVED_PROPERTIES,
@@ -381,8 +382,6 @@ def test_library_upgrade_dbxref_pattern_is_frozen():
 def test_library_upgrade_dbxref_pattern_matches_schema():
     # Guards the other direction: at authoring time the constant must equal the schema it
     # filters for, so a widened schema cannot leave the upgrade stripping valid values.
-    from snovault.schema_utils import load_schema
-
     schema = load_schema('igvfd:schemas/library.json')
     assert LIBRARY_DBXREF_PATTERN.pattern == schema['properties']['dbxrefs']['items']['pattern'], (
         'library.json dbxrefs pattern changed. Freeze the current constant under a '
@@ -457,8 +456,6 @@ def test_library_upgrade_note_satisfies_notes_schema(upgrader, existing_notes):
     # The note is written as free text into `notes`, which is itself constrained by the
     # schema (no leading/trailing whitespace). Nothing else validates the string the
     # upgrade produces, so assert it against the real pattern for every starting state.
-    from snovault.schema_utils import load_schema
-
     notes_pattern = re.compile(
         load_schema('igvfd:schemas/library.json')['properties']['notes']['pattern']
     )
@@ -470,21 +467,5 @@ def test_library_upgrade_note_satisfies_notes_schema(upgrader, existing_notes):
         value,
         current_version='4',
         target_version='5',
-    )
-    assert notes_pattern.search(result['notes']), repr(result['notes'])
-
-
-def test_biosample_upgrade_note_satisfies_notes_schema(upgrader):
-    # Same guarantee for the Biosample path, where every value is preserved.
-    from snovault.schema_utils import load_schema
-
-    notes_pattern = re.compile(
-        load_schema('igvfd:schemas/tissue.json')['properties']['notes']['pattern']
-    )
-    result = upgrader.upgrade(
-        'tissue',
-        {'schema_version': '3', 'dbxrefs': ['BioSample:SAMN53299868', 'SRA:SRS12345']},
-        current_version='3',
-        target_version='4',
     )
     assert notes_pattern.search(result['notes']), repr(result['notes'])

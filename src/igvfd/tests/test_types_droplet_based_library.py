@@ -595,3 +595,26 @@ def test_droplet_based_library_dbxrefs_patch(testapp, other_lab, tissue):
     testapp.patch_json(at_id, {'dbxrefs': ['EGA:EGAN12345']}, status=422)
     testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
     testapp.patch_json(at_id, {'dbxrefs': ['GEO:GSM1', 'GEO:GSM1']}, status=422)
+
+
+def test_droplet_based_library_dbxrefs_validator_accepts_trailing_newline(
+    testapp, other_lab, tissue
+):
+    # Closes the loop on preserve_invalid_dbxrefs using `search` rather than `fullmatch`:
+    # that choice is only correct if the validator really does accept a single trailing
+    # newline, which follows from JSON Schema `pattern` being an unanchored search with
+    # `$` matching before one. Asserted end-to-end rather than assumed, since the upgrade
+    # helper's behaviour is pinned to it. Trailing newlines are dirty data, not endorsed;
+    # if the patterns ever move to \Z, this and the upgrade test flip together.
+    item = {
+        'lab': other_lab['@id'],
+        'samples': [tissue['@id']],
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'dbxrefs': ['GEO:GSM12345\n'],
+        'status': 'current',
+    }
+    testapp.post_json('/droplet_based_library', item, status=201)
+    # Two newlines, leading whitespace, and trailing text remain rejected.
+    for bad in ['GEO:GSM12345\n\n', ' GEO:GSM12345', 'GEO:GSM12345x']:
+        testapp.post_json('/droplet_based_library', {**item, 'dbxrefs': [bad]}, status=422)

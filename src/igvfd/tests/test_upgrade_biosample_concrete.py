@@ -1,4 +1,7 @@
+import re
+
 import pytest
+from snovault.schema_utils import load_schema
 
 # Distinguishes an absent dbxrefs key from an explicit null.
 ABSENT = object()
@@ -178,3 +181,17 @@ def test_upgrade_biosample_3_4_without_dbxrefs_does_not_add_notes(upgrader, dbxr
     result = upgrader.upgrade('cell_line', value, current_version='3', target_version='4')
     assert 'dbxrefs' not in result
     assert 'notes' not in result
+
+
+def test_biosample_upgrade_note_satisfies_notes_schema(upgrader):
+    # Same guarantee for the Biosample path, where every value is preserved.
+    notes_pattern = re.compile(
+        load_schema('igvfd:schemas/tissue.json')['properties']['notes']['pattern']
+    )
+    result = upgrader.upgrade(
+        'tissue',
+        {'schema_version': '3', 'dbxrefs': ['BioSample:SAMN53299868', 'SRA:SRS12345']},
+        current_version='3',
+        target_version='4',
+    )
+    assert notes_pattern.search(result['notes']), repr(result['notes'])
