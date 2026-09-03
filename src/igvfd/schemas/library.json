@@ -46,6 +46,7 @@
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
+            "comment": "The Biomaterial: prefix is deliberate and is not an archive-issued prefix. It marks the identifier as the biomaterial that went into this library, rather than as the biosample itself, which is why these accessions belong on Library and not on Biosample.",
             "items": {
                 "title": "External identifier",
                 "description": "Identifier from an external resource that may have 1-to-1 or 1-to-many relationships with Lattice objects.",

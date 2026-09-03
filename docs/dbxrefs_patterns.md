@@ -65,8 +65,18 @@ Accepted experiment-level identifiers:
 - SRA and ENA experiments: `SRA:SRX12345`, `ENA:ERX12345`
 - EGA experiments: `EGA:EGAX12345`
 
-`Biomaterial:` is an IGVF modeling prefix that marks an archive sample-registry
-record placed on Library; it is not an archive-issued prefix. The BioSample part
+`Biomaterial:` is a deliberate IGVF modeling prefix, not an archive-issued one. It
+marks the identifier as **the biomaterial that went into this library**, rather than
+as the biosample itself. That is the reason these accessions sit on Library and not
+on Biosample: what is being recorded is the material used to build the library, and
+the archive record happens to be the thing that identifies it. Keeping the
+archive-issued `BioSample:` prefix would assert the opposite — that the value names
+a sample — which is exactly the reading this model is trying to avoid.
+
+One consequence to accept: `Biomaterial:` spans several sample registries, so it
+cannot be a single `namespaces.json` URL prefix and resolving it means switching on
+the accession body. The trade is intentional; the prefix is carrying modeling
+meaning rather than registry identity. The BioSample part
 follows the [BioSamples accession format](https://www.ebi.ac.uk/biosamples/docs/faq):
 `SAM`, then `E`, `N`, or `D` for the archive the sample was first submitted to
 (EMBL-EBI, NCBI, DDBJ), then optionally `A` for an assay sample or `G` for a sample
@@ -160,15 +170,17 @@ are not. These are currently not representable on any object:
 | DDBJ | DRA sample (`DRS`), experiment (`DRX`), run (`DRR`), study (`DRP`) |
 | NCBI / EBI | BioProject (`PRJNA`, `PRJEB`) |
 
-A sample-level accession on a multiplexed Library is unconstrained. `samples` is
-`minItems: 1` with no upper bound, and multi-sample libraries are real, so a library
-prepared from several biosamples can carry several `Biomaterial:SAM*` values in one
-flat array with nothing recording which accession belongs to which entry in `samples`.
-JSON Schema cannot express "a sample-level dbxref implies exactly one sample", and no
-audit enforces it, so on a multiplexed library these values should be read as
-identifying the set of samples rather than any one of them. Relatedly, a Tissue or
-Organoid that is not yet part of a library has nowhere to record its BioSample
-accession, since Biosample no longer has `dbxrefs`.
+A multiplexed Library carries one `Biomaterial:` value per biomaterial that went into
+it, with nothing linking a given value to a particular entry in `samples`. Under the
+`Biomaterial:` reading above this is expected rather than ambiguous — the array
+describes the set of materials the library was built from, which is a property of the
+library — but it does mean JSON Schema cannot express, and no audit enforces, any
+correspondence between `dbxrefs` and `samples`. Consumers should not infer one.
+
+A Tissue or Organoid that is not yet part of a library has nowhere to record its
+archive accession, since Biosample no longer has `dbxrefs`. This follows from the
+same decision: until the material goes into a library there is no biomaterial-into-
+library relationship for the identifier to describe.
 
 Study-level accessions (`GEO:GSE`, `SRA:SRP`, `ENA:ERP`) are also accepted only on
 MatrixFileSet. A submission with sequence data but no matrix files has nowhere to
