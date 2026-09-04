@@ -32,8 +32,7 @@ if [ ! -s "${notes_file}" ]; then
     exit 1
 fi
 
-# Untracked files are tolerated -- the release notes normally sit in the worktree, and
-# nothing here touches the working tree anyway.
+# Untracked files are tolerated: nothing here touches the working tree anyway.
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
     echo "ERROR: working tree has uncommitted changes. Commit or stash first." >&2
     exit 1

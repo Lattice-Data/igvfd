@@ -65,22 +65,36 @@ read_version_from() {
     printf '%s' "${v}"
 }
 
-# Ties a confirmation to one exact action on one exact commit. Printed by --dry-run and
-# required by a non-interactive caller, so the dry run cannot be skipped -- and if the
-# target moves between the dry run and the real run, the token stops matching.
+# Ties a confirmation to one exact action on one exact commit, so that a target which
+# moves between the dry run and the real run invalidates the confirmation.
+#
+# It does NOT prove the dry run happened: this is a plain hash of two values the caller
+# already knows, with no secret and no stored state, so anyone can compute it directly.
+# Treat it as a target-moved check, nothing more.
 release_token() {
-    printf '%s:%s' "$1" "$2" | shasum -a 256 | cut -c1-8
+    local sha
+    # sha256sum on most Linux images, shasum on macOS. Neither is universal.
+    if command -v shasum >/dev/null 2>&1; then
+        sha=$(printf '%s:%s' "$1" "$2" | shasum -a 256)
+    elif command -v sha256sum >/dev/null 2>&1; then
+        sha=$(printf '%s:%s' "$1" "$2" | sha256sum)
+    else
+        echo "ERROR: need shasum or sha256sum to compute a confirmation token." >&2
+        exit 1
+    fi
+    printf '%s' "${sha}" | cut -c1-8
 }
 
 # The confirmation gate.
 #
 #   at a terminal   -- type the value back (or --yes to skip the prompt)
-#   non-interactive -- must pass the --confirm-token printed by an immediately preceding
-#                      --dry-run of the same action against the same commit
+#   non-interactive -- must pass --confirm-token for this action and this commit
 #
-# On the non-interactive path this forces the dry run to have happened; it cannot force
-# anyone to have read it. An agent driving these scripts is still trusted to show the
-# output and get a real answer, and the operator approving the command is the outer gate.
+# Be clear about what the non-interactive path is worth. The token is computable without
+# running --dry-run, so it does not force the dry run to happen; it only fails when the
+# target has moved. Nothing checked inside a script can gate the caller that invokes it.
+# The real gate is the operator approving the command, and an agent driving these scripts
+# is trusted to run --dry-run first and show the output.
 require_confirmation() {
     local expected="$1" scope="$2" sha="$3" token reply
     [ "${dry_run}" = "1" ] && return 0
@@ -117,5 +131,5 @@ print_dry_run_footer() {
     echo
     echo "Dry run complete. Every guard passed; nothing was changed."
     echo "To perform it for real:"
-    echo "  ${cmd} --confirm-token=$(release_token "${scope}" "${sha}")"
+    printf '  %s --confirm-token=%s\n' "${cmd}" "$(release_token "${scope}" "${sha}")"
 }

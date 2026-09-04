@@ -21,8 +21,7 @@ start_ref=$(current_ref)
 restore_ref() { git checkout -q "${start_ref}" 2>/dev/null || true; }
 trap restore_ref EXIT
 
-# Untracked files are tolerated: the release notes live in the worktree between steps 9
-# and 12, and an untracked file cannot affect a checkout or an ff-only merge.
+# Untracked files are tolerated: they cannot affect a checkout or an ff-only merge.
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
     echo "ERROR: working tree has uncommitted changes. Commit or stash first." >&2
     exit 1
@@ -42,6 +41,16 @@ if ! git merge-base --is-ancestor origin/main origin/dev; then
     exit 1
 fi
 
+# Step 6 checks both out. On a fresh clone only one usually exists locally, and failing
+# here beats failing with a raw git error after the operator has already confirmed.
+for branch in dev main; do
+    if ! git rev-parse -q --verify "refs/heads/${branch}" >/dev/null; then
+        echo "ERROR: no local '${branch}' branch. Create it first:" >&2
+        echo "         git branch ${branch} origin/${branch}" >&2
+        exit 1
+    fi
+done
+
 # The version bump (step 3) must already be merged to dev, or staging deploys the wrong number.
 dev_version=$(read_version_from origin/dev)
 if [ "${dev_version}" != "${version}" ]; then
@@ -50,7 +59,6 @@ if [ "${dev_version}" != "${version}" ]; then
     exit 1
 fi
 
-repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
 target=$(git rev-parse --short origin/dev)
 count=$(git rev-list --count origin/main..origin/dev)
 
@@ -94,6 +102,9 @@ if ! run git push origin main; then
     echo "       rewrites the commits with new shas. Either way preflight.sh fails on" >&2
     echo "       every later release until main is merged back into dev." >&2
     echo >&2
+    # Resolved here rather than up front: the rest of this script is pure git, and a gh
+    # outage should not be able to block a staging deploy.
+    repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null || echo '<owner>/<repo>')
     echo "       To move main while preserving the shas, update the ref directly:" >&2
     echo "         gh api -X PATCH repos/${repo}/git/refs/heads/main \\" >&2
     echo "           -f sha=$(git rev-parse origin/dev)" >&2

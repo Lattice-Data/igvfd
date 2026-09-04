@@ -1,6 +1,9 @@
 #!/bin/bash
-# Read-only survey of the release state, including which runbook step comes next.
-# Changes nothing, so it is always safe to run.
+# Survey of the release state, including which runbook step comes next.
+#
+# Makes no outward-facing change and never touches the working tree. It does run
+# 'git fetch -p --tags', which updates and prunes local remote-tracking refs, and it
+# needs gh only to report whether a GitHub Release exists.
 # Usage: scripts/release/preflight.sh
 set -euo pipefail
 
@@ -8,9 +11,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 
 cd "$(git rev-parse --show-toplevel)"
 
-# Untracked files are deliberately tolerated: the release notes live in the worktree
-# between steps 9 and 12, and an untracked file cannot affect a checkout, an ff-only
-# merge or a tag.
+# Untracked files are deliberately tolerated: they cannot affect a checkout, an ff-only
+# merge or a tag, and refusing on them means any stray scratch file blocks a release.
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
     echo "ERROR: working tree has uncommitted changes. Commit or stash before releasing." >&2
     git status --short --untracked-files=no >&2
@@ -21,9 +23,9 @@ git fetch origin -p --tags
 
 main_version=$(read_version_from origin/main)
 dev_version=$(read_version_from origin/dev)
-# Not piped into head, which can take SIGPIPE and trip pipefail.
-last_tag=$(git tag --list 'v*' --sort=-v:refname)
-last_tag=${last_tag%%$'\n'*}
+# Reachable from main rather than the highest v* in the repo, so a tag pushed from some
+# other branch cannot skew the phase detection below.
+last_tag=$(git describe --tags --abbrev=0 --match 'v*' origin/main 2>/dev/null || true)
 
 echo "origin/main : $(git rev-parse --short origin/main)  __version__ = ${main_version}"
 echo "origin/dev  : $(git rev-parse --short origin/dev)  __version__ = ${dev_version}"
@@ -61,8 +63,11 @@ elif [ "${last_tag}" != "v${main_version}" ]; then
     echo "NEXT: main is at ${main_version} and untagged -> step 9 (tag.sh)."
     echo "      If you have not pushed main yet, this is instead steps 2-3 (pick a version, bump PR)."
 else
-    released "${last_tag}"
-    case $? in
+    # Captured rather than called bare: under set -e a non-zero return would exit here
+    # and the case below would never run.
+    rc=0
+    released "${last_tag}" || rc=$?
+    case ${rc} in
         0) echo "NEXT: ${last_tag} is tagged and released -> nothing in flight; steps 2-3 for the next release." ;;
         1) echo "NEXT: ${last_tag} is tagged but has no GitHub Release -> step 12 (publish-release.sh)." ;;
         *) echo "NEXT: ${last_tag} is tagged. Could not reach gh to check for a GitHub Release --"
@@ -72,6 +77,10 @@ fi
 echo
 
 count=$(git rev-list --count origin/main..origin/dev)
-echo "${count} commit(s) on origin/dev not yet on origin/main:"
-echo
-git log --pretty='  %h %s' origin/main..origin/dev
+if [ "${count}" = "0" ]; then
+    echo "origin/main is level with origin/dev; nothing pending."
+else
+    echo "${count} commit(s) on origin/dev not yet on origin/main:"
+    echo
+    git log --pretty='  %h %s' origin/main..origin/dev
+fi

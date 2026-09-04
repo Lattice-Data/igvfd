@@ -1,6 +1,9 @@
 #!/bin/bash
-# Cheap regression coverage for the release scripts. Runs no side effects: it exercises
-# the phase-detection logic with injected state and the guards via --dry-run.
+# Regression coverage for the release scripts.
+#
+# Makes no outward-facing change. The guard checks do invoke the real scripts, which run
+# 'git fetch -p --tags' and (for some paths) gh, so this needs network and gh auth; the
+# logic and argument checks above them do not.
 #
 # Usage: scripts/release/test-release-scripts.sh
 set -uo pipefail
@@ -28,24 +31,31 @@ phase_block=$(mktemp)
 sed -n '/^# Phase detection/,/^fi$/p' "${here}/preflight.sh" > "${phase_block}"
 trap 'rm -f "${phase_block}"' EXIT
 
+# Run under the SAME shell options as preflight.sh. Without -e a bare non-zero command
+# only skips ahead, so this harness once passed while the real script aborted on it.
 phase() {
-    main_version="$1" dev_version="$2" last_tag="$3"
-    released() { return "${4:-1}"; }
-    source "${phase_block}" | head -1
+    local want_rc="${4:-1}"
+    (
+        set -euo pipefail
+        main_version="$1" dev_version="$2" last_tag="$3"
+        released() { return "${want_rc}"; }
+        # shellcheck disable=SC1090
+        source "${phase_block}"
+    ) 2>&1
 }
 
 check 'phase: bump on dev only' 'steps 4-6' \
     "$(phase 11.0.0 12.0.0 v11.0.0)"
-# The regression this test exists for: main and dev both at the new version reads as
-# "no bump yet" unless the tag is consulted first.
+# The regression this exists for: main and dev both at the new version reads as "no bump
+# yet" unless the tag is consulted first.
 check 'phase: pushed but untagged' 'step 9' \
     "$(phase 12.0.0 12.0.0 v11.0.0)"
 check 'phase: tagged, no release' 'step 12' \
-    "$(phase 12.0.0 12.0.0 v12.0.0)"
+    "$(phase 12.0.0 12.0.0 v12.0.0 1)"
 check 'phase: tagged and released' 'nothing in flight' \
-    "$(released() { return 0; }; main_version=12.0.0 dev_version=12.0.0 last_tag=v12.0.0; source "${phase_block}" | head -1)"
+    "$(phase 12.0.0 12.0.0 v12.0.0 0)"
 check 'phase: gh unavailable' 'check by hand' \
-    "$(released() { return 2; }; main_version=12.0.0 dev_version=12.0.0 last_tag=v12.0.0; source "${phase_block}" | head -2 | tail -1)"
+    "$(phase 12.0.0 12.0.0 v12.0.0 2)"
 
 # --- argument parsing ------------------------------------------------------------
 check 'args: flag before positional' '12.0.0' \
@@ -58,35 +68,51 @@ check 'args: extra positional rejected' 'unexpected extra argument' \
     "$(bash -c 'source '"${here}"'/_common.sh; parse_release_args a b c; expect_positional_count 2' 2>&1)"
 
 # --- token ------------------------------------------------------------------------
+# Only claim what it does: same action plus same sha gives the same token, a moved sha
+# gives a different one. It is not a proof that --dry-run ran.
 t1=$(release_token 'tag:12.0.0' 'deadbeef')
-t2=$(release_token 'tag:12.0.0' 'deadbeef')
-t3=$(release_token 'tag:12.0.0' 'cafebabe')
-check 'token: stable for same action' "${t1}" "${t2}"
-[ "${t1}" != "${t3}" ] && { pass=$((pass + 1)); echo 'ok   token: changes when target moves'; } \
-    || { fail=$((fail + 1)); echo 'FAIL token: changes when target moves'; }
+check 'token: stable for the same action' "${t1}" "$(release_token 'tag:12.0.0' 'deadbeef')"
+if [ "${t1}" != "$(release_token 'tag:12.0.0' 'cafebabe')" ]; then
+    pass=$((pass + 1)); echo 'ok   token: changes when the target moves'
+else
+    fail=$((fail + 1)); echo 'FAIL token: changes when the target moves'
+fi
 
-# --- guards, via real invocations that must not have side effects -----------------
-check 'guard: notes file must exist' 'does not resolve' \
-    "$(bash "${here}/tag.sh" 12.0.0 /nonexistent/dir/notes.md --dry-run 2>&1)"
+# --- require_confirmation, exercised directly -------------------------------------
+conf() {
+    bash -c 'source '"${here}"'/_common.sh
+             dry_run=0; assume_yes='"$1"'; confirm_token='"$2"'
+             require_confirmation v9.9.9 scope abcdef
+             echo ACCEPTED' < /dev/null 2>&1
+}
+check 'confirm: non-tty without token refuses' 'not a tty' "$(conf 0 '')"
+check 'confirm: --yes alone is not enough' 'not a tty' "$(conf 1 '')"
+check 'confirm: wrong token rejected' 'does not match' "$(conf 0 nope)"
+check 'confirm: right token accepted' 'ACCEPTED' \
+    "$(conf 0 "$(release_token scope abcdef)")"
+check 'confirm: dry run needs no confirmation' 'ACCEPTED' \
+    "$(bash -c 'source '"${here}"'/_common.sh
+                dry_run=1; assume_yes=0; confirm_token=
+                require_confirmation v1 scope abcdef; echo ACCEPTED' < /dev/null 2>&1)"
 
+# --- guards, via the real scripts (these need network and gh auth) ----------------
 notes=$(mktemp); echo '- note' > "${notes}"
+check 'guard: notes path must resolve' 'does not resolve' \
+    "$(bash "${here}/tag.sh" 12.0.0 /nonexistent/dir/notes.md --dry-run 2>&1)"
 check 'guard: publish needs a tag on origin' 'does not exist on origin' \
     "$(bash "${here}/publish-release.sh" 99.0.0 "${notes}" --dry-run 2>&1)"
 
 # These reach past the uncommitted-changes guard, so they need a clean tree.
-if [ -n "$(git -C "${here}" status --porcelain --untracked-files=no)" ]; then
-    echo 'skip guard: version must match origin/main (tree has uncommitted changes)'
-    echo 'skip guard: non-tty refuses without token (tree has uncommitted changes)'
+if [ -n "$(git status --porcelain --untracked-files=no 2>/dev/null)" ]; then
+    echo 'skip guard: tag.sh version mismatch (tree has uncommitted changes)'
+    echo 'skip guard: merge-to-main.sh version mismatch (tree has uncommitted changes)'
 else
-    check 'guard: version must match origin/main' 'expected' \
+    check 'guard: tag.sh version mismatch' 'expected' \
         "$(bash "${here}/tag.sh" 99.0.0 "${notes}" --dry-run 2>&1)"
-    # Uses the latest real tag, so it gets past the tag check and reaches confirmation.
-    latest=$(git -C "${here}" tag --list 'v*' --sort=-v:refname); latest=${latest%%$'\n'*}
-    check 'guard: non-tty refuses without token' 'not a tty' \
-        "$(bash "${here}/publish-release.sh" "${latest#v}" "${notes}" < /dev/null 2>&1)"
+    # merge-to-main is the script that deploys staging, so its guards matter most.
+    check 'guard: merge-to-main.sh version mismatch' 'Merge the version bump PR' \
+        "$(bash "${here}/merge-to-main.sh" 99.0.1 --dry-run 2>&1)"
 fi
-check 'guard: wrong token rejected' 'does not match' \
-    "$(bash -c 'source '"${here}"'/_common.sh; dry_run=0; assume_yes=0; confirm_token=nope; require_confirmation v1 scope sha' 2>&1)"
 rm -f "${notes}"
 
 echo
