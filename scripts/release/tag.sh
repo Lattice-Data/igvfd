@@ -15,6 +15,7 @@
 # Usage: scripts/release/tag.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]
 set -euo pipefail
 
+# shellcheck source-path=SCRIPTDIR
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 parse_release_args "$@"
 version="${POSITIONAL[0]:?usage: tag.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]}"

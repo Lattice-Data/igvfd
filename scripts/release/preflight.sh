@@ -7,6 +7,7 @@
 # Usage: scripts/release/preflight.sh
 set -euo pipefail
 
+# shellcheck source-path=SCRIPTDIR
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 
 cd "$(git rev-parse --show-toplevel)"

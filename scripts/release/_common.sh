@@ -29,10 +29,10 @@ expect_positional_count() {
 }
 
 # Resolve a path before any cd to the repo root, so relative paths given from a
-# subdirectory still work. CDPATH= because a set CDPATH makes cd echo to stdout.
+# subdirectory still work. CDPATH='' because a set CDPATH makes cd echo to stdout.
 resolve_path() {
     local dir base
-    dir=$(CDPATH= cd -- "$(dirname -- "$1")" 2>/dev/null && pwd) || return 1
+    dir=$(CDPATH='' cd -- "$(dirname -- "$1")" 2>/dev/null && pwd) || return 1
     base=$(basename -- "$1")
     printf '%s/%s' "${dir}" "${base}"
 }

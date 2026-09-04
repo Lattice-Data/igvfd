@@ -8,6 +8,7 @@
 # Usage: scripts/release/merge-to-main.sh X.Y.Z [--dry-run] [--yes|--confirm-token=X]
 set -euo pipefail
 
+# shellcheck source-path=SCRIPTDIR
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 parse_release_args "$@"
 version="${POSITIONAL[0]:?usage: merge-to-main.sh X.Y.Z [--dry-run] [--yes|--confirm-token=X]}"

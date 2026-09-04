@@ -17,6 +17,7 @@ case "${1:-}" in
 esac
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source-path=SCRIPTDIR
 source "${here}/_common.sh"
 
 pass=0
@@ -45,7 +46,11 @@ phase() {
     local want_rc="${4:-1}"
     (
         set -euo pipefail
+        # The phase block reads these three and calls released(); it is sourced at
+        # runtime below, so shellcheck sees neither the reads nor the call.
+        # shellcheck disable=SC2034
         main_version="$1" dev_version="$2" last_tag="$3"
+        # shellcheck disable=SC2329
         released() { return "${want_rc}"; }
         # shellcheck disable=SC1090
         source "${phase_block}"
@@ -97,6 +102,9 @@ strict() {
     bash -c "set -euo pipefail; source '${here}/_common.sh'; $1" 2>&1
 }
 
+# Single-quoted deliberately: strict() re-evaluates this under bash -c, so ${v} has to
+# reach that shell unexpanded.
+# shellcheck disable=SC2016
 check 'version: parses from a local ref' 'MATCHED' \
     "$(strict 'v=$(read_version_from HEAD); [[ "${v}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && echo MATCHED || echo "got ${v}"')"
 check 'version: errors when the file is absent' 'cannot read' \
