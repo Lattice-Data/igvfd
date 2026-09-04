@@ -109,7 +109,8 @@ Everything downstream takes the version as an explicit argument. Nothing derives
 
 1. **Gate:** confirm with the user that the PR is approved and they want staging updated
    now. Say plainly that this deploys staging immediately.
-2. Run `scripts/release/merge-to-main.sh X.Y.Z`.
+2. Run `scripts/release/merge-to-main.sh X.Y.Z` (dry run first, per the rules above --
+   this is the step that deploys staging).
 3. If the push is rejected by branch protection, the script says so and has pushed
    nothing. Report it, and do **not** reach for `gh pr merge`: `--merge` adds a merge
    commit and `--rebase` rewrites the shas, and either one stops `main` being a
@@ -149,7 +150,8 @@ and the tag from step 9 already reflects it.
 
 Only after the user says the AWS step is done.
 
-1. Run `scripts/release/publish-release.sh X.Y.Z <notes-file>`.
+1. Run `scripts/release/publish-release.sh X.Y.Z <notes-file>` (dry run first, per the
+   rules above).
 2. Report the release URL.
 
 ## Resuming mid-release

@@ -48,9 +48,19 @@ if repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null); th
     gh_ok=1
 fi
 
+# 0 = released, 1 = definitively not released, 2 = could not tell.
+#
+# Via gh api rather than 'gh release view', which exits 1 and prints "release not found"
+# for auth and network failures as well as for a genuine 404 -- so it cannot tell "no
+# Release" from "the call failed", and a rate-limit blip would read as "step 12".
 released() {
+    local out rc
     [ "${gh_ok}" = "1" ] || return 2
-    gh release view "$1" --repo "${repo}" >/dev/null 2>&1
+    out=$(gh api "repos/${repo}/releases/tags/$1" 2>&1)
+    rc=$?
+    [ "${rc}" = "0" ] && return 0
+    printf '%s' "${out}" | grep -q 'HTTP 404' && return 1
+    return 2
 }
 
 # Phase detection. The tag has to be consulted before the version comparison: right after

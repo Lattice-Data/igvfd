@@ -82,6 +82,22 @@ else
     fail=$((fail + 1)); echo 'FAIL token: changes when the target moves'
 fi
 
+# --- version parsing and path resolution ------------------------------------------
+# Both are offline and local, and read_version_from's sed pattern is the single point of
+# failure for the version guards in merge-to-main.sh and tag.sh -- so they belong in the
+# group CI can run.
+check 'version: parses from a local ref' 'MATCHED' \
+    "$(v=$(read_version_from HEAD); [[ "${v}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && echo MATCHED || echo "got '${v}'")"
+# The empty tree has no such file, so git errors, sed matches nothing, and the guard must
+# refuse rather than yield an empty version that compares equal to another empty one.
+check 'version: errors when the file is absent' 'could not parse __version__' \
+    "$(bash -c 'source '"${here}"'/_common.sh
+                read_version_from "$(git hash-object -t tree /dev/null)"' 2>&1)"
+check 'path: resolves a relative path' "${here}/_common.sh" \
+    "$(cd "${here}" && resolve_path ./_common.sh)"
+check 'path: fails on a missing directory' 'FAILED' \
+    "$(resolve_path /nonexistent/dir/notes.md || echo FAILED)"
+
 # --- require_confirmation, exercised directly -------------------------------------
 conf() {
     bash -c 'source '"${here}"'/_common.sh

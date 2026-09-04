@@ -115,9 +115,14 @@ if ! run git push origin main; then
     # Resolved here rather than up front: the rest of this script is pure git, and a gh
     # outage should not be able to block a staging deploy.
     repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null || echo '<owner>/<repo>')
-    echo "       To move main while preserving the shas, update the ref directly:" >&2
+    echo "       A ref update preserves the shas, but note it is subject to the same" >&2
+    echo "       branch protection that just rejected the push -- it only works if you" >&2
+    echo "       have bypass or admin rights on main. Omitting force is deliberate: the" >&2
+    echo "       API refuses a non-fast-forward by default." >&2
     echo "         gh api -X PATCH repos/${repo}/git/refs/heads/main \\" >&2
     echo "           -f sha=$(git rev-parse origin/dev)" >&2
+    echo >&2
+    echo "       If you lack those rights, this needs whoever administers the branch." >&2
     exit 1
 fi
 
