@@ -18,8 +18,10 @@ notes_file=$(resolve_path "${notes_file}") \
 
 cd "$(git rev-parse --show-toplevel)"
 
-if [ ! -s "${notes_file}" ]; then
-    echo "ERROR: notes file '${notes_file}' is missing or empty." >&2
+# -f as well as -s: resolve_path succeeds on a directory and -s is true for a non-empty
+# one, so without this a directory argument gets through and fails later inside git.
+if [ ! -f "${notes_file}" ] || [ ! -s "${notes_file}" ]; then
+    echo "ERROR: notes file '${notes_file}' is not a readable, non-empty file." >&2
     exit 1
 fi
 

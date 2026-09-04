@@ -28,8 +28,10 @@ notes_file=$(resolve_path "${notes_file}") \
 
 cd "$(git rev-parse --show-toplevel)"
 
-if [ ! -s "${notes_file}" ]; then
-    echo "ERROR: notes file '${notes_file}' is missing or empty." >&2
+# -f as well as -s: resolve_path succeeds on a directory and -s is true for a non-empty
+# one, so without this a directory argument gets through and fails later inside git.
+if [ ! -f "${notes_file}" ] || [ ! -s "${notes_file}" ]; then
+    echo "ERROR: notes file '${notes_file}' is not a readable, non-empty file." >&2
     exit 1
 fi
 
@@ -61,18 +63,32 @@ fi
 
 scope="tag:${version}"
 tag_exists=0
-# Deliberately a local check, unlike merge-to-main's remote one: this branch exists to
-# recover a previous run whose push failed, i.e. precisely the case where the tag is local
-# and not on origin. A stale local tag pointing elsewhere errors with a 'git tag -d' hint.
+# Ask the remote first. This branch exists to recover a run whose push failed, i.e. a
+# local-only tag -- but the 'git fetch -p --tags' above pulls every origin tag into
+# refs/tags/, so a local check alone cannot tell the two apart. Getting that wrong is
+# costly in both directions: an origin tag at main's commit would be reported as a
+# successful re-tag of a release that already shipped, and an origin tag elsewhere would
+# be met with a 'git tag -d' hint that re-fetches on the next run (so it never clears)
+# and points the operator at deleting a published tag.
+if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+    echo "ERROR: tag ${tag} exists on origin, so ${version} looks already released." >&2
+    echo "       Refusing to re-tag. If this is genuinely wrong, the published tag has to" >&2
+    echo "       be dealt with as a deliberate, separate decision -- not as part of a" >&2
+    echo "       release run." >&2
+    exit 1
+fi
+
+# Local-only from here, which is the case the recovery hint below correctly describes.
 if git rev-parse -q --verify "refs/tags/${tag}" >/dev/null; then
     existing=$(git rev-list -n1 "${tag}")
     if [ "${existing}" != "${main_sha}" ]; then
-        echo "ERROR: tag ${tag} already exists at $(git rev-parse --short "${existing}"), not at" >&2
-        echo "       main (${short_sha}). Delete it deliberately ('git tag -d ${tag}') first." >&2
+        echo "ERROR: local tag ${tag} exists at $(git rev-parse --short "${existing}"), not at" >&2
+        echo "       main (${short_sha}). It is not on origin, so deleting it is safe:" >&2
+        echo "       'git tag -d ${tag}', then re-run." >&2
         exit 1
     fi
     tag_exists=1
-    echo "Tag ${tag} already exists locally at ${short_sha}."
+    echo "Tag ${tag} already exists locally at ${short_sha}, not yet on origin."
 fi
 
 echo
