@@ -41,23 +41,33 @@ if ! git merge-base --is-ancestor origin/main origin/dev; then
     exit 1
 fi
 
-# Step 6 checks both out. On a fresh clone only one usually exists locally, and failing
-# here beats failing with a raw git error after the operator has already confirmed.
-for branch in dev main; do
-    if ! git rev-parse -q --verify "refs/heads/${branch}" >/dev/null; then
-        echo "ERROR: no local '${branch}' branch. Create it first:" >&2
-        echo "         git branch ${branch} origin/${branch}" >&2
-        exit 1
-    fi
-done
-
-# The version bump (step 3) must already be merged to dev, or staging deploys the wrong number.
+# The version bump (step 3) must already be merged to dev, or staging deploys the wrong
+# number. Checked before anything about local branches: it reads only origin/dev, and a
+# wrong version is the more useful thing to hear about first.
 dev_version=$(read_version_from origin/dev)
 if [ "${dev_version}" != "${version}" ]; then
     echo "ERROR: origin/dev has __version__ = '${dev_version}', expected '${version}'." >&2
     echo "       Merge the version bump PR to dev first (step 3)." >&2
     exit 1
 fi
+
+# Step 6 checks both branches out and fast-forwards each to its remote. Assert both are
+# possible now rather than discovering it at the merge: those merges run only for real,
+# so without this a dry run would report success and the real run would then die on git's
+# bare "Not possible to fast-forward" right after the operator confirmed.
+for branch in dev main; do
+    if ! git rev-parse -q --verify "refs/heads/${branch}" >/dev/null; then
+        echo "ERROR: no local '${branch}' branch. Create it first:" >&2
+        echo "         git branch ${branch} origin/${branch}" >&2
+        exit 1
+    fi
+    if ! git merge-base --is-ancestor "refs/heads/${branch}" "origin/${branch}"; then
+        echo "ERROR: local '${branch}' has commits not on origin/${branch}, so it cannot be" >&2
+        echo "       fast-forwarded. Reconcile it first, e.g.:" >&2
+        echo "         git checkout ${branch} && git status" >&2
+        exit 1
+    fi
+done
 
 target=$(git rev-parse --short origin/dev)
 count=$(git rev-list --count origin/main..origin/dev)

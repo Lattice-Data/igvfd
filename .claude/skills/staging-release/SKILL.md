@@ -71,8 +71,10 @@ make it, not to make it for them.
    `git diff --stat origin/main..origin/dev -- src/igvfd/schemas src/igvfd/upgrade`
    Schema changes, new required properties, changed enums, or new steps under
    `src/igvfd/upgrade/` all point at a major bump. Say which of these you found.
-3. State the facts that bear on the choice: the current version, and that every igvfd tag
-   so far has been a major bump (v3 ... v11).
+3. State the facts that bear on the choice: the current version, and what the release
+   history actually looks like. Read it rather than assuming --
+   `git tag --list 'v*' --sort=-v:refname` -- so this stays true after the first minor
+   release instead of repeating something written down here.
 4. Remind the user of step 1: confirm the JIRA release is clean and all tickets are
    merged to `dev`.
 5. **Hard gate.** Ask the user outright which version to release, and stop. Do not name a

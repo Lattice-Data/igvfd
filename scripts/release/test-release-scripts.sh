@@ -1,12 +1,16 @@
 #!/bin/bash
 # Regression coverage for the release scripts.
 #
-# Makes no outward-facing change. The guard checks do invoke the real scripts, which run
-# 'git fetch -p --tags' and (for some paths) gh, so this needs network and gh auth; the
-# logic and argument checks above them do not.
+# Makes no outward-facing change. Most checks -- phase detection, argument parsing, the
+# token, the confirmation gate -- need neither network nor gh auth. The last group
+# invokes the real scripts, which run 'git fetch -p --tags' and call gh; --offline skips
+# those so CI can run the rest without repo credentials.
 #
-# Usage: scripts/release/test-release-scripts.sh
+# Usage: scripts/release/test-release-scripts.sh [--offline]
 set -uo pipefail
+
+offline=0
+[ "${1:-}" = "--offline" ] && offline=1
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${here}/_common.sh"
@@ -96,6 +100,14 @@ check 'confirm: dry run needs no confirmation' 'ACCEPTED' \
                 require_confirmation v1 scope abcdef; echo ACCEPTED' < /dev/null 2>&1)"
 
 # --- guards, via the real scripts (these need network and gh auth) ----------------
+if [ "${offline}" = "1" ]; then
+    echo 'skip guard checks (--offline: they fetch and call gh)'
+    echo
+    echo "${pass} passed, ${fail} failed"
+    [ "${fail}" -eq 0 ]
+    exit $?
+fi
+
 notes=$(mktemp); echo '- note' > "${notes}"
 check 'guard: notes path must resolve' 'does not resolve' \
     "$(bash "${here}/tag.sh" 12.0.0 /nonexistent/dir/notes.md --dry-run 2>&1)"
@@ -109,7 +121,9 @@ if [ -n "$(git status --porcelain --untracked-files=no 2>/dev/null)" ]; then
 else
     check 'guard: tag.sh version mismatch' 'expected' \
         "$(bash "${here}/tag.sh" 99.0.0 "${notes}" --dry-run 2>&1)"
-    # merge-to-main is the script that deploys staging, so its guards matter most.
+    # merge-to-main is the script that deploys staging, so its guards matter most. The
+    # version guard deliberately precedes the local-branch guard, so this assertion holds
+    # on a fresh clone that has only its default branch.
     check 'guard: merge-to-main.sh version mismatch' 'Merge the version bump PR' \
         "$(bash "${here}/merge-to-main.sh" 99.0.1 --dry-run 2>&1)"
 fi

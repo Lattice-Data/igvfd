@@ -17,6 +17,18 @@ jobs:
       - name: Run pre-commit
         run: pre-commit run --all-files
 
+  release-scripts:
+    # The release scripts' push/tag/release paths only run during a real release, so this
+    # suite is their only automated protection. --offline skips the checks that fetch or
+    # call gh, leaving the phase detection, argument parsing, token and confirmation
+    # logic -- which is where a regression would otherwise go unnoticed until a release.
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run release script tests
+        run: ./scripts/release/test-release-scripts.sh --offline
+
   cdk-mypy:
     runs-on: ubuntu-latest
     needs: lint
