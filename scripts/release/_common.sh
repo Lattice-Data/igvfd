@@ -54,12 +54,19 @@ current_ref() {
 }
 
 read_version_from() {
-    local v
+    local contents v
+    # git show is captured on its own rather than piped straight into sed: in a pipeline
+    # its failure would trip pipefail and abort the caller with a bare git error, so the
+    # message below would never be reached.
+    if ! contents=$(git show "$1:src/igvfd/__init__.py" 2>/dev/null); then
+        echo "ERROR: cannot read src/igvfd/__init__.py at '$1'." >&2
+        exit 1
+    fi
     # sed -n exits 0 on no match, so an unparsed version would otherwise sail through as
     # an empty string and compare equal to another empty string.
-    v=$(git show "$1:src/igvfd/__init__.py" | sed -n "s/^__version__ = '\(.*\)'\$/\1/p")
+    v=$(printf '%s\n' "${contents}" | sed -n "s/^__version__ = '\(.*\)'\$/\1/p")
     if [ -z "${v}" ]; then
-        echo "ERROR: could not parse __version__ from $1:src/igvfd/__init__.py" >&2
+        echo "ERROR: could not parse __version__ from '$1':src/igvfd/__init__.py" >&2
         exit 1
     fi
     printf '%s' "${v}"

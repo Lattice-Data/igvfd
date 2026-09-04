@@ -86,17 +86,42 @@ fi
 # Both are offline and local, and read_version_from's sed pattern is the single point of
 # failure for the version guards in merge-to-main.sh and tag.sh -- so they belong in the
 # group CI can run.
+# Run under the real scripts' shell options. Under a plain bash -c these guards appear to
+# work while the real caller aborts earlier on a pipefail -- the same way the phase
+# harness once passed against a broken preflight.
+strict() {
+    bash -c "set -euo pipefail; source '${here}/_common.sh'; $1" 2>&1
+}
+
 check 'version: parses from a local ref' 'MATCHED' \
-    "$(v=$(read_version_from HEAD); [[ "${v}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && echo MATCHED || echo "got '${v}'")"
-# The empty tree has no such file, so git errors, sed matches nothing, and the guard must
-# refuse rather than yield an empty version that compares equal to another empty one.
-check 'version: errors when the file is absent' 'could not parse __version__' \
-    "$(bash -c 'source '"${here}"'/_common.sh
-                read_version_from "$(git hash-object -t tree /dev/null)"' 2>&1)"
+    "$(strict 'v=$(read_version_from HEAD); [[ "${v}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && echo MATCHED || echo "got ${v}"')"
+check 'version: errors when the file is absent' 'cannot read' \
+    "$(strict 'read_version_from deadbeefnotaref')"
+# The reachable half of the guard: git show succeeds but the pattern does not match.
+# Built from loose objects so no ref is touched.
+synthetic_tree() {
+    local blob inner mid
+    blob=$(printf "__VERSION__ = '1.0.0'\n" | git hash-object -w --stdin)
+    inner=$(printf '100644 blob %s\t__init__.py\n' "${blob}" | git mktree)
+    mid=$(printf '040000 tree %s\tigvfd\n' "${inner}" | git mktree)
+    printf '040000 tree %s\tsrc\n' "${mid}" | git mktree
+}
+check 'version: errors when the pattern does not match' 'could not parse __version__' \
+    "$(strict "read_version_from $(synthetic_tree)")"
 check 'path: resolves a relative path' "${here}/_common.sh" \
     "$(cd "${here}" && resolve_path ./_common.sh)"
 check 'path: fails on a missing directory' 'FAILED' \
     "$(resolve_path /nonexistent/dir/notes.md || echo FAILED)"
+
+# --- run(), the basis of the entire --dry-run story -------------------------------
+marker=$(mktemp -u)
+check 'dry run: run() does not execute the command' 'NOT EXECUTED' \
+    "$(dry_run=1; run touch "${marker}" >/dev/null; [ -e "${marker}" ] && echo EXECUTED || echo NOT EXECUTED)"
+check 'dry run: run() prints what it would do' 'DRY RUN: touch' \
+    "$(dry_run=1; run touch "${marker}")"
+check 'dry run: run() does execute when not dry' 'EXECUTED' \
+    "$(dry_run=0; run touch "${marker}" >/dev/null; [ -e "${marker}" ] && echo EXECUTED || echo 'NOT EXECUTED')"
+rm -f "${marker}"
 
 # --- require_confirmation, exercised directly -------------------------------------
 conf() {

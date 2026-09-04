@@ -165,5 +165,16 @@ version and that is otherwise indistinguishable from no bump having happened.
 One thing `preflight.sh` cannot know: whether the AWS approval has happened. If it reports
 step 12, ask.
 
+Step 12 also needs the notes file from Phase E, which a resumed session will not have in
+hand. Look for
+`"$(git rev-parse --absolute-git-dir)"/release-notes-X.Y.Z.md`. If it is gone -- likely on
+a different machine or a fresh clone -- do not rewrite the notes from scratch, because
+they would then disagree with the tag. Recover the originals from the annotated tag, which
+is where step 9 stored them:
+
+```
+git tag -l --format='%(contents)' vX.Y.Z > "$(git rev-parse --absolute-git-dir)"/release-notes-X.Y.Z.md
+```
+
 Never re-derive the version from the repo when resuming without confirming it with the
 user first.
