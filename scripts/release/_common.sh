@@ -147,3 +147,20 @@ print_dry_run_footer() {
     echo "To perform it for real:"
     printf '  %s --confirm-token=%s\n' "${cmd}" "$(release_token "${scope}" "${sha}")"
 }
+
+
+# owner/repo from origin's URL. Deliberately not 'gh repo view': that uses gh's base-repo
+# resolution, which prefers the parent for a fork and is overridden outright by GH_REPO --
+# so it can name a repo the tag was never pushed to, and since forks share object storage
+# a release against it can succeed. Everything else in these scripts talks to origin, so
+# this keeps the gh calls pointed at the same place as the git ones.
+origin_repo() {
+    local url slug
+    url=$(git remote get-url origin) || return 1
+    slug=$(printf '%s' "${url}" | sed -E 's#^(https?://[^/]+/|ssh://[^/]+/|[^@]+@[^:]+:)##; s#/*$##; s#\.git$##')
+    if ! printf '%s' "${slug}" | grep -Eq '^[^/]+/[^/]+$'; then
+        echo "ERROR: could not derive owner/repo from origin URL '${url}'." >&2
+        return 1
+    fi
+    printf '%s' "${slug}"
+}

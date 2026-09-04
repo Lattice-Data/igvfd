@@ -46,7 +46,7 @@ fi
 # itself instead of being read as "no Release exists".
 repo=""
 gh_ok=0
-if repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null); then
+if repo=$(origin_repo 2>/dev/null); then
     gh_ok=1
 fi
 
@@ -58,8 +58,12 @@ fi
 released() {
     local out rc
     [ "${gh_ok}" = "1" ] || return 2
-    out=$(gh api "repos/${repo}/releases/tags/$1" 2>&1)
-    rc=$?
+    # rc captured on the assignment, not after it: a bare failing assignment aborts under
+    # set -e, which is how the not-released branch went unreachable in preflight once
+    # already. It survives today only because the single call site is 'released ... || rc=$?',
+    # and a second, bare call would reintroduce the bug.
+    rc=0
+    out=$(gh api "repos/${repo}/releases/tags/$1" 2>&1) || rc=$?
     [ "${rc}" = "0" ] && return 0
     printf '%s' "${out}" | grep -q 'HTTP 404' && return 1
     return 2

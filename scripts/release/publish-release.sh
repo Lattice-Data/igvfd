@@ -42,9 +42,9 @@ if ! git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1;
     exit 1
 fi
 
-# Derive the repo from the checkout so the release cannot be created somewhere the tag
-# was never pushed.
-repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
+# From origin, so the release cannot be created somewhere the tag was never pushed. See
+# origin_repo in _common.sh for why 'gh repo view' does not give that guarantee.
+repo=$(origin_repo)
 # From the remote, so a stale local tag cannot make the confirmation line lie.
 target=$(git ls-remote --tags origin "refs/tags/${tag}^{}" | cut -f1)
 [ -n "${target}" ] || target=$(git ls-remote --tags origin "refs/tags/${tag}" | cut -f1)
