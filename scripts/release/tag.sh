@@ -107,4 +107,4 @@ fi
 echo
 echo "Tagged ${tag} at ${short_sha}."
 echo "Next: step 10 (#aws-igvf-staging), step 11 (AWS approval -> production/sandbox),"
-echo "then step 12: scripts/release/publish-release.sh ${version} ${notes_file}"
+echo "then step 12: scripts/release/publish-release.sh ${version} '${notes_file}'"

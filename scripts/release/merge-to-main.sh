@@ -19,7 +19,10 @@ start_ref=$(current_ref)
 
 # Any failure past this point returns the operator to where they started, so a failed
 # run never silently strands them on main or dev.
-restore_ref() { git checkout -q "${start_ref}" 2>/dev/null || true; }
+restore_ref() {
+    git checkout -q "${start_ref}" 2>/dev/null && return 0
+    echo "WARNING: could not return to '${start_ref}'; you are on $(git rev-parse --abbrev-ref HEAD)." >&2
+}
 trap restore_ref EXIT
 
 # Untracked files do not block a release by themselves, so they are not grounds to
@@ -65,9 +68,16 @@ for branch in dev main; do
         echo "         git branch ${branch} origin/${branch}" >&2
         exit 1
     fi
-    if ! git merge-base --is-ancestor "refs/heads/${branch}" "origin/${branch}"; then
-        echo "ERROR: local '${branch}' has commits not on origin/${branch}, so it cannot be" >&2
-        echo "       fast-forwarded. Reconcile it first, e.g.:" >&2
+    # Behind or level is the normal case. Ahead is also fine provided everything extra is
+    # already on origin/dev -- that is exactly the state this script's own failed-push path
+    # leaves behind (local main fast-forwarded, not pushed), and the retry it invites has
+    # to be allowed. 'git merge <ancestor> --ff-only' exits 0 there ("Already up to date");
+    # --ff-only only fails on real divergence. Ahead with unrelated local commits is what
+    # the second disjunct still rejects.
+    if ! git merge-base --is-ancestor "refs/heads/${branch}" "origin/${branch}" \
+       && ! git merge-base --is-ancestor "refs/heads/${branch}" origin/dev; then
+        echo "ERROR: local '${branch}' carries commits that are on neither origin/${branch}" >&2
+        echo "       nor origin/dev, so it cannot be fast-forwarded. Reconcile it first:" >&2
         echo "         git checkout ${branch} && git status" >&2
         exit 1
     fi

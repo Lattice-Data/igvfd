@@ -107,19 +107,35 @@ strict() {
 # shellcheck disable=SC2016
 check 'version: parses from a local ref' 'MATCHED' \
     "$(strict 'v=$(read_version_from HEAD); [[ "${v}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] && echo MATCHED || echo "got ${v}"')"
-check 'version: errors when the file is absent' 'cannot read' \
+check 'version: errors on a ref that does not exist' 'no such ref' \
     "$(strict 'read_version_from deadbeefnotaref')"
 # The reachable half of the guard: git show succeeds but the pattern does not match.
-# Built from loose objects so no ref is touched.
-synthetic_tree() {
+# Built in a throwaway object store, so the real repo's database is left alone.
+synthetic_repo=$(mktemp -d)
+git init -q --bare "${synthetic_repo}"
+build_tree() {
+    export GIT_DIR="${synthetic_repo}"
     local blob inner mid
-    blob=$(printf "__VERSION__ = '1.0.0'\n" | git hash-object -w --stdin)
-    inner=$(printf '100644 blob %s\t__init__.py\n' "${blob}" | git mktree)
+    blob=$(printf '%s\n' "$2" | git hash-object -w --stdin)
+    inner=$(printf '100644 blob %s\t%s\n' "${blob}" "$1" | git mktree)
     mid=$(printf '040000 tree %s\tigvfd\n' "${inner}" | git mktree)
     printf '040000 tree %s\tsrc\n' "${mid}" | git mktree
 }
+# Present but unparseable, versus resolvable ref with no such file.
+tree_bad_pattern=$(build_tree __init__.py "__VERSION__ = '1.0.0'")
+tree_no_file=$(build_tree somethingelse.py "irrelevant")
+
+strict_in_repo() {
+    bash -c "set -euo pipefail
+             export GIT_DIR='${synthetic_repo}'
+             source '${here}/_common.sh'
+             $1" 2>&1
+}
 check 'version: errors when the pattern does not match' 'could not parse __version__' \
-    "$(strict "read_version_from $(synthetic_tree)")"
+    "$(strict_in_repo "read_version_from ${tree_bad_pattern}")"
+check 'version: errors when the file is absent' 'cannot read' \
+    "$(strict_in_repo "read_version_from ${tree_no_file}")"
+rm -rf "${synthetic_repo}"
 check 'path: resolves a relative path' "${here}/_common.sh" \
     "$(cd "${here}" && resolve_path ./_common.sh)"
 check 'path: fails on a missing directory' 'FAILED' \
@@ -146,6 +162,10 @@ for scope in 'merge-to-main:9.9.9' 'tag:9.9.9' 'publish:9.9.9'; do
         "--confirm-token=$(release_token "${scope}" abc123)" \
         "$(dry_run=1; print_dry_run_footer "${scope}" abc123 'cmd')"
 done
+
+# tag.sh resolves the notes path before its first fetch or gh call, so this is offline.
+check 'guard: notes path must resolve' 'does not resolve' \
+    "$(bash "${here}/tag.sh" 12.0.0 /nonexistent/dir/notes.md --dry-run 2>&1)"
 
 # --- release notes survive the annotated tag --------------------------------------
 # In a throwaway repo, so this is offline and touches nothing here. git tag defaults to
@@ -228,8 +248,6 @@ if [ "${offline}" = "1" ]; then
 fi
 
 notes=$(mktemp); echo '- note' > "${notes}"
-check 'guard: notes path must resolve' 'does not resolve' \
-    "$(bash "${here}/tag.sh" 12.0.0 /nonexistent/dir/notes.md --dry-run 2>&1)"
 check 'guard: publish needs a tag on origin' 'does not exist on origin' \
     "$(bash "${here}/publish-release.sh" 99.0.0 "${notes}" --dry-run 2>&1)"
 

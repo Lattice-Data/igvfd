@@ -49,8 +49,20 @@ target=$(git ls-remote --tags origin "refs/tags/${tag}^{}" | cut -f1)
 
 scope="publish:${version}"
 
-if gh release view "${tag}" --repo "${repo}" >/dev/null 2>&1; then
+# Via gh api, matching preflight.sh: 'gh release view' cannot tell a 404 from an auth or
+# network failure, and it also finds drafts that repos/.../releases/tags/X does not -- so
+# using different calls here and there let the two disagree about whether step 12 was
+# outstanding. A draft escapes both; 'gh release create' still refuses one.
+# rc captured explicitly: under set -euo pipefail a bare failing assignment aborts the
+# script, which is how the not-released branch went unreachable in preflight once already.
+probe_rc=0
+release_probe=$(gh api "repos/${repo}/releases/tags/${tag}" 2>&1) || probe_rc=$?
+if [ "${probe_rc}" = "0" ]; then
     echo "ERROR: a GitHub Release for ${tag} already exists on ${repo}. Nothing to do." >&2
+    exit 1
+elif ! printf '%s' "${release_probe}" | grep -q 'HTTP 404'; then
+    echo "ERROR: could not determine whether ${tag} already has a GitHub Release." >&2
+    printf '       %s\n' "${release_probe}" >&2
     exit 1
 fi
 

@@ -57,10 +57,17 @@ $ git pull
 # verify main is what you expect before tagging:
 $ git log -1 --oneline
 
-# --cleanup=whitespace matters: git tag defaults to stripping every line that
-# starts with '#', which silently deletes the markdown headings from the notes.
-$ git tag -a vX.Y.Z --cleanup=whitespace # Add vX.Y.Z to details
+put the details in a file rather than typing them into the editor:
+$ vi /tmp/release-notes-X.Y.Z.md
+
+# Both flags matter. Without --cleanup=whitespace, git strips every line starting
+# with '#', silently deleting the markdown headings. And -F avoids the editor
+# entirely: with --cleanup=whitespace git's editor template says its own '#' lines
+# "will be kept", so anything left behind ends up inside the tag message.
+$ git tag -a vX.Y.Z --cleanup=whitespace -F /tmp/release-notes-X.Y.Z.md
 $ git push origin tags/vX.Y.Z
+
+keep that file: step 12 needs the same text.
 ```
 
 10. Monitor batch-upgrade errors and messages in slack channel #aws-igvf-staging

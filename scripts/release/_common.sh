@@ -59,7 +59,14 @@ read_version_from() {
     # its failure would trip pipefail and abort the caller with a bare git error, so the
     # message below would never be reached.
     if ! contents=$(git show "$1:src/igvfd/__init__.py" 2>/dev/null); then
-        echo "ERROR: cannot read src/igvfd/__init__.py at '$1'." >&2
+        if ! git rev-parse -q --verify "$1" >/dev/null 2>&1; then
+            # Distinguished because a single-branch clone lacking origin/dev is a very
+            # different problem from the file having moved.
+            echo "ERROR: no such ref '$1'. A single-branch clone may not have it; try" >&2
+            echo "       'git remote set-branches --add origin dev && git fetch origin'." >&2
+        else
+            echo "ERROR: cannot read src/igvfd/__init__.py at '$1'." >&2
+        fi
         exit 1
     fi
     # sed -n exits 0 on no match, so an unparsed version would otherwise sail through as
