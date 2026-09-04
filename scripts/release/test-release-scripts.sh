@@ -10,7 +10,11 @@
 set -uo pipefail
 
 offline=0
-[ "${1:-}" = "--offline" ] && offline=1
+case "${1:-}" in
+    '') ;;
+    --offline) offline=1 ;;
+    *) echo "ERROR: unknown argument '$1'; only --offline is accepted." >&2; exit 1 ;;
+esac
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${here}/_common.sh"
@@ -115,13 +119,25 @@ check 'path: fails on a missing directory' 'FAILED' \
 
 # --- run(), the basis of the entire --dry-run story -------------------------------
 marker=$(mktemp -u)
-check 'dry run: run() does not execute the command' 'NOT EXECUTED' \
-    "$(dry_run=1; run touch "${marker}" >/dev/null; [ -e "${marker}" ] && echo EXECUTED || echo NOT EXECUTED)"
+# RAN/SKIPPED rather than EXECUTED/NOT EXECUTED: check() matches on substring, and
+# "NOT EXECUTED" contains "EXECUTED", which made the third check unable to fail.
+check 'dry run: run() does not execute the command' 'SKIPPED' \
+    "$(dry_run=1; run touch "${marker}" >/dev/null; [ -e "${marker}" ] && echo RAN || echo SKIPPED)"
 check 'dry run: run() prints what it would do' 'DRY RUN: touch' \
     "$(dry_run=1; run touch "${marker}")"
-check 'dry run: run() does execute when not dry' 'EXECUTED' \
-    "$(dry_run=0; run touch "${marker}" >/dev/null; [ -e "${marker}" ] && echo EXECUTED || echo 'NOT EXECUTED')"
+check 'dry run: run() does execute when not dry' 'RAN' \
+    "$(dry_run=0; run touch "${marker}" >/dev/null; [ -e "${marker}" ] && echo RAN || echo SKIPPED)"
 rm -f "${marker}"
+
+# print_dry_run_footer prints the token the agent must copy into the real run, and each
+# script spells its scope string twice -- once here, once at require_confirmation. A typo
+# in either half would make the printed token never accepted, breaking every
+# non-interactive run of that script. Assert the two agree for the scopes in use.
+for scope in 'merge-to-main:9.9.9' 'tag:9.9.9' 'publish:9.9.9'; do
+    check "footer: token matches require_confirmation for ${scope}" \
+        "--confirm-token=$(release_token "${scope}" abc123)" \
+        "$(dry_run=1; print_dry_run_footer "${scope}" abc123 'cmd')"
+done
 
 # --- release notes survive the annotated tag --------------------------------------
 # In a throwaway repo, so this is offline and touches nothing here. git tag defaults to
@@ -214,7 +230,7 @@ if [ -n "$(git status --porcelain --untracked-files=no 2>/dev/null)" ]; then
     echo 'skip guard: tag.sh version mismatch (tree has uncommitted changes)'
     echo 'skip guard: merge-to-main.sh version mismatch (tree has uncommitted changes)'
 else
-    check 'guard: tag.sh version mismatch' 'expected' \
+    check 'guard: tag.sh version mismatch' "expected '99.0.0'" \
         "$(bash "${here}/tag.sh" 99.0.0 "${notes}" --dry-run 2>&1)"
     # merge-to-main is the script that deploys staging, so its guards matter most. The
     # version guard deliberately precedes the local-branch guard, so this assertion holds

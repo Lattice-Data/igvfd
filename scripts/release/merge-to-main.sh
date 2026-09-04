@@ -31,9 +31,11 @@ fi
 git fetch origin -p --tags
 
 # Not because this script tags -- it does not -- but because an existing tag means this
-# version was already released, and the operator has almost certainly mistyped.
-if git rev-parse -q --verify "refs/tags/v${version}" >/dev/null; then
-    echo "ERROR: tag v${version} already exists, so ${version} looks already released." >&2
+# version was already released, and the operator has almost certainly mistyped. Asked of
+# the remote: 'fetch -p' prunes branches but not tags, so a tag deleted upstream lingers
+# locally and a local-only check would block the release on stale state.
+if git ls-remote --exit-code --tags origin "refs/tags/v${version}" >/dev/null 2>&1; then
+    echo "ERROR: tag v${version} exists on origin, so ${version} looks already released." >&2
     exit 1
 fi
 
@@ -77,7 +79,7 @@ for branch in dev main; do
         <(git ls-tree -r --name-only "origin/${branch}" | sort))
     if [ -n "${clash}" ]; then
         echo "ERROR: these untracked files would be overwritten by checking out ${branch}:" >&2
-        printf '         %s\n' ${clash} >&2
+        printf '%s\n' "${clash}" | sed 's/^/         /' >&2
         echo "       Move or remove them first." >&2
         exit 1
     fi
@@ -85,6 +87,10 @@ done
 
 target=$(git rev-parse --short origin/dev)
 count=$(git rev-list --count origin/main..origin/dev)
+# Spelled once: the confirmation and the footer must agree on scope and sha, or the token
+# the dry run prints is never accepted.
+scope="merge-to-main:${version}"
+target_sha=$(git rev-parse origin/dev)
 
 if [ "${count}" = "0" ]; then
     echo "Nothing to do: origin/main is already at origin/dev (${target})."
@@ -95,7 +101,7 @@ echo
 echo "About to fast-forward main to ${target} (${count} commit(s)) and push."
 echo "This DEPLOYS STAGING immediately. It does not touch production."
 echo
-require_confirmation "${version}" "merge-to-main:${version}" "$(git rev-parse origin/dev)"
+require_confirmation "${version}" "${scope}" "${target_sha}"
 
 # Advancing local dev and main to match their remotes mirrors the runbook's step 6
 # verbatim. More working-tree churn than the fast-forward strictly needs, but it keeps
@@ -141,7 +147,7 @@ if ! run git push origin main; then
 fi
 
 if [ "${dry_run}" = "1" ]; then
-    print_dry_run_footer "merge-to-main:${version}" "$(git rev-parse origin/dev)" \
+    print_dry_run_footer "${scope}" "${target_sha}" \
         "scripts/release/merge-to-main.sh ${version}"
     exit 0
 fi

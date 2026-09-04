@@ -57,7 +57,9 @@ $ git pull
 # verify main is what you expect before tagging:
 $ git log -1 --oneline
 
-$ git tag -a vX.Y.Z # Add vX.Y.Z to details
+# --cleanup=whitespace matters: git tag defaults to stripping every line that
+# starts with '#', which silently deletes the markdown headings from the notes.
+$ git tag -a vX.Y.Z --cleanup=whitespace # Add vX.Y.Z to details
 $ git push origin tags/vX.Y.Z
 ```
 

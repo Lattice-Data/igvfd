@@ -46,6 +46,8 @@ repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner)
 target=$(git ls-remote --tags origin "refs/tags/${tag}^{}" | cut -f1)
 [ -n "${target}" ] || target=$(git ls-remote --tags origin "refs/tags/${tag}" | cut -f1)
 
+scope="publish:${version}"
+
 if gh release view "${tag}" --repo "${repo}" >/dev/null 2>&1; then
     echo "ERROR: a GitHub Release for ${tag} already exists on ${repo}. Nothing to do." >&2
     exit 1
@@ -54,7 +56,7 @@ fi
 echo
 echo "About to publish a public GitHub Release ${tag} on ${repo} at $(git rev-parse --short "${target}")."
 echo
-require_confirmation "${tag}" "publish:${version}" "${target}"
+require_confirmation "${tag}" "${scope}" "${target}"
 
 if ! run gh release create "${tag}" \
     --repo "${repo}" \
@@ -64,13 +66,13 @@ if ! run gh release create "${tag}" \
     echo >&2
     echo "ERROR: creating the GitHub Release failed. The tag is unaffected; retry with:" >&2
     echo "         gh release create ${tag} --repo ${repo} --title ${tag} \\" >&2
-    echo "           --target ${target} --notes-file ${notes_file}" >&2
+    echo "           --target ${target} --notes-file '${notes_file}'" >&2
     exit 1
 fi
 
 if [ "${dry_run}" = "1" ]; then
-    print_dry_run_footer "publish:${version}" "${target}" \
-        "scripts/release/publish-release.sh ${version} ${notes_file}"
+    print_dry_run_footer "${scope}" "${target}" \
+        "scripts/release/publish-release.sh ${version} '${notes_file}'"
     exit 0
 fi
 echo

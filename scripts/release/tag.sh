@@ -58,7 +58,11 @@ if [ "${main_sha}" != "$(git rev-parse origin/dev)" ] \
     echo
 fi
 
+scope="tag:${version}"
 tag_exists=0
+# Deliberately a local check, unlike merge-to-main's remote one: this branch exists to
+# recover a previous run whose push failed, i.e. precisely the case where the tag is local
+# and not on origin. A stale local tag pointing elsewhere errors with a 'git tag -d' hint.
 if git rev-parse -q --verify "refs/tags/${tag}" >/dev/null; then
     existing=$(git rev-list -n1 "${tag}")
     if [ "${existing}" != "${main_sha}" ]; then
@@ -75,7 +79,7 @@ echo "About to tag ${tag} at ${short_sha} ($(git log -1 --pretty=%s "${main_sha}
 echo
 # Before any side effect, including the re-run path where the tag already exists: pushing
 # a tag is outward-facing either way.
-require_confirmation "${tag}" "tag:${version}" "${main_sha}"
+require_confirmation "${tag}" "${scope}" "${main_sha}"
 
 if [ "${tag_exists}" = "0" ]; then
     # --cleanup=whitespace, because git tag defaults to 'strip', which discards every
@@ -94,8 +98,8 @@ if ! run git push origin "refs/tags/${tag}"; then
 fi
 
 if [ "${dry_run}" = "1" ]; then
-    print_dry_run_footer "tag:${version}" "${main_sha}" \
-        "scripts/release/tag.sh ${version} ${notes_file}"
+    print_dry_run_footer "${scope}" "${main_sha}" \
+        "scripts/release/tag.sh ${version} '${notes_file}'"
     exit 0
 fi
 
