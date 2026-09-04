@@ -78,7 +78,12 @@ echo
 require_confirmation "${tag}" "tag:${version}" "${main_sha}"
 
 if [ "${tag_exists}" = "0" ]; then
-    run git tag -a "${tag}" -F "${notes_file}" "${main_sha}"
+    # --cleanup=whitespace, because git tag defaults to 'strip', which discards every
+    # line starting with '#' -- i.e. every markdown heading in the release notes. The
+    # default silently shrinks the notes, makes the tag disagree with the GitHub Release
+    # (built from the file, not the tag), and in the all-headings case leaves the tag
+    # message empty.
+    run git tag -a "${tag}" --cleanup=whitespace -F "${notes_file}" "${main_sha}"
 fi
 
 if ! run git push origin "refs/tags/${tag}"; then

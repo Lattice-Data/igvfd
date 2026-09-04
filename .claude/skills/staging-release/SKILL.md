@@ -169,8 +169,9 @@ Step 12 also needs the notes file from Phase E, which a resumed session will not
 hand. Look for
 `"$(git rev-parse --absolute-git-dir)"/release-notes-X.Y.Z.md`. If it is gone -- likely on
 a different machine or a fresh clone -- do not rewrite the notes from scratch, because
-they would then disagree with the tag. Recover the originals from the annotated tag, which
-is where step 9 stored them:
+they would then disagree with the tag. Recover them from the annotated tag, which is where
+step 9 stored them verbatim (`tag.sh` passes `--cleanup=whitespace` precisely so markdown
+headings survive; git's default would strip every `#` line):
 
 ```
 git tag -l --format='%(contents)' vX.Y.Z > "$(git rev-parse --absolute-git-dir)"/release-notes-X.Y.Z.md

@@ -123,6 +123,31 @@ check 'dry run: run() does execute when not dry' 'EXECUTED' \
     "$(dry_run=0; run touch "${marker}" >/dev/null; [ -e "${marker}" ] && echo EXECUTED || echo 'NOT EXECUTED')"
 rm -f "${marker}"
 
+# --- release notes survive the annotated tag --------------------------------------
+# In a throwaway repo, so this is offline and touches nothing here. git tag defaults to
+# --cleanup=strip, which eats every markdown heading; the resume path in SKILL.md reads
+# the notes back out of the tag, so a lossy round-trip would hand back wrong notes while
+# calling them the originals.
+notes_repo=$(mktemp -d)
+(
+    cd "${notes_repo}" || exit 1
+    git init -q . && git commit -q --allow-empty -m init
+    printf '## DB2-1: a change\n- detail\n\n## Other\n- housekeeping\n' > n.md
+    # Mirrors the flags tag.sh uses.
+    git tag -a v1 --cleanup=whitespace -F n.md
+    git tag -l --format='%(contents)' v1 > out.md
+) >/dev/null 2>&1
+check 'notes: headings survive the tag round-trip' 'HEADINGS KEPT' \
+    "$(grep -qc '^## Other' "${notes_repo}/out.md" >/dev/null 2>&1 && grep -q '^## DB2-1: a change' "${notes_repo}/out.md" && echo 'HEADINGS KEPT' || echo "lost: $(cat "${notes_repo}/out.md")")"
+# Guards the default: if someone drops --cleanup, this is what happens.
+(
+    cd "${notes_repo}" || exit 1
+    git tag -a v2 -F n.md && git tag -l --format='%(contents)' v2 > default.md
+) >/dev/null 2>&1
+check 'notes: default cleanup would lose them (documents why the flag is needed)' 'STRIPPED' \
+    "$(grep -q '^## ' "${notes_repo}/default.md" && echo 'KEPT -- git changed, revisit tag.sh' || echo STRIPPED)"
+rm -rf "${notes_repo}"
+
 # --- require_confirmation, exercised directly -------------------------------------
 conf() {
     bash -c 'source '"${here}"'/_common.sh
@@ -167,6 +192,12 @@ else
     # on a fresh clone that has only its default branch.
     check 'guard: merge-to-main.sh version mismatch' 'Merge the version bump PR' \
         "$(bash "${here}/merge-to-main.sh" 99.0.1 --dry-run 2>&1)"
+    # The overwrite pre-check must agree with what git actually refuses on. In a clean
+    # checkout there is no overlap; the intersection is what merge-to-main.sh computes.
+    check 'guard: no untracked files would be overwritten' 'NO CLASH' \
+        "$(c=$(comm -12 <(git ls-files --others --exclude-standard | sort) \
+                        <(git ls-tree -r --name-only origin/dev | sort)); \
+           [ -z "${c}" ] && echo 'NO CLASH' || echo "would clash: ${c}")"
 fi
 rm -f "${notes}"
 

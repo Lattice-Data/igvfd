@@ -11,8 +11,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 
 cd "$(git rev-parse --show-toplevel)"
 
-# Untracked files are deliberately tolerated: they cannot affect a checkout, an ff-only
-# merge or a tag, and refusing on them means any stray scratch file blocks a release.
+# Untracked files are deliberately tolerated here: this script only reads, and refusing
+# on them would mean any stray scratch file blocks a release. merge-to-main.sh does check
+# whether they would be overwritten by the checkouts it performs.
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
     echo "ERROR: working tree has uncommitted changes. Commit or stash before releasing." >&2
     git status --short --untracked-files=no >&2

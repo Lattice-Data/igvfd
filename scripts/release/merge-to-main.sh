@@ -21,7 +21,8 @@ start_ref=$(current_ref)
 restore_ref() { git checkout -q "${start_ref}" 2>/dev/null || true; }
 trap restore_ref EXIT
 
-# Untracked files are tolerated: they cannot affect a checkout or an ff-only merge.
+# Untracked files do not block a release by themselves, so they are not grounds to
+# refuse -- but they are not harmless either: see the overwrite pre-check below.
 if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
     echo "ERROR: working tree has uncommitted changes. Commit or stash first." >&2
     exit 1
@@ -65,6 +66,19 @@ for branch in dev main; do
         echo "ERROR: local '${branch}' has commits not on origin/${branch}, so it cannot be" >&2
         echo "       fast-forwarded. Reconcile it first, e.g.:" >&2
         echo "         git checkout ${branch} && git status" >&2
+        exit 1
+    fi
+    # git checkout and git merge --ff-only both abort with "would be overwritten" when the
+    # incoming tree tracks a path that exists here untracked. Those commands run only for
+    # real, so without this the dry run would report success and the real run would die on
+    # the checkout right after the operator confirmed.
+    clash=$(comm -12 \
+        <(git ls-files --others --exclude-standard | sort) \
+        <(git ls-tree -r --name-only "origin/${branch}" | sort))
+    if [ -n "${clash}" ]; then
+        echo "ERROR: these untracked files would be overwritten by checking out ${branch}:" >&2
+        printf '         %s\n' ${clash} >&2
+        echo "       Move or remove them first." >&2
         exit 1
     fi
 done
