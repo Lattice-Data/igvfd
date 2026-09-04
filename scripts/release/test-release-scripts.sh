@@ -129,23 +129,52 @@ rm -f "${marker}"
 # the notes back out of the tag, so a lossy round-trip would hand back wrong notes while
 # calling them the originals.
 notes_repo=$(mktemp -d)
-(
+# An explicit identity: CI runners have no global user.name/user.email and git's
+# hostname-based fallback fails there, so both the commit and the annotated tag would
+# refuse. Output is captured rather than discarded -- swallowing it is why the first CI
+# failure of this block reported only "lost:" with no cause.
+notes_setup=$( (
     cd "${notes_repo}" || exit 1
-    git init -q . && git commit -q --allow-empty -m init
+    export GIT_AUTHOR_NAME=test GIT_AUTHOR_EMAIL=test@example.com \
+           GIT_COMMITTER_NAME=test GIT_COMMITTER_EMAIL=test@example.com
+    git init -q . || exit 1
+    git commit -q --allow-empty -m init || exit 1
     printf '## DB2-1: a change\n- detail\n\n## Other\n- housekeeping\n' > n.md
-    # Mirrors the flags tag.sh uses.
-    git tag -a v1 --cleanup=whitespace -F n.md
-    git tag -l --format='%(contents)' v1 > out.md
-) >/dev/null 2>&1
-check 'notes: headings survive the tag round-trip' 'HEADINGS KEPT' \
-    "$(grep -qc '^## Other' "${notes_repo}/out.md" >/dev/null 2>&1 && grep -q '^## DB2-1: a change' "${notes_repo}/out.md" && echo 'HEADINGS KEPT' || echo "lost: $(cat "${notes_repo}/out.md")")"
-# Guards the default: if someone drops --cleanup, this is what happens.
-(
-    cd "${notes_repo}" || exit 1
-    git tag -a v2 -F n.md && git tag -l --format='%(contents)' v2 > default.md
-) >/dev/null 2>&1
-check 'notes: default cleanup would lose them (documents why the flag is needed)' 'STRIPPED' \
-    "$(grep -q '^## ' "${notes_repo}/default.md" && echo 'KEPT -- git changed, revisit tag.sh' || echo STRIPPED)"
+    # v1 mirrors the flags tag.sh uses; v2 pins git's default for comparison.
+    git tag -a v1 --cleanup=whitespace -F n.md || exit 1
+    git tag -l --format='%(contents)' v1 > out.md || exit 1
+    git tag -a v2 -F n.md || exit 1
+    git tag -l --format='%(contents)' v2 > default.md || exit 1
+# The redirect belongs inside the substitution: outside it applies to the assignment and
+# stderr escapes to the terminal instead of being captured.
+) 2>&1 )
+notes_setup_rc=$?
+
+if [ "${notes_setup_rc}" != "0" ]; then
+    fail=$((fail + 2))
+    printf 'FAIL notes: could not set up the throwaway repo (rc=%s)\n       %s\n' \
+        "${notes_setup_rc}" "${notes_setup}"
+    printf 'FAIL notes: skipped, setup failed\n'
+else
+    check 'notes: headings survive the tag round-trip' 'HEADINGS KEPT' \
+        "$(if grep -q '^## Other' "${notes_repo}/out.md" \
+              && grep -q '^## DB2-1: a change' "${notes_repo}/out.md"; then
+               echo 'HEADINGS KEPT'
+           else
+               echo "lost: $(cat "${notes_repo}/out.md")"
+           fi)"
+    # Asserts the file exists first: without that this passes vacuously when setup fails,
+    # because grep on a missing file also reports "no headings found". That is exactly how
+    # it passed in the CI run where the round-trip check failed.
+    check 'notes: default cleanup would lose them (documents why the flag is needed)' 'STRIPPED' \
+        "$(if [ ! -f "${notes_repo}/default.md" ]; then
+               echo 'MISSING default.md'
+           elif grep -q '^## ' "${notes_repo}/default.md"; then
+               echo 'KEPT -- git changed, revisit tag.sh'
+           else
+               echo STRIPPED
+           fi)"
+fi
 rm -rf "${notes_repo}"
 
 # --- require_confirmation, exercised directly -------------------------------------
