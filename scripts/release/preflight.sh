@@ -46,7 +46,9 @@ fi
 # itself instead of being read as "no Release exists".
 repo=""
 gh_ok=0
-if repo=$(origin_repo 2>/dev/null); then
+# Not 2>/dev/null: origin_repo's own message names the real problem, and swallowing it
+# left an unparseable origin URL surfacing later as "could not reach gh".
+if repo=$(origin_repo); then
     gh_ok=1
 fi
 

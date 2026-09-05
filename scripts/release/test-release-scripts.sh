@@ -141,6 +141,42 @@ check 'path: resolves a relative path' "${here}/_common.sh" \
 check 'path: fails on a missing directory' 'FAILED' \
     "$(resolve_path /nonexistent/dir/notes.md || echo FAILED)"
 
+# --- origin_repo ------------------------------------------------------------------
+# Pure string work, no network and no gh, so it belongs in the group CI runs -- and it
+# is the function that decides which repo a public Release is created on and which repo
+# preflight probes, so an unguarded regression there is expensive. A throwaway repo per
+# case, because origin_repo reads the real 'origin'.
+with_origin() {
+    local dir out
+    dir=$(mktemp -d)
+    ( cd "${dir}" && git init -q . && git remote add origin "$1" ) >/dev/null 2>&1
+    out=$(cd "${dir}" && bash -c "set -euo pipefail; source '${here}/_common.sh'; origin_repo" 2>&1) \
+        || out="REJECTED"
+    rm -rf "${dir}"
+    printf '%s' "${out}"
+}
+check 'origin_repo: https with .git'      'o/r' "$(with_origin 'https://github.com/o/r.git')"
+check 'origin_repo: https without .git'   'o/r' "$(with_origin 'https://github.com/o/r')"
+check 'origin_repo: scp-style with user'  'o/r' "$(with_origin 'git@github.com:o/r.git')"
+check 'origin_repo: ssh:// URL'           'o/r' "$(with_origin 'ssh://git@github.com/o/r.git')"
+check 'origin_repo: trailing slash'       'o/r' "$(with_origin 'https://github.com/o/r/')"
+# Rejections. The three-segment path would otherwise silently drop a segment, and the
+# scp-style form with no user keeps the host in the slug.
+check 'origin_repo: rejects a three-segment path' 'REJECTED' \
+    "$(with_origin 'https://ghe.example.com/a/b/c.git')"
+check 'origin_repo: rejects scp-style with no user' 'REJECTED' \
+    "$(with_origin 'github.com:o/r')"
+
+# --- notes_digest, which the confirmation token folds in ---------------------------
+digest_a=$(printf '# A\n\nfirst\n' > "${here}/.t-notes-a" && notes_digest "${here}/.t-notes-a")
+digest_b=$(printf '# B\n\nsecond\n' > "${here}/.t-notes-b" && notes_digest "${here}/.t-notes-b")
+check 'notes: digest is stable for the same content' "${digest_a}" \
+    "$(notes_digest "${here}/.t-notes-a")"
+check 'notes: different notes give a different token' 'DIFFERENT' \
+    "$([ "$(release_token "tag:1.0.0:${digest_a}" abc123)" \
+        != "$(release_token "tag:1.0.0:${digest_b}" abc123)" ] && echo DIFFERENT || echo SAME)"
+rm -f "${here}/.t-notes-a" "${here}/.t-notes-b"
+
 # --- run(), the basis of the entire --dry-run story -------------------------------
 marker=$(mktemp -u)
 # RAN/SKIPPED rather than EXECUTED/NOT EXECUTED: check() matches on substring, and

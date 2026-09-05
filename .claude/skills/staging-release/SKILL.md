@@ -28,8 +28,11 @@ it, not a replacement. If the two ever disagree, the doc wins -- say so and stop
   3. Get an explicit yes for that specific step.
   4. Re-run with the `--confirm-token=` the dry run printed.
 
-  `--yes` does not work without a tty. If a token is rejected, the target moved since the
-  dry run: start again at step 1 rather than reaching for a way around it.
+  `--yes` does not work without a tty. If a token is rejected, something the token covers
+  changed since the dry run -- the target commit, or for `tag.sh` and `publish-release.sh`
+  the notes file, whose contents are folded into the token so that confirming the notes
+  actually binds. Editing the notes after a dry run is therefore expected to invalidate
+  it. Either way: start again at step 1 rather than reaching for a way around it.
 
   Do not mistake the token for the thing that makes this safe. It is a hash of the action
   and the target commit, so it catches a moved target and nothing else -- it does not
@@ -49,7 +52,7 @@ above for how that works when you are the one running it:
 
 | Script | Doc step | What it does |
 |---|---|---|
-| `preflight.sh` | -- | Read-only. Versions on main and dev, latest tag, **which step is next**, pending commits. |
+| `preflight.sh` | -- | Makes no remote changes, but does `git fetch origin -p --tags`, so local remote-tracking refs are updated and pruned. Versions on main and dev, latest tag, **which step is next**, pending commits. |
 | `merge-to-main.sh X.Y.Z` | 6 | ff-only merge of dev into main, then push. Deploys staging. |
 | `tag.sh X.Y.Z NOTES` | 9 | Tags **main** and pushes the tag. |
 | `publish-release.sh X.Y.Z NOTES` | 12 | Publishes the GitHub Release from that tag. |

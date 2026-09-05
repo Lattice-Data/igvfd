@@ -11,7 +11,8 @@ set -euo pipefail
 # shellcheck source-path=SCRIPTDIR
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 parse_release_args "$@"
-version="${POSITIONAL[0]:?usage: merge-to-main.sh X.Y.Z [--dry-run] [--yes|--confirm-token=X]}"
+require_positional 1 "merge-to-main.sh X.Y.Z [--dry-run] [--yes|--confirm-token=X]"
+version="${POSITIONAL[0]}"
 expect_positional_count 1
 
 cd "$(git rev-parse --show-toplevel)"
@@ -145,7 +146,7 @@ if ! run git push origin main; then
     echo >&2
     # Resolved here rather than up front: the rest of this script is pure git, and a gh
     # outage should not be able to block a staging deploy.
-    repo=$(gh repo view --json nameWithOwner --jq .nameWithOwner 2>/dev/null || echo '<owner>/<repo>')
+    repo=$(origin_repo 2>/dev/null || echo '<owner>/<repo>')
     echo "       Establish why the push was rejected before going further. Direct pushes" >&2
     echo "       to main are normally allowed (see docs/staging_deploy.md), so a rejection" >&2
     echo "       is an anomaly. If it is a required status check that has not passed, the" >&2

@@ -8,8 +8,9 @@ set -euo pipefail
 # shellcheck source-path=SCRIPTDIR
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 parse_release_args "$@"
-version="${POSITIONAL[0]:?usage: publish-release.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]}"
-notes_file="${POSITIONAL[1]:?usage: publish-release.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]}"
+require_positional 2 "publish-release.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]"
+version="${POSITIONAL[0]}"
+notes_file="${POSITIONAL[1]}"
 expect_positional_count 2
 tag="v${version}"
 
@@ -20,7 +21,7 @@ cd "$(git rev-parse --show-toplevel)"
 
 # -f as well as -s: resolve_path succeeds on a directory and -s is true for a non-empty
 # one, so without this a directory argument gets through and fails later inside git.
-if [ ! -f "${notes_file}" ] || [ ! -s "${notes_file}" ]; then
+if [ ! -f "${notes_file}" ] || [ ! -r "${notes_file}" ] || [ ! -s "${notes_file}" ]; then
     echo "ERROR: notes file '${notes_file}' is not a readable, non-empty file." >&2
     exit 1
 fi
@@ -49,7 +50,7 @@ repo=$(origin_repo)
 target=$(git ls-remote --tags origin "refs/tags/${tag}^{}" | cut -f1)
 [ -n "${target}" ] || target=$(git ls-remote --tags origin "refs/tags/${tag}" | cut -f1)
 
-scope="publish:${version}"
+scope="publish:${version}:$(notes_digest "${notes_file}")"
 
 # Via gh api, matching preflight.sh: 'gh release view' cannot tell a 404 from an auth or
 # network failure, and it also finds drafts that repos/.../releases/tags/X does not -- so

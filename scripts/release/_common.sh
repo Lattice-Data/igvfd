@@ -20,6 +20,18 @@ parse_release_args() {
     done
 }
 
+# ${POSITIONAL[0]:?usage} does not work on bash 3.2 (macOS's default /bin/bash): under
+# set -u an empty array subscript raises 'POSITIONAL[0]: unbound variable' before the
+# :?-message is reached, so the caller sees a shell error instead of usage. Callers use
+# this instead.
+require_positional() {
+    local n="$1" usage="$2"
+    if [ "${#POSITIONAL[@]}" -lt "${n}" ]; then
+        echo "usage: ${usage}" >&2
+        exit 1
+    fi
+}
+
 # A flag that lost its leading dashes lands in POSITIONAL and would otherwise be ignored.
 expect_positional_count() {
     if [ "${#POSITIONAL[@]}" -gt "$1" ]; then
@@ -86,17 +98,29 @@ read_version_from() {
 # already knows, with no secret and no stored state, so anyone can compute it directly.
 # Treat it as a target-moved check, nothing more.
 release_token() {
-    local sha
-    # sha256sum on most Linux images, shasum on macOS. Neither is universal.
+    printf '%s:%s' "$1" "$2" | sha256_hex | cut -c1-8
+}
+
+# sha256 of stdin as hex. sha256sum on most Linux images, shasum on macOS. Neither is
+# universal.
+sha256_hex() {
     if command -v shasum >/dev/null 2>&1; then
-        sha=$(printf '%s:%s' "$1" "$2" | shasum -a 256)
+        shasum -a 256
     elif command -v sha256sum >/dev/null 2>&1; then
-        sha=$(printf '%s:%s' "$1" "$2" | sha256sum)
+        sha256sum
     else
-        echo "ERROR: need shasum or sha256sum to compute a confirmation token." >&2
+        echo "ERROR: need shasum or sha256sum to compute a digest." >&2
         exit 1
     fi
-    printf '%s' "${sha}" | cut -c1-8
+}
+
+# Short digest of the notes file, folded into the confirmation scope by the two scripts
+# that take one. Without it the token covers the action and the target sha but not the
+# notes, so a token minted against one set of notes is accepted for another -- and
+# confirming the notes is itself one of the human gates. The cost is intended: editing
+# the notes invalidates the token, which is what makes the second gate mean something.
+notes_digest() {
+    sha256_hex < "$1" | cut -c1-8
 }
 
 # The confirmation gate.
@@ -158,7 +182,10 @@ origin_repo() {
     local url slug
     url=$(git remote get-url origin) || return 1
     slug=$(printf '%s' "${url}" | sed -E 's#^(https?://[^/]+/|ssh://[^/]+/|[^@]+@[^:]+:)##; s#/*$##; s#\.git$##')
-    if ! printf '%s' "${slug}" | grep -Eq '^[^/]+/[^/]+$'; then
+    # ':' rejected too: an scp-style remote with no user (github.com:owner/repo, valid
+    # with an ssh config alias) survives the substitutions above and would otherwise pass
+    # as the slug 'github.com:owner/repo'.
+    if printf '%s' "${slug}" | grep -q ':' || ! printf '%s' "${slug}" | grep -Eq '^[^/]+/[^/]+$'; then
         echo "ERROR: could not derive owner/repo from origin URL '${url}'." >&2
         return 1
     fi

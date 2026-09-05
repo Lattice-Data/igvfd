@@ -18,8 +18,9 @@ set -euo pipefail
 # shellcheck source-path=SCRIPTDIR
 source "$(dirname "${BASH_SOURCE[0]}")/_common.sh"
 parse_release_args "$@"
-version="${POSITIONAL[0]:?usage: tag.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]}"
-notes_file="${POSITIONAL[1]:?usage: tag.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]}"
+require_positional 2 "tag.sh X.Y.Z NOTES_FILE [--dry-run] [--yes|--confirm-token=X]"
+version="${POSITIONAL[0]}"
+notes_file="${POSITIONAL[1]}"
 expect_positional_count 2
 tag="v${version}"
 
@@ -30,7 +31,7 @@ cd "$(git rev-parse --show-toplevel)"
 
 # -f as well as -s: resolve_path succeeds on a directory and -s is true for a non-empty
 # one, so without this a directory argument gets through and fails later inside git.
-if [ ! -f "${notes_file}" ] || [ ! -s "${notes_file}" ]; then
+if [ ! -f "${notes_file}" ] || [ ! -r "${notes_file}" ] || [ ! -s "${notes_file}" ]; then
     echo "ERROR: notes file '${notes_file}' is not a readable, non-empty file." >&2
     exit 1
 fi
@@ -61,7 +62,7 @@ if [ "${main_sha}" != "$(git rev-parse origin/dev)" ] \
     echo
 fi
 
-scope="tag:${version}"
+scope="tag:${version}:$(notes_digest "${notes_file}")"
 tag_exists=0
 # Ask the remote first. This branch exists to recover a run whose push failed, i.e. a
 # local-only tag -- but the 'git fetch -p --tags' above pulls every origin tag into

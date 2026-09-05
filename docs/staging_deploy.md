@@ -28,7 +28,7 @@ $ git checkout main
 $ git pull
 $ git merge dev --ff-only
 
-proceed ONLY if no merge conflicts/errors encountered!
+# proceed ONLY if no merge conflicts/errors encountered!
 
 $ git push origin main
 ```
@@ -57,17 +57,20 @@ $ git pull
 # verify main is what you expect before tagging:
 $ git log -1 --oneline
 
-put the details in a file rather than typing them into the editor:
-$ vi /tmp/release-notes-X.Y.Z.md
+# Put the details in a file rather than typing them into the editor. Keep it in the
+# git dir rather than /tmp or the checkout: step 12 needs the same text two human
+# gates later, /tmp is cleared on reboot, and inside the checkout it shows up as
+# untracked in every 'git status' in between.
+$ vi "$(git rev-parse --absolute-git-dir)"/release-notes-X.Y.Z.md
 
 # Both flags matter. Without --cleanup=whitespace, git strips every line starting
 # with '#', silently deleting the markdown headings. And -F avoids the editor
 # entirely: with --cleanup=whitespace git's editor template says its own '#' lines
 # "will be kept", so anything left behind ends up inside the tag message.
-$ git tag -a vX.Y.Z --cleanup=whitespace -F /tmp/release-notes-X.Y.Z.md
+$ git tag -a vX.Y.Z --cleanup=whitespace -F "$(git rev-parse --absolute-git-dir)"/release-notes-X.Y.Z.md
 $ git push origin tags/vX.Y.Z
 
-keep that file: step 12 needs the same text.
+# Keep that file: step 12 needs the same text.
 ```
 
 10. Monitor batch-upgrade errors and messages in slack channel #aws-igvf-staging
