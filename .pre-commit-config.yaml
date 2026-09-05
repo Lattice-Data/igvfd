@@ -16,3 +16,23 @@ repos:
         args: ['--autofix', '--no-sort-keys', '--indent=4', '--no-ensure-ascii']
         exclude: ^(cdk)/tests/unit/snapshots
       - id: check-yaml
+
+  # shellcheck-py rather than koalaman/shellcheck-precommit: same shellcheck, but
+  # pre-commit installs the binary from a wheel instead of pulling a Docker image, so
+  # 'git commit' never blocks on a registry. The directives in scripts/release/ went in
+  # unenforced precisely because shellcheck was not installed locally; this way nobody
+  # has to install it.
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        # -x so the sourced _common.sh is actually read. Without it every 'source' line
+        # is an SC1091 and every variable _common.sh sets -- dry_run, confirm_token --
+        # reads as unassigned: 10 of the 16 initial findings were that one gap.
+        args: [-x]
+        # Scoped to the release scripts, whose shellcheck directives this hook exists to
+        # enforce. docker/*.sh and scripts/pyramid/*.sh carry ~26 pre-existing findings;
+        # two pyramid scripts have no shebang, so silencing SC2148 there means picking an
+        # interpreter for scripts CI runs directly. That is a behaviour change, not a
+        # lint fix, so widening this pattern is left to a follow-up.
+        files: ^scripts/release/
