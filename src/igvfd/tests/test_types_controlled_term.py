@@ -192,6 +192,10 @@ def test_controlled_term_zfs_create(testapp):
         ('michael-ward', 'CL:1000013'),
         ('jay-thiagarajah', 'CL:1000014'),
         ('merlin-lange', 'CL:1000016'),
+        ('shyam-prabhakar', 'CL:1000017'),
+        ('john-tsang', 'CL:1000018'),
+        ('silvia-domcke', 'CL:1000019'),
+        ('will-allen', 'CL:1000020'),
         ('lattice', 'CL:1000015'),
     ],
 )
@@ -204,6 +208,27 @@ def test_controlled_term_alias_prefixes_allowed(testapp, prefix, term_id):
     }
     res = testapp.post_json('/controlled_term', item, status=201)
     assert res.json['@graph'][0]['aliases'] == item['aliases']
+
+
+@pytest.mark.parametrize(
+    'alias',
+    [
+        'shyam_prabhakar:test-alias',
+        'john-tsang-lab:test-alias',
+        'silvia-domke:test-alias',
+        'Will-Allen:test-alias',
+    ],
+)
+def test_controlled_term_alias_prefixes_rejected(testapp, alias):
+    # Near misses of allowed prefixes: the prefix must match exactly, case included,
+    # and be followed directly by the colon.
+    item = {
+        'term_id': 'CL:1000021',
+        'ontology_source': 'CL',
+        'aliases': [alias],
+        'status': 'current',
+    }
+    testapp.post_json('/controlled_term', item, status=422)
 
 
 def test_controlled_term_dbxrefs_rejects_surrounding_whitespace(testapp):
