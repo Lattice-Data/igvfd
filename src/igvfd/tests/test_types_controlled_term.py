@@ -228,7 +228,8 @@ def test_controlled_term_alias_prefixes_rejected(testapp, alias):
         'aliases': [alias],
         'status': 'current',
     }
-    testapp.post_json('/controlled_term', item, status=422)
+    res = testapp.post_json('/controlled_term', item, status=422)
+    assert any(error.get('name') == ['aliases', 0] for error in res.json['errors'])
 
 
 def test_controlled_term_dbxrefs_rejects_surrounding_whitespace(testapp):
