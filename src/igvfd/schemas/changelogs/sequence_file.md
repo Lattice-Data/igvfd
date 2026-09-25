@@ -6,6 +6,10 @@
 
 ### Minor changes since schema version 4
 
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
 * Update inherited `file_size` and `crc64nvme_base64` comments from file profile.
 
 ### Minor changes since schema version 3

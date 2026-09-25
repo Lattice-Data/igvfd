@@ -2,6 +2,10 @@
 
 ## Minor changes since schema version 2
 
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
 * Add *dbxrefs*, accepting SRA and ENA run identifiers requiring at least one identifier when submitted, and anchored at true end of input.
 * Extend sequencing_platform enum list to include Illumina NovaSeq 6000.
 * Extend sequencing_platform enum list to include Illumina NovaSeq X.

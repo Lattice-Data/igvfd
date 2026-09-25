@@ -1,5 +1,12 @@
 # Biosample Changelog
 
+## Minor changes since schema version 4
+
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
+
 ## Schema version 4
 
 * Remove *dbxrefs*.

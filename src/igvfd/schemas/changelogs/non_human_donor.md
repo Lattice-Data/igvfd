@@ -1,5 +1,12 @@
 ## Changelog for non_human_donor.json
 
+### Minor changes since schema version 2
+
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
+
 ### Schema version 2
 
 * Require cxg_donor_id.

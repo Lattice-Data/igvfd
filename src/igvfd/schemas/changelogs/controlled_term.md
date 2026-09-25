@@ -1,5 +1,12 @@
 # Controlled Term Changelog
 
+### Minor changes since schema version 3
+
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
+
 ### Schema version 3
 
 * Anchor *dbxrefs* at true end of input with `(?![\s\S])` rather than `$`, rejecting trailing whitespace consistently across regex dialects.

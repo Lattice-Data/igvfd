@@ -2,6 +2,10 @@
 
 ### Minor changes since schema version 2
 
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
 * Add *dbxrefs*, accepting GEO series, SRA study, and ENA study identifiers requiring at least one identifier when submitted, and anchored at true end of input.
 
 ### Schema version 2

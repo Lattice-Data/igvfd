@@ -1,5 +1,12 @@
 ## Changelog for tabular_file.json
 
+### Minor changes since schema version 5
+
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
+
 ### Schema version 5
 
 * Add `guides_signature`.
