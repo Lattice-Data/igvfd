@@ -217,11 +217,14 @@ def test_controlled_term_alias_prefixes_allowed(testapp, prefix, term_id):
         'john-tsang-lab:test-alias',
         'silvia-domke:test-alias',
         'Will-Allen:test-alias',
+        'john-doe:test-alias',
+        'will-allen:',
     ],
 )
 def test_controlled_term_alias_prefixes_rejected(testapp, alias):
     # Near misses of allowed prefixes: the prefix must match exactly, case included,
-    # and be followed directly by the colon.
+    # and be followed directly by the colon. Unknown prefixes and an empty identifier
+    # are rejected too.
     item = {
         'term_id': 'CL:1000021',
         'ontology_source': 'CL',
