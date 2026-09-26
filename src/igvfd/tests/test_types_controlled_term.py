@@ -244,7 +244,7 @@ def test_controlled_term_alias_allows_only_single_spaces(testapp):
     assert res.json['@graph'][0]['aliases'] == ['will-allen:test alias']
     at_id = res.json['@graph'][0]['@id']
     for bad in ['will-allen:test-alias\n', 'will-allen:test\talias', 'will-allen:test\nalias',
-                'will-allen:test alias', 'will-allen:test  alias', ' will-allen:test-alias',
+                'will-allen:test\xa0alias', 'will-allen:test  alias', ' will-allen:test-alias',
                 'will-allen:test-alias ']:
         res = testapp.patch_json(at_id, {'aliases': [bad]}, status=422)
         assert any(error.get('name') == ['aliases', 0] for error in res.json['errors']), repr(bad)
