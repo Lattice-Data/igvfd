@@ -1,6 +1,8 @@
 from snovault.upgrader import upgrade_step
 from uuid import UUID
 
+from .aliases import preserve_invalid_aliases
+
 # Placeholder satisfies schema pattern until submitters supply S3 ChecksumCRC64NVME.
 _CRC64NVME_BASE64_PLACEHOLDER = 'AAAAAAAAAAA'
 
@@ -56,3 +58,8 @@ def tabular_file_4_5(value, system):
     if _GUIDES_SIGNATURE_UPGRADE_COMMENT in existing_comment:
         return
     value['submitter_comment'] = f'{existing_comment} {_GUIDES_SIGNATURE_UPGRADE_COMMENT}'.strip()
+
+
+@upgrade_step('tabular_file', '5', '6')
+def tabular_file_5_6(value, system):
+    preserve_invalid_aliases(value)

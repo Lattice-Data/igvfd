@@ -1,5 +1,7 @@
 from snovault.upgrader import upgrade_step
 
+from .aliases import preserve_invalid_aliases
+
 
 MODALITY_TO_STRATEGY = {
     'activation': 'activation screen',
@@ -21,3 +23,8 @@ def genetic_modification_1_2(value, system):
     if mapped is None:
         raise ValueError(f'Unknown genetic_modification modality {legacy!r}')
     value['strategy'] = mapped
+
+
+@upgrade_step('genetic_modification', '2', '3')
+def genetic_modification_2_3(value, system):
+    preserve_invalid_aliases(value)

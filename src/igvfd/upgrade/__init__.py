@@ -9,17 +9,26 @@ LATE = 10
 
 
 def includeme(config):
+    from . import access_key  # noqa: F401
     from . import biosample  # noqa: F401
     from . import controlled_term  # noqa: F401
+    from . import document  # noqa: F401
     from . import donor  # noqa: F401
+    from . import experimental_condition  # noqa: F401
     from . import genetic_modification  # noqa: F401
+    from . import image  # noqa: F401
+    from . import lab  # noqa: F401
     from . import library  # noqa: F401
     from . import matrix_file_set  # noqa: F401
+    from . import page  # noqa: F401
     from . import processed_matrix_file  # noqa: F401
     from . import raw_matrix_file  # noqa: F401
     from . import sequence_file  # noqa: F401
     from . import sequence_file_set  # noqa: F401
+    from . import source  # noqa: F401
     from . import tabular_file  # noqa: F401
+    from . import treatment  # noqa: F401
+    from . import user  # noqa: F401
     config.scan(categories=None)
 
     def callback():

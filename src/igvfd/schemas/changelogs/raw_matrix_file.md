@@ -1,13 +1,17 @@
 ## Changelog for raw_matrix_file.json
 
+### Schema version 6
+
+* Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
+* Update `aliases` regex to allow only single spaces between words.
+* Preserve `aliases` rejected by the updated regex in `notes` during upgrade.
+
 ### Schema version 5
 
 * Require `samples`.
 
 ### Minor changes since schema version 5
 
-* Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
-* Update `aliases` regex to allow only single spaces between words.
 * Update `aliases` regex to accept `shyam-prabhakar` prefix.
 * Update `aliases` regex to accept `john-tsang` prefix.
 * Update `aliases` regex to accept `silvia-domcke` prefix.
