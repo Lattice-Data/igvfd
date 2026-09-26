@@ -235,6 +235,21 @@ def test_controlled_term_alias_prefixes_rejected(testapp, alias):
     assert any(error.get('name') == ['aliases', 0] for error in res.json['errors'])
 
 
+def test_controlled_term_alias_allows_only_single_spaces(testapp):
+    # The pattern separates words with a literal space and ends with `(?![\s\S])`. With `\s`
+    # a tab, newline or non-breaking space passed between words, and with `$` a trailing
+    # newline validated under Python `re` while ECMA-262 rejected it.
+    base = {'term_id': 'CL:1000022', 'ontology_source': 'CL', 'status': 'current'}
+    res = testapp.post_json('/controlled_term', {**base, 'aliases': ['will-allen:test alias']}, status=201)
+    assert res.json['@graph'][0]['aliases'] == ['will-allen:test alias']
+    at_id = res.json['@graph'][0]['@id']
+    for bad in ['will-allen:test-alias\n', 'will-allen:test\talias', 'will-allen:test\nalias',
+                'will-allen:test alias', 'will-allen:test  alias', ' will-allen:test-alias',
+                'will-allen:test-alias ']:
+        res = testapp.patch_json(at_id, {'aliases': [bad]}, status=422)
+        assert any(error.get('name') == ['aliases', 0] for error in res.json['errors']), repr(bad)
+
+
 def test_controlled_term_dbxrefs_rejects_surrounding_whitespace(testapp):
     # The pattern ends with `(?![\s\S])`, so it anchors at true end of input. With `$`
     # alone a trailing newline validated under Python `re` while ECMA-262 rejected it,
