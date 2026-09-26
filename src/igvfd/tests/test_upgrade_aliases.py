@@ -59,8 +59,10 @@ def test_alias_upgrades_cover_every_type_with_aliases(registry):
         if 'aliases' in type_info.schema['properties']
     }
     assert {item_type for item_type, _, _ in ALIAS_UPGRADES} == with_aliases
+    # At least, not equal: later bumps for unrelated changes must not force editing the
+    # released steps listed above.
     for item_type, _, target_version in ALIAS_UPGRADES:
-        assert types[item_type].schema_version == target_version
+        assert int(types[item_type].schema_version) >= int(target_version), item_type
 
 
 def test_preserve_invalid_aliases_keeps_valid_aliases():
@@ -73,6 +75,13 @@ def test_preserve_invalid_aliases_without_aliases():
     value = {'notes': 'Existing note.'}
     preserve_invalid_aliases(value)
     assert value == {'notes': 'Existing note.'}
+
+
+@pytest.mark.parametrize('aliases', [[], None])
+def test_preserve_invalid_aliases_drops_empty_aliases(aliases):
+    value = {'aliases': aliases}
+    preserve_invalid_aliases(value)
+    assert value == {}
 
 
 def test_preserve_invalid_aliases_drops_property_when_none_survive():
@@ -103,4 +112,8 @@ def test_upgrade_alias_pattern_agrees_with_schema(registry):
         'will-allen:test\talias', 'will-allen:test\nalias', 'will-allen:test\xa0alias',
         'will-allen:test  alias', ' will-allen:test-alias', 'will-allen:test-alias ', 'will-allen:',
     ]:
-        assert bool(ALIAS_PATTERN.search(alias)) == bool(schema_pattern.search(alias)), repr(alias)
+        assert bool(ALIAS_PATTERN.search(alias)) == bool(schema_pattern.search(alias)), (
+            f'{alias!r}: the schema aliases pattern changed how it treats whitespace. If it '
+            'narrowed again, add a new constant and steps for that schema version and point '
+            'this test at the new constant; ALIAS_PATTERN stays frozen for the released steps.'
+        )

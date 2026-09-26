@@ -20,7 +20,11 @@ def preserve_invalid_aliases(value):
 
     aliases has minItems 1, so the property is removed when no alias survives.
     """
-    if not value.get('aliases'):
+    if 'aliases' not in value:
+        return
+    if not value['aliases']:
+        # Empty or null: nothing to preserve, and minItems 1 rejects it.
+        value.pop('aliases')
         return
     valid_aliases = []
     invalid_aliases = []

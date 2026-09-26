@@ -4,6 +4,10 @@
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
 * Update `aliases` regex to allow only single spaces between words.
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
 * Preserve `aliases` rejected by the updated regex in `notes` during upgrade.
 
 ### Schema version 5
@@ -12,10 +16,6 @@
 
 ### Minor changes since schema version 5
 
-* Update `aliases` regex to accept `shyam-prabhakar` prefix.
-* Update `aliases` regex to accept `john-tsang` prefix.
-* Update `aliases` regex to accept `silvia-domcke` prefix.
-* Update `aliases` regex to accept `will-allen` prefix.
 * Define `feature_counts` `feature_type` enum list on the raw matrix file profile.
 * Extend `feature_counts` `feature_type` enum list to include "hash oligo".
 * Extend `file_format` enum list to include `mtx`.
