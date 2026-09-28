@@ -65,6 +65,28 @@ def test_alias_upgrades_cover_every_type_with_aliases(registry):
         assert int(types[item_type].schema_version) >= int(target_version), item_type
 
 
+# Types whose first upgrade step is the aliases one. snovault's default step used to take
+# their objects from any earlier version, or none, to the version they were then at.
+FIRST_STEP_TYPES = [
+    'access_key', 'document', 'experimental_condition', 'image', 'lab', 'page', 'source',
+    'treatment', 'user',
+]
+
+
+@pytest.mark.parametrize(
+    ('item_type', 'stored_version'),
+    [(item_type, '') for item_type in FIRST_STEP_TYPES] + [('user', '1'), ('user', '5')],
+)
+def test_upgrade_from_before_first_step(upgrader, item_type, stored_version):
+    target_version = {t: target for t, _, target in ALIAS_UPGRADES}[item_type]
+    value = {'aliases': ['lattice:kept alias', 'lattice:dropped-alias\n']}
+    if stored_version:
+        value['schema_version'] = stored_version
+    result = upgrader.upgrade(item_type, value, current_version=stored_version, target_version=target_version)
+    assert result['schema_version'] == target_version
+    assert result['aliases'] == ['lattice:kept alias']
+
+
 def test_preserve_invalid_aliases_keeps_valid_aliases():
     value = {'aliases': ['lattice:one', 'lattice:two words'], 'notes': 'Existing note.'}
     preserve_invalid_aliases(value)
