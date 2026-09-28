@@ -1,5 +1,7 @@
 from snovault.upgrader import upgrade_step
 
+from .aliases import preserve_invalid_aliases
+
 # Placeholder satisfies schema pattern until submitters supply S3 ChecksumCRC64NVME.
 _CRC64NVME_BASE64_PLACEHOLDER = 'AAAAAAAAAAA'
 
@@ -35,3 +37,8 @@ def raw_matrix_file_3_4(value, system):
 def raw_matrix_file_4_5(value, system):
     """No data migration: sample links must be patched before upgrade."""
     pass
+
+
+@upgrade_step('raw_matrix_file', '5', '6')
+def raw_matrix_file_5_6(value, system):
+    preserve_invalid_aliases(value)

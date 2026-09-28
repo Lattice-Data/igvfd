@@ -1,3 +1,6 @@
+from .notes import append_upgrade_note
+
+
 def preserve_invalid_dbxrefs(value, valid_pattern):
     """Drop dbxrefs the current schema rejects, preserving them verbatim in notes.
 
@@ -40,14 +43,11 @@ def preserve_invalid_dbxrefs(value, valid_pattern):
 
 
 def _append_upgrade_note(value, removed_dbxrefs):
-    upgrade_note = (
+    append_upgrade_note(
+        value,
         'Legacy dbxrefs removed during schema upgrade: '
         f'{", ".join(removed_dbxrefs)}.'
     )
-    # Separate with a newline rather than a space so the appended sentence never runs
-    # into a pre-existing note, and without rewriting text the upgrade does not own.
-    existing_notes = (value.get('notes') or '').strip()
-    value['notes'] = f'{existing_notes}\n{upgrade_note}'.strip() if existing_notes else upgrade_note
 
 
 def remove_all_dbxrefs(value):

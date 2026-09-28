@@ -174,5 +174,49 @@
             "lattice:lab-merlin-lange",
             "merlin-lange:lab-merlin-lange"
         ]
+    },
+    {
+        "institute_label": "GIS",
+        "name": "shyam-prabhakar",
+        "pi": "1af1b2e8-ce11-4d61-b4b1-ebdf502020a0",
+        "uuid": "8e97a356-f819-4309-9788-7a2ec5a80e6b",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-shyam-prabhakar",
+            "shyam-prabhakar:lab-shyam-prabhakar"
+        ]
+    },
+    {
+        "institute_label": "Yale",
+        "name": "john-tsang",
+        "pi": "d0a35764-3b6c-466a-ae1b-55fc1bdede87",
+        "uuid": "0a0c60d4-c15f-4a35-b07f-ce66c68d35ec",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-john-tsang",
+            "john-tsang:lab-john-tsang"
+        ]
+    },
+    {
+        "institute_label": "UZH",
+        "name": "silvia-domcke",
+        "pi": "990454ac-258d-4074-a8ea-3fd6537d7f85",
+        "uuid": "f35bf27f-221e-4d5d-9a3a-ee78fbc6504c",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-silvia-domcke",
+            "silvia-domcke:lab-silvia-domcke"
+        ]
+    },
+    {
+        "institute_label": "Stanford",
+        "name": "will-allen",
+        "pi": "9fbfb19b-cd87-4fda-81a2-18495079fa4b",
+        "uuid": "ee0f1feb-a1e6-4841-a094-390906438eb2",
+        "status": "current",
+        "aliases": [
+            "lattice:lab-will-allen",
+            "will-allen:lab-will-allen"
+        ]
     }
 ]

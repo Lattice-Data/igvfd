@@ -1,5 +1,7 @@
 from snovault.upgrader import upgrade_step
 
+from .aliases import preserve_invalid_aliases
+
 # Placeholder satisfies schema pattern until submitters supply S3 ChecksumCRC64NVME.
 _CRC64NVME_BASE64_PLACEHOLDER = 'AAAAAAAAAAA'
 
@@ -21,3 +23,8 @@ def processed_matrix_file_2_3(value, system):
 def processed_matrix_file_3_4(value, system):
     if 'is_multiplexed' not in value:
         value['is_multiplexed'] = False
+
+
+@upgrade_step('processed_matrix_file', '4', '5')
+def processed_matrix_file_4_5(value, system):
+    preserve_invalid_aliases(value)

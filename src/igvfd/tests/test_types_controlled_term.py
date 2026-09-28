@@ -192,6 +192,10 @@ def test_controlled_term_zfs_create(testapp):
         ('michael-ward', 'CL:1000013'),
         ('jay-thiagarajah', 'CL:1000014'),
         ('merlin-lange', 'CL:1000016'),
+        ('shyam-prabhakar', 'CL:1000017'),
+        ('john-tsang', 'CL:1000018'),
+        ('silvia-domcke', 'CL:1000019'),
+        ('will-allen', 'CL:1000020'),
         ('lattice', 'CL:1000015'),
     ],
 )
@@ -204,6 +208,46 @@ def test_controlled_term_alias_prefixes_allowed(testapp, prefix, term_id):
     }
     res = testapp.post_json('/controlled_term', item, status=201)
     assert res.json['@graph'][0]['aliases'] == item['aliases']
+
+
+@pytest.mark.parametrize(
+    'alias',
+    [
+        'shyam_prabhakar:test-alias',
+        'john-tsang-lab:test-alias',
+        'silvia-domke:test-alias',
+        'Will-Allen:test-alias',
+        'john-doe:test-alias',
+        'will-allen:',
+    ],
+)
+def test_controlled_term_alias_prefixes_rejected(testapp, alias):
+    # Near misses of allowed prefixes: the prefix must match exactly, case included,
+    # and be followed directly by the colon. Unknown prefixes and an empty identifier
+    # are rejected too.
+    item = {
+        'term_id': 'CL:1000021',
+        'ontology_source': 'CL',
+        'aliases': [alias],
+        'status': 'current',
+    }
+    res = testapp.post_json('/controlled_term', item, status=422)
+    assert any(error.get('name') == ['aliases', 0] for error in res.json['errors'])
+
+
+def test_controlled_term_alias_allows_only_single_spaces(testapp):
+    # The pattern separates words with a literal space and ends with `(?![\s\S])`. With `\s`
+    # a tab, newline or non-breaking space passed between words, and with `$` a trailing
+    # newline validated under Python `re` while ECMA-262 rejected it.
+    base = {'term_id': 'CL:1000022', 'ontology_source': 'CL', 'status': 'current'}
+    res = testapp.post_json('/controlled_term', {**base, 'aliases': ['will-allen:test alias']}, status=201)
+    assert res.json['@graph'][0]['aliases'] == ['will-allen:test alias']
+    at_id = res.json['@graph'][0]['@id']
+    for bad in ['will-allen:test-alias\n', 'will-allen:test\talias', 'will-allen:test\nalias',
+                'will-allen:test\xa0alias', 'will-allen:test  alias', ' will-allen:test-alias',
+                'will-allen:test-alias ']:
+        res = testapp.patch_json(at_id, {'aliases': [bad]}, status=422)
+        assert any(error.get('name') == ['aliases', 0] for error in res.json['errors']), repr(bad)
 
 
 def test_controlled_term_dbxrefs_rejects_surrounding_whitespace(testapp):

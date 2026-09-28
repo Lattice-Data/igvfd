@@ -2,6 +2,7 @@ import re
 
 from snovault.upgrader import upgrade_step
 
+from .aliases import preserve_invalid_aliases
 from .dbxrefs import preserve_invalid_dbxrefs
 
 
@@ -108,3 +109,13 @@ def droplet_based_library_4_5(value, system):
 @upgrade_step('plate_based_library', '5', '6')
 def plate_based_library_5_6(value, system):
     preserve_invalid_dbxrefs(value, LIBRARY_DBXREF_PATTERN)
+
+
+@upgrade_step('droplet_based_library', '5', '6')
+def droplet_based_library_5_6(value, system):
+    preserve_invalid_aliases(value)
+
+
+@upgrade_step('plate_based_library', '6', '7')
+def plate_based_library_6_7(value, system):
+    preserve_invalid_aliases(value)

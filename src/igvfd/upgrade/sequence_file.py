@@ -1,5 +1,7 @@
 from snovault.upgrader import upgrade_step
 
+from .aliases import preserve_invalid_aliases
+
 
 @upgrade_step('sequence_file', '1', '2')
 def sequence_file_1_2(value, system):
@@ -24,3 +26,8 @@ def sequence_file_2_3(value, system):
 @upgrade_step('sequence_file', '3', '4')
 def sequence_file_3_4(value, system):
     value.pop('md5sum', None)
+
+
+@upgrade_step('sequence_file', '4', '5')
+def sequence_file_4_5(value, system):
+    preserve_invalid_aliases(value)

@@ -2,6 +2,7 @@ import re
 
 from snovault.upgrader import upgrade_step
 
+from .aliases import preserve_invalid_aliases
 from .dbxrefs import preserve_invalid_dbxrefs
 
 
@@ -24,3 +25,8 @@ def controlled_term_1_2(value, system):
 @upgrade_step('controlled_term', '2', '3')
 def controlled_term_2_3(value, system):
     preserve_invalid_dbxrefs(value, CONTROLLED_TERM_DBXREF_PATTERN)
+
+
+@upgrade_step('controlled_term', '3', '4')
+def controlled_term_3_4(value, system):
+    preserve_invalid_aliases(value)

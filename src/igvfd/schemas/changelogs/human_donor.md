@@ -1,5 +1,15 @@
 # Human Donor Changelog
 
+### Schema version 3
+
+* Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
+* Update `aliases` regex to allow only single spaces between words.
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
+* Preserve `aliases` rejected by the updated regex in `notes` during upgrade.
+
 ### Schema version 2
 
 - Require cxg_donor_id.

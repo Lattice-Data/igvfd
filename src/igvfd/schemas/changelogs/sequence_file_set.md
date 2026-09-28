@@ -1,5 +1,15 @@
 # Sequence File Set Changelog
 
+## Schema version 3
+
+* Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
+* Update `aliases` regex to allow only single spaces between words.
+* Update `aliases` regex to accept `shyam-prabhakar` prefix.
+* Update `aliases` regex to accept `john-tsang` prefix.
+* Update `aliases` regex to accept `silvia-domcke` prefix.
+* Update `aliases` regex to accept `will-allen` prefix.
+* Preserve `aliases` rejected by the updated regex in `notes` during upgrade.
+
 ## Minor changes since schema version 2
 
 * Add *dbxrefs*, accepting SRA and ENA run identifiers requiring at least one identifier when submitted, and anchored at true end of input.

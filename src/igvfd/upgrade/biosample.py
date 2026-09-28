@@ -1,5 +1,6 @@
 from snovault.upgrader import upgrade_step
 
+from .aliases import preserve_invalid_aliases
 from .dbxrefs import remove_all_dbxrefs
 
 
@@ -110,3 +111,23 @@ def organoid_3_4(value, system):
 @upgrade_step('cell_line', '3', '4')
 def cell_line_3_4(value, system):
     remove_all_dbxrefs(value)
+
+
+@upgrade_step('tissue', '4', '5')
+def tissue_4_5(value, system):
+    preserve_invalid_aliases(value)
+
+
+@upgrade_step('primary_cell_culture', '4', '5')
+def primary_cell_culture_4_5(value, system):
+    preserve_invalid_aliases(value)
+
+
+@upgrade_step('organoid', '4', '5')
+def organoid_4_5(value, system):
+    preserve_invalid_aliases(value)
+
+
+@upgrade_step('cell_line', '4', '5')
+def cell_line_4_5(value, system):
+    preserve_invalid_aliases(value)

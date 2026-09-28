@@ -1,5 +1,7 @@
 from snovault.upgrader import upgrade_step
 
+from .aliases import preserve_invalid_aliases
+
 
 @upgrade_step('matrix_file_set', '1', '2')
 def matrix_file_set_1_2(value, system):
@@ -12,3 +14,8 @@ def matrix_file_set_1_2(value, system):
         'genome_annotation',
     ):
         value.pop(key, None)
+
+
+@upgrade_step('matrix_file_set', '2', '3')
+def matrix_file_set_2_3(value, system):
+    preserve_invalid_aliases(value)

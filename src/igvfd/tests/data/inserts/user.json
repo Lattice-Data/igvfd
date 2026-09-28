@@ -412,5 +412,65 @@
         "aliases": [
             "lattice:user-brian-mott"
         ]
+    },
+    {
+        "email": "sprabhakar@lattice.edu",
+        "first_name": "Shyam",
+        "last_name": "Prabhakar",
+        "lab": "/labs/shyam-prabhakar/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "1af1b2e8-ce11-4d61-b4b1-ebdf502020a0",
+        "aliases": [
+            "lattice:user-shyam-prabhakar"
+        ]
+    },
+    {
+        "email": "jtsang@lattice.edu",
+        "first_name": "John",
+        "last_name": "Tsang",
+        "lab": "/labs/john-tsang/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "d0a35764-3b6c-466a-ae1b-55fc1bdede87",
+        "aliases": [
+            "lattice:user-john-tsang"
+        ]
+    },
+    {
+        "email": "sdomcke@lattice.edu",
+        "first_name": "Silvia",
+        "last_name": "Domcke",
+        "lab": "/labs/silvia-domcke/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "990454ac-258d-4074-a8ea-3fd6537d7f85",
+        "aliases": [
+            "lattice:user-silvia-domcke"
+        ]
+    },
+    {
+        "email": "wallen@lattice.edu",
+        "first_name": "Will",
+        "last_name": "Allen",
+        "lab": "/labs/will-allen/",
+        "groups": [
+            "verified"
+        ],
+        "job_title": "Principal Investigator",
+        "status": "current",
+        "uuid": "9fbfb19b-cd87-4fda-81a2-18495079fa4b",
+        "aliases": [
+            "lattice:user-will-allen"
+        ]
     }
 ]
