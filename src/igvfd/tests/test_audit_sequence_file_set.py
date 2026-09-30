@@ -163,3 +163,21 @@ def test_sequence_file_set_audit_clears_after_fixing_cardinality(
     )
     res = indexer_testapp.get(sequence_file_set_illumina_paired_end['@id'] + '@@index-data')
     assert not any(error['category'] == CATEGORY for error in _audit_errors(res))
+
+
+def test_sequence_file_set_index2_only_with_index_no_audit(
+    testapp,
+    indexer_testapp,
+    sequence_file_set_illumina_paired_end,
+    sequence_file_with_aliases,
+):
+    testapp.patch_json(
+        sequence_file_set_illumina_paired_end['@id'],
+        {
+            'index2': sequence_file_with_aliases['@id'],
+            'run_cardinality': 'paired-end-with-index',
+        },
+        status=200,
+    )
+    res = indexer_testapp.get(sequence_file_set_illumina_paired_end['@id'] + '@@index-data')
+    assert not any(error['category'] == CATEGORY for error in _audit_errors(res))
