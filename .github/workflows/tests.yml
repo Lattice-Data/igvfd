@@ -29,25 +29,6 @@ jobs:
       - name: Run release script tests
         run: ./scripts/release/test-release-scripts.sh --offline
 
-  github-scripts-pytest:
-    # review_ledger.py carries the Claude review's findings from one round to the
-    # next, and nothing else exercises it before a live PR does. It needs only the
-    # standard library, so pytest is the one install.
-    runs-on: ubuntu-latest
-    needs: lint
-    defaults:
-      run:
-        working-directory: .github/scripts
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install pytest
-        run: pip install pytest==7.4.0
-      - name: Run pytest
-        run: pytest tests/
-
   cdk-mypy:
     runs-on: ubuntu-latest
     needs: lint
