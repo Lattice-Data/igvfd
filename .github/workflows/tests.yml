@@ -104,9 +104,22 @@ jobs:
     permissions:
       contents: read
       actions: write
+      id-token: write
     needs: lint
     steps:
       - uses: actions/checkout@v4
+      # Anonymous public.ecr.aws pulls share a data quota per source IP, which
+      # other tenants of the GitHub runner IPs exhaust (429 Data limit exceeded).
+      # Authenticated pulls count against our account instead.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::159466469043:role/github-lattice-ecr-public-pull
+          aws-region: us-east-1
+      - name: Log in to Amazon ECR Public
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build pyramid image
@@ -196,9 +209,22 @@ jobs:
     permissions:
       contents: read
       actions: write
+      id-token: write
     needs: lint
     steps:
       - uses: actions/checkout@v4
+      # Anonymous public.ecr.aws pulls share a data quota per source IP, which
+      # other tenants of the GitHub runner IPs exhaust (429 Data limit exceeded).
+      # Authenticated pulls count against our account instead.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::159466469043:role/github-lattice-ecr-public-pull
+          aws-region: us-east-1
+      - name: Log in to Amazon ECR Public
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Build pyramid image
