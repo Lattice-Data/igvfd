@@ -34,6 +34,7 @@ ORDER = [
     'droplet_based_library',
     'sequence_file',
     'tabular_file',
+    'configuration_file',
     'raw_matrix_file',
     'processed_matrix_file',
     'sequence_file_set',
@@ -561,6 +562,10 @@ PHASE1_PIPELINES = {
         remove_keys('derived_from'),
         skip_rows_missing_all_keys('lab'),
     ],
+    'configuration_file': [
+        remove_keys('derived_from'),
+        skip_rows_missing_all_keys('lab'),
+    ],
     'raw_matrix_file': [
         remove_keys('derived_from'),
         skip_rows_missing_all_keys('lab', 'samples'),
@@ -626,6 +631,9 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('derived_from'),
     ],
     'tabular_file': [
+        skip_rows_missing_all_keys('derived_from'),
+    ],
+    'configuration_file': [
         skip_rows_missing_all_keys('derived_from'),
     ],
     'raw_matrix_file': [
