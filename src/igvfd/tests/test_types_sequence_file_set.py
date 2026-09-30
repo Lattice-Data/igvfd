@@ -111,9 +111,9 @@ def test_sequence_file_set_paired_end_requires_read2(testapp, other_lab, sequenc
     )
 
 
-def test_sequence_file_set_paired_end_with_index_requires_index1(testapp, other_lab, sequence_file,
-                                                                 sequence_file_with_description,
-                                                                 droplet_based_library):
+def test_sequence_file_set_paired_end_with_index_requires_an_index(testapp, other_lab, sequence_file,
+                                                                   sequence_file_with_description,
+                                                                   droplet_based_library):
     testapp.post_json(
         '/sequence_file_set',
         {
@@ -125,6 +125,26 @@ def test_sequence_file_set_paired_end_with_index_requires_index1(testapp, other_
             'status': 'current',
         },
         status=422
+    )
+
+
+@pytest.mark.parametrize('index_slot', ['index1', 'index2'])
+def test_sequence_file_set_paired_end_with_index_accepts_either_index(testapp, other_lab, sequence_file,
+                                                                      sequence_file_with_description,
+                                                                      sequence_file_with_aliases,
+                                                                      droplet_based_library, index_slot):
+    testapp.post_json(
+        '/sequence_file_set',
+        {
+            'lab': other_lab['@id'],
+            'library': droplet_based_library['@id'],
+            'run_cardinality': 'paired-end-with-index',
+            'read1': sequence_file['@id'],
+            'read2': sequence_file_with_description['@id'],
+            index_slot: sequence_file_with_aliases['@id'],
+            'status': 'current',
+        },
+        status=201
     )
 
 

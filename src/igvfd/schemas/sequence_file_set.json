@@ -149,8 +149,19 @@
                     },
                     "required": [
                         "read1",
-                        "read2",
-                        "index1"
+                        "read2"
+                    ],
+                    "anyOf": [
+                        {
+                            "required": [
+                                "index1"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "index2"
+                            ]
+                        }
                     ],
                     "not": {
                         "anyOf": [
