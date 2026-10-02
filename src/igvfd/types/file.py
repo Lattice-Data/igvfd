@@ -122,6 +122,34 @@ class TabularFile(File):
 
 
 @collection(
+    name='configuration_files',
+    properties={
+        'title': 'Configuration Files',
+        'description': 'Listing of configuration files',
+    }
+)
+class ConfigurationFile(File):
+    item_type = 'configuration_file'
+    schema = load_schema('igvfd:schemas/configuration_file.json')
+    embedded_with_frame = File.embedded_with_frame
+
+    @calculated_property(
+        schema={
+            'title': 'Summary',
+            'type': 'string',
+            'description': 'A summary of the configuration file.',
+            'notSubmittable': True,
+        }
+    )
+    def summary(self, aliases=None, description=None):
+        if aliases:
+            return aliases[0]
+        if description:
+            return description
+        return self.uuid
+
+
+@collection(
     name='raw_matrix_files',
     properties={
         'title': 'Raw Matrix Files',
