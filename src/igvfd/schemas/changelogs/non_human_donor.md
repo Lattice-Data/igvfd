@@ -1,5 +1,11 @@
 ## Changelog for non_human_donor.json
 
+### Schema version 4
+
+* Change `taxa` from an enum to a link to a ControlledTerm, restricted to the NCBITaxon terms for the previously allowed species.
+* Upgrade `taxa` to link to the ControlledTerm with the matching NCBITaxon `term_id`.
+* Remove the `dependentSchemas` that limited `sex` by `taxa`. An audit now flags `hermaphrodite` on species that are not hermaphroditic.
+
 ### Schema version 3
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

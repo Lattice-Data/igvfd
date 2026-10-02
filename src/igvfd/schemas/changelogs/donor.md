@@ -1,5 +1,6 @@
 # Donor Changelog
 
+- Change `taxa` to a link to a ControlledTerm.
 - Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
 - Update `aliases` regex to allow only single spaces between words.
 - Update `aliases` regex to accept `shyam-prabhakar` prefix.

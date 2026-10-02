@@ -32,7 +32,9 @@
         "taxa": {
             "title": "Taxa",
             "description": "The species of the organism.",
-            "type": "string"
+            "comment": "See controlled_term.json for available identifiers.",
+            "type": "string",
+            "linkTo": "ControlledTerm"
         },
         "sex": {
             "title": "Sex",
@@ -54,7 +56,7 @@
         "aliases",
         "cxg_donor_id",
         "description",
-        "taxa"
+        "taxa.term_name"
     ],
     "exact_searchable_fields": [
         "@type"

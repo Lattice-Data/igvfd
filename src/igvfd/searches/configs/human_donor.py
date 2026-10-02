@@ -7,7 +7,7 @@ from snovault.elasticsearch.searches.configs import search_config
 def human_donor():
     return {
         'facets': {
-            'taxa': {
+            'taxa.term_name': {
                 'title': 'Taxa'
             },
             'ethnicity.term_name': {
@@ -42,7 +42,7 @@ def human_donor():
             'aliases': {
                 'title': 'Aliases'
             },
-            'taxa': {
+            'taxa.term_name': {
                 'title': 'Taxa'
             },
             'cxg_donor_id': {

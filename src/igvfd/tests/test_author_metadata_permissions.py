@@ -33,10 +33,10 @@ def wrangler_remote_testapp(wrangler, app, external_tx, zsa_savepoints):
     return _remote_user_testapp(app, wrangler['uuid'])
 
 
-def _human_donor_item(lab_id, **extra):
+def _human_donor_item(lab_id, taxa_id, **extra):
     item = {
         'lab': lab_id,
-        'taxa': 'Homo sapiens',
+        'taxa': taxa_id,
         'cxg_donor_id': 'lattice:test-cxg-human-perm',
         'status': 'current',
     }
@@ -44,39 +44,44 @@ def _human_donor_item(lab_id, **extra):
     return item
 
 
-def test_admin_post_human_donor_with_author_metadata(testapp, other_lab):
+def test_admin_post_human_donor_with_author_metadata(testapp, other_lab, taxon_homo_sapiens):
     item = _human_donor_item(
         other_lab['@id'],
+        taxon_homo_sapiens['@id'],
         author_metadata={'external_subject_id': 'ADM-1'},
     )
     res = testapp.post_json('/human_donor', item, status=201)
     assert res.json['@graph'][0]['author_metadata'] == item['author_metadata']
 
 
-def test_lab_submitter_post_human_donor_with_author_metadata_rejected(lab_submitter_testapp, lab):
+def test_lab_submitter_post_human_donor_with_author_metadata_rejected(
+    lab_submitter_testapp, lab, taxon_homo_sapiens
+):
     item = _human_donor_item(
         lab['@id'],
+        taxon_homo_sapiens['@id'],
         author_metadata={'external_subject_id': 'SUB-1'},
     )
     lab_submitter_testapp.post_json('/human_donor', item, status=422)
 
 
 def test_group_submitter_post_human_donor_with_author_metadata_rejected(
-    group_submitter_testapp, other_lab
+    group_submitter_testapp, other_lab, taxon_homo_sapiens
 ):
     item = _human_donor_item(
         other_lab['@id'],
+        taxon_homo_sapiens['@id'],
         author_metadata={'external_subject_id': 'GRP-1'},
     )
     group_submitter_testapp.post_json('/human_donor', item, status=422)
 
 
 def test_lab_submitter_patch_human_donor_author_metadata_rejected(
-    testapp, lab_submitter_testapp, lab
+    testapp, lab_submitter_testapp, lab, taxon_homo_sapiens
 ):
     res = testapp.post_json(
         '/human_donor',
-        _human_donor_item(lab['@id']),
+        _human_donor_item(lab['@id'], taxon_homo_sapiens['@id']),
         status=201,
     )
     url = res.json['@graph'][0]['@id']
@@ -88,11 +93,11 @@ def test_lab_submitter_patch_human_donor_author_metadata_rejected(
 
 
 def test_wrangler_patch_human_donor_author_metadata_allowed(
-    testapp, wrangler_remote_testapp, lab
+    testapp, wrangler_remote_testapp, lab, taxon_homo_sapiens
 ):
     res = testapp.post_json(
         '/human_donor',
-        _human_donor_item(lab['@id']),
+        _human_donor_item(lab['@id'], taxon_homo_sapiens['@id']),
         status=201,
     )
     url = res.json['@graph'][0]['@id']

@@ -188,5 +188,346 @@
         "aliases": [
             "lattice:term-cell-line-HEL"
         ]
+    },
+    {
+        "term_id": "NCBITaxon:8496",
+        "ontology_source": "NCBITaxon",
+        "uuid": "a50f08d3-0455-44c4-8350-2e180fa1f50c",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-alligator-mississippiensis",
+            "lattice:term-ncbitaxon-8496"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:28377",
+        "ontology_source": "NCBITaxon",
+        "uuid": "1debbc3d-9d22-4481-b8bb-0a633c770b94",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-anolis-carolinensis",
+            "lattice:term-ncbitaxon-28377"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:10201",
+        "ontology_source": "NCBITaxon",
+        "uuid": "c88c09f2-baa8-4cb9-a5da-41f53dfa312d",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-beroe-ovata",
+            "lattice:term-ncbitaxon-10201"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:6526",
+        "ontology_source": "NCBITaxon",
+        "uuid": "3143d448-2ab5-4c94-89ca-a464166dbd2e",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-biomphalaria-glabrata",
+            "lattice:term-ncbitaxon-6526"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:8478",
+        "ontology_source": "NCBITaxon",
+        "uuid": "a9a45e16-9200-4023-878f-a6ed214f8768",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-chrysemys-picta-bellii",
+            "lattice:term-ncbitaxon-8478"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:7719",
+        "ontology_source": "NCBITaxon",
+        "uuid": "a52e9c6c-4ed2-456e-ad42-7bf811c9f734",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-ciona-intestinalis",
+            "lattice:term-ncbitaxon-7719"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:93934",
+        "ontology_source": "NCBITaxon",
+        "uuid": "e88e570d-251a-4e62-8dbd-b32bead9cb3d",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-coturnix-japonica",
+            "lattice:term-ncbitaxon-93934"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:7955",
+        "ontology_source": "NCBITaxon",
+        "uuid": "8409da63-9cb5-41b6-9d59-0118417582fa",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-danio-rerio",
+            "lattice:term-ncbitaxon-7955"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:153281",
+        "ontology_source": "NCBITaxon",
+        "uuid": "ee3d5978-c2b5-4262-ac22-1ceba5820505",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-euprymna-berryi",
+            "lattice:term-ncbitaxon-153281"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:9606",
+        "ontology_source": "NCBITaxon",
+        "uuid": "4a1c77fc-99f7-4539-9206-eb089e3ae387",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-homo-sapiens",
+            "lattice:term-ncbitaxon-9606"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:216498",
+        "ontology_source": "NCBITaxon",
+        "uuid": "778cb329-8e47-41b0-8d98-63a78d2ebbfc",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-hydroides-elegans",
+            "lattice:term-ncbitaxon-216498"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:7782",
+        "ontology_source": "NCBITaxon",
+        "uuid": "1c13ae80-0175-4445-9b55-cfff2d31f562",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-leucoraja-erinaceus",
+            "lattice:term-ncbitaxon-7782"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:6850",
+        "ontology_source": "NCBITaxon",
+        "uuid": "983acdce-32be-4032-956f-26fc7790723c",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-limulus-polyphemus",
+            "lattice:term-ncbitaxon-6850"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:31216",
+        "ontology_source": "NCBITaxon",
+        "uuid": "fb439b0f-f139-48b0-a648-ceb074515b2a",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-littorina-littorea",
+            "lattice:term-ncbitaxon-31216"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:27923",
+        "ontology_source": "NCBITaxon",
+        "uuid": "16fc38d8-6157-4ba1-b893-32886cb58483",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-mnemiopsis-leidyi",
+            "lattice:term-ncbitaxon-27923"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:13616",
+        "ontology_source": "NCBITaxon",
+        "uuid": "c9b045b9-3687-484f-b58f-8fc82ee498f4",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-monodelphis-domestica",
+            "lattice:term-ncbitaxon-13616"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:10090",
+        "ontology_source": "NCBITaxon",
+        "uuid": "b3a594db-f253-4b32-b7ba-697c974b698b",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-mus-musculus",
+            "lattice:term-ncbitaxon-10090"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:7769",
+        "ontology_source": "NCBITaxon",
+        "uuid": "056155e2-1189-4b0e-982b-a20524a3fecf",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-myxine-glutinosa",
+            "lattice:term-ncbitaxon-7769"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:45351",
+        "ontology_source": "NCBITaxon",
+        "uuid": "d5fb0418-d008-4ff9-9b2f-bdb17e5cb475",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-nematostella-vectensis",
+            "lattice:term-ncbitaxon-45351"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:105023",
+        "ontology_source": "NCBITaxon",
+        "uuid": "2ad96e8e-3944-45f3-bddd-e3daabf3d122",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-nothobranchius-furzeri",
+            "lattice:term-ncbitaxon-105023"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:37653",
+        "ontology_source": "NCBITaxon",
+        "uuid": "0a7b8842-1926-4034-8fa7-5b6e184785d5",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-octopus-bimaculoides",
+            "lattice:term-ncbitaxon-37653"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:317513",
+        "ontology_source": "NCBITaxon",
+        "uuid": "49d8942f-7109-4581-8640-e975476f7a7f",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-parhyale-hawaiensis",
+            "lattice:term-ncbitaxon-317513"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:46514",
+        "ontology_source": "NCBITaxon",
+        "uuid": "e22498b8-54ad-45a9-9a06-e2eebfcc34db",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-patiria-miniata",
+            "lattice:term-ncbitaxon-46514"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:7757",
+        "ontology_source": "NCBITaxon",
+        "uuid": "5a57d4e4-de5b-4b0e-8c94-80793d7441b1",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-petromyzon-marinus",
+            "lattice:term-ncbitaxon-7757"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:3269935",
+        "ontology_source": "NCBITaxon",
+        "uuid": "06e5ef2b-8d6d-4536-895e-10d4376ea7d8",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-platynereis-megalops",
+            "lattice:term-ncbitaxon-3269935"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:111125",
+        "ontology_source": "NCBITaxon",
+        "uuid": "2bf6636f-aa99-45bd-919b-7c55105fe381",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-ranitomeya-imitator",
+            "lattice:term-ncbitaxon-111125"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:10224",
+        "ontology_source": "NCBITaxon",
+        "uuid": "1f347bb6-2d7a-41fc-b221-f7bc529623f4",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-saccoglossus-kowalevskii",
+            "lattice:term-ncbitaxon-10224"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:7710",
+        "ontology_source": "NCBITaxon",
+        "uuid": "e518df7a-7d28-4ed2-9b94-00c27beb0216",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-sclerodactyla-briareus",
+            "lattice:term-ncbitaxon-7710"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:27933",
+        "ontology_source": "NCBITaxon",
+        "uuid": "73af947d-9db4-4a17-8c57-7a23e39a0dad",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-sycon-ciliatum",
+            "lattice:term-ncbitaxon-27933"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:308579",
+        "ontology_source": "NCBITaxon",
+        "uuid": "4f8a3bf2-d5a4-4838-8e6b-12d83116b155",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-turritopsis-dohrnii",
+            "lattice:term-ncbitaxon-308579"
+        ]
+    },
+    {
+        "term_id": "NCBITaxon:8364",
+        "ontology_source": "NCBITaxon",
+        "uuid": "bdb61d3c-beb7-4375-94d6-63b4395befe4",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:term-xenopus-tropicalis",
+            "lattice:term-ncbitaxon-8364"
+        ]
     }
 ]

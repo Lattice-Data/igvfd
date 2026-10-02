@@ -33,15 +33,23 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "3"
+            "default": "4"
         },
         "taxa": {
             "title": "Taxa",
             "type": "string",
             "description": "The species of the organism.",
-            "enum": [
-                "Homo sapiens"
-            ]
+            "comment": "Link to the NCBITaxon ControlledTerm for Homo sapiens. See controlled_term.json for available identifiers.",
+            "linkTo": "ControlledTerm",
+            "validators": [
+                "isAllowedTerm"
+            ],
+            "allowedTerms": {
+                "NCBITaxon:9606": "Homo sapiens"
+            },
+            "submissionExample": {
+                "appscript": "lattice:term-homo-sapiens"
+            }
         },
         "sex": {
             "title": "Sex",
@@ -67,7 +75,7 @@
         "aliases",
         "cxg_donor_id",
         "description",
-        "taxa",
+        "taxa.term_name",
         "ethnicity"
     ],
     "exact_searchable_fields": [
