@@ -36,10 +36,10 @@ function setupSecurityPlugin {
 # Trap function that is used to terminate opensearch
 # when a relevant signal is caught.
 function terminateProcesses {
-    if kill -0 $OPENSEARCH_PID >& /dev/null; then
+    if kill -0 "$OPENSEARCH_PID" >& /dev/null; then
         echo "Killing opensearch process $OPENSEARCH_PID"
-        kill -TERM $OPENSEARCH_PID
-        wait $OPENSEARCH_PID
+        kill -TERM "$OPENSEARCH_PID"
+        wait "$OPENSEARCH_PID"
     fi
 }
 

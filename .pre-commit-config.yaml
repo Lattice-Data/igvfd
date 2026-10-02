@@ -30,9 +30,3 @@ repos:
         # is an SC1091 and every variable _common.sh sets -- dry_run, confirm_token --
         # reads as unassigned: 10 of the 16 initial findings were that one gap.
         args: [-x]
-        # Scoped to the release scripts, whose shellcheck directives this hook exists to
-        # enforce. docker/*.sh and scripts/pyramid/*.sh carry ~26 pre-existing findings;
-        # two pyramid scripts have no shebang, so silencing SC2148 there means picking an
-        # interpreter for scripts CI runs directly. That is a behaviour change, not a
-        # lint fix, so widening this pattern is left to a follow-up.
-        files: ^scripts/release/
