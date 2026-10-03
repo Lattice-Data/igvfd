@@ -1,8 +1,12 @@
+from pyramid.threadlocal import get_current_request
+from pyramid.traversal import find_resource
 from snovault import (
+    COLLECTIONS,
     collection,
     load_schema,
     calculated_property,
 )
+from snovault.schema_utils import VALIDATOR_REGISTRY
 from .base import (
     Item,
 )
@@ -95,3 +99,27 @@ class ControlledTerm(Item):
     )
     def summary(self, term_id):
         return term_id
+
+
+def isAllowedTerm(value, schema):
+    """Reject a ControlledTerm link whose term_id is not a key of the property's allowedTerms."""
+    # Resolve the link the way linkTo does, which reports links that do not resolve to a
+    # ControlledTerm, so those return no error here.
+    if not isinstance(value, str):
+        return None
+    request = get_current_request()
+    collections = request.registry[COLLECTIONS]
+    try:
+        term = find_resource(collections.get('ControlledTerm', request.root), value.replace(':', '%3A'))
+    except KeyError:
+        return None
+    if not isinstance(term, ControlledTerm):
+        return None
+    allowed_terms = schema['allowedTerms']
+    if term.upgrade_properties().get('term_id') in allowed_terms:
+        return None
+    allowed = ', '.join(f'{name} ({term_id})' for term_id, name in allowed_terms.items())
+    return f'{value!r} is not one of the allowed terms: {allowed}.'
+
+
+VALIDATOR_REGISTRY['isAllowedTerm'] = isAllowedTerm

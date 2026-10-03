@@ -28,6 +28,7 @@ class Donor(Item):
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
+        Path('taxa', include=['@id', 'term_id', 'term_name']),
     ]
 
 
@@ -44,6 +45,7 @@ class HumanDonor(Donor):
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
+        Path('taxa', include=['@id', 'term_id', 'term_name']),
     ]
 
     @calculated_property(
@@ -75,6 +77,7 @@ class NonHumanDonor(Donor):
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
+        Path('taxa', include=['@id', 'term_id', 'term_name']),
     ]
 
     @calculated_property(

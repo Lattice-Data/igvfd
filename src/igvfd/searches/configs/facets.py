@@ -41,7 +41,7 @@ def subfacets():
                     }
                 ]
             },
-            'donors.taxa': {
+            'donors.taxa.term_name': {
                 'title': 'Donors',
                 'type': 'hierarchical',
                 'subfacets': [

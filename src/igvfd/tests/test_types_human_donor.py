@@ -17,7 +17,7 @@ def test_human_donor_summary_with_uuid(testapp, human_donor):
     assert res.json.get('summary') == uuid
 
 
-def test_human_donor_required_fields(testapp, other_lab):
+def test_human_donor_required_fields(testapp, other_lab, taxon_homo_sapiens):
     cxg = 'lattice:test-cxg-human-required'
     # Test that taxa is required
     testapp.post_json(
@@ -32,7 +32,7 @@ def test_human_donor_required_fields(testapp, other_lab):
     testapp.post_json(
         '/human_donor',
         {
-            'taxa': 'Homo sapiens',
+            'taxa': taxon_homo_sapiens['@id'],
             'cxg_donor_id': cxg,
         },
         status=422
@@ -42,7 +42,7 @@ def test_human_donor_required_fields(testapp, other_lab):
         '/human_donor',
         {
             'lab': other_lab['@id'],
-            'taxa': 'Homo sapiens',
+            'taxa': taxon_homo_sapiens['@id'],
         },
         status=422,
     )
@@ -63,12 +63,12 @@ def test_human_donor_required_fields(testapp, other_lab):
         'not applicable',
     ]
 )
-def test_human_donor_cxg_id_pattern_invalid(testapp, other_lab, invalid_cxg):
+def test_human_donor_cxg_id_pattern_invalid(testapp, other_lab, invalid_cxg, taxon_homo_sapiens):
     testapp.post_json(
         '/human_donor',
         {
             'lab': other_lab['@id'],
-            'taxa': 'Homo sapiens',
+            'taxa': taxon_homo_sapiens['@id'],
             'cxg_donor_id': invalid_cxg,
             'status': 'current',
         },
@@ -76,10 +76,10 @@ def test_human_donor_cxg_id_pattern_invalid(testapp, other_lab, invalid_cxg):
     )
 
 
-def test_human_donor_cxg_migration_placeholder_accepted(testapp, other_lab):
+def test_human_donor_cxg_migration_placeholder_accepted(testapp, other_lab, taxon_homo_sapiens):
     item = {
         'lab': other_lab['@id'],
-        'taxa': 'Homo sapiens',
+        'taxa': taxon_homo_sapiens['@id'],
         'cxg_donor_id': 'placeholder cxg donor id',
         'status': 'current',
     }
@@ -87,36 +87,92 @@ def test_human_donor_cxg_migration_placeholder_accepted(testapp, other_lab):
     assert res.json['@graph'][0]['cxg_donor_id'] == 'placeholder cxg donor id'
 
 
-def test_human_donor_taxa_enum(testapp, other_lab):
-    # Test that only 'Homo sapiens' is allowed
+def test_human_donor_taxa_rejects_other_species(testapp, other_lab, taxon_mus_musculus):
+    res = testapp.post_json(
+        '/human_donor',
+        {
+            'lab': other_lab['@id'],
+            'taxa': taxon_mus_musculus['@id'],
+            'cxg_donor_id': 'lattice:test-cxg-taxa-invalid',
+            'status': 'current',
+        },
+        status=422
+    )
+    assert any(
+        error['name'] == ['taxa'] and 'Homo sapiens (NCBITaxon:9606)' in error['description']
+        for error in res.json['errors']
+    )
+
+
+def test_human_donor_taxa_rejects_non_taxon_term(testapp, other_lab, controlled_term):
     testapp.post_json(
         '/human_donor',
         {
             'lab': other_lab['@id'],
-            'taxa': 'Mus musculus',
-            'cxg_donor_id': 'lattice:test-cxg-taxa-invalid',
+            'taxa': controlled_term['@id'],
+            'cxg_donor_id': 'lattice:test-cxg-taxa-cl-term',
             'status': 'current',
         },
         status=422
     )
 
 
-def test_human_donor_create(testapp, other_lab):
+def test_human_donor_taxa_rejects_unknown_link(testapp, other_lab):
+    testapp.post_json(
+        '/human_donor',
+        {
+            'lab': other_lab['@id'],
+            'taxa': 'Homo sapiens',
+            'cxg_donor_id': 'lattice:test-cxg-taxa-unknown',
+            'status': 'current',
+        },
+        status=422
+    )
+
+
+@pytest.mark.parametrize(
+    'taxa_key',
+    [
+        '@id',
+        'uuid',
+        'term_id',
+        'alias',
+    ]
+)
+def test_human_donor_taxa_accepts_any_term_identifier(testapp, other_lab, taxon_homo_sapiens, taxa_key):
+    taxa = taxon_homo_sapiens['aliases'][0] if taxa_key == 'alias' else taxon_homo_sapiens[taxa_key]
     item = {
         'lab': other_lab['@id'],
-        'taxa': 'Homo sapiens',
+        'taxa': taxa,
+        'cxg_donor_id': 'lattice:test-cxg-taxa-by-' + taxa_key.lstrip('@'),
+        'status': 'current',
+    }
+    res = testapp.post_json('/human_donor', item, status=201)
+    assert res.json['@graph'][0]['taxa'] == taxon_homo_sapiens['@id']
+
+
+def test_human_donor_create(testapp, other_lab, taxon_homo_sapiens):
+    item = {
+        'lab': other_lab['@id'],
+        'taxa': taxon_homo_sapiens['@id'],
         'cxg_donor_id': 'CXG-human-create-01',
         'status': 'current',
     }
     res = testapp.post_json('/human_donor', item, status=201)
-    assert res.json['@graph'][0]['taxa'] == 'Homo sapiens'
+    assert res.json['@graph'][0]['taxa'] == taxon_homo_sapiens['@id']
     assert res.json['@graph'][0]['lab'] == other_lab['@id']
 
 
-def test_human_donor_author_metadata(testapp, other_lab):
+def test_human_donor_embeds_taxa_term(testapp, human_donor, taxon_homo_sapiens):
+    res = testapp.get(human_donor['@id'])
+    assert res.json['taxa']['@id'] == taxon_homo_sapiens['@id']
+    assert res.json['taxa']['term_id'] == 'NCBITaxon:9606'
+
+
+def test_human_donor_author_metadata(testapp, other_lab, taxon_homo_sapiens):
     item = {
         'lab': other_lab['@id'],
-        'taxa': 'Homo sapiens',
+        'taxa': taxon_homo_sapiens['@id'],
         'cxg_donor_id': 'CXG-human-author-metadata',
         'author_metadata': {
             'external_subject_id': 'HD-TEST-001',
@@ -130,10 +186,10 @@ def test_human_donor_author_metadata(testapp, other_lab):
 
 
 @pytest.mark.parametrize('sex', ['male', 'female', 'unspecified', 'mixed'])
-def test_human_donor_sex_enum_valid(testapp, other_lab, sex):
+def test_human_donor_sex_enum_valid(testapp, other_lab, sex, taxon_homo_sapiens):
     item = {
         'lab': other_lab['@id'],
-        'taxa': 'Homo sapiens',
+        'taxa': taxon_homo_sapiens['@id'],
         'sex': sex,
         'cxg_donor_id': f'lattice:test-cxg-human-sex-{sex}',
         'status': 'current',
@@ -142,12 +198,12 @@ def test_human_donor_sex_enum_valid(testapp, other_lab, sex):
     assert res.json['@graph'][0]['sex'] == sex
 
 
-def test_human_donor_sex_enum_invalid(testapp, other_lab):
+def test_human_donor_sex_enum_invalid(testapp, other_lab, taxon_homo_sapiens):
     testapp.post_json(
         '/human_donor',
         {
             'lab': other_lab['@id'],
-            'taxa': 'Homo sapiens',
+            'taxa': taxon_homo_sapiens['@id'],
             'sex': 'not-a-real-sex',
             'cxg_donor_id': 'CXG-human-sex-invalid',
             'status': 'current',

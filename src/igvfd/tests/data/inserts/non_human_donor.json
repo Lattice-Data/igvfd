@@ -1,7 +1,7 @@
 [
     {
         "lab": "teri-klein",
-        "taxa": "Alligator mississippiensis",
+        "taxa": "a50f08d3-0455-44c4-8350-2e180fa1f50c",
         "sex": "female",
         "uuid": "e6ffa078-331a-41b3-8d1e-f4e2718bb1f2",
         "status": "current",
@@ -14,11 +14,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-alligator",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Anolis carolinensis",
+        "taxa": "1debbc3d-9d22-4481-b8bb-0a633c770b94",
         "sex": "male",
         "uuid": "148b81d1-aaa6-4770-8dbb-1ec6ae66419b",
         "status": "current",
@@ -27,11 +27,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-anole",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Beroe ovata",
+        "taxa": "c88c09f2-baa8-4cb9-a5da-41f53dfa312d",
         "sex": "hermaphrodite",
         "uuid": "03321663-14fd-4406-aac6-e6bede12e8b4",
         "status": "current",
@@ -40,11 +40,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-beroe",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Biomphalaria glabrata",
+        "taxa": "3143d448-2ab5-4c94-89ca-a464166dbd2e",
         "sex": "hermaphrodite",
         "uuid": "1df27816-af5c-4277-b4b6-bbabd9b8e612",
         "status": "current",
@@ -53,11 +53,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-biomphalaria",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Chrysemys picta bellii",
+        "taxa": "a9a45e16-9200-4023-878f-a6ed214f8768",
         "sex": "female",
         "uuid": "133e9512-83e0-41b9-be35-5489e180c2b5",
         "status": "current",
@@ -66,11 +66,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-painted_turtle",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Ciona intestinalis",
+        "taxa": "a52e9c6c-4ed2-456e-ad42-7bf811c9f734",
         "sex": "hermaphrodite",
         "uuid": "62c2c6fb-7d22-44db-bc1b-6b5008bee53d",
         "status": "current",
@@ -79,11 +79,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-ciona",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Coturnix japonica",
+        "taxa": "e88e570d-251a-4e62-8dbd-b32bead9cb3d",
         "sex": "female",
         "uuid": "4ec6aaae-cbf3-45d9-9b8d-12486ce77edb",
         "status": "current",
@@ -92,11 +92,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-quail",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Danio rerio",
+        "taxa": "8409da63-9cb5-41b6-9d59-0118417582fa",
         "sex": "male",
         "uuid": "18d07a81-70dd-46b0-ba86-761ed3107b0a",
         "status": "current",
@@ -105,11 +105,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-zebrafish",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Euprymna berryi",
+        "taxa": "ee3d5978-c2b5-4262-ac22-1ceba5820505",
         "sex": "female",
         "uuid": "56fd9e93-34c7-4e9c-9075-93045c4c9964",
         "status": "current",
@@ -118,11 +118,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-bobtail_squid",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Hydroides elegans",
+        "taxa": "778cb329-8e47-41b0-8d98-63a78d2ebbfc",
         "sex": "hermaphrodite",
         "uuid": "1ba7e4b0-777b-4232-8a5d-430dee03ee3d",
         "status": "current",
@@ -131,11 +131,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-hydroides",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Leucoraja erinaceus",
+        "taxa": "1c13ae80-0175-4445-9b55-cfff2d31f562",
         "sex": "male",
         "uuid": "79433b5d-bc8e-4159-98e0-f710335c6e17",
         "status": "current",
@@ -144,11 +144,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-skate",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Limulus polyphemus",
+        "taxa": "983acdce-32be-4032-956f-26fc7790723c",
         "sex": "female",
         "uuid": "f44471e4-755b-4da3-99bc-3f2d0add0814",
         "status": "current",
@@ -157,11 +157,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-horseshoe_crab",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Littorina littorea",
+        "taxa": "fb439b0f-f139-48b0-a648-ceb074515b2a",
         "sex": "male",
         "uuid": "f47998f6-5ce0-4a25-95c8-8fb510a9d7ad",
         "status": "current",
@@ -170,11 +170,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-periwinkle",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Mnemiopsis leidyi",
+        "taxa": "16fc38d8-6157-4ba1-b893-32886cb58483",
         "sex": "hermaphrodite",
         "uuid": "cb5e1d4c-32cb-42f5-a474-e00a38fbfdc1",
         "status": "current",
@@ -183,11 +183,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-comb_jelly",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Monodelphis domestica",
+        "taxa": "c9b045b9-3687-484f-b58f-8fc82ee498f4",
         "sex": "female",
         "uuid": "21f901d8-a934-4304-8f3f-109ae5d13bda",
         "status": "current",
@@ -196,11 +196,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-opossum",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Mus musculus",
+        "taxa": "b3a594db-f253-4b32-b7ba-697c974b698b",
         "sex": "male",
         "uuid": "f6a7b8c9-d0e1-2345-fa16-678901234567",
         "status": "current",
@@ -209,11 +209,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-mouse",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Myxine glutinosa",
+        "taxa": "056155e2-1189-4b0e-982b-a20524a3fecf",
         "sex": "hermaphrodite",
         "uuid": "8e30b7ea-506a-4d5f-befd-2aa3f2b3ce33",
         "status": "current",
@@ -222,11 +222,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-hagfish",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Nematostella vectensis",
+        "taxa": "d5fb0418-d008-4ff9-9b2f-bdb17e5cb475",
         "sex": "female",
         "uuid": "4156eca3-7e27-4cbb-b2db-c59646fbea1b",
         "status": "current",
@@ -235,11 +235,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-sea_anemone",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Nothobranchius furzeri",
+        "taxa": "2ad96e8e-3944-45f3-bddd-e3daabf3d122",
         "sex": "male",
         "uuid": "b96277f0-05eb-4c55-8373-a4598b1aa6e4",
         "status": "current",
@@ -248,11 +248,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-killifish",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Octopus bimaculoides",
+        "taxa": "0a7b8842-1926-4034-8fa7-5b6e184785d5",
         "sex": "female",
         "uuid": "0e347bd1-26a1-4aae-979b-d55d06e8f1f3",
         "status": "current",
@@ -261,11 +261,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-octopus",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Parhyale hawaiensis",
+        "taxa": "49d8942f-7109-4581-8640-e975476f7a7f",
         "sex": "male",
         "uuid": "80669816-9bb1-4a61-a4f3-ddb00c693194",
         "status": "current",
@@ -274,11 +274,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-amphipod",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Patiria miniata",
+        "taxa": "e22498b8-54ad-45a9-9a06-e2eebfcc34db",
         "sex": "female",
         "uuid": "2975d16d-0037-49e4-a558-d742facfd34f",
         "status": "current",
@@ -287,11 +287,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-sea_star",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Petromyzon marinus",
+        "taxa": "5a57d4e4-de5b-4b0e-8c94-80793d7441b1",
         "sex": "male",
         "uuid": "fa79b903-f5e1-44b6-863a-bd7c3fe9116a",
         "status": "current",
@@ -300,11 +300,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-lamprey",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Platynereis megalops",
+        "taxa": "06e5ef2b-8d6d-4536-895e-10d4376ea7d8",
         "sex": "female",
         "uuid": "45214917-c5af-4910-988f-f6cfb0c385dc",
         "status": "current",
@@ -313,11 +313,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-polychaete",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Ranitomeya imitator",
+        "taxa": "2bf6636f-aa99-45bd-919b-7c55105fe381",
         "sex": "male",
         "uuid": "78d62fa7-d858-4760-8e97-09cc88af0523",
         "status": "current",
@@ -326,11 +326,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-poison_frog",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Saccoglossus kowalevskii",
+        "taxa": "1f347bb6-2d7a-41fc-b221-f7bc529623f4",
         "sex": "female",
         "uuid": "7dc6eb37-ede3-49fa-92b0-185760a95130",
         "status": "current",
@@ -339,11 +339,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-acorn_worm",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Sclerodactyla briareus",
+        "taxa": "e518df7a-7d28-4ed2-9b94-00c27beb0216",
         "sex": "male",
         "uuid": "3314940d-556e-4f21-b1c1-433550bae1f8",
         "status": "current",
@@ -352,11 +352,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-sea_cucumber",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Sycon ciliatum",
+        "taxa": "73af947d-9db4-4a17-8c57-7a23e39a0dad",
         "sex": "hermaphrodite",
         "uuid": "f46634f4-a5de-44bc-9c97-0f0f45d35c01",
         "status": "current",
@@ -365,11 +365,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-sponge",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Turritopsis dohrnii",
+        "taxa": "4f8a3bf2-d5a4-4838-8e6b-12d83116b155",
         "sex": "female",
         "uuid": "0527a0b7-ae9b-4550-8558-aa002624a9f5",
         "status": "current",
@@ -378,11 +378,11 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-jellyfish",
-        "schema_version": "2"
+        "schema_version": "4"
     },
     {
         "lab": "teri-klein",
-        "taxa": "Xenopus tropicalis",
+        "taxa": "bdb61d3c-beb7-4375-94d6-63b4395befe4",
         "sex": "male",
         "uuid": "440a16d2-0ede-48b0-aded-b9c981243c21",
         "status": "current",
@@ -391,6 +391,6 @@
         ],
         "description": "Example non human donor for testing.",
         "cxg_donor_id": "lattice:cxg-insert-frog",
-        "schema_version": "2"
+        "schema_version": "4"
     }
 ]

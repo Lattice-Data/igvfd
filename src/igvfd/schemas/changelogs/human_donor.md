@@ -1,5 +1,10 @@
 # Human Donor Changelog
 
+### Schema version 4
+
+* Change `taxa` from an enum to a link to a ControlledTerm, restricted to the NCBITaxon term for Homo sapiens.
+* Upgrade `taxa` to link to the ControlledTerm with the matching NCBITaxon `term_id`.
+
 ### Schema version 3
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

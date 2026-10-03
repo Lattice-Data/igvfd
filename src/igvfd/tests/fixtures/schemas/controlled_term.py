@@ -130,3 +130,38 @@ def controlled_term_uniprot(testapp):
         'status': 'current',
     }
     return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def taxon_homo_sapiens(testapp):
+    item = {
+        'term_id': 'NCBITaxon:9606',
+        'ontology_source': 'NCBITaxon',
+        'aliases': ['lattice:term-homo-sapiens'],
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def taxon_mus_musculus(testapp):
+    item = {
+        'term_id': 'NCBITaxon:10090',
+        'ontology_source': 'NCBITaxon',
+        'aliases': ['lattice:term-mus-musculus'],
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def post_taxon(testapp):
+    # For species the fixtures above do not cover; each term_id can be posted once per test.
+    def post(term_id):
+        item = {
+            'term_id': term_id,
+            'ontology_source': 'NCBITaxon',
+            'status': 'current',
+        }
+        return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+    return post

@@ -2,10 +2,10 @@ import pytest
 
 
 @pytest.fixture
-def human_donor(testapp, other_lab):
+def human_donor(testapp, other_lab, taxon_homo_sapiens):
     item = {
         'lab': other_lab['@id'],
-        'taxa': 'Homo sapiens',
+        'taxa': taxon_homo_sapiens['@id'],
         'sex': 'unspecified',
         'cxg_donor_id': 'lattice:test-cxg-human-001',
         'author_metadata': {
@@ -17,10 +17,10 @@ def human_donor(testapp, other_lab):
 
 
 @pytest.fixture
-def human_donor_with_description(testapp, other_lab):
+def human_donor_with_description(testapp, other_lab, taxon_homo_sapiens):
     item = {
         'lab': other_lab['@id'],
-        'taxa': 'Homo sapiens',
+        'taxa': taxon_homo_sapiens['@id'],
         'sex': 'unspecified',
         'cxg_donor_id': 'lattice:test-cxg-human-003',
         'description': 'Test human donor',
@@ -29,10 +29,10 @@ def human_donor_with_description(testapp, other_lab):
 
 
 @pytest.fixture
-def human_donor_with_aliases(testapp, other_lab):
+def human_donor_with_aliases(testapp, other_lab, taxon_homo_sapiens):
     item = {
         'lab': other_lab['@id'],
-        'taxa': 'Homo sapiens',
+        'taxa': taxon_homo_sapiens['@id'],
         'sex': 'unspecified',
         'aliases': ['lattice:pytest-human-donor-summary-alias'],
         'cxg_donor_id': 'lattice:test-cxg-human-alias',
@@ -42,10 +42,10 @@ def human_donor_with_aliases(testapp, other_lab):
 
 
 @pytest.fixture
-def human_donor_with_ethnicity(testapp, other_lab, controlled_term_ethnicity):
+def human_donor_with_ethnicity(testapp, other_lab, controlled_term_ethnicity, taxon_homo_sapiens):
     item = {
         'lab': other_lab['@id'],
-        'taxa': 'Homo sapiens',
+        'taxa': taxon_homo_sapiens['@id'],
         'sex': 'female',
         'cxg_donor_id': 'lattice:test-cxg-human-004',
         'ethnicity': controlled_term_ethnicity['@id'],
