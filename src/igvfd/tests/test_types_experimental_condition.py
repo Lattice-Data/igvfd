@@ -39,12 +39,26 @@ def test_experimental_condition_summary_chemical_treatment_text_agent(
 
 
 def test_experimental_condition_summary_protein_treatment_term_agent(
-    testapp, experimental_condition_protein_treatment, controlled_term_uniprot
+    testapp, experimental_condition_protein_treatment
 ):
     res = testapp.get(experimental_condition_protein_treatment['@id'])
-    term = testapp.get(controlled_term_uniprot['@id']).json
-    agent = term.get('term_name') or term['term_id']
-    assert res.json.get('summary') == f'Protein treatment with {agent} at 10 ng/mL for 1 day'
+    assert res.json.get('summary') == 'Protein treatment with INS_HUMAN at 10 ng/mL for 1 day'
+
+
+def test_experimental_condition_summary_unresolved_antibody_term_falls_back_to_term_id(testapp, other_lab):
+    term = testapp.post_json(
+        '/controlled_term',
+        {'term_id': 'anti-uniprot:Q00000', 'ontology_source': 'UniProt', 'status': 'current'},
+        status=201,
+    ).json['@graph'][0]
+    item = {
+        'lab': other_lab['@id'],
+        'condition': 'protein treatment',
+        'controlled_term': term['@id'],
+        'status': 'current',
+    }
+    res = testapp.post_json('/experimental_condition', item, status=201)
+    assert res.json['@graph'][0]['summary'] == 'Protein treatment with anti-uniprot:Q00000'
 
 
 def test_experimental_condition_required_fields(testapp, other_lab):

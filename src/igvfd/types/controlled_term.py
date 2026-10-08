@@ -54,6 +54,8 @@ class ControlledTerm(Item):
         term_prefix = 'anti-' if term_id.startswith('anti-') else ''
         term_to_lookup = term_id[len(term_prefix):]
         name = self._get_ontology_string(registry, term_to_lookup, 'label')
+        if not name:
+            return ''
         return term_prefix + name
 
     @calculated_property(
