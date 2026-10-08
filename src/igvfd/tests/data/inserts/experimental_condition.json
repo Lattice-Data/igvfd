@@ -63,5 +63,54 @@
         "aliases": [
             "lattice:ec-current-smoker"
         ]
+    },
+    {
+        "lab": "teri-klein",
+        "condition": "chemical treatment",
+        "controlled_term": "e4a5b6c7-d8e9-4012-bcde-567890123456",
+        "value": 10,
+        "units": "mg/kg",
+        "uuid": "34549714-3585-4a2e-8aba-5cdcbc40c456",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-vitamin-D-treatment"
+        ],
+        "description": "Vitamin D treatment for low Vitamin D levels.",
+        "lower_bound_duration": 24,
+        "upper_bound_duration": 48,
+        "duration_units": "hour"
+    },
+    {
+        "lab": "teri-klein",
+        "condition": "protein treatment",
+        "controlled_term": "e5b6c7d8-e9f0-4123-cdef-678901234567",
+        "value": 10,
+        "units": "ng/mL",
+        "uuid": "3c0d0d09-34ba-4bfe-9d8f-4221ddc6786b",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-insulin-treatment"
+        ],
+        "lower_bound_duration": 8,
+        "upper_bound_duration": 8,
+        "duration_units": "hour"
+    },
+    {
+        "lab": "teri-klein",
+        "condition": "chemical treatment",
+        "text_value": "ethanol",
+        "value": 3,
+        "units": "percent",
+        "uuid": "cc2f0830-5591-453d-ae57-389b4e9c2d18",
+        "schema_version": "2",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-ethanol-treatment"
+        ],
+        "lower_bound_duration": 4,
+        "upper_bound_duration": 4,
+        "duration_units": "hour"
     }
 ]

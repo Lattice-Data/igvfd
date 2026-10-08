@@ -1,6 +1,6 @@
 {
-    "hash": "9753fe557ef325448b098b3fce69d14d",
-    "index_name": "tissue_9753fe55",
+    "hash": "3d41ab9112c0d913e7011e9427af78a7",
+    "index_name": "tissue_3d41ab91",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -306,7 +306,75 @@
                         "type": "keyword"
                     },
                     "experimental_conditions": {
-                        "type": "keyword"
+                        "properties": {
+                            "@id": {
+                                "type": "keyword"
+                            },
+                            "@type": {
+                                "type": "keyword"
+                            },
+                            "aliases": {
+                                "type": "keyword"
+                            },
+                            "condition": {
+                                "type": "keyword"
+                            },
+                            "controlled_term": {
+                                "type": "keyword"
+                            },
+                            "creation_timestamp": {
+                                "type": "date"
+                            },
+                            "description": {
+                                "type": "text"
+                            },
+                            "duration_units": {
+                                "type": "keyword"
+                            },
+                            "lab": {
+                                "type": "keyword"
+                            },
+                            "lower_bound_duration": {
+                                "store": true,
+                                "type": "float"
+                            },
+                            "notes": {
+                                "type": "text"
+                            },
+                            "schema_version": {
+                                "type": "keyword"
+                            },
+                            "status": {
+                                "type": "keyword"
+                            },
+                            "submitted_by": {
+                                "type": "keyword"
+                            },
+                            "submitter_comment": {
+                                "type": "keyword"
+                            },
+                            "summary": {
+                                "type": "keyword"
+                            },
+                            "text_value": {
+                                "type": "keyword"
+                            },
+                            "units": {
+                                "type": "keyword"
+                            },
+                            "upper_bound_duration": {
+                                "store": true,
+                                "type": "float"
+                            },
+                            "uuid": {
+                                "type": "keyword"
+                            },
+                            "value": {
+                                "store": true,
+                                "type": "float"
+                            }
+                        },
+                        "type": "object"
                     },
                     "genetic_modification": {
                         "type": "keyword"

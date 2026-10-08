@@ -2,7 +2,7 @@
     "title": "Experimental Condition",
     "$id": "/profiles/experimental_condition.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "Experimental conditions and environmental parameters that affect biological samples during culture or experimental procedures.",
+    "description": "Experimental conditions, environmental parameters, and treatments that affect biological samples during culture or experimental procedures.",
     "type": "object",
     "required": [
         "lab",
@@ -72,6 +72,66 @@
                             "text_value"
                         ]
                     }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "condition": {
+                                "enum": [
+                                    "chemical treatment",
+                                    "protein treatment"
+                                ]
+                            }
+                        }
+                    },
+                    "then": {
+                        "anyOf": [
+                            {
+                                "required": [
+                                    "controlled_term"
+                                ]
+                            },
+                            {
+                                "required": [
+                                    "text_value"
+                                ]
+                            }
+                        ],
+                        "properties": {
+                            "units": {
+                                "enum": [
+                                    "mg/kg",
+                                    "mg/mL",
+                                    "mM",
+                                    "ng/mL",
+                                    "nM",
+                                    "percent",
+                                    "μg/kg",
+                                    "μg/mL",
+                                    "μM",
+                                    "kPa"
+                                ]
+                            }
+                        }
+                    },
+                    "else": {
+                        "properties": {
+                            "units": {
+                                "not": {
+                                    "enum": [
+                                        "mg/kg",
+                                        "mg/mL",
+                                        "mM",
+                                        "ng/mL",
+                                        "nM",
+                                        "μg/kg",
+                                        "μg/mL",
+                                        "μM"
+                                    ]
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         },
@@ -92,15 +152,17 @@
         },
         "condition": {
             "title": "Condition",
-            "description": "Type of experimental condition or parameter.",
+            "description": "Type of experimental condition, parameter, or treatment.",
             "type": "string",
             "enum": [
+                "chemical treatment",
                 "diet",
                 "humidity",
                 "osmolarity",
                 "oxygen level",
                 "pH",
                 "pressure",
+                "protein treatment",
                 "smoking status",
                 "surface tension",
                 "temperature"
@@ -108,8 +170,8 @@
         },
         "controlled_term": {
             "title": "Controlled Term",
-            "description": "Ontology term describing this condition (for example a diet term).",
-            "comment": "See controlled_term.json for available identifiers.",
+            "description": "Ontology term describing this condition (for example a diet term), or the treatment agent for treatment conditions (a ChEBI term for chemical treatments, a UniProt term for protein treatments).",
+            "comment": "See controlled_term.json for available identifiers. For chemical treatment and protein treatment, either controlled_term or text_value is required. This property is affected by dependencies. See dependentSchemas.",
             "type": "string",
             "linkTo": "ControlledTerm",
             "submissionExample": {
@@ -118,14 +180,14 @@
         },
         "value": {
             "title": "Value",
-            "description": "Numeric value of the condition.",
+            "description": "Numeric value of the condition, or the amount of the treatment agent applied.",
             "comment": "Required for quantitative conditions. This property is affected by dependencies. See dependentSchemas.",
             "type": "number"
         },
         "units": {
             "title": "Units",
-            "description": "Units of measurement for the condition value.",
-            "comment": "Required for quantitative conditions. This property is affected by dependencies. See dependentSchemas.",
+            "description": "Units of measurement for the condition value or treatment amount.",
+            "comment": "Required for quantitative conditions. Treatment conditions accept only amount units (mg/kg, mg/mL, mM, ng/mL, nM, percent, μg/kg, μg/mL, μM, kPa); other conditions do not accept mg/kg, mg/mL, mM, ng/mL, nM, μg/kg, μg/mL, or μM. This property is affected by dependencies. See dependentSchemas.",
             "type": "string",
             "enum": [
                 "celsius",
@@ -133,17 +195,25 @@
                 "fahrenheit",
                 "kelvin",
                 "kPa",
+                "mg/kg",
+                "mg/mL",
+                "mM",
                 "mN/m",
                 "mOsm/kg",
                 "mmHg",
+                "ng/mL",
+                "nM",
                 "percent",
-                "pH units"
+                "pH units",
+                "μg/kg",
+                "μg/mL",
+                "μM"
             ]
         },
         "text_value": {
             "title": "Text Value",
-            "description": "Text description of the condition for qualitative parameters.",
-            "comment": "Required for qualitative conditions (e.g. diet, smoking status). This property is affected by dependencies. See dependentSchemas.",
+            "description": "Text description of the condition for qualitative parameters, or the name of the treatment agent when no ontology term is available.",
+            "comment": "Required for qualitative conditions (e.g. diet, smoking status). For chemical treatment and protein treatment, either controlled_term or text_value is required. This property is affected by dependencies. See dependentSchemas.",
             "type": "string",
             "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
         }

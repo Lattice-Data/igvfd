@@ -4,21 +4,10 @@ from snovault import (
     calculated_property,
 )
 from snovault.util import Path
-from snovault.validation import ValidationFailure
 from .base import (
     Item,
 )
-
-
-def _validate_treatment_duration_range(properties):
-    lower = properties.get('lower_bound_duration')
-    upper = properties.get('upper_bound_duration')
-    if lower is not None and upper is not None and upper < lower:
-        raise ValidationFailure(
-            'body',
-            ['upper_bound_duration'],
-            'upper_bound_duration must be greater than or equal to lower_bound_duration.',
-        )
+from .experimental_condition import validate_duration_range
 
 
 @collection(
@@ -53,5 +42,5 @@ class Treatment(Item):
 
     def _update(self, properties, sheets=None):
         if properties is not None:
-            _validate_treatment_duration_range(properties)
+            validate_duration_range(properties)
         super(Treatment, self)._update(properties, sheets=sheets)
