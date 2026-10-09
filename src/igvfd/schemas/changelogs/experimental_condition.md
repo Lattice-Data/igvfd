@@ -1,5 +1,14 @@
 ## Changelog for experimental_condition.json
 
+### Minor changes since schema version 2
+
+* Add `chemical treatment` and `protein treatment` to `condition`.
+* Require `controlled_term` or `text_value` for `chemical treatment` and `protein treatment`.
+* Add `mg/kg`, `mg/mL`, `mM`, `ng/mL`, `nM`, `μg/kg`, `μg/mL`, and `μM` to `units`.
+* Restrict `units` for `chemical treatment` and `protein treatment` to `mg/kg`, `mg/mL`, `mM`, `ng/mL`, `nM`, `percent`, `μg/kg`, `μg/mL`, `μM`, and `kPa`; other conditions do not accept the treatment amount units.
+* Require `upper_bound_duration` to be greater than or equal to `lower_bound_duration`.
+* Change `summary` to a human readable sentence describing the condition, for example "Chemical treatment with ethanol at 3% for 4 hours".
+
 ### Schema version 2
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
