@@ -1,5 +1,9 @@
 # Sequence File Set Changelog
 
+## Minor changes since schema version 3
+
+* Require paired-end-with-index sets to have index1 or index2, rather than only index1.
+
 ## Schema version 3
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

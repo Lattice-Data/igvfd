@@ -75,3 +75,35 @@ def experimental_condition_with_duration(testapp, other_lab):
         'status': 'current',
     }
     return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def experimental_condition_chemical_treatment_ethanol(testapp, other_lab):
+    item = {
+        'lab': other_lab['@id'],
+        'condition': 'chemical treatment',
+        'text_value': 'ethanol',
+        'value': 3,
+        'units': 'percent',
+        'lower_bound_duration': 4,
+        'upper_bound_duration': 4,
+        'duration_units': 'hour',
+        'status': 'current',
+    }
+    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def experimental_condition_protein_treatment(testapp, other_lab, controlled_term_uniprot):
+    item = {
+        'lab': other_lab['@id'],
+        'condition': 'protein treatment',
+        'controlled_term': controlled_term_uniprot['@id'],
+        'value': 10,
+        'units': 'ng/mL',
+        'lower_bound_duration': 1,
+        'upper_bound_duration': 1,
+        'duration_units': 'day',
+        'status': 'current',
+    }
+    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
