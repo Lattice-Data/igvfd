@@ -345,6 +345,47 @@ def audit_dual_cardinality_linked_libraries_count(value, system):
         )
 
 
+def audit_library_missing_cro_group_identifier(value, system):
+    '''
+    [
+        {
+            "audit_description": "Libraries are expected to have a CRO group identifier.",
+            "audit_category": "missing CRO group identifier",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    if value.get('CRO_group_identifier'):
+        return
+    audit_message = get_audit_message(audit_library_missing_cro_group_identifier)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    lib_id = value['@id']
+    detail = (
+        f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
+        f'is missing `CRO_group_identifier`.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
+# A dispatcher of its own rather than an entry in function_dispatcher_library_object:
+# the mapping hash covers each checker's bytecode, not the dict it iterates, so a new
+# entry in an existing dispatcher would not change the hash or trigger a reindex.
+function_dispatcher_library_cro_group_identifier_object = {
+    'audit_library_missing_cro_group_identifier': audit_library_missing_cro_group_identifier,
+}
+
+
+@audit_checker('Library', frame='object')
+def audit_library_cro_group_identifier_object_dispatcher(value, system):
+    for function_name in function_dispatcher_library_cro_group_identifier_object:
+        for failure in function_dispatcher_library_cro_group_identifier_object[function_name](value, system):
+            yield failure
+
+
 function_dispatcher_library_object = {
     'audit_single_cardinality_unexpected_linked_libraries': audit_single_cardinality_unexpected_linked_libraries,
     'audit_dual_cardinality_missing_linked_libraries': audit_dual_cardinality_missing_linked_libraries,
