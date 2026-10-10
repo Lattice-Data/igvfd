@@ -36,6 +36,11 @@ ALIAS_UPGRADES = [
     ('user', '6', '7'),
 ]
 
+# Types released after the steps above, whose first schema version already has the anchored aliases regex.
+ALIAS_PATTERN_AT_RELEASE = [
+    'configuration_file',
+]
+
 # ALIAS_PATTERN as released with the steps above.
 ALIAS_PATTERN_AS_RELEASED = r"^[a-z0-9-]+:[a-zA-Z\d_$.+!*,()'-]+(?: [a-zA-Z\d_$.+!*,()'-]+)*(?![\s\S])"
 
@@ -58,7 +63,8 @@ def test_alias_upgrades_cover_every_type_with_aliases(registry):
         name for name, type_info in types.by_item_type.items()
         if 'aliases' in type_info.schema['properties']
     }
-    assert {item_type for item_type, _, _ in ALIAS_UPGRADES} == with_aliases
+    assert {item_type for item_type, _, _ in ALIAS_UPGRADES} | set(ALIAS_PATTERN_AT_RELEASE) == with_aliases
+    assert not {item_type for item_type, _, _ in ALIAS_UPGRADES} & set(ALIAS_PATTERN_AT_RELEASE)
     # At least, not equal: later bumps for unrelated changes must not force editing the
     # released steps listed above.
     for item_type, _, target_version in ALIAS_UPGRADES:
