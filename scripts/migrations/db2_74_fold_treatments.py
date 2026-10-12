@@ -9,17 +9,18 @@ For each Treatment that is not already deleted:
 2. Repoint every biosample that links the Treatment: add the new
    ExperimentalCondition to experimental_conditions and drop the Treatment
    from treatments.
-3. Set the Treatment to status deleted and move its aliases into notes.
-   Aliases are unique across all objects, so the Treatment has to release
-   them before the new object can take them.
+3. Set the Treatment to status deleted and rename its aliases by appending
+   _deleted. Aliases are unique across all objects, so the Treatment has to
+   release the original names before the new object can take them.
 4. Add the Treatment's original aliases to the new ExperimentalCondition.
 
 This order means a biosample always links either the Treatment or its
 replacement, never a deleted object.
 
 Credentials come from {MODE}_KEY, {MODE}_SECRET and {MODE}_SERVER, the same
-convention db2-flattener uses. Use an admin key: step 3 PUTs the Treatment
-from its @@edit view, which includes server-managed fields.
+convention db2-flattener uses. Use an admin key: biosamples left with no
+treatments are PUT from their @@edit view, which includes server-managed
+fields.
 
 Dry run by default; pass --apply to write. Progress is recorded in a state
 file after every write, so an interrupted run can be resumed by running the
@@ -47,6 +48,9 @@ CONDITION_BY_ONTOLOGY_SOURCE = {
 UNITS_RENAMES = {
     'kpa': 'kPa',
 }
+
+# Appended to a deleted Treatment's aliases so the new ExperimentalCondition can take the originals.
+DELETED_ALIAS_SUFFIX = '_deleted'
 
 # Treatment properties copied unchanged onto the new ExperimentalCondition.
 COPIED_PROPERTIES = (
@@ -208,16 +212,21 @@ def migrate_treatment(client, treatment_id, state, state_path):
             record['biosamples'].append(biosample_id)
             save_state(state_path, state, client.apply)
 
-    # Step 3: delete the Treatment and release its aliases.
-    if treatment['status'] == 'deleted' and not treatment.get('aliases'):
+    # Step 3: delete the Treatment and release its aliases by renaming them.
+    renamed_aliases = [f'{alias}{DELETED_ALIAS_SUFFIX}' for alias in record['aliases']]
+    if treatment['status'] == 'deleted' and treatment.get('aliases', []) == renamed_aliases:
         print('  3. Treatment already deleted')
     else:
         updates = {'status': 'deleted'}
-        if treatment.get('aliases'):
-            note = f'Aliases moved to {condition_id} during DB2-74 migration: {", ".join(treatment["aliases"])}.'
+        if renamed_aliases:
+            updates['aliases'] = renamed_aliases
+            note = (
+                f'Aliases renamed with {DELETED_ALIAS_SUFFIX} during DB2-74 migration; '
+                f'the originals moved to {condition_id}: {", ".join(record["aliases"])}.'
+            )
             updates['notes'] = append_note(treatment.get('notes'), note)
-        put_from_edit(client, treatment_id, drop={'aliases'}, updates=updates)
-        print('  3. Treatment set to deleted, aliases moved to notes')
+        client.write('PATCH', treatment_id, updates)
+        print(f'  3. Treatment set to deleted, aliases renamed with {DELETED_ALIAS_SUFFIX}')
 
     # Step 4: give the new ExperimentalCondition the original aliases.
     if not record['aliases']:
