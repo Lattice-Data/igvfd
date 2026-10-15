@@ -1034,6 +1034,18 @@ def test_sequence_file_sra_file_names_absent_when_mate_in_two_sets_until_one_del
     assert _sra_names(testapp, other_r1) is None
 
 
+def test_sequence_file_sra_file_names_keep_deleted_mate(
+    testapp, other_lab, droplet_based_library
+):
+    r1 = _post_sra_fastq(testapp, other_lab, 'SRA9_R1_001.fastq.gz', 45 * SRA_GB)
+    r2 = _post_sra_fastq(testapp, other_lab, 'SRA9_R2_001.fastq.gz', 160 * SRA_GB + 1)
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'paired-end', read1=r1, read2=r2)
+    testapp.patch_json(r2['@id'], {'status': 'deleted'}, status=200)
+    # fastq_chunker ignores file status, so the deleted R2 still sets the chunk count
+    assert _sra_names(testapp, r1) == _sra_parts('SRA9_R1_001', 3)
+    assert _sra_names(testapp, r2) == _sra_parts('SRA9_R2_001', 3)
+
+
 def test_sequence_file_sra_file_names_absent_when_file_in_two_slots_of_one_set(
     testapp, other_lab, droplet_based_library
 ):

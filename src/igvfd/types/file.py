@@ -126,6 +126,9 @@ class SequenceFile(File):
         if len(references) != 1:
             return None
         own_slot, file_set = references[0]
+        # File status is deliberately not checked: fastq_chunker (portal.build_groups)
+        # plans every file in a set's read slots whatever its status, so a deleted
+        # file still gets names and a deleted mate's file_size still counts.
         mates = {}
         for slot in READ_SLOTS:
             if slot not in file_set:
