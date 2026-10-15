@@ -910,6 +910,149 @@ def test_sequence_file_reverse_links_include_cram_slots(
     assert cram_set['@id'] in sequence_file_res['sequence_file_sets']
 
 
+SRA_GB = 10**9
+SRA_READ_COUNT = 2_000_000_000
+
+
+def _post_sra_fastq(testapp, lab, name, file_size, read_count=SRA_READ_COUNT, **extra):
+    item = {
+        'lab': lab['@id'],
+        'file_format': 'fastq',
+        's3_uri': f's3://lattice-test-data/sequence/{name}',
+        'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+        'read_count': read_count,
+        'file_size': file_size,
+        'status': 'current',
+        **extra,
+    }
+    if file_size is None:
+        del item['file_size']
+    return testapp.post_json('/sequence_file', item, status=201).json['@graph'][0]
+
+
+def _post_sra_set(testapp, lab, library, run_cardinality, **slots):
+    item = {
+        'lab': lab['@id'],
+        'library': library['@id'],
+        'run_cardinality': run_cardinality,
+        'status': 'current',
+    }
+    item.update({slot: f['@id'] for slot, f in slots.items()})
+    return testapp.post_json('/sequence_file_set', item, status=201).json['@graph'][0]
+
+
+def _sra_names(testapp, f):
+    return testapp.get(f['@id']).json.get('sra_file_names')
+
+
+def _sra_parts(stem, n):
+    return [f'{stem}.part{k:03d}.fastq.gz' for k in range(1, n + 1)]
+
+
+def test_sequence_file_sra_file_names_absent_without_set(testapp, other_lab):
+    lone = _post_sra_fastq(testapp, other_lab, 'SRA0_R1_001.fastq.gz', 10 * SRA_GB)
+    assert 'sra_file_names' not in testapp.get(lone['@id']).json
+
+
+def test_sequence_file_sra_file_names_unsplit_paired_end(testapp, other_lab, droplet_based_library):
+    r1 = _post_sra_fastq(testapp, other_lab, 'SRA1_R1_001.fastq.gz', 40 * SRA_GB)
+    r2 = _post_sra_fastq(testapp, other_lab, 'SRA1_R2_001.fastq.gz', 99_999_999_999)
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'paired-end', read1=r1, read2=r2)
+    assert _sra_names(testapp, r1) == ['SRA1_R1_001.fastq.gz']
+    assert _sra_names(testapp, r2) == ['SRA1_R2_001.fastq.gz']
+
+
+def test_sequence_file_sra_file_names_dual_index_splits_every_mate(
+    testapp, other_lab, droplet_based_library
+):
+    files = {
+        'read1': _post_sra_fastq(testapp, other_lab, 'SRA2_R1_001.fastq.gz', 45 * SRA_GB),
+        'read2': _post_sra_fastq(testapp, other_lab, 'SRA2_R2_001.fastq.gz', 160 * SRA_GB + 1),
+        'index1': _post_sra_fastq(testapp, other_lab, 'SRA2_I1_001.fastq.gz', 6 * SRA_GB),
+        'index2': _post_sra_fastq(testapp, other_lab, 'SRA2_I2_001.fastq.gz', 6 * SRA_GB),
+    }
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'paired-end-with-dual-index', **files)
+    for slot, tag in (('read1', 'R1'), ('read2', 'R2'), ('index1', 'I1'), ('index2', 'I2')):
+        assert _sra_names(testapp, files[slot]) == _sra_parts(f'SRA2_{tag}_001', 3)
+
+
+def test_sequence_file_sra_file_names_triplet_read3_shares_count(
+    testapp, other_lab, droplet_based_library
+):
+    files = {
+        'read1': _post_sra_fastq(testapp, other_lab, 'SRA3_R1_001.fastq.gz', 150 * SRA_GB),
+        'read2': _post_sra_fastq(testapp, other_lab, 'SRA3_R2_001.fastq.gz', 12 * SRA_GB),
+        'read3': _post_sra_fastq(testapp, other_lab, 'SRA3_R3_001.fastq.gz', 151 * SRA_GB),
+    }
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'triplet', **files)
+    assert _sra_names(testapp, files['read3']) == _sra_parts('SRA3_R3_001', 2)
+    assert _sra_names(testapp, files['read2']) == _sra_parts('SRA3_R2_001', 2)
+
+
+def test_sequence_file_sra_file_names_fq_gz_chunks_end_in_fastq_gz(
+    testapp, other_lab, droplet_based_library
+):
+    r1 = _post_sra_fastq(testapp, other_lab, 'run.v2.SRA4_R1.fq.gz', 120 * SRA_GB)
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'single-end', read1=r1)
+    assert _sra_names(testapp, r1) == [
+        'run.v2.SRA4_R1.part001.fastq.gz',
+        'run.v2.SRA4_R1.part002.fastq.gz',
+    ]
+
+
+def test_sequence_file_sra_file_names_absent_for_cram(
+    testapp, other_lab, sequence_file_cram, droplet_based_library
+):
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'single-end', untrimmed_cram=sequence_file_cram)
+    assert 'sra_file_names' not in testapp.get(sequence_file_cram['@id']).json
+
+
+def test_sequence_file_sra_file_names_absent_when_mate_lacks_file_size(
+    testapp, other_lab, droplet_based_library
+):
+    r1 = _post_sra_fastq(testapp, other_lab, 'SRA5_R1_001.fastq.gz', 40 * SRA_GB)
+    r2 = _post_sra_fastq(testapp, other_lab, 'SRA5_R2_001.fastq.gz', None)
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'paired-end', read1=r1, read2=r2)
+    assert _sra_names(testapp, r1) is None
+    assert _sra_names(testapp, r2) is None
+
+
+def test_sequence_file_sra_file_names_absent_when_mate_in_two_sets_until_one_deleted(
+    testapp, other_lab, droplet_based_library
+):
+    r1 = _post_sra_fastq(testapp, other_lab, 'SRA6_R1_001.fastq.gz', 40 * SRA_GB)
+    r2 = _post_sra_fastq(testapp, other_lab, 'SRA6_R2_001.fastq.gz', 40 * SRA_GB)
+    other_r1 = _post_sra_fastq(testapp, other_lab, 'SRA6b_R1_001.fastq.gz', 40 * SRA_GB)
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'paired-end', read1=r1, read2=r2)
+    second = _post_sra_set(testapp, other_lab, droplet_based_library, 'paired-end', read1=other_r1, read2=r2)
+    # r2 sits in two sets: no names for it, nor for its mates in either set
+    for f in (r1, r2, other_r1):
+        assert _sra_names(testapp, f) is None
+    testapp.patch_json(second['@id'], {'status': 'deleted'}, status=200)
+    assert _sra_names(testapp, r1) == ['SRA6_R1_001.fastq.gz']
+    assert _sra_names(testapp, r2) == ['SRA6_R2_001.fastq.gz']
+    assert _sra_names(testapp, other_r1) is None
+
+
+def test_sequence_file_sra_file_names_absent_when_file_in_two_slots_of_one_set(
+    testapp, other_lab, droplet_based_library
+):
+    r1 = _post_sra_fastq(testapp, other_lab, 'SRA7_R1_001.fastq.gz', 40 * SRA_GB)
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'paired-end', read1=r1, read2=r1)
+    assert _sra_names(testapp, r1) is None
+
+
+def test_sequence_file_sra_file_names_follow_mate_file_size_patch(
+    testapp, other_lab, droplet_based_library
+):
+    r1 = _post_sra_fastq(testapp, other_lab, 'SRA8_R1_001.fastq.gz', 45 * SRA_GB)
+    r2 = _post_sra_fastq(testapp, other_lab, 'SRA8_R2_001.fastq.gz', 50 * SRA_GB)
+    _post_sra_set(testapp, other_lab, droplet_based_library, 'paired-end', read1=r1, read2=r2)
+    assert _sra_names(testapp, r1) == ['SRA8_R1_001.fastq.gz']
+    testapp.patch_json(r2['@id'], {'file_size': 160 * SRA_GB + 1}, status=200)
+    assert _sra_names(testapp, r1) == _sra_parts('SRA8_R1_001', 3)
+
+
 def test_raw_matrix_file_accepts_new_feature_keys(testapp, other_lab, tissue):
     res = testapp.post_json(
         '/raw_matrix_file',

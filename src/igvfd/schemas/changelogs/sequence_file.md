@@ -1,5 +1,9 @@
 ## Changelog for sequence_file.json
 
+### Minor changes since schema version 5
+
+* Add calculated property `sra_file_names`: the names under which the file's reads are submitted to SRA, chunked as `lattice-tools` `fastq_chunker` does once a file of its sequence file set reaches 100 GB.
+
 ### Schema version 5
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

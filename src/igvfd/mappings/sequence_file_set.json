@@ -1,6 +1,6 @@
 {
-    "hash": "b0d8e04259215ce9ed18dc70a4787b3f",
-    "index_name": "sequence_file_set_b0d8e042",
+    "hash": "0e978f27a50b31d67ae38aa44c08bc6f",
+    "index_name": "sequence_file_set_0e978f27",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -218,6 +218,9 @@
                             "sequence_file_sets": {
                                 "type": "keyword"
                             },
+                            "sra_file_names": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -287,6 +290,9 @@
                                 "type": "keyword"
                             },
                             "sequence_file_sets": {
+                                "type": "keyword"
+                            },
+                            "sra_file_names": {
                                 "type": "keyword"
                             },
                             "status": {
@@ -495,6 +501,9 @@
                             "sequence_file_sets": {
                                 "type": "keyword"
                             },
+                            "sra_file_names": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -566,6 +575,9 @@
                             "sequence_file_sets": {
                                 "type": "keyword"
                             },
+                            "sra_file_names": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -635,6 +647,9 @@
                                 "type": "keyword"
                             },
                             "sequence_file_sets": {
+                                "type": "keyword"
+                            },
+                            "sra_file_names": {
                                 "type": "keyword"
                             },
                             "status": {
@@ -794,6 +809,9 @@
                             "sequence_file_sets": {
                                 "type": "keyword"
                             },
+                            "sra_file_names": {
+                                "type": "keyword"
+                            },
                             "status": {
                                 "type": "keyword"
                             },
@@ -863,6 +881,9 @@
                                 "type": "keyword"
                             },
                             "sequence_file_sets": {
+                                "type": "keyword"
+                            },
+                            "sra_file_names": {
                                 "type": "keyword"
                             },
                             "status": {
