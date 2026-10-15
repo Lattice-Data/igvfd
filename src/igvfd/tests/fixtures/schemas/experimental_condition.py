@@ -2,60 +2,9 @@ import pytest
 
 
 @pytest.fixture
-def experimental_condition_temperature(testapp, other_lab):
+def experimental_condition_description_only(testapp, other_lab):
     item = {
         'lab': other_lab['@id'],
-        'condition': 'temperature',
-        'value': 37,
-        'units': 'celsius',
-        'status': 'current',
-    }
-    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
-
-
-@pytest.fixture
-def experimental_condition_ph(testapp, other_lab):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'pH',
-        'value': 7.4,
-        'units': 'pH units',
-        'status': 'current',
-    }
-    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
-
-
-@pytest.fixture
-def experimental_condition_diet(testapp, other_lab):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'diet',
-        'text_value': 'high fat diet',
-        'status': 'current',
-    }
-    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
-
-
-@pytest.fixture
-def experimental_condition_with_aliases(testapp, other_lab):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'oxygen level',
-        'value': 5,
-        'units': 'percent',
-        'aliases': ['lattice:pytest-ec-hypoxia-5pct'],
-        'status': 'current',
-    }
-    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
-
-
-@pytest.fixture
-def experimental_condition_with_description(testapp, other_lab):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'temperature',
-        'value': 4,
-        'units': 'celsius',
         'description': 'Cold storage condition',
         'status': 'current',
     }
@@ -63,47 +12,63 @@ def experimental_condition_with_description(testapp, other_lab):
 
 
 @pytest.fixture
-def experimental_condition_with_duration(testapp, other_lab):
+def experimental_condition_single_term(testapp, other_lab, controlled_term_uniprot):
     item = {
         'lab': other_lab['@id'],
-        'condition': 'temperature',
-        'value': 37,
-        'units': 'celsius',
-        'lower_bound_duration': 12,
-        'upper_bound_duration': 24,
-        'duration_units': 'hour',
+        'controlled_terms': [controlled_term_uniprot['@id']],
         'status': 'current',
     }
     return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
 
 
 @pytest.fixture
-def experimental_condition_chemical_treatment_ethanol(testapp, other_lab):
+def experimental_condition_time_point(testapp, other_lab, controlled_term_uniprot):
     item = {
         'lab': other_lab['@id'],
-        'condition': 'chemical treatment',
-        'text_value': 'ethanol',
-        'value': 3,
-        'units': 'percent',
-        'lower_bound_duration': 4,
-        'upper_bound_duration': 4,
-        'duration_units': 'hour',
+        'controlled_terms': [controlled_term_uniprot['@id']],
+        'lower_bound_time_point': 8,
+        'upper_bound_time_point': 8,
+        'time_point_units': 'hour',
         'status': 'current',
     }
     return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
 
 
 @pytest.fixture
-def experimental_condition_protein_treatment(testapp, other_lab, controlled_term_uniprot):
+def experimental_condition_time_point_range(testapp, other_lab, controlled_term_uniprot):
     item = {
         'lab': other_lab['@id'],
-        'condition': 'protein treatment',
-        'controlled_term': controlled_term_uniprot['@id'],
-        'value': 10,
-        'units': 'ng/mL',
-        'lower_bound_duration': 1,
-        'upper_bound_duration': 1,
-        'duration_units': 'day',
+        'controlled_terms': [controlled_term_uniprot['@id']],
+        'lower_bound_time_point': 2,
+        'upper_bound_time_point': 3,
+        'time_point_units': 'hour',
+        'status': 'current',
+    }
+    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def experimental_condition_multiple_terms(testapp, other_lab, controlled_term_uniprot, controlled_term_chebi):
+    item = {
+        'lab': other_lab['@id'],
+        'controlled_terms': [controlled_term_uniprot['@id'], controlled_term_chebi['@id']],
+        'lower_bound_time_point': 8,
+        'upper_bound_time_point': 8,
+        'time_point_units': 'hour',
+        'status': 'current',
+    }
+    return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def experimental_condition_terms_and_description(testapp, other_lab, controlled_term_uniprot):
+    item = {
+        'lab': other_lab['@id'],
+        'controlled_terms': [controlled_term_uniprot['@id']],
+        'description': 'Insulin stimulation',
+        'lower_bound_time_point': 8,
+        'upper_bound_time_point': 8,
+        'time_point_units': 'hour',
         'status': 'current',
     }
     return testapp.post_json('/experimental_condition', item, status=201).json['@graph'][0]

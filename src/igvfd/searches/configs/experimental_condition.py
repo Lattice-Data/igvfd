@@ -7,11 +7,17 @@ from snovault.elasticsearch.searches.configs import search_config
 def experimental_condition():
     return {
         'facets': {
-            'condition': {
-                'title': 'Condition'
+            'controlled_terms.term_name': {
+                'title': 'Controlled Terms'
             },
-            'units': {
-                'title': 'Units'
+            'controlled_terms.ontology_source': {
+                'title': 'Ontology Source'
+            },
+            'time_point_units': {
+                'title': 'Time Point Units'
+            },
+            'lab.title': {
+                'title': 'Lab'
             },
             'status': {
                 'title': 'Status'
@@ -36,17 +42,17 @@ def experimental_condition():
             'aliases': {
                 'title': 'Aliases'
             },
-            'condition': {
-                'title': 'Condition'
+            'controlled_terms.term_name': {
+                'title': 'Controlled Terms'
             },
-            'value': {
-                'title': 'Value'
+            'lower_bound_time_point': {
+                'title': 'Lower Bound Time Point'
             },
-            'units': {
-                'title': 'Units'
+            'upper_bound_time_point': {
+                'title': 'Upper Bound Time Point'
             },
-            'text_value': {
-                'title': 'Text Value'
+            'time_point_units': {
+                'title': 'Time Point Units'
             },
             'description': {
                 'title': 'Description'

@@ -1,116 +1,114 @@
 [
     {
         "lab": "teri-klein",
-        "condition": "temperature",
-        "value": 37,
-        "units": "celsius",
         "uuid": "42dfbf07-39d8-43b5-8b14-d3b863162937",
-        "schema_version": "1",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:ec-temp-37c"
         ],
-        "description": "Standard mammalian culture temperature."
+        "description": "Culture at 37 celsius, the standard mammalian culture temperature."
     },
     {
         "lab": "teri-klein",
-        "condition": "pH",
-        "value": 7.4,
-        "units": "pH units",
         "uuid": "ca5bdae0-3a17-4469-a95e-271d078e9476",
-        "schema_version": "1",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:ec-ph-7.4"
         ],
-        "description": "Physiological pH."
+        "description": "Culture at physiological pH 7.4."
     },
     {
         "lab": "teri-klein",
-        "condition": "oxygen level",
-        "value": 5,
-        "units": "percent",
         "uuid": "ef5245ac-a1bc-41d9-bfb6-f0deca948a02",
-        "schema_version": "1",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:ec-hypoxia-5pct"
         ],
-        "description": "Hypoxic culture condition."
+        "description": "Hypoxic culture at 5% oxygen."
     },
     {
         "lab": "teri-klein",
-        "condition": "diet",
-        "text_value": "high fat diet",
-        "controlled_term": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
         "uuid": "b4efe4b2-f580-46b4-8478-99f337db3116",
-        "schema_version": "1",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:ec-high-fat-diet"
         ],
-        "lower_bound_duration": 7,
-        "upper_bound_duration": 14,
-        "duration_units": "day"
+        "description": "High fat diet",
+        "lower_bound_time_point": 7,
+        "upper_bound_time_point": 14,
+        "time_point_units": "day"
     },
     {
         "lab": "teri-klein",
-        "condition": "smoking status",
-        "text_value": "current smoker",
         "uuid": "bfc9b35d-eb7d-40d0-87d9-8dc388519c6d",
-        "schema_version": "1",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:ec-current-smoker"
-        ]
+        ],
+        "description": "Current smoker"
     },
     {
         "lab": "teri-klein",
-        "condition": "chemical treatment",
-        "controlled_term": "e4a5b6c7-d8e9-4012-bcde-567890123456",
-        "value": 10,
-        "units": "mg/kg",
         "uuid": "34549714-3585-4a2e-8aba-5cdcbc40c456",
-        "schema_version": "2",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:ec-vitamin-D-treatment"
         ],
-        "description": "Vitamin D treatment for low Vitamin D levels.",
-        "lower_bound_duration": 24,
-        "upper_bound_duration": 48,
-        "duration_units": "hour"
+        "controlled_terms": [
+            "e4a5b6c7-d8e9-4012-bcde-567890123456"
+        ],
+        "lower_bound_time_point": 24,
+        "upper_bound_time_point": 48,
+        "time_point_units": "hour"
     },
     {
         "lab": "teri-klein",
-        "condition": "protein treatment",
-        "controlled_term": "e5b6c7d8-e9f0-4123-cdef-678901234567",
-        "value": 10,
-        "units": "ng/mL",
         "uuid": "3c0d0d09-34ba-4bfe-9d8f-4221ddc6786b",
-        "schema_version": "2",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:ec-insulin-treatment"
         ],
-        "lower_bound_duration": 8,
-        "upper_bound_duration": 8,
-        "duration_units": "hour"
+        "controlled_terms": [
+            "e5b6c7d8-e9f0-4123-cdef-678901234567"
+        ],
+        "lower_bound_time_point": 8,
+        "upper_bound_time_point": 8,
+        "time_point_units": "hour"
     },
     {
         "lab": "teri-klein",
-        "condition": "chemical treatment",
-        "text_value": "ethanol",
-        "value": 3,
-        "units": "percent",
         "uuid": "cc2f0830-5591-453d-ae57-389b4e9c2d18",
-        "schema_version": "2",
+        "schema_version": "3",
         "status": "current",
         "aliases": [
             "lattice:ec-ethanol-treatment"
         ],
-        "lower_bound_duration": 4,
-        "upper_bound_duration": 4,
-        "duration_units": "hour"
+        "description": "3% ethanol",
+        "lower_bound_time_point": 4,
+        "upper_bound_time_point": 4,
+        "time_point_units": "hour"
+    },
+    {
+        "lab": "teri-klein",
+        "uuid": "faa80de6-ecf4-44d7-ae64-ebe19493d24b",
+        "schema_version": "3",
+        "status": "current",
+        "aliases": [
+            "lattice:ec-vitamin-D-insulin-cotreatment"
+        ],
+        "controlled_terms": [
+            "e4a5b6c7-d8e9-4012-bcde-567890123456",
+            "e5b6c7d8-e9f0-4123-cdef-678901234567"
+        ],
+        "lower_bound_time_point": 8,
+        "upper_bound_time_point": 8,
+        "time_point_units": "hour"
     }
 ]

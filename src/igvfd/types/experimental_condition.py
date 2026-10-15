@@ -10,23 +10,14 @@ from .base import (
 )
 
 
-TREATMENT_CONDITIONS = ('chemical treatment', 'protein treatment')
-
-# Units rendered differently from their enum value in the summary sentence.
-SUMMARY_UNITS = {
-    'percent': '%',
-    'pH units': '',
-}
-
-
-def validate_duration_range(properties):
-    lower = properties.get('lower_bound_duration')
-    upper = properties.get('upper_bound_duration')
+def validate_bound_order(properties, lower_name, upper_name):
+    lower = properties.get(lower_name)
+    upper = properties.get(upper_name)
     if lower is not None and upper is not None and upper < lower:
         raise ValidationFailure(
             'body',
-            ['upper_bound_duration'],
-            'upper_bound_duration must be greater than or equal to lower_bound_duration.',
+            [upper_name],
+            f'{upper_name} must be greater than or equal to {lower_name}.',
         )
 
 
@@ -36,23 +27,24 @@ def _format_number(number):
     return str(number)
 
 
-def _format_quantity(value, units):
-    rendered_units = SUMMARY_UNITS.get(units, f' {units}')
-    return f'{_format_number(value)}{rendered_units}'
+def _join_names(names):
+    if len(names) < 2:
+        return ''.join(names)
+    return f'{", ".join(names[:-1])} and {names[-1]}'
 
 
-def _format_duration(lower, upper, units):
+def _format_time_point(lower, upper, units):
     if lower == upper:
         unit_label = units if lower == 1 else f'{units}s'
         return f'{_format_number(lower)} {unit_label}'
-    return f'{_format_number(lower)} to {_format_number(upper)} {units}s'
+    return f'{_format_number(lower)}-{_format_number(upper)} {units}s'
 
 
 @collection(
     name='experimental_conditions',
     properties={
         'title': 'Experimental Conditions',
-        'description': 'Listing of experimental conditions, environmental parameters, and treatments',
+        'description': 'Listing of experimental conditions that biological samples were exposed to',
     }
 )
 class ExperimentalCondition(Item):
@@ -60,49 +52,38 @@ class ExperimentalCondition(Item):
     schema = load_schema('igvfd:schemas/experimental_condition.json')
     embedded_with_frame = [
         Path('lab', include=['@id', 'title']),
-        Path('controlled_term', include=['@id', 'term_id', 'term_name', 'ontology_source']),
+        Path('controlled_terms', include=['@id', 'term_id', 'term_name', 'ontology_source']),
     ]
 
     @calculated_property(
         schema={
             'title': 'Summary',
             'type': 'string',
-            'description': 'A human readable sentence summarizing the experimental condition.',
+            'description': 'The description of the experimental condition, or else its controlled terms and time point.',
             'notSubmittable': True,
         }
     )
     def summary(
         self,
         request,
-        condition,
-        controlled_term=None,
-        value=None,
-        units=None,
-        text_value=None,
-        lower_bound_duration=None,
-        upper_bound_duration=None,
-        duration_units=None,
+        description=None,
+        controlled_terms=None,
+        lower_bound_time_point=None,
+        upper_bound_time_point=None,
+        time_point_units=None,
     ):
-        label = condition if condition == 'pH' else condition[0].upper() + condition[1:]
-        if condition in TREATMENT_CONDITIONS:
-            agent = text_value
-            if controlled_term:
-                term = request.embed(controlled_term, '@@object')
-                agent = term.get('term_name') or term.get('term_id')
-            sentence = f'{label} with {agent}'
-            if value is not None and units:
-                sentence += f' at {_format_quantity(value, units)}'
-        elif value is not None and units:
-            sentence = f'{label} {_format_quantity(value, units)}'
-        elif text_value:
-            sentence = f'{label}: {text_value}'
-        else:
-            sentence = label
-        if lower_bound_duration is not None and upper_bound_duration is not None and duration_units:
-            sentence += f' for {_format_duration(lower_bound_duration, upper_bound_duration, duration_units)}'
-        return sentence
+        if description:
+            return description
+        names = []
+        for term_path in controlled_terms or []:
+            term = request.embed(term_path, '@@object')
+            names.append(term.get('term_name') or term.get('term_id'))
+        parts = [_join_names(names)]
+        if lower_bound_time_point is not None and upper_bound_time_point is not None and time_point_units:
+            parts.append(_format_time_point(lower_bound_time_point, upper_bound_time_point, time_point_units))
+        return ', '.join(part for part in parts if part) or str(self.uuid)
 
     def _update(self, properties, sheets=None):
         if properties is not None:
-            validate_duration_range(properties)
+            validate_bound_order(properties, 'lower_bound_time_point', 'upper_bound_time_point')
         super(ExperimentalCondition, self)._update(properties, sheets=sheets)

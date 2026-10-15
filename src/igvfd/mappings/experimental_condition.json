@@ -1,6 +1,6 @@
 {
-    "hash": "b3f1feb033f5f5a41d7004ed116376ec",
-    "index_name": "experimental_condition_b3f1feb0",
+    "hash": "61c1b7f784cf5aa74bcce27635ae849d",
+    "index_name": "experimental_condition_61c1b7f7",
     "item_type": "experimental_condition",
     "mapping": {
         "dynamic_templates": [
@@ -152,11 +152,7 @@
                         "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
-                    "condition": {
-                        "copy_to": "_exact",
-                        "type": "keyword"
-                    },
-                    "controlled_term": {
+                    "controlled_terms": {
                         "properties": {
                             "@id": {
                                 "type": "keyword"
@@ -204,9 +200,11 @@
                                 "type": "keyword"
                             },
                             "term_id": {
+                                "copy_to": "_exact",
                                 "type": "keyword"
                             },
                             "term_name": {
+                                "copy_to": "_fuzzy",
                                 "type": "keyword"
                             },
                             "uuid": {
@@ -221,9 +219,6 @@
                     "description": {
                         "copy_to": "_fuzzy",
                         "type": "text"
-                    },
-                    "duration_units": {
-                        "type": "keyword"
                     },
                     "lab": {
                         "properties": {
@@ -281,7 +276,7 @@
                         },
                         "type": "object"
                     },
-                    "lower_bound_duration": {
+                    "lower_bound_time_point": {
                         "store": true,
                         "type": "float"
                     },
@@ -303,23 +298,15 @@
                     "summary": {
                         "type": "keyword"
                     },
-                    "text_value": {
-                        "copy_to": "_fuzzy",
+                    "time_point_units": {
                         "type": "keyword"
                     },
-                    "units": {
-                        "type": "keyword"
-                    },
-                    "upper_bound_duration": {
+                    "upper_bound_time_point": {
                         "store": true,
                         "type": "float"
                     },
                     "uuid": {
                         "type": "keyword"
-                    },
-                    "value": {
-                        "store": true,
-                        "type": "float"
                     }
                 },
                 "type": "object"
