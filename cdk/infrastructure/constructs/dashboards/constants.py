@@ -4,6 +4,7 @@ from typing import List
 ITEM_TYPES: List[str] = [
     'access_key',
     'cell_line',
+    'configuration_file',
     'controlled_term',
     'document',
     'droplet_based_library',

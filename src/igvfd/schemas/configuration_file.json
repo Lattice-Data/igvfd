@@ -1,0 +1,101 @@
+{
+    "title": "Configuration File",
+    "$id": "/profiles/configuration_file.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "A file containing configuration settings or information defining the structure of other data files' content.",
+    "type": "object",
+    "required": [
+        "lab",
+        "file_format",
+        "content_type"
+    ],
+    "identifyingProperties": [
+        "uuid",
+        "aliases"
+    ],
+    "additionalProperties": false,
+    "mixinProperties": [
+        {
+            "$ref": "mixins.json#/basic_item"
+        },
+        {
+            "$ref": "mixins.json#/attribution"
+        },
+        {
+            "$ref": "mixins.json#/shared_status"
+        },
+        {
+            "$ref": "file.json#/properties"
+        }
+    ],
+    "allOf": [
+        {
+            "$merge": [
+                "file.json#/allOf/0"
+            ]
+        }
+    ],
+    "dependentSchemas": {
+        "content_type": {
+            "if": {
+                "properties": {
+                    "content_type": {
+                        "const": "cell ranger config"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "file_format": {
+                        "enum": [
+                            "csv"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "properties": {
+        "schema_version": {
+            "default": "1"
+        },
+        "file_format": {
+            "title": "File Format",
+            "description": "The file format or extension of the file.",
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "enum": [
+                "yaml",
+                "json",
+                "tsv",
+                "csv"
+            ],
+            "submissionExample": {
+                "appscript": "csv"
+            }
+        },
+        "content_type": {
+            "title": "Content Type",
+            "description": "Describes the content of the configuration file.",
+            "comment": "Additional enum values will be added as new configuration content types are supported. Configuration files with content_type cell ranger config are limited to file_format csv. This property is affected by dependencies. See dependentSchemas.",
+            "type": "string",
+            "enum": [
+                "cell ranger config"
+            ],
+            "enum_descriptions": {
+                "cell ranger config": "A configuration file that is an input to a Cell Ranger run, defining its libraries and analysis parameters."
+            },
+            "submissionExample": {
+                "appscript": "cell ranger config"
+            }
+        }
+    },
+    "fuzzy_searchable_fields": [
+        "aliases",
+        "description"
+    ],
+    "exact_searchable_fields": [
+        "@type"
+    ],
+    "changelog": "/profiles/changelogs/configuration_file.md"
+}

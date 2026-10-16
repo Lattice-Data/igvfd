@@ -4,6 +4,7 @@ import pytest
 SEQUENCE_FILE_READ_COUNT = 15_000_000
 CRC64NVME_BASE64_VALID = 'AAAAAAAAAAA'
 TABULAR_FILE_CONTENT_TYPE = 'guide RNA sequences'
+CONFIGURATION_FILE_CONTENT_TYPE = 'cell ranger config'
 # guides_signature is unique across the portal, so every POSTed tabular file needs its own.
 _GUIDES_SIGNATURE_COUNTER = itertools.count(1)
 
@@ -31,6 +32,8 @@ def _file_post_body(file_type, item, tissue=None):
     if file_type == 'tabular_file':
         out.setdefault('content_type', TABULAR_FILE_CONTENT_TYPE)
         out.setdefault('guides_signature', _guides_signature())
+    if file_type == 'configuration_file':
+        out.setdefault('content_type', CONFIGURATION_FILE_CONTENT_TYPE)
     if file_type == 'raw_matrix_file':
         for key, value in RAW_MATRIX_FILE_METADATA.items():
             out.setdefault(key, value)
@@ -56,6 +59,8 @@ def _augment_matrix_file_post(file_type, item, tissue=None):
     if file_type == 'tabular_file':
         out.setdefault('content_type', TABULAR_FILE_CONTENT_TYPE)
         out.setdefault('guides_signature', _guides_signature())
+    if file_type == 'configuration_file':
+        out.setdefault('content_type', CONFIGURATION_FILE_CONTENT_TYPE)
     if file_type == 'raw_matrix_file':
         out.update(RAW_MATRIX_FILE_METADATA)
         if tissue is not None:
@@ -82,6 +87,13 @@ FILE_TYPE_CONFIGS = {
         's3_path': 'tabular',
         'has_matrix_fields': False,
     },
+    'configuration_file': {
+        'endpoint': '/configuration_file',
+        'formats': ['csv'],
+        'default_format': 'csv',
+        's3_path': 'configuration',
+        'has_matrix_fields': False,
+    },
     'raw_matrix_file': {
         'endpoint': '/raw_matrix_file',
         'formats': ['h5', 'h5ad', 'mtx'],
@@ -99,7 +111,7 @@ FILE_TYPE_CONFIGS = {
 }
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_summary_with_aliases(testapp, file_type, request):
     fixture = request.getfixturevalue(f'{file_type}_with_aliases')
     res = testapp.get(fixture['@id'])
@@ -114,7 +126,7 @@ def test_file_summary_with_aliases(testapp, file_type, request):
     assert res.json.get('summary') == expected
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_summary_with_description(testapp, file_type, request):
     config = FILE_TYPE_CONFIGS[file_type]
     fixture = request.getfixturevalue(f'{file_type}_with_description')
@@ -123,7 +135,7 @@ def test_file_summary_with_description(testapp, file_type, request):
     assert res.json.get('summary') == expected_summary
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_summary_with_uuid(testapp, file_type, request):
     config = FILE_TYPE_CONFIGS[file_type]
     fixture = request.getfixturevalue(file_type)
@@ -132,7 +144,7 @@ def test_file_summary_with_uuid(testapp, file_type, request):
     assert res.json.get('summary') == uuid
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_required_fields(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -326,7 +338,7 @@ def test_tabular_file_resolvable_by_guides_signature(testapp, tabular_file):
     assert res.json['@id'] == tabular_file['@id']
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_file_format_enum(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -354,6 +366,7 @@ def test_file_file_format_enum(testapp, other_lab, file_type):
         ('sequence_file', 'cram'),
         ('tabular_file', 'csv'),
         ('tabular_file', 'tsv'),
+        ('configuration_file', 'csv'),
     ]
 )
 def test_file_create_with_file_format_enum_values(testapp, other_lab, file_type, file_format):
@@ -374,7 +387,7 @@ def test_file_create_with_file_format_enum_values(testapp, other_lab, file_type,
     assert res.json['@graph'][0]['file_format'] == file_format
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_create_success(testapp, other_lab, tissue, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -398,7 +411,7 @@ def test_file_create_success(testapp, other_lab, tissue, file_type):
     assert res.json['@graph'][0]['s3_uri'] == f's3://lattice-test-data/{s3_path}/create-success.{file_format}'
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file'])
 def test_file_create_with_all_optional_fields(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -421,7 +434,7 @@ def test_file_create_with_all_optional_fields(testapp, other_lab, file_type):
     assert res.json['@graph'][0]['description'] == f'Test {file_type.replace("_", " ")} with all fields'
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file'])
 def test_file_file_size_minimum(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -444,7 +457,7 @@ def test_file_file_size_minimum(testapp, other_lab, file_type):
     )
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_requires_s3_uri_when_file_available(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -465,7 +478,7 @@ def test_file_requires_s3_uri_when_file_available(testapp, other_lab, file_type)
     )
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, tissue, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -490,7 +503,7 @@ def test_file_accepts_no_file_available_without_s3_uri(testapp, other_lab, tissu
     assert 'crc64nvme_base64' not in res.json['@graph'][0]
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 @pytest.mark.parametrize('no_file_available', [None, False, True])
 def test_file_create_success_no_file_available_modes(testapp, other_lab, tissue, file_type, no_file_available):
     config = FILE_TYPE_CONFIGS[file_type]
@@ -537,7 +550,7 @@ def test_file_create_success_no_file_available_modes(testapp, other_lab, tissue,
         assert posted['crc64nvme_base64'] == CRC64NVME_BASE64_VALID
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_requires_crc64nvme_when_file_available(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -570,6 +583,7 @@ def test_file_requires_crc64nvme_when_file_available(testapp, other_lab, file_ty
         ('sequence_file', 'AAAAAAAAAAA!'),
         ('sequence_file', 'AAAAAAAAAAAA'),
         ('tabular_file', 'AAAAAAAAAA'),
+        ('configuration_file', 'AAAAAAAAAAA!'),
         ('raw_matrix_file', 'AAAAAAAAAAA==='),
         ('processed_matrix_file', 'not-base64!!'),
     ],
@@ -600,7 +614,7 @@ def test_file_rejects_invalid_crc64nvme_base64(testapp, other_lab, file_type, in
     testapp.post_json(endpoint, item, status=422)
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file', 'raw_matrix_file', 'processed_matrix_file'])
 def test_file_rejects_s3_uri_when_no_file_available_true(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -623,7 +637,7 @@ def test_file_rejects_s3_uri_when_no_file_available_true(testapp, other_lab, fil
     )
 
 
-@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file'])
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file', 'configuration_file'])
 def test_file_rejects_non_s3_uri_prefix(testapp, other_lab, file_type):
     config = FILE_TYPE_CONFIGS[file_type]
     endpoint = config['endpoint']
@@ -838,6 +852,71 @@ def test_tabular_file_rejects_read_count(testapp, other_lab):
             'content_type': TABULAR_FILE_CONTENT_TYPE,
             'guides_signature': _guides_signature(),
             's3_uri': 's3://lattice-test-data/tabular/read-count-not-allowed.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'read_count': 100,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_configuration_file_requires_content_type(testapp, other_lab):
+    testapp.post_json(
+        '/configuration_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            's3_uri': 's3://lattice-test-data/configuration/required-content-type.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_configuration_file_content_type_enum(testapp, other_lab):
+    testapp.post_json(
+        '/configuration_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            'content_type': 'seqspec',
+            's3_uri': 's3://lattice-test-data/configuration/invalid-content-type.csv',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+@pytest.mark.parametrize('file_format', ['yaml', 'json', 'tsv'])
+def test_configuration_file_cell_ranger_config_requires_csv(testapp, other_lab, file_format):
+    testapp.post_json(
+        '/configuration_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': file_format,
+            'content_type': CONFIGURATION_FILE_CONTENT_TYPE,
+            's3_uri': f's3://lattice-test-data/configuration/cell-ranger-config.{file_format}',
+            'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_configuration_file_cell_ranger_config_patch_to_non_csv_rejected(testapp, configuration_file):
+    testapp.patch_json(configuration_file['@id'], {'file_format': 'yaml'}, status=422)
+
+
+def test_configuration_file_rejects_read_count(testapp, other_lab):
+    testapp.post_json(
+        '/configuration_file',
+        {
+            'lab': other_lab['@id'],
+            'file_format': 'csv',
+            'content_type': CONFIGURATION_FILE_CONTENT_TYPE,
+            's3_uri': 's3://lattice-test-data/configuration/read-count-not-allowed.csv',
             'crc64nvme_base64': CRC64NVME_BASE64_VALID,
             'read_count': 100,
             'status': 'current',
