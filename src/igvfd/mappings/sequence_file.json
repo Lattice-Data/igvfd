@@ -1,6 +1,6 @@
 {
-    "hash": "864b692a42f0a2e05be060c4dd2a76f2",
-    "index_name": "sequence_file_864b692a",
+    "hash": "14166893c4ed6c511d0f40f49896c84f",
+    "index_name": "sequence_file_14166893",
     "item_type": "sequence_file",
     "mapping": {
         "dynamic_templates": [
@@ -246,6 +246,9 @@
                         "type": "keyword"
                     },
                     "sequence_file_sets": {
+                        "type": "keyword"
+                    },
+                    "sra_file_names": {
                         "type": "keyword"
                     },
                     "status": {

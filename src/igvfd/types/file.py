@@ -1,3 +1,4 @@
+from pyramid.traversal import traverse
 from snovault import (
     abstract_collection,
     calculated_property,
@@ -5,10 +6,26 @@ from snovault import (
     load_schema,
 )
 from snovault.util import Path
+from igvfd.sra_file_names import (
+    READ_SLOTS,
+    set_file_names,
+)
 from .base import (
     Item,
     reverse_link_paths,
 )
+
+
+def read_slot_references(request, item):
+    '''(slot, set) for each read slot of a non-deleted SequenceFileSet that names item.'''
+    references = []
+    for slot in READ_SLOTS:
+        for set_uuid in item.get_rev_links(slot):
+            # skip_calculated: a mate's own sra_file_names would embed this file again
+            file_set = request.embed('/', str(set_uuid), '@@object?skip_calculated=true')
+            if file_set.get('status') != 'deleted':
+                references.append((slot, file_set))
+    return references
 
 
 @abstract_collection(
@@ -85,6 +102,45 @@ class SequenceFile(File):
         for rev_key in self.rev:
             uuids.update(self.get_rev_links(rev_key))
         return reverse_link_paths(request, sorted(uuids))
+
+    @calculated_property(
+        schema={
+            'title': 'SRA File Names',
+            'type': 'array',
+            'description': 'Names under which the reads of this file are submitted to SRA: the '
+                           'file name itself, or the names of its chunks once a file of its '
+                           'sequence file set reaches the 100 GB SRA limit.',
+            'items': {
+                'title': 'SRA File Name',
+                'type': 'string',
+            },
+            'notSubmittable': True,
+        }
+    )
+    def sra_file_names(self, request, file_format=None):
+        # Absent wherever fastq_chunker would refuse the set, including when this
+        # file or any mate sits in the read slots of more than one non-deleted set.
+        if file_format != 'fastq':
+            return None
+        references = read_slot_references(request, self)
+        if len(references) != 1:
+            return None
+        own_slot, file_set = references[0]
+        # File status is deliberately not checked: fastq_chunker (portal.build_groups)
+        # plans every file in a set's read slots whatever its status, so a deleted
+        # file still gets names and a deleted mate's file_size still counts.
+        mates = {}
+        for slot in READ_SLOTS:
+            if slot not in file_set:
+                continue
+            mate = request.embed(file_set[slot], '@@object?skip_calculated=true')
+            # skip_calculated objects carry no uuid; resolve the mate by its path
+            mate_item = traverse(request.root, file_set[slot])['context']
+            if len(read_slot_references(request, mate_item)) != 1:
+                return None
+            mates[slot] = mate
+        names = set_file_names(mates)
+        return None if names is None else names[own_slot]
 
 
 @collection(
