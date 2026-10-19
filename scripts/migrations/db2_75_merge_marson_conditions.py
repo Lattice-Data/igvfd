@@ -22,7 +22,13 @@ this script does not make. Then:
 4. Add the original aliases to the merged condition, after MERGED_ALIAS.
 
 This order means a biosample always links current conditions, never a
-deleted one. With --apply the run ends with the Release A acceptance report:
+deleted one. Biosamples are found through the search index, which can lag, so
+--apply also needs --expected-biosamples, the number of biosamples linking the
+4 sources (48 in production; check the dry run's count). The run stops before
+step 1 unless the biosamples linking the sources or the merged condition add
+up to it. Before step 3 it reads the biosamples again from the database, and
+deletes no source while any still links one or while fewer than expected link
+the merged condition. With --apply the run ends with the Release A acceptance report:
 no biosample links more than one ExperimentalCondition or a deleted one.
 Running the script again after it has finished writes nothing and repeats
 the report.
@@ -36,7 +42,7 @@ same command again.
 
     STAGING_KEY=... STAGING_SECRET=... STAGING_SERVER=https://api.staging.lattice-data.org \\
         python scripts/migrations/db2_75_merge_marson_conditions.py --mode staging
-    python scripts/migrations/db2_75_merge_marson_conditions.py --mode staging --apply
+    python scripts/migrations/db2_75_merge_marson_conditions.py --mode staging --apply --expected-biosamples 48
 """
 import argparse
 import json
@@ -64,11 +70,6 @@ LAB = '/labs/alex-marson/'
 DELETED_ALIAS_SUFFIX = '_deleted'
 
 TIME_POINT_PROPERTIES = ('lower_bound_time_point', 'upper_bound_time_point', 'time_point_units')
-
-CONDITION_SEARCH = (
-    '/search/?type=ExperimentalCondition&aliases={alias}'
-    '&status=current&status=deleted&field=@id&limit=all&format=json'
-)
 
 BIOSAMPLE_SEARCH = (
     '/search/?type=Biosample&experimental_conditions=*'
@@ -99,6 +100,20 @@ class Client:
 
     def get_object(self, path):
         return self.get(f'{path}?frame=object')
+
+    def find_by_alias(self, alias):
+        """Return the ExperimentalCondition with this alias, or None.
+
+        The collection resolves an alias through the database's unique keys, not the
+        search index, so a condition is found as soon as its POST commits.
+        """
+        path = f'/experimental_conditions/{alias}/?frame=object&format=json&datastore=database'
+        response = self.session.get(self.server + path)
+        if response.status_code == 404:
+            return None
+        if not response.ok:
+            raise RuntimeError(f'GET {path} failed with {response.status_code}: {response.text}')
+        return response.json()
 
     def search(self, path):
         response = self.session.get(self.server + path)
@@ -136,23 +151,28 @@ def find_sources(client, state):
     """Return the source condition @ids in SOURCE_ALIASES order, recording them in state.
 
     Once step 4 has run, the original aliases name the merged condition, so a resumed
-    run reads the sources from state instead of searching.
+    run reads the sources from state instead of looking them up.
     """
     if 'sources' in state:
         return [state['sources'][alias] for alias in SOURCE_ALIASES]
     sources = {}
     for alias in SOURCE_ALIASES:
-        hits = client.search(CONDITION_SEARCH.format(alias=alias))
-        if len(hits) != 1:
-            raise RuntimeError(f'expected 1 ExperimentalCondition with alias {alias}, found {len(hits)}.')
-        sources[alias] = hits[0]['@id']
+        condition = client.find_by_alias(alias)
+        if condition is None:
+            raise RuntimeError(f'no ExperimentalCondition has alias {alias}.')
+        sources[alias] = condition['@id']
     state['sources'] = sources
     return [sources[alias] for alias in SOURCE_ALIASES]
 
 
-def check_source(condition):
-    """Fail unless the condition is a schema 3 single-term Marson condition."""
+def check_source(condition, alias):
+    """Fail unless the condition is a schema 3 single-term Marson condition with only this alias.
+
+    Step 3 replaces the aliases with the renamed one, so a second alias would be lost.
+    """
     condition_id = condition['@id']
+    if condition.get('aliases') not in ([alias], [f'{alias}{DELETED_ALIAS_SUFFIX}']):
+        raise RuntimeError(f'{condition_id} has aliases {condition.get("aliases")}, expected only {alias}.')
     if condition.get('schema_version') != '3':
         raise RuntimeError(
             f'{condition_id} is at schema_version {condition.get("schema_version")}; '
@@ -215,7 +235,15 @@ def find_biosamples_to_repoint(biosamples, source_ids):
     return to_repoint
 
 
-def acceptance_report(client, state):
+def check_biosample_count(count, expected_biosamples, what):
+    if expected_biosamples is not None and count != expected_biosamples:
+        raise RuntimeError(
+            f'{count} biosample(s) {what}, expected {expected_biosamples}. The search may be missing '
+            'biosamples the index has not caught up with; wait for indexing and run again.'
+        )
+
+
+def acceptance_report(client, state, expected_biosamples=None):
     """Print the Release A acceptance checks and return whether they all pass."""
     merged_id = state['merged']
     biosamples = read_biosamples(client, state.get('biosamples', []))
@@ -241,6 +269,11 @@ def acceptance_report(client, state):
         ('Merged condition has MERGED_ALIAS and the source aliases',
          [] if merged.get('aliases') == [MERGED_ALIAS] + list(SOURCE_ALIASES) else [str(merged.get('aliases'))]),
     ]
+    if expected_biosamples is not None:
+        checks.append((
+            f'{expected_biosamples} biosample(s) link the merged condition',
+            [] if linking_merged == expected_biosamples else [f'{linking_merged} found'],
+        ))
     print(f'Acceptance report for {client.server}')
     print(f'  Merged condition {merged_id}: {merged.get("summary")}')
     print(f'  {linking_merged} biosample(s) link it; {len(biosamples)} biosample(s) link any ExperimentalCondition')
@@ -251,24 +284,56 @@ def acceptance_report(client, state):
     return not any(failures for _, failures in checks)
 
 
-def merge(client, state, state_path):
+def find_existing_merged(client, item):
+    """Return the @id of a merged condition an earlier run created but did not record, or None.
+
+    The POST can commit even when the run dies before saving state, for example on a
+    dropped connection. Posting again would fail on the MERGED_ALIAS unique key.
+    """
+    existing = client.find_by_alias(MERGED_ALIAS)
+    if existing is None:
+        return None
+    if existing.get('lab') != item['lab'] or existing.get('controlled_terms') != item['controlled_terms']:
+        raise RuntimeError(
+            f'{existing["@id"]} already has alias {MERGED_ALIAS} but does not match the merged condition: '
+            f'lab {existing.get("lab")}, controlled_terms {existing.get("controlled_terms")}.'
+        )
+    return existing['@id']
+
+
+def merge(client, state, state_path, expected_biosamples=None):
     source_ids = find_sources(client, state)
     save_state(state_path, state, client.apply)
     sources = [client.get_object(source_id) for source_id in source_ids]
-    for source in sources:
-        check_source(source)
+    for alias, source in zip(SOURCE_ALIASES, sources):
+        check_source(source, alias)
     for alias, source in zip(SOURCE_ALIASES, sources):
         print(f'Source {source["@id"]} ({alias}): {source.get("summary")}')
     biosamples = read_biosamples(client, state.get('biosamples', []))
     to_repoint = find_biosamples_to_repoint(biosamples, source_ids)
-    print(f'{len(biosamples)} biosample(s) link an ExperimentalCondition; {len(to_repoint)} link the 4 sources')
+    already = [
+        biosample_id for biosample_id, biosample in biosamples.items()
+        if state.get('merged') and biosample.get('experimental_conditions') == [state['merged']]
+    ]
+    print(
+        f'{len(biosamples)} biosample(s) link an ExperimentalCondition; {len(to_repoint)} link the 4 sources'
+        + (f', {len(already)} the merged condition' if already else '')
+    )
+    check_biosample_count(len(to_repoint) + len(already), expected_biosamples,
+                          'link the 4 sources or the merged condition')
 
     # Step 1: create the merged ExperimentalCondition.
     merged_id = state.get('merged')
+    item = build_merged(sources)
+    if not merged_id:
+        merged_id = find_existing_merged(client, item)
+        if merged_id:
+            state['merged'] = merged_id
+            save_state(state_path, state, client.apply)
     if merged_id:
         print(f'1. Merged ExperimentalCondition already created: {merged_id}')
     else:
-        created = client.write('POST', '/experimental_conditions/', build_merged(sources))
+        created = client.write('POST', '/experimental_conditions/', item)
         if created is None:
             merged_id = '<merged experimental condition>'
         else:
@@ -278,8 +343,7 @@ def merge(client, state, state_path):
         print(f'1. Created merged ExperimentalCondition {merged_id}')
 
     # Step 2: repoint biosamples.
-    already = sum(biosample.get('experimental_conditions') == [merged_id] for biosample in biosamples.values())
-    print(f'2. Repointing {len(to_repoint)} biosample(s); {already} already repointed')
+    print(f'2. Repointing {len(to_repoint)} biosample(s); {len(already)} already repointed')
     for biosample_id in to_repoint:
         client.write('PATCH', biosample_id, {'experimental_conditions': [merged_id]})
         print(f'   {biosample_id}: repointed')
@@ -288,7 +352,23 @@ def merge(client, state, state_path):
             state['biosamples'].append(biosample_id)
             save_state(state_path, state, client.apply)
 
-    # Step 3: delete the sources and release their aliases by renaming them.
+    # Step 3: delete the sources and release their aliases by renaming them. Read the
+    # biosamples again first, so a source is never deleted while something links it.
+    if client.apply:
+        biosamples = read_biosamples(client, state.get('biosamples', []))
+        still_linking = [
+            biosample_id for biosample_id, biosample in biosamples.items()
+            if set(biosample.get('experimental_conditions', [])) & set(source_ids)
+        ]
+        if still_linking:
+            raise RuntimeError(
+                f'{len(still_linking)} biosample(s) still link a source condition, so none was deleted: '
+                f'{", ".join(still_linking)}. Run again to repoint them.'
+            )
+        linking_merged = sum(
+            merged_id in biosample.get('experimental_conditions', []) for biosample in biosamples.values()
+        )
+        check_biosample_count(linking_merged, expected_biosamples, 'link the merged condition')
     print('3. Deleting source conditions')
     for alias, source in zip(SOURCE_ALIASES, sources):
         renamed_alias = f'{alias}{DELETED_ALIAS_SUFFIX}'
@@ -325,7 +405,12 @@ def main():
                         help='Write changes. Without it the script only prints what it would do.')
     parser.add_argument('--state-file', type=Path,
                         help='Progress file. Default: db2_75_merge_marson_conditions_<mode>.json in the current directory.')
+    parser.add_argument('--expected-biosamples', type=int,
+                        help='How many biosamples link the 4 source conditions (48 in production). Required with '
+                             '--apply: the run stops before step 1 and again before step 3 unless the count matches.')
     args = parser.parse_args()
+    if args.apply and args.expected_biosamples is None:
+        parser.error('--apply needs --expected-biosamples; take the count from the dry run and check it.')
 
     prefix = args.mode.upper()
     missing = [f'{prefix}_{name}' for name in ('KEY', 'SECRET', 'SERVER') if not os.environ.get(f'{prefix}_{name}')]
@@ -338,10 +423,10 @@ def main():
 
     print(f'{"Applying" if args.apply else "Dry run"} against {client.server}')
     try:
-        merge(client, state, state_path)
+        merge(client, state, state_path, args.expected_biosamples)
         if args.apply:
             print(f'State written to {state_path}')
-            if not acceptance_report(client, state):
+            if not acceptance_report(client, state, args.expected_biosamples):
                 sys.exit(1)
     except RuntimeError as error:
         print(f'FAILED: {error}')
