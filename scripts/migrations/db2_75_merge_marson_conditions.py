@@ -24,7 +24,9 @@ this script does not make. Then:
 This order means a biosample always links current conditions, never a
 deleted one. Biosamples are found through the search index, which can lag, so
 --apply also needs --expected-biosamples, the number of biosamples linking the
-4 sources (48 in production; check the dry run's count). The run stops before
+4 sources. Take it from outside the index, such as the 48 Marson tissues counted
+in production for DB2-75; a count copied from a dry run on a lagging index
+would not catch what the index misses. The run stops before
 step 1 unless the biosamples linking the sources or the merged condition add
 up to it. Before step 3 it reads the biosamples again from the database, and
 deletes no source while any still links one or while fewer than expected link
@@ -410,7 +412,8 @@ def main():
                              '--apply: the run stops before step 1 and again before step 3 unless the count matches.')
     args = parser.parse_args()
     if args.apply and args.expected_biosamples is None:
-        parser.error('--apply needs --expected-biosamples; take the count from the dry run and check it.')
+        parser.error('--apply needs --expected-biosamples: the number of Marson tissues known to link the 4 '
+                     'sources (48 in production), not a count read back from the dry run.')
 
     prefix = args.mode.upper()
     missing = [f'{prefix}_{name}' for name in ('KEY', 'SECRET', 'SERVER') if not os.environ.get(f'{prefix}_{name}')]
