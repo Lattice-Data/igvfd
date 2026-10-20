@@ -105,13 +105,14 @@ class Client:
     def get_object(self, path):
         return self.get(f'{path}?frame=object')
 
-    def find_by_alias(self, alias):
-        """Return the ExperimentalCondition with this alias, or None.
+    def find_by_alias(self, alias, collection='/experimental_conditions'):
+        """Return the object with this alias, or None.
 
-        The collection resolves an alias through the database's unique keys, not the
-        search index, so a condition is found as soon as its POST commits.
+        Aliases resolve through the database's unique keys, not the search index, so an
+        object is found as soon as its POST commits. Pass collection='' to look the alias
+        up from the root, which searches every type; aliases are unique across all of them.
         """
-        path = f'/experimental_conditions/{alias}/?frame=object&format=json&datastore=database'
+        path = f'{collection}/{alias}/?frame=object&format=json&datastore=database'
         response = self.session.get(self.server + path)
         if response.status_code == 404:
             return None
@@ -294,7 +295,7 @@ def find_existing_merged(client, item):
     The POST can commit even when the run dies before saving state, for example on a
     dropped connection. Posting again would fail on the MERGED_ALIAS unique key.
     """
-    existing = client.find_by_alias(MERGED_ALIAS)
+    existing = client.find_by_alias(MERGED_ALIAS, collection='')
     if existing is None:
         return None
     if existing.get('lab') != item['lab'] or existing.get('controlled_terms') != item['controlled_terms']:
@@ -313,7 +314,7 @@ def check_renamed_aliases_free(client, sources):
     taken = []
     for alias, source in zip(SOURCE_ALIASES, sources):
         renamed_alias = f'{alias}{DELETED_ALIAS_SUFFIX}'
-        holder = client.find_by_alias(renamed_alias)
+        holder = client.find_by_alias(renamed_alias, collection='')
         if holder is not None and holder['@id'] != source['@id']:
             taken.append(f'{renamed_alias} is held by {holder["@id"]}')
     if taken:
