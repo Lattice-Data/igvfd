@@ -1,6 +1,8 @@
 from igvfd.audit.library import (
     audit_dual_cardinality_self_linked_library,
+    audit_library_inconsistent_multiplexing_method,
     audit_library_missing_cro_group_identifier,
+    audit_library_missing_multiplexing_method,
     audit_library_samples_missing_multiplexing_barcodes,
     audit_library_samples_unexpected_multiplexing_barcodes,
     audit_library_single_sample_insufficient_multiplexing_barcodes,
@@ -582,4 +584,172 @@ def test_plate_based_library_fixture_missing_cro_group_identifier(
     assert not any(
         error['category'] == 'missing CRO group identifier'
         for error in errors_list
+    )
+
+
+def _plate_library_with_technology(term_id, **kwargs):
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'library_construction_technology': {
+            '@id': '/controlled-terms/' + term_id + '/',
+            'term_id': term_id,
+            'term_name': 'ScaleBio single cell RNA sequencing',
+        },
+    }
+    value.update(kwargs)
+    return value
+
+
+def test_plate_based_library_technology_missing_multiplexing_method_audit():
+    value = _plate_library_with_technology('EFO:0022490')
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'missing multiplexing method'
+    assert failures[0].__json__()['level_name'] == 'ERROR'
+    assert '`library_construction_technology`' in failures[0].detail
+
+
+def test_plate_based_library_technology_with_multiplexing_method_no_missing_audit():
+    value = _plate_library_with_technology('EFO:0022490', multiplexing_method=['combinatorial indexing'])
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_plate_based_library_other_technology_no_missing_multiplexing_method_audit():
+    value = _plate_library_with_technology('EFO:0009922')
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_plate_based_library_no_technology_no_missing_multiplexing_method_audit():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+    }
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_plate_based_library_multiplexing_capture_missing_multiplexing_method_audit():
+    value = {
+        '@type': ['PlateBasedLibrary'],
+        '@id': '/plate-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression', 'Multiplexing Capture'],
+    }
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'missing multiplexing method'
+    assert '`Multiplexing Capture`' in failures[0].detail
+
+
+def test_plate_based_library_technology_and_multiplexing_capture_single_audit():
+    value = _plate_library_with_technology(
+        'EFO:0022490', feature_types=['Gene Expression', 'Multiplexing Capture']
+    )
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert '`library_construction_technology`' in failures[0].detail
+    assert '`Multiplexing Capture`' in failures[0].detail
+
+
+def test_plate_based_library_inconsistent_multiplexing_method_audit():
+    value = _plate_library_with_technology('EFO:0022490', multiplexing_method=['probe barcoding'])
+    failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'inconsistent multiplexing method'
+    assert failures[0].__json__()['level_name'] == 'ERROR'
+    assert '`combinatorial indexing`' in failures[0].detail
+
+
+def test_plate_based_library_natural_genetic_variation_inconsistent_multiplexing_method_audit():
+    value = _plate_library_with_technology('EFO:0022490', multiplexing_method=['natural genetic variation'])
+    failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'inconsistent multiplexing method'
+
+
+def test_plate_based_library_expected_multiplexing_method_no_inconsistent_audit():
+    value = _plate_library_with_technology('EFO:0022490', multiplexing_method=['combinatorial indexing'])
+    failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_plate_based_library_other_technology_no_inconsistent_multiplexing_method_audit():
+    value = _plate_library_with_technology('EFO:0009922', multiplexing_method=['probe barcoding'])
+    failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_plate_based_library_fixture_technology_multiplexing_method(
+    testapp,
+    indexer_testapp,
+    plate_based_library,
+    controlled_term_scalebio,
+):
+    res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] in ('missing multiplexing method', 'inconsistent multiplexing method')
+        for error in errors_list
+    )
+    testapp.patch_json(
+        plate_based_library['@id'],
+        {'library_construction_technology': controlled_term_scalebio['@id']},
+        status=200,
+    )
+    res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
+    errors = res.json['audit']
+    assert any(
+        error['category'] == 'missing multiplexing method'
+        for error in errors.get('ERROR', [])
+    )
+    testapp.patch_json(
+        plate_based_library['@id'],
+        {'multiplexing_method': ['probe barcoding']},
+        status=200,
+    )
+    res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
+    errors = res.json['audit']
+    assert any(
+        error['category'] == 'inconsistent multiplexing method'
+        for error in errors.get('ERROR', [])
+    )
+    assert not any(
+        error['category'] == 'missing multiplexing method'
+        for error in errors.get('ERROR', [])
+    )
+    testapp.patch_json(
+        plate_based_library['@id'],
+        {'multiplexing_method': ['combinatorial indexing']},
+        status=200,
+    )
+    res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] in ('missing multiplexing method', 'inconsistent multiplexing method')
+        for error in errors_list
+    )
+
+
+def test_plate_based_library_fixture_multiplexing_capture_missing_multiplexing_method(
+    testapp,
+    indexer_testapp,
+    plate_based_library,
+):
+    testapp.patch_json(
+        plate_based_library['@id'],
+        {'feature_types': ['Gene Expression', 'Multiplexing Capture']},
+        status=200,
+    )
+    res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
+    errors = res.json['audit']
+    assert any(
+        error['category'] == 'missing multiplexing method'
+        for error in errors.get('ERROR', [])
     )
