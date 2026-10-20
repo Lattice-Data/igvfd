@@ -1,0 +1,43 @@
+[
+    {
+        "lab": "teri-klein",
+        "file_format": "csv",
+        "content_type": "cell ranger config",
+        "s3_uri": "s3://lattice-test-data/configuration/cellranger-config-001.csv",
+        "crc64nvme_base64": "AAAAAAAAAAA",
+        "uuid": "c3fcc2c7-2e13-43a5-ac55-09e2efac1c9a",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:configuration-file-csv-001"
+        ],
+        "description": "Test Cell Ranger config CSV 001"
+    },
+    {
+        "lab": "teri-klein",
+        "file_format": "csv",
+        "content_type": "cell ranger config",
+        "s3_uri": "s3://lattice-test-data/configuration/cellranger-config-002.csv",
+        "crc64nvme_base64": "AAAAAAAAAAA",
+        "uuid": "9665ecb1-6f72-4da1-a844-fdb78a27fdb4",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:configuration-file-csv-002"
+        ],
+        "description": "Test Cell Ranger config CSV 002"
+    },
+    {
+        "lab": "teri-klein",
+        "file_format": "csv",
+        "content_type": "cell ranger config",
+        "uuid": "eb998556-c932-4eb1-a466-12db8b5a77d6",
+        "schema_version": "1",
+        "status": "current",
+        "aliases": [
+            "lattice:configuration-file-csv-003"
+        ],
+        "description": "Test Cell Ranger config CSV 003",
+        "no_file_available": true
+    }
+]
