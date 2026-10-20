@@ -339,16 +339,22 @@ def test_tissue_create_with_selection_fields(testapp, other_lab, human_donor, co
     assert row['selection_kits'] == ['EasySep Human Naive CD4+ T Cell Isolation Kit II']
 
 
-def test_tissue_embeds_experimental_conditions(testapp, tissue, experimental_condition_time_point):
+def test_tissue_embeds_experimental_condition(testapp, tissue, experimental_condition_time_point):
     testapp.patch_json(
         tissue['@id'],
-        {'experimental_conditions': [experimental_condition_time_point['@id']]},
+        {'experimental_condition': experimental_condition_time_point['@id']},
         status=200,
     )
     res = testapp.get(tissue['@id'] + '?frame=embedded')
-    assert res.json['experimental_conditions'] == [
-        {
-            '@id': experimental_condition_time_point['@id'],
-            'summary': 'INS_HUMAN, 8 hours',
-        }
-    ]
+    assert res.json['experimental_condition'] == {
+        '@id': experimental_condition_time_point['@id'],
+        'summary': 'INS_HUMAN, 8 hours',
+    }
+
+
+def test_tissue_treatments_not_allowed(testapp, tissue, experimental_condition_time_point):
+    testapp.patch_json(
+        tissue['@id'],
+        {'treatments': [experimental_condition_time_point['@id']]},
+        status=422,
+    )

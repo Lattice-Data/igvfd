@@ -1,6 +1,6 @@
 {
-    "hash": "ed04bacf8f84a9bea04d7f1f4e413a22",
-    "index_name": "plate_based_library_ed04bacf",
+    "hash": "6521145b92d118b0e38127cd5ad6b3b1",
+    "index_name": "plate_based_library_6521145b",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -347,7 +347,7 @@
                             "enriched_cell_types": {
                                 "type": "keyword"
                             },
-                            "experimental_conditions": {
+                            "experimental_condition": {
                                 "type": "keyword"
                             },
                             "genetic_modification": {
@@ -439,9 +439,6 @@
                                 "type": "float"
                             },
                             "thickness_units": {
-                                "type": "keyword"
-                            },
-                            "treatments": {
                                 "type": "keyword"
                             },
                             "upper_bound_age": {

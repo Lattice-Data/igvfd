@@ -42,7 +42,7 @@
     },
     "properties": {
         "schema_version": {
-            "default": "5"
+            "default": "6"
         },
         "spatial_information": {
             "title": "Spatial Information",

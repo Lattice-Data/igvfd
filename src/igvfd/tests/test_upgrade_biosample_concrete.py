@@ -195,3 +195,105 @@ def test_biosample_upgrade_note_satisfies_notes_schema(upgrader):
         target_version='4',
     )
     assert notes_pattern.search(result['notes']), repr(result['notes'])
+
+
+@pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
+def test_upgrade_biosample_5_6_single_experimental_condition(upgrader, item_type):
+    value = {
+        'schema_version': '5',
+        'experimental_conditions': ['904d1212-d328-40a4-ae45-600eecc06784'],
+    }
+    result = upgrader.upgrade(item_type, value, current_version='5', target_version='6')
+    assert result['schema_version'] == '6'
+    assert result['experimental_condition'] == '904d1212-d328-40a4-ae45-600eecc06784'
+    assert 'experimental_conditions' not in result
+    assert 'notes' not in result
+
+
+@pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
+def test_upgrade_biosample_5_6_keeps_first_experimental_condition(upgrader, item_type):
+    value = {
+        'schema_version': '5',
+        'experimental_conditions': [
+            '5ebd3b73-0000-4000-8000-000000000001',
+            'f7a25d66-0000-4000-8000-000000000002',
+            'b71209c7-0000-4000-8000-000000000003',
+        ],
+        'notes': 'Existing internal context.',
+    }
+    result = upgrader.upgrade(item_type, value, current_version='5', target_version='6')
+    assert result['experimental_condition'] == '5ebd3b73-0000-4000-8000-000000000001'
+    assert 'experimental_conditions' not in result
+    assert result['notes'] == (
+        'Existing internal context.\n'
+        'Legacy experimental_conditions removed during schema upgrade: '
+        'f7a25d66-0000-4000-8000-000000000002, b71209c7-0000-4000-8000-000000000003.'
+    )
+
+
+@pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
+def test_upgrade_biosample_5_6_moves_treatments_to_notes(upgrader, item_type):
+    value = {
+        'schema_version': '5',
+        'treatments': [
+            'f6c7d8e9-f0a1-4234-defa-789012345678',
+            '1a2b3c4d-5e6f-7890-abcd-111111111111',
+        ],
+    }
+    result = upgrader.upgrade(item_type, value, current_version='5', target_version='6')
+    assert 'treatments' not in result
+    assert 'experimental_condition' not in result
+    assert result['notes'] == (
+        'Legacy treatments removed during schema upgrade: '
+        'f6c7d8e9-f0a1-4234-defa-789012345678, 1a2b3c4d-5e6f-7890-abcd-111111111111.'
+    )
+
+
+@pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
+@pytest.mark.parametrize('links', [ABSENT, None, []])
+def test_upgrade_biosample_5_6_without_links_does_not_add_notes(upgrader, item_type, links):
+    value = {'schema_version': '5'}
+    if links is not ABSENT:
+        value['experimental_conditions'] = links
+        value['treatments'] = links
+    result = upgrader.upgrade(item_type, value, current_version='5', target_version='6')
+    assert 'experimental_conditions' not in result
+    assert 'experimental_condition' not in result
+    assert 'treatments' not in result
+    assert 'notes' not in result
+
+
+def test_upgrade_biosample_5_6_conditions_and_treatments_notes(upgrader):
+    value = {
+        'schema_version': '5',
+        'experimental_conditions': [
+            '42dfbf07-39d8-43b5-8b14-d3b863162937',
+            'ca5bdae0-3a17-4469-a95e-271d078e9476',
+        ],
+        'treatments': ['f6c7d8e9-f0a1-4234-defa-789012345678'],
+    }
+    result = upgrader.upgrade('tissue', value, current_version='5', target_version='6')
+    assert result['experimental_condition'] == '42dfbf07-39d8-43b5-8b14-d3b863162937'
+    assert result['notes'] == (
+        'Legacy experimental_conditions removed during schema upgrade: '
+        'ca5bdae0-3a17-4469-a95e-271d078e9476.\n'
+        'Legacy treatments removed during schema upgrade: '
+        'f6c7d8e9-f0a1-4234-defa-789012345678.'
+    )
+    notes_pattern = re.compile(
+        load_schema('igvfd:schemas/tissue.json')['properties']['notes']['pattern']
+    )
+    assert notes_pattern.search(result['notes']), repr(result['notes'])
+
+
+@pytest.mark.parametrize('item_type', BIOSAMPLE_CONCRETE_TYPES)
+def test_upgrade_biosample_4_6_chains_through_aliases(upgrader, item_type):
+    value = {
+        'schema_version': '4',
+        'aliases': ['lattice:kept-alias'],
+        'experimental_conditions': ['42dfbf07-39d8-43b5-8b14-d3b863162937'],
+    }
+    result = upgrader.upgrade(item_type, value, current_version='4', target_version='6')
+    assert result['schema_version'] == '6'
+    assert result['aliases'] == ['lattice:kept-alias']
+    assert result['experimental_condition'] == '42dfbf07-39d8-43b5-8b14-d3b863162937'

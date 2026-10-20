@@ -70,7 +70,7 @@
         "aliases": [
             "lattice:plate-library-treated-tissue"
         ],
-        "description": "Plate library from tissue with treatments and experimental conditions",
+        "description": "Plate library from tissue with an experimental condition",
         "library_cardinality": "single",
         "feature_types": [
             "Gene Expression"

@@ -2,6 +2,7 @@ from snovault.upgrader import upgrade_step
 
 from .aliases import preserve_invalid_aliases
 from .dbxrefs import remove_all_dbxrefs
+from .notes import append_upgrade_note
 
 
 ENRICHMENT_METHOD_TO_SELECTION_METHOD = {
@@ -131,3 +132,43 @@ def organoid_4_5(value, system):
 @upgrade_step('cell_line', '4', '5')
 def cell_line_4_5(value, system):
     preserve_invalid_aliases(value)
+
+
+def _upgrade_to_single_experimental_condition(value):
+    experimental_conditions = value.pop('experimental_conditions', None)
+    if experimental_conditions:
+        value['experimental_condition'] = experimental_conditions[0]
+        if len(experimental_conditions) > 1:
+            append_upgrade_note(
+                value,
+                'Legacy experimental_conditions removed during schema upgrade: '
+                f'{", ".join(experimental_conditions[1:])}.'
+            )
+
+    treatments = value.pop('treatments', None)
+    if treatments:
+        append_upgrade_note(
+            value,
+            'Legacy treatments removed during schema upgrade: '
+            f'{", ".join(treatments)}.'
+        )
+
+
+@upgrade_step('tissue', '5', '6')
+def tissue_5_6(value, system):
+    _upgrade_to_single_experimental_condition(value)
+
+
+@upgrade_step('primary_cell_culture', '5', '6')
+def primary_cell_culture_5_6(value, system):
+    _upgrade_to_single_experimental_condition(value)
+
+
+@upgrade_step('organoid', '5', '6')
+def organoid_5_6(value, system):
+    _upgrade_to_single_experimental_condition(value)
+
+
+@upgrade_step('cell_line', '5', '6')
+def cell_line_5_6(value, system):
+    _upgrade_to_single_experimental_condition(value)
