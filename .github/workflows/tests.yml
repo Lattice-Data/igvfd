@@ -29,6 +29,22 @@ jobs:
       - name: Run release script tests
         run: ./scripts/release/test-release-scripts.sh --offline
 
+  migration-scripts:
+    # The migration scripts run by hand against a live server, so these fake-server tests
+    # are their only automated protection. The root pytest.ini collects igvfd.tests only;
+    # clearing its addopts runs these, which need no database or server.
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install pytest==7.4.0 requests==2.32.4
+      - name: Run migration script tests
+        run: pytest -o addopts='' scripts/migrations
+
   cdk-mypy:
     runs-on: ubuntu-latest
     needs: lint

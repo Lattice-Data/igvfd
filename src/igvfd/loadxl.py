@@ -515,7 +515,7 @@ PHASE1_PIPELINES = {
         remove_keys('lab', 'submits_for'),
     ],
     'experimental_condition': [
-        skip_rows_missing_all_keys('lab', 'condition'),
+        skip_rows_missing_all_keys('lab', 'controlled_terms'),
     ],
     'treatment': [
         skip_rows_missing_all_keys('lab', 'ontological_term'),
@@ -590,7 +590,7 @@ PHASE2_PIPELINES = {
         skip_rows_missing_all_keys('lab', 'submits_for'),
     ],
     'experimental_condition': [
-        skip_rows_missing_all_keys('lab', 'condition'),
+        skip_rows_missing_all_keys('lab', 'controlled_terms'),
     ],
     'treatment': [
         skip_rows_missing_all_keys('lab', 'ontological_term'),

@@ -1,401 +1,260 @@
 import pytest
 
 
-def test_experimental_condition_summary_ignores_aliases(testapp, experimental_condition_with_aliases):
-    res = testapp.get(experimental_condition_with_aliases['@id'])
-    assert res.json.get('summary') == 'Oxygen level 5%'
+def _post(testapp, item, status=201):
+    return testapp.post_json('/experimental_condition', item, status=status)
 
 
-def test_experimental_condition_summary_ignores_description(testapp, experimental_condition_with_description):
-    res = testapp.get(experimental_condition_with_description['@id'])
-    assert res.json.get('summary') == 'Temperature 4 celsius'
-
-
-def test_experimental_condition_summary_quantitative(testapp, experimental_condition_temperature):
-    res = testapp.get(experimental_condition_temperature['@id'])
-    assert res.json.get('summary') == 'Temperature 37 celsius'
-
-
-def test_experimental_condition_summary_ph(testapp, experimental_condition_ph):
-    res = testapp.get(experimental_condition_ph['@id'])
-    assert res.json.get('summary') == 'pH 7.4'
-
-
-def test_experimental_condition_summary_qualitative(testapp, experimental_condition_diet):
-    res = testapp.get(experimental_condition_diet['@id'])
-    assert res.json.get('summary') == 'Diet: high fat diet'
-
-
-def test_experimental_condition_summary_duration_range(testapp, experimental_condition_with_duration):
-    res = testapp.get(experimental_condition_with_duration['@id'])
-    assert res.json.get('summary') == 'Temperature 37 celsius for 12 to 24 hours'
-
-
-def test_experimental_condition_summary_chemical_treatment_text_agent(
-    testapp, experimental_condition_chemical_treatment_ethanol
-):
-    res = testapp.get(experimental_condition_chemical_treatment_ethanol['@id'])
-    assert res.json.get('summary') == 'Chemical treatment with ethanol at 3% for 4 hours'
-
-
-def test_experimental_condition_summary_protein_treatment_term_agent(
-    testapp, experimental_condition_protein_treatment
-):
-    res = testapp.get(experimental_condition_protein_treatment['@id'])
-    assert res.json.get('summary') == 'Protein treatment with INS_HUMAN at 10 ng/mL for 1 day'
-
-
-def test_experimental_condition_summary_unresolved_antibody_term_falls_back_to_term_id(testapp, other_lab):
-    term = testapp.post_json(
+def _unresolved_term(testapp):
+    return testapp.post_json(
         '/controlled_term',
         {'term_id': 'anti-uniprot:Q00000', 'ontology_source': 'UniProt', 'status': 'current'},
         status=201,
     ).json['@graph'][0]
+
+
+def test_experimental_condition_summary_description_only(testapp, experimental_condition_description_only):
+    res = testapp.get(experimental_condition_description_only['@id'])
+    assert res.json['summary'] == 'Cold storage condition'
+
+
+def test_experimental_condition_summary_prefers_description_over_terms(
+    testapp, experimental_condition_terms_and_description
+):
+    res = testapp.get(experimental_condition_terms_and_description['@id'])
+    assert res.json['summary'] == 'Insulin stimulation'
+
+
+def test_experimental_condition_summary_single_term(testapp, experimental_condition_single_term):
+    res = testapp.get(experimental_condition_single_term['@id'])
+    assert res.json['summary'] == 'INS_HUMAN'
+
+
+def test_experimental_condition_summary_single_time_point(testapp, experimental_condition_time_point):
+    res = testapp.get(experimental_condition_time_point['@id'])
+    assert res.json['summary'] == 'INS_HUMAN, 8 hours'
+
+
+def test_experimental_condition_summary_time_point_range(testapp, experimental_condition_time_point_range):
+    res = testapp.get(experimental_condition_time_point_range['@id'])
+    assert res.json['summary'] == 'INS_HUMAN, 2-3 hours'
+
+
+@pytest.mark.parametrize(
+    'lower,upper,units,expected',
+    [
+        (1, 1, 'day', 'INS_HUMAN, 1 day'),
+        (0.5, 0.5, 'hour', 'INS_HUMAN, 0.5 hours'),
+        (0, 1, 'week', 'INS_HUMAN, 0-1 weeks'),
+        (1.5, 2.5, 'minute', 'INS_HUMAN, 1.5-2.5 minutes'),
+    ]
+)
+def test_experimental_condition_summary_time_point_formatting(
+    testapp, other_lab, controlled_term_uniprot, lower, upper, units, expected
+):
     item = {
         'lab': other_lab['@id'],
-        'condition': 'protein treatment',
-        'controlled_term': term['@id'],
+        'controlled_terms': [controlled_term_uniprot['@id']],
+        'lower_bound_time_point': lower,
+        'upper_bound_time_point': upper,
+        'time_point_units': units,
         'status': 'current',
     }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert res.json['@graph'][0]['summary'] == 'Protein treatment with anti-uniprot:Q00000'
+    assert _post(testapp, item).json['@graph'][0]['summary'] == expected
 
 
-def test_experimental_condition_required_fields(testapp, other_lab):
-    testapp.post_json(
-        '/experimental_condition',
+def test_experimental_condition_summary_two_terms(testapp, experimental_condition_multiple_terms):
+    res = testapp.get(experimental_condition_multiple_terms['@id'])
+    assert res.json['summary'] == 'INS_HUMAN and water, 8 hours'
+
+
+def test_experimental_condition_summary_three_terms_keep_submitted_order(
+    testapp, other_lab, controlled_term_uniprot, controlled_term_chebi
+):
+    unresolved = _unresolved_term(testapp)
+    item = {
+        'lab': other_lab['@id'],
+        'controlled_terms': [unresolved['@id'], controlled_term_chebi['@id'], controlled_term_uniprot['@id']],
+        'status': 'current',
+    }
+    res = _post(testapp, item)
+    assert res.json['@graph'][0]['summary'] == 'anti-uniprot:Q00000, water and INS_HUMAN'
+
+
+def test_experimental_condition_summary_unresolved_term_falls_back_to_term_id(testapp, other_lab):
+    unresolved = _unresolved_term(testapp)
+    item = {
+        'lab': other_lab['@id'],
+        'controlled_terms': [unresolved['@id']],
+        'status': 'current',
+    }
+    assert _post(testapp, item).json['@graph'][0]['summary'] == 'anti-uniprot:Q00000'
+
+
+def test_experimental_condition_embeds_controlled_terms(testapp, experimental_condition_single_term):
+    res = testapp.get(experimental_condition_single_term['@id'] + '?frame=embedded')
+    [term] = res.json['controlled_terms']
+    assert term['term_id'] == 'uniprot:P01308'
+    assert term['term_name'] == 'INS_HUMAN'
+    assert term['ontology_source'] == 'UniProt'
+
+
+def test_experimental_condition_requires_lab(testapp):
+    _post(testapp, {'description': 'Cold storage condition'}, status=422)
+
+
+def test_experimental_condition_requires_terms_or_description(testapp, other_lab):
+    _post(testapp, {'lab': other_lab['@id'], 'status': 'current'}, status=422)
+    _post(
+        testapp,
         {
             'lab': other_lab['@id'],
+            'lower_bound_time_point': 8,
+            'upper_bound_time_point': 8,
+            'time_point_units': 'hour',
+            'status': 'current',
         },
-        status=422
-    )
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'condition': 'temperature',
-            'value': 37,
-            'units': 'celsius',
-        },
-        status=422
-    )
-
-
-def test_experimental_condition_condition_enum_invalid(testapp, other_lab):
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'invalid_condition',
-        },
-        status=422
-    )
-
-
-def test_experimental_condition_quantitative_requires_value_and_units(testapp, other_lab):
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'temperature',
-        },
-        status=422
-    )
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'temperature',
-            'value': 37,
-        },
-        status=422
-    )
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'temperature',
-            'units': 'celsius',
-        },
-        status=422
+        status=422,
     )
 
 
-def test_experimental_condition_qualitative_requires_text_value(testapp, other_lab):
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'diet',
-        },
-        status=422
-    )
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'smoking status',
-        },
-        status=422
+def test_experimental_condition_rejects_removing_last_of_terms_and_description(
+    testapp, experimental_condition_single_term
+):
+    res = testapp.get(experimental_condition_single_term['@id'] + '@@edit')
+    item = {key: value for key, value in res.json.items() if key != 'controlled_terms'}
+    testapp.put_json(experimental_condition_single_term['@id'], item, status=422)
+
+
+def test_experimental_condition_controlled_terms_must_not_be_empty(testapp, other_lab):
+    _post(
+        testapp,
+        {'lab': other_lab['@id'], 'controlled_terms': [], 'description': 'Empty list', 'status': 'current'},
+        status=422,
     )
 
 
-def test_experimental_condition_value_units_mutual_dependency(testapp, other_lab):
-    testapp.post_json(
-        '/experimental_condition',
+def test_experimental_condition_controlled_terms_must_be_unique(testapp, other_lab, controlled_term_uniprot):
+    _post(
+        testapp,
         {
             'lab': other_lab['@id'],
-            'condition': 'diet',
-            'text_value': 'normal chow',
-            'value': 10,
+            'controlled_terms': [controlled_term_uniprot['@id'], controlled_term_uniprot['@id']],
+            'status': 'current',
         },
-        status=422
-    )
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'diet',
-            'text_value': 'normal chow',
-            'units': 'celsius',
-        },
-        status=422
+        status=422,
     )
 
 
 @pytest.mark.parametrize(
-    'condition,value,units',
+    'time_point',
     [
-        ('temperature', 37, 'celsius'),
-        ('temperature', 98.6, 'fahrenheit'),
-        ('temperature', 310.15, 'kelvin'),
-        ('pH', 7.4, 'pH units'),
-        ('oxygen level', 21, 'percent'),
-        ('humidity', 95, 'percent'),
-        ('pressure', 101.325, 'kPa'),
-        ('pressure', 760, 'mmHg'),
-        ('surface tension', 72, 'mN/m'),
-        ('surface tension', 72, 'dyn/cm'),
-        ('osmolarity', 300, 'mOsm/kg'),
+        {'lower_bound_time_point': 8},
+        {'upper_bound_time_point': 8},
+        {'time_point_units': 'hour'},
+        {'lower_bound_time_point': 8, 'upper_bound_time_point': 8},
+        {'lower_bound_time_point': 8, 'time_point_units': 'hour'},
     ]
 )
-def test_experimental_condition_create_quantitative(testapp, other_lab, condition, value, units):
+def test_experimental_condition_time_point_properties_required_together(
+    testapp, other_lab, controlled_term_uniprot, time_point
+):
     item = {
         'lab': other_lab['@id'],
-        'condition': condition,
-        'value': value,
-        'units': units,
+        'controlled_terms': [controlled_term_uniprot['@id']],
         'status': 'current',
+        **time_point,
     }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert res.json['@graph'][0]['condition'] == condition
-    assert res.json['@graph'][0]['value'] == value
-    assert res.json['@graph'][0]['units'] == units
+    _post(testapp, item, status=422)
 
 
-@pytest.mark.parametrize(
-    'condition,text_value',
-    [
-        ('diet', 'high fat diet'),
-        ('diet', 'normal chow'),
-        ('smoking status', 'current smoker'),
-        ('smoking status', 'non-smoker'),
-    ]
-)
-def test_experimental_condition_create_qualitative(testapp, other_lab, condition, text_value):
+def test_experimental_condition_upper_time_point_below_lower_rejected(testapp, other_lab, controlled_term_uniprot):
+    res = _post(
+        testapp,
+        {
+            'lab': other_lab['@id'],
+            'controlled_terms': [controlled_term_uniprot['@id']],
+            'lower_bound_time_point': 24,
+            'upper_bound_time_point': 12,
+            'time_point_units': 'hour',
+            'status': 'current',
+        },
+        status=422,
+    )
+    assert 'upper_bound_time_point must be greater than or equal to lower_bound_time_point.' in res.text
+
+
+def test_experimental_condition_negative_time_point_rejected(testapp, other_lab, controlled_term_uniprot):
+    _post(
+        testapp,
+        {
+            'lab': other_lab['@id'],
+            'controlled_terms': [controlled_term_uniprot['@id']],
+            'lower_bound_time_point': -1,
+            'upper_bound_time_point': 2,
+            'time_point_units': 'hour',
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_experimental_condition_time_point_units_enum(testapp, other_lab, controlled_term_uniprot):
+    _post(
+        testapp,
+        {
+            'lab': other_lab['@id'],
+            'controlled_terms': [controlled_term_uniprot['@id']],
+            'lower_bound_time_point': 8,
+            'upper_bound_time_point': 8,
+            'time_point_units': 'hours',
+            'status': 'current',
+        },
+        status=422,
+    )
+
+
+def test_experimental_condition_create_with_all_fields(testapp, other_lab, controlled_term_uniprot):
     item = {
         'lab': other_lab['@id'],
-        'condition': condition,
-        'text_value': text_value,
-        'status': 'current',
-    }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert res.json['@graph'][0]['condition'] == condition
-    assert res.json['@graph'][0]['text_value'] == text_value
-
-
-def test_experimental_condition_create_with_all_fields(testapp, other_lab):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'temperature',
-        'value': 4,
-        'units': 'celsius',
-        'description': 'Cold storage for sample preservation.',
+        'controlled_terms': [controlled_term_uniprot['@id']],
+        'description': 'Insulin stimulation',
+        'lower_bound_time_point': 2,
+        'upper_bound_time_point': 3,
+        'time_point_units': 'day',
         'aliases': ['lattice:ec-test-complete'],
         'status': 'current',
     }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert res.json['@graph'][0]['condition'] == 'temperature'
-    assert res.json['@graph'][0]['value'] == 4
-    assert res.json['@graph'][0]['units'] == 'celsius'
-    assert res.json['@graph'][0]['description'] == 'Cold storage for sample preservation.'
-    assert res.json['@graph'][0]['aliases'] == ['lattice:ec-test-complete']
-
-
-def test_experimental_condition_controlled_term_optional(
-    testapp, other_lab, controlled_term_efo
-):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'diet',
-        'text_value': 'high fat diet',
-        'status': 'current',
-    }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert 'controlled_term' not in res.json['@graph'][0]
-
-
-def test_experimental_condition_create_with_controlled_term(
-    testapp, other_lab, controlled_term_efo
-):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'diet',
-        'text_value': 'high fat diet',
-        'controlled_term': controlled_term_efo['@id'],
-        'status': 'current',
-    }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert res.json['@graph'][0]['controlled_term'] == controlled_term_efo['@id']
-
-
-def test_experimental_condition_duration_dependency(testapp, other_lab):
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'temperature',
-            'value': 37,
-            'units': 'celsius',
-            'lower_bound_duration': 12,
-            'status': 'current',
-        },
-        status=422
-    )
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'temperature',
-            'value': 37,
-            'units': 'celsius',
-            'duration_units': 'hour',
-            'status': 'current',
-        },
-        status=422
-    )
-
-
-def test_experimental_condition_create_with_duration_range(testapp, other_lab):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'temperature',
-        'value': 37,
-        'units': 'celsius',
-        'lower_bound_duration': 12,
-        'upper_bound_duration': 24,
-        'duration_units': 'hour',
-        'status': 'current',
-    }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert res.json['@graph'][0]['lower_bound_duration'] == 12
-    assert res.json['@graph'][0]['upper_bound_duration'] == 24
-    assert res.json['@graph'][0]['duration_units'] == 'hour'
-
-
-def test_experimental_condition_upper_duration_below_lower_rejected(testapp, other_lab):
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'temperature',
-            'value': 37,
-            'units': 'celsius',
-            'lower_bound_duration': 24,
-            'upper_bound_duration': 12,
-            'duration_units': 'hour',
-            'status': 'current',
-        },
-        status=422
-    )
-
-
-@pytest.mark.parametrize('condition', ['chemical treatment', 'protein treatment'])
-def test_experimental_condition_treatment_requires_agent(testapp, other_lab, condition):
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': condition,
-            'status': 'current',
-        },
-        status=422
-    )
-
-
-def test_experimental_condition_treatment_with_controlled_term(testapp, other_lab, controlled_term_chebi):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'chemical treatment',
-        'controlled_term': controlled_term_chebi['@id'],
-        'status': 'current',
-    }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert res.json['@graph'][0]['controlled_term'] == controlled_term_chebi['@id']
-
-
-def test_experimental_condition_treatment_with_text_value(testapp, other_lab):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'chemical treatment',
-        'text_value': 'ethanol',
-        'status': 'current',
-    }
-    res = testapp.post_json('/experimental_condition', item, status=201)
-    assert res.json['@graph'][0]['text_value'] == 'ethanol'
+    row = _post(testapp, item).json['@graph'][0]
+    assert row['controlled_terms'] == [controlled_term_uniprot['@id']]
+    assert row['description'] == 'Insulin stimulation'
+    assert row['lower_bound_time_point'] == 2
+    assert row['upper_bound_time_point'] == 3
+    assert row['time_point_units'] == 'day'
+    assert row['aliases'] == ['lattice:ec-test-complete']
 
 
 @pytest.mark.parametrize(
-    'units',
-    ['mg/kg', 'mg/mL', 'mM', 'ng/mL', 'nM', 'percent', 'μg/kg', 'μg/mL', 'μM', 'kPa'],
+    'legacy',
+    [
+        {'condition': 'temperature'},
+        {'value': 37},
+        {'units': 'celsius'},
+        {'text_value': 'fasting'},
+        {'lower_bound_duration': 8, 'upper_bound_duration': 8, 'duration_units': 'hour'},
+    ]
 )
-def test_experimental_condition_treatment_amount_units_accepted(testapp, other_lab, units):
-    item = {
-        'lab': other_lab['@id'],
-        'condition': 'chemical treatment',
-        'text_value': 'ethanol',
-        'value': 3,
-        'units': units,
-        'status': 'current',
-    }
-    testapp.post_json('/experimental_condition', item, status=201)
-
-
-@pytest.mark.parametrize('units', ['celsius', 'pH units', 'mmHg'])
-def test_experimental_condition_treatment_rejects_condition_units(testapp, other_lab, units):
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'chemical treatment',
-            'text_value': 'ethanol',
-            'value': 3,
-            'units': units,
-            'status': 'current',
-        },
-        status=422
+def test_experimental_condition_rejects_legacy_properties(testapp, other_lab, legacy):
+    _post(
+        testapp,
+        {'lab': other_lab['@id'], 'description': 'Legacy shape', 'status': 'current', **legacy},
+        status=422,
     )
 
 
-@pytest.mark.parametrize('units', ['mg/kg', 'mM', 'ng/mL', 'μM'])
-def test_experimental_condition_non_treatment_rejects_amount_units(testapp, other_lab, units):
-    testapp.post_json(
-        '/experimental_condition',
-        {
-            'lab': other_lab['@id'],
-            'condition': 'temperature',
-            'value': 5,
-            'units': units,
-            'status': 'current',
-        },
-        status=422
+def test_experimental_condition_rejects_legacy_controlled_term(testapp, other_lab, controlled_term_uniprot):
+    _post(
+        testapp,
+        {'lab': other_lab['@id'], 'controlled_term': controlled_term_uniprot['@id'], 'status': 'current'},
+        status=422,
     )

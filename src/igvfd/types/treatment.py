@@ -7,7 +7,7 @@ from snovault.util import Path
 from .base import (
     Item,
 )
-from .experimental_condition import validate_duration_range
+from .experimental_condition import validate_bound_order
 
 
 @collection(
@@ -42,5 +42,5 @@ class Treatment(Item):
 
     def _update(self, properties, sheets=None):
         if properties is not None:
-            validate_duration_range(properties)
+            validate_bound_order(properties, 'lower_bound_duration', 'upper_bound_duration')
         super(Treatment, self)._update(properties, sheets=sheets)

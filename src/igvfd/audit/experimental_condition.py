@@ -10,48 +10,45 @@ from .formatter import (
     space_in_words,
 )
 
-EXPECTED_TREATMENT_ONTOLOGY_SOURCES = {
-    'chemical treatment': 'CHEBI',
-    'protein treatment': 'UniProt',
-}
+EXPECTED_ONTOLOGY_SOURCES = ('CHEBI', 'UniProt', 'EFO')
 
 
-def audit_experimental_condition_treatment_ontology_source(value, system):
+def audit_experimental_condition_controlled_term_ontology_source(value, system):
     '''
     [
         {
-            "audit_description": "Chemical treatments are expected to reference a ChEBI controlled term, and protein treatments a UniProt controlled term.",
+            "audit_description": "Experimental conditions are expected to reference ChEBI, UniProt or EFO controlled terms.",
             "audit_category": "invalid ontological term",
-            "audit_level": "ERROR"
+            "audit_level": "WARNING"
         }
     ]
     '''
-    expected_source = EXPECTED_TREATMENT_ONTOLOGY_SOURCES.get(value.get('condition'))
-    controlled_term = value.get('controlled_term')
-    if expected_source is None or not isinstance(controlled_term, dict):
-        return
-    source = controlled_term.get('ontology_source', '')
-    if source == expected_source:
-        return
-    audit_message = get_audit_message(audit_experimental_condition_treatment_ontology_source)
+    audit_message = get_audit_message(audit_experimental_condition_controlled_term_ontology_source)
     object_type = space_in_words(value['@type'][0]).capitalize()
     condition_id = value['@id']
-    term_id = controlled_term.get('@id', '')
-    detail = (
-        f'{object_type} {audit_link(path_to_text(condition_id), condition_id)} '
-        f'with `condition` `{value["condition"]}` '
-        f'has `controlled_term` {audit_link(path_to_text(term_id), term_id)} '
-        f'with `ontology_source` `{source}`, expected `{expected_source}`.'
-    )
-    yield AuditFailure(
-        audit_message.get('audit_category', ''),
-        f'{detail} {audit_message.get("audit_description", "")}',
-        level=audit_message.get('audit_level', ''),
-    )
+    expected = f'{", ".join(EXPECTED_ONTOLOGY_SOURCES[:-1])} or {EXPECTED_ONTOLOGY_SOURCES[-1]}'
+    for controlled_term in value.get('controlled_terms', []):
+        if not isinstance(controlled_term, dict):
+            continue
+        source = controlled_term.get('ontology_source', '')
+        if source in EXPECTED_ONTOLOGY_SOURCES:
+            continue
+        term_id = controlled_term.get('@id', '')
+        detail = (
+            f'{object_type} {audit_link(path_to_text(condition_id), condition_id)} '
+            f'has `controlled_terms` {audit_link(path_to_text(term_id), term_id)} '
+            f'with `ontology_source` `{source}`, expected {expected}.'
+        )
+        yield AuditFailure(
+            audit_message.get('audit_category', ''),
+            f'{detail} {audit_message.get("audit_description", "")}',
+            level=audit_message.get('audit_level', ''),
+        )
 
 
 function_dispatcher_experimental_condition_embedded = {
-    'audit_experimental_condition_treatment_ontology_source': audit_experimental_condition_treatment_ontology_source,
+    'audit_experimental_condition_controlled_term_ontology_source':
+        audit_experimental_condition_controlled_term_ontology_source,
 }
 
 

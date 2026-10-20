@@ -1,5 +1,15 @@
 ## Changelog for experimental_condition.json
 
+### Schema version 3
+
+* Remove `condition`, `value`, `units` and `text_value`.
+* Replace `controlled_term` with `controlled_terms`, a list of ChEBI, UniProt, EFO or other ontology terms for the agents or factors in the condition.
+* Replace `lower_bound_duration`, `upper_bound_duration` and `duration_units` with `lower_bound_time_point`, `upper_bound_time_point` and `time_point_units`, the time from the start of the condition to sample collection.
+* Require `controlled_terms` or `description`.
+* Require `upper_bound_time_point` to be greater than or equal to `lower_bound_time_point`.
+* Change `summary` to the `description` when present, otherwise the controlled term names and the time point, for example "anti-CD3E_HUMAN and IL2_HUMAN, 8 hours" or "INS_HUMAN, 2-3 hours".
+* During upgrade, `controlled_term` moves into `controlled_terms`, the duration range becomes the time point range, and `text_value` becomes `description` when there is none. Removed values are preserved in `notes`. A condition left with neither controlled terms nor a description gets a description built from its `condition`, `value` and `units`.
+
 ### Minor changes since schema version 2
 
 * Add `chemical treatment` and `protein treatment` to `condition`.

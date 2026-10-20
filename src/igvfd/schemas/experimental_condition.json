@@ -2,11 +2,22 @@
     "title": "Experimental Condition",
     "$id": "/profiles/experimental_condition.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "description": "Experimental conditions, environmental parameters, and treatments that affect biological samples during culture or experimental procedures.",
+    "description": "An experimental condition that a biological sample was exposed to, such as a stimulation, a chemical or protein treatment, or a diet. The condition lists the agents involved as controlled terms, and can carry a time point range and a human-readable description.",
     "type": "object",
     "required": [
-        "lab",
-        "condition"
+        "lab"
+    ],
+    "anyOf": [
+        {
+            "required": [
+                "controlled_terms"
+            ]
+        },
+        {
+            "required": [
+                "description"
+            ]
+        }
     ],
     "identifyingProperties": [
         "uuid",
@@ -22,211 +33,96 @@
         },
         {
             "$ref": "mixins.json#/shared_status"
-        },
-        {
-            "$ref": "mixins.json#/duration_range"
         }
     ],
     "dependentSchemas": {
-        "$merge": [
-            "mixins.json#/duration_range_dependent_schemas"
-        ],
-        "condition": {
-            "allOf": [
-                {
-                    "if": {
-                        "properties": {
-                            "condition": {
-                                "enum": [
-                                    "humidity",
-                                    "osmolarity",
-                                    "oxygen level",
-                                    "pH",
-                                    "pressure",
-                                    "surface tension",
-                                    "temperature"
-                                ]
-                            }
-                        }
-                    },
-                    "then": {
-                        "required": [
-                            "units",
-                            "value"
-                        ]
-                    }
-                },
-                {
-                    "if": {
-                        "properties": {
-                            "condition": {
-                                "enum": [
-                                    "diet",
-                                    "smoking status"
-                                ]
-                            }
-                        }
-                    },
-                    "then": {
-                        "required": [
-                            "text_value"
-                        ]
-                    }
-                },
-                {
-                    "if": {
-                        "properties": {
-                            "condition": {
-                                "enum": [
-                                    "chemical treatment",
-                                    "protein treatment"
-                                ]
-                            }
-                        }
-                    },
-                    "then": {
-                        "anyOf": [
-                            {
-                                "required": [
-                                    "controlled_term"
-                                ]
-                            },
-                            {
-                                "required": [
-                                    "text_value"
-                                ]
-                            }
-                        ],
-                        "properties": {
-                            "units": {
-                                "enum": [
-                                    "mg/kg",
-                                    "mg/mL",
-                                    "mM",
-                                    "ng/mL",
-                                    "nM",
-                                    "percent",
-                                    "μg/kg",
-                                    "μg/mL",
-                                    "μM",
-                                    "kPa"
-                                ]
-                            }
-                        }
-                    },
-                    "else": {
-                        "properties": {
-                            "units": {
-                                "not": {
-                                    "enum": [
-                                        "mg/kg",
-                                        "mg/mL",
-                                        "mM",
-                                        "ng/mL",
-                                        "nM",
-                                        "μg/kg",
-                                        "μg/mL",
-                                        "μM"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
+        "lower_bound_time_point": {
+            "required": [
+                "upper_bound_time_point",
+                "time_point_units"
             ]
         },
-        "value": {
+        "upper_bound_time_point": {
             "required": [
-                "units"
+                "lower_bound_time_point",
+                "time_point_units"
             ]
         },
-        "units": {
+        "time_point_units": {
             "required": [
-                "value"
+                "lower_bound_time_point",
+                "upper_bound_time_point"
             ]
         }
     },
     "properties": {
         "schema_version": {
-            "default": "2"
+            "default": "3"
         },
-        "condition": {
-            "title": "Condition",
-            "description": "Type of experimental condition, parameter, or treatment.",
-            "type": "string",
-            "enum": [
-                "chemical treatment",
-                "diet",
-                "humidity",
-                "osmolarity",
-                "oxygen level",
-                "pH",
-                "pressure",
-                "protein treatment",
-                "smoking status",
-                "surface tension",
-                "temperature"
-            ]
-        },
-        "controlled_term": {
-            "title": "Controlled Term",
-            "description": "Ontology term describing this condition (for example a diet term), or the treatment agent for treatment conditions (a ChEBI term for chemical treatments, a UniProt term for protein treatments).",
-            "comment": "See controlled_term.json for available identifiers. For chemical treatment and protein treatment, either controlled_term or text_value is required. This property is affected by dependencies. See dependentSchemas.",
-            "type": "string",
-            "linkTo": "ControlledTerm",
+        "controlled_terms": {
+            "title": "Controlled Terms",
+            "description": "Ontology terms for the agents or factors making up this condition: ChEBI terms for chemicals, UniProt terms for proteins and antibodies, and EFO terms for diets and similar factors.",
+            "comment": "See controlled_term.json for available identifiers. Either controlled_terms or description is required.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Controlled Term",
+                "description": "Ontology term for an agent or factor in this condition.",
+                "comment": "See controlled_term.json for available identifiers.",
+                "type": "string",
+                "linkTo": "ControlledTerm"
+            },
             "submissionExample": {
-                "appscript": "lattice:term-high-fat-diet"
+                "appscript": "[\"anti-uniprot:P07766\", \"anti-uniprot:P10747\"]"
             }
         },
-        "value": {
-            "title": "Value",
-            "description": "Numeric value of the condition, or the amount of the treatment agent applied.",
-            "comment": "Required for quantitative conditions. This property is affected by dependencies. See dependentSchemas.",
-            "type": "number"
+        "lower_bound_time_point": {
+            "title": "Lower Bound Time Point",
+            "description": "Lower bound of the time elapsed from the start of this condition to sample collection, in the units given by time_point_units. When the time point is known as a single value rather than an uncertain range, set this to the same number as upper_bound_time_point. lower_bound_time_point must be less than or equal to upper_bound_time_point.",
+            "type": "number",
+            "minimum": 0,
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "8"
+            }
         },
-        "units": {
-            "title": "Units",
-            "description": "Units of measurement for the condition value or treatment amount.",
-            "comment": "Required for quantitative conditions. Treatment conditions accept only amount units (mg/kg, mg/mL, mM, ng/mL, nM, percent, μg/kg, μg/mL, μM, kPa); other conditions do not accept mg/kg, mg/mL, mM, ng/mL, nM, μg/kg, μg/mL, or μM. This property is affected by dependencies. See dependentSchemas.",
+        "upper_bound_time_point": {
+            "title": "Upper Bound Time Point",
+            "description": "Upper bound of the time elapsed from the start of this condition to sample collection, in the units given by time_point_units. When the time point is known as a single value rather than an uncertain range, set this to the same number as lower_bound_time_point. upper_bound_time_point must be greater than or equal to lower_bound_time_point.",
+            "type": "number",
+            "minimum": 0,
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "8"
+            }
+        },
+        "time_point_units": {
+            "title": "Time Point Units",
+            "description": "Units for lower_bound_time_point and upper_bound_time_point.",
             "type": "string",
             "enum": [
-                "celsius",
-                "dyn/cm",
-                "fahrenheit",
-                "kelvin",
-                "kPa",
-                "mg/kg",
-                "mg/mL",
-                "mM",
-                "mN/m",
-                "mOsm/kg",
-                "mmHg",
-                "ng/mL",
-                "nM",
-                "percent",
-                "pH units",
-                "μg/kg",
-                "μg/mL",
-                "μM"
-            ]
-        },
-        "text_value": {
-            "title": "Text Value",
-            "description": "Text description of the condition for qualitative parameters, or the name of the treatment agent when no ontology term is available.",
-            "comment": "Required for qualitative conditions (e.g. diet, smoking status). For chemical treatment and protein treatment, either controlled_term or text_value is required. This property is affected by dependencies. See dependentSchemas.",
-            "type": "string",
-            "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
+                "minute",
+                "hour",
+                "day",
+                "week",
+                "month",
+                "year"
+            ],
+            "comment": "This property is affected by dependencies. See dependentSchemas.",
+            "submissionExample": {
+                "appscript": "\"hour\""
+            }
         }
     },
     "fuzzy_searchable_fields": [
         "aliases",
         "description",
-        "condition",
-        "text_value"
+        "controlled_terms.term_name"
     ],
     "exact_searchable_fields": [
         "@type",
-        "condition"
+        "controlled_terms.term_id"
     ],
     "changelog": "/profiles/changelogs/experimental_condition.md"
 }
