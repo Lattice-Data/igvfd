@@ -261,7 +261,7 @@ def audit_library_missing_multiplexing_method(value, system):
     '''
     [
         {
-            "audit_description": "Libraries prepared with a sample-multiplexed technology, or capturing multiplexing features, are expected to specify a multiplexing method.",
+            "audit_description": "Libraries pooling more than one sample with a sample-multiplexed technology, or capturing multiplexing features, are expected to specify a multiplexing method.",
             "audit_category": "missing multiplexing method",
             "audit_level": "ERROR"
         }
@@ -270,11 +270,16 @@ def audit_library_missing_multiplexing_method(value, system):
     if _library_multiplexing_method(value):
         return
     technology = _library_technology(value)
+    samples = value.get('samples', [])
     reasons = []
-    if _technology_expected_multiplexing_method(technology):
+    # A single-sample library on these technologies can be a singleplex run with no
+    # sample barcodes. If it does carry barcodes, the unexpected multiplexing barcodes
+    # audit already flags the missing method.
+    if _technology_expected_multiplexing_method(technology) and len(samples) > 1:
         reasons.append(
             f'`library_construction_technology` '
-            f'{audit_link(_technology_text(technology), technology["@id"])}'
+            f'{audit_link(_technology_text(technology), technology["@id"])} '
+            f'with {len(samples)} linked samples'
         )
     if MULTIPLEXING_CAPTURE_FEATURE_TYPE in value.get('feature_types', []):
         reasons.append(f'`feature_types` `{MULTIPLEXING_CAPTURE_FEATURE_TYPE}`')

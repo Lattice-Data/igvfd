@@ -593,6 +593,10 @@ def _plate_library_with_technology(term_id, **kwargs):
         '@id': '/plate-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
+        'samples': [
+            {'@id': '/tissues/IGVFDTEST0001/'},
+            {'@id': '/tissues/IGVFDTEST0002/'},
+        ],
         'library_construction_technology': {
             '@id': '/controlled-terms/' + term_id + '/',
             'term_id': term_id,
@@ -610,6 +614,14 @@ def test_plate_based_library_technology_missing_multiplexing_method_audit():
     assert failures[0].category == 'missing multiplexing method'
     assert failures[0].__json__()['level_name'] == 'ERROR'
     assert '`library_construction_technology`' in failures[0].detail
+
+
+def test_plate_based_library_technology_single_sample_no_missing_multiplexing_method_audit():
+    value = _plate_library_with_technology(
+        'EFO:0022490', samples=[{'@id': '/tissues/IGVFDTEST0001/'}]
+    )
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 0
 
 
 def test_plate_based_library_technology_with_multiplexing_method_no_missing_audit():
@@ -691,6 +703,7 @@ def test_plate_based_library_fixture_technology_multiplexing_method(
     indexer_testapp,
     plate_based_library,
     controlled_term_scalebio,
+    tissue_with_aliases,
 ):
     res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
     errors_list = _audit_errors(res)
@@ -701,6 +714,17 @@ def test_plate_based_library_fixture_technology_multiplexing_method(
     testapp.patch_json(
         plate_based_library['@id'],
         {'library_construction_technology': controlled_term_scalebio['@id']},
+        status=200,
+    )
+    res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] == 'missing multiplexing method'
+        for error in errors_list
+    )
+    testapp.patch_json(
+        plate_based_library['@id'],
+        {'samples': plate_based_library['samples'] + [tissue_with_aliases['@id']]},
         status=200,
     )
     res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
