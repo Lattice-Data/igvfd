@@ -17,7 +17,7 @@ this script does not make. Then:
 2. Repoint every biosample that links the 4 source conditions to the merged
    condition alone.
 3. Set each source condition to status deleted and rename its aliases by
-   appending _deleted. Aliases are unique across all objects, so the sources
+   appending _deleted_DB2-75. Aliases are unique across all objects, so the sources
    have to release the original names before the merged condition can take them.
 4. Add the original aliases to the merged condition, after MERGED_ALIAS.
 
@@ -30,7 +30,8 @@ would not catch what the index misses. The run stops before
 step 1 unless the biosamples linking the sources or the merged condition add
 up to it. Before step 3 it reads the biosamples again from the database, and
 deletes no source while any still links one or while fewer than expected link
-the merged condition. With --apply the run ends with the Release A acceptance report:
+the merged condition. It also stops before step 1 if another object already
+holds a renamed alias. With --apply the run ends with the Release A acceptance report:
 no biosample links more than one ExperimentalCondition or a deleted one.
 Running the script again after it has finished writes nothing and repeats
 the report.
@@ -69,7 +70,8 @@ MERGED_ALIAS = 'alex-marson:stimulation_anti-CD3E_anti-CD28_anti-CD2_IL2_human_m
 LAB = '/labs/alex-marson/'
 
 # Appended to a deleted source condition's aliases so the merged condition can take the originals.
-DELETED_ALIAS_SUFFIX = '_deleted'
+# Not plain _deleted: DB2-74 gave the deleted Treatments these same aliases with that suffix.
+DELETED_ALIAS_SUFFIX = '_deleted_DB2-75'
 
 TIME_POINT_PROPERTIES = ('lower_bound_time_point', 'upper_bound_time_point', 'time_point_units')
 
@@ -303,12 +305,31 @@ def find_existing_merged(client, item):
     return existing['@id']
 
 
+def check_renamed_aliases_free(client, sources):
+    """Fail unless each renamed alias is unused or already belongs to its source.
+
+    Step 3 would otherwise stop with a 409 after the biosamples have been repointed.
+    """
+    taken = []
+    for alias, source in zip(SOURCE_ALIASES, sources):
+        renamed_alias = f'{alias}{DELETED_ALIAS_SUFFIX}'
+        holder = client.find_by_alias(renamed_alias)
+        if holder is not None and holder['@id'] != source['@id']:
+            taken.append(f'{renamed_alias} is held by {holder["@id"]}')
+    if taken:
+        raise RuntimeError(
+            'renamed aliases are already taken, so step 3 would fail; nothing was written:\n    '
+            + '\n    '.join(taken)
+        )
+
+
 def merge(client, state, state_path, expected_biosamples=None):
     source_ids = find_sources(client, state)
     save_state(state_path, state, client.apply)
     sources = [client.get_object(source_id) for source_id in source_ids]
     for alias, source in zip(SOURCE_ALIASES, sources):
         check_source(source, alias)
+    check_renamed_aliases_free(client, sources)
     for alias, source in zip(SOURCE_ALIASES, sources):
         print(f'Source {source["@id"]} ({alias}): {source.get("summary")}')
     biosamples = read_biosamples(client, state.get('biosamples', []))
