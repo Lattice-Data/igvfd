@@ -218,7 +218,6 @@ def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
 # Library construction technologies whose libraries are always sample-multiplexed,
 # keyed by ControlledTerm term_id, with the multiplexing_method each one implies.
 PROBE_BARCODING_METHOD = 'probe barcoding'
-COMBINATORIAL_INDEXING_METHOD = 'combinatorial indexing'
 
 TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD = {
     # 10x gene expression flex and its versions
@@ -227,16 +226,14 @@ TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD = {
     'EFO:0920087': PROBE_BARCODING_METHOD,
     'EFO:0920088': PROBE_BARCODING_METHOD,
     'EFO:0920089': PROBE_BARCODING_METHOD,
-    # ScaleBio single cell RNA sequencing and its versions
-    'EFO:0022490': COMBINATORIAL_INDEXING_METHOD,
-    'EFO:0022963': COMBINATORIAL_INDEXING_METHOD,
-    'EFO:0022964': COMBINATORIAL_INDEXING_METHOD,
-    'EFO:0022965': COMBINATORIAL_INDEXING_METHOD,
-    'EFO:0022966': COMBINATORIAL_INDEXING_METHOD,
-    'EFO:0022967': COMBINATORIAL_INDEXING_METHOD,
-    # sci-RNA-seq and sci-RNA-seq3
-    'EFO:0010550': COMBINATORIAL_INDEXING_METHOD,
-    'EFO:0030028': COMBINATORIAL_INDEXING_METHOD,
+}
+
+# "Plex" technologies add a separate hash oligo, so they are always sample-multiplexed,
+# but their expected multiplexing_method is not pinned.
+MULTIPLEXED_TECHNOLOGIES = frozenset(TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD) | {
+    'EFO:0022966',  # ScalePlex QuantumScale Single Cell RNA sequencing
+    'EFO:0022967',  # ScalePlex Single Cell RNA sequencing v1.1
+    'EFO:0030026',  # sci-Plex
 }
 
 MULTIPLEXING_CAPTURE_FEATURE_TYPE = 'Multiplexing Capture'
@@ -245,6 +242,10 @@ MULTIPLEXING_CAPTURE_FEATURE_TYPE = 'Multiplexing Capture'
 def _library_technology(value):
     technology = value.get('library_construction_technology')
     return technology if isinstance(technology, dict) else None
+
+
+def _technology_is_multiplexed(technology):
+    return technology is not None and technology.get('term_id') in MULTIPLEXED_TECHNOLOGIES
 
 
 def _technology_expected_multiplexing_method(technology):
@@ -275,7 +276,7 @@ def audit_library_missing_multiplexing_method(value, system):
     # A single-sample library on these technologies can be a singleplex run with no
     # sample barcodes. If it does carry barcodes, the unexpected multiplexing barcodes
     # audit already flags the missing method.
-    if _technology_expected_multiplexing_method(technology) and len(samples) > 1:
+    if _technology_is_multiplexed(technology) and len(samples) > 1:
         reasons.append(
             f'`library_construction_technology` '
             f'{audit_link(_technology_text(technology), technology["@id"])} '

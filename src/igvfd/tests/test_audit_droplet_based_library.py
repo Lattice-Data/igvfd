@@ -1,5 +1,5 @@
 from igvfd.audit.library import (
-    TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD,
+    MULTIPLEXED_TECHNOLOGIES,
     audit_dual_cardinality_self_linked_library,
     audit_droplet_based_library_samples_unexpected_rt_indexes,
     audit_library_inconsistent_multiplexing_method,
@@ -846,10 +846,10 @@ def test_droplet_based_library_fixture_multiplexing_capture_missing_multiplexing
     )
 
 
-def test_technology_expected_multiplexing_method_terms_exist_in_ontology():
+def test_multiplexed_technologies_terms_exist_in_ontology():
     # A mistyped term_id would never match a library and skip both audits silently.
     from igvfd.ontology import load_ontology
     ontology = load_ontology()
-    for term_id in TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD:
+    for term_id in MULTIPLEXED_TECHNOLOGIES:
         assert term_id in ontology, f'{term_id} is not in the ontology'
         assert not ontology[term_id].get('deprecated'), f'{term_id} is deprecated'

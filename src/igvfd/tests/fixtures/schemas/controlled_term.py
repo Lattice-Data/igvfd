@@ -73,9 +73,9 @@ def controlled_term_10x_flex(testapp):
 
 
 @pytest.fixture
-def controlled_term_scalebio(testapp):
+def controlled_term_scaleplex(testapp):
     item = {
-        'term_id': 'EFO:0022490',
+        'term_id': 'EFO:0022967',
         'ontology_source': 'EFO',
         'status': 'current',
     }
