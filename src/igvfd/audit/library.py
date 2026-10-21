@@ -217,7 +217,10 @@ def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
 
 # Library construction technologies whose libraries are always sample-multiplexed,
 # keyed by ControlledTerm term_id, with the multiplexing_method each one implies.
+# The ScaleBio and sci technologies count only in their "plex" form, which adds a
+# separate hash oligo.
 PROBE_BARCODING_METHOD = 'probe barcoding'
+COMBINATORIAL_INDEXING_METHOD = 'combinatorial indexing'
 
 TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD = {
     # 10x gene expression flex and its versions
@@ -226,15 +229,15 @@ TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD = {
     'EFO:0920087': PROBE_BARCODING_METHOD,
     'EFO:0920088': PROBE_BARCODING_METHOD,
     'EFO:0920089': PROBE_BARCODING_METHOD,
+    # ScalePlex QuantumScale Single Cell RNA sequencing
+    'EFO:0022966': COMBINATORIAL_INDEXING_METHOD,
+    # ScalePlex Single Cell RNA sequencing v1.1
+    'EFO:0022967': COMBINATORIAL_INDEXING_METHOD,
+    # sci-Plex
+    'EFO:0030026': COMBINATORIAL_INDEXING_METHOD,
 }
 
-# "Plex" technologies add a separate hash oligo, so they are always sample-multiplexed,
-# but their expected multiplexing_method is not pinned.
-MULTIPLEXED_TECHNOLOGIES = frozenset(TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD) | {
-    'EFO:0022966',  # ScalePlex QuantumScale Single Cell RNA sequencing
-    'EFO:0022967',  # ScalePlex Single Cell RNA sequencing v1.1
-    'EFO:0030026',  # sci-Plex
-}
+MULTIPLEXED_TECHNOLOGIES = frozenset(TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD)
 
 MULTIPLEXING_CAPTURE_FEATURE_TYPE = 'Multiplexing Capture'
 
