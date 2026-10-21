@@ -66,15 +66,9 @@
         "aliases": [
             "lattice:tissue-cultured-treated"
         ],
-        "description": "Tissue with experimental conditions, treatment, and genetic modification",
+        "description": "Tissue with an experimental condition and genetic modification",
         "preservation_method": "frozen",
-        "experimental_conditions": [
-            "42dfbf07-39d8-43b5-8b14-d3b863162937",
-            "ca5bdae0-3a17-4469-a95e-271d078e9476"
-        ],
-        "treatments": [
-            "f6c7d8e9-f0a1-4234-defa-789012345678"
-        ],
+        "experimental_condition": "faa80de6-ecf4-44d7-ae64-ebe19493d24b",
         "diseases": [
             "9f1a7660-0baa-47e6-87d5-e7138d0409f3"
         ],

@@ -40,39 +40,39 @@ def test_make_audit_docstring_json_get_audit_messages_multiple_messages():
 
 
 def test_make_audit_docstring_json_get_audit_messages_key_order_does_not_matter():
-    assert get_audit_messages(f'{FIXTURE_MODULE}.function_with_docstring_out_of_order', ['Treatment']) == [
+    assert get_audit_messages(f'{FIXTURE_MODULE}.function_with_docstring_out_of_order', ['ExperimentalCondition']) == [
         {
             'audit_level': 'WARNING',
             'audit_category': 'audit category',
             'audit_description': 'audit description',
-            'audit_types': ['Treatment'],
+            'audit_types': ['ExperimentalCondition'],
         },
     ]
 
 
 def test_make_audit_docstring_json_get_audit_messages_improper_keys():
     with pytest.raises(ValueError):
-        get_audit_messages(f'{FIXTURE_MODULE}.function_with_docstring_improper_keys', ['Treatment'])
+        get_audit_messages(f'{FIXTURE_MODULE}.function_with_docstring_improper_keys', ['ExperimentalCondition'])
 
 
 def test_make_audit_docstring_json_get_audit_messages_missing_docstring():
     with pytest.raises(ValueError):
-        get_audit_messages(f'{FIXTURE_MODULE}.function_without_docstring', ['Treatment'])
+        get_audit_messages(f'{FIXTURE_MODULE}.function_without_docstring', ['ExperimentalCondition'])
 
 
 def test_make_audit_docstring_json_get_audit_messages_non_json_docstring():
     with pytest.raises(ValueError):
-        get_audit_messages(f'{FIXTURE_MODULE}.function_with_non_json_docstring', ['Treatment'])
+        get_audit_messages(f'{FIXTURE_MODULE}.function_with_non_json_docstring', ['ExperimentalCondition'])
 
 
 def test_make_audit_docstring_json_get_audit_messages_docstring_not_a_list():
     with pytest.raises(ValueError):
-        get_audit_messages(f'{FIXTURE_MODULE}.function_with_docstring_not_a_list', ['Treatment'])
+        get_audit_messages(f'{FIXTURE_MODULE}.function_with_docstring_not_a_list', ['ExperimentalCondition'])
 
 
 def test_make_audit_docstring_json_get_audit_messages_invalid_audit_level():
     with pytest.raises(ValueError):
-        get_audit_messages(f'{FIXTURE_MODULE}.function_with_invalid_audit_level', ['Treatment'])
+        get_audit_messages(f'{FIXTURE_MODULE}.function_with_invalid_audit_level', ['ExperimentalCondition'])
 
 
 def test_make_audit_docstring_json_excluded_modules_exist():

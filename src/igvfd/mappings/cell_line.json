@@ -1,6 +1,6 @@
 {
-    "hash": "ad473dda0a89a7f0e9121c9832510792",
-    "index_name": "cell_line_ad473dda",
+    "hash": "3a2ea9f36294a140af5f5373ac4c96d0",
+    "index_name": "cell_line_3a2ea9f3",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -302,7 +302,7 @@
                     "enriched_cell_types": {
                         "type": "keyword"
                     },
-                    "experimental_conditions": {
+                    "experimental_condition": {
                         "properties": {
                             "@id": {
                                 "type": "keyword"
@@ -824,71 +824,6 @@
                     },
                     "suspension_type": {
                         "type": "keyword"
-                    },
-                    "treatments": {
-                        "properties": {
-                            "@id": {
-                                "type": "keyword"
-                            },
-                            "@type": {
-                                "type": "keyword"
-                            },
-                            "aliases": {
-                                "type": "keyword"
-                            },
-                            "amount": {
-                                "store": true,
-                                "type": "float"
-                            },
-                            "amount_units": {
-                                "type": "keyword"
-                            },
-                            "creation_timestamp": {
-                                "type": "date"
-                            },
-                            "description": {
-                                "type": "text"
-                            },
-                            "duration_units": {
-                                "type": "keyword"
-                            },
-                            "lab": {
-                                "type": "keyword"
-                            },
-                            "lower_bound_duration": {
-                                "store": true,
-                                "type": "float"
-                            },
-                            "notes": {
-                                "type": "text"
-                            },
-                            "ontological_term": {
-                                "type": "keyword"
-                            },
-                            "schema_version": {
-                                "type": "keyword"
-                            },
-                            "status": {
-                                "type": "keyword"
-                            },
-                            "submitted_by": {
-                                "type": "keyword"
-                            },
-                            "submitter_comment": {
-                                "type": "keyword"
-                            },
-                            "summary": {
-                                "type": "keyword"
-                            },
-                            "upper_bound_duration": {
-                                "store": true,
-                                "type": "float"
-                            },
-                            "uuid": {
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "object"
                     },
                     "uuid": {
                         "type": "keyword"

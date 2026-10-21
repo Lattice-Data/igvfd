@@ -1,5 +1,11 @@
 # Biosample Changelog
 
+## Schema version 5
+
+* Replace `experimental_conditions`, a list, with `experimental_condition`, a single link to an ExperimentalCondition.
+* Remove `treatments`; the Treatment type is removed.
+* During upgrade, keep the first of several `experimental_conditions` and preserve the rest, and any `treatments`, in `notes`.
+
 ## Minor changes since schema version 4
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

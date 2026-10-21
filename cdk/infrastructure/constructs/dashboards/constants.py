@@ -24,6 +24,5 @@ ITEM_TYPES: List[str] = [
     'sequence_file_set',
     'tabular_file',
     'tissue',
-    'treatment',
     'user',
 ]

@@ -27,7 +27,6 @@ def includeme(config):
     from . import sequence_file_set  # noqa: F401
     from . import source  # noqa: F401
     from . import tabular_file  # noqa: F401
-    from . import treatment  # noqa: F401
     from . import user  # noqa: F401
     config.scan(categories=None)
 

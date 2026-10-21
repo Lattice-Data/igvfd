@@ -57,7 +57,7 @@
     },
     "properties": {
         "schema_version": {
-            "default": "4"
+            "default": "5"
         },
         "donors": {
             "title": "Donors",
@@ -587,31 +587,12 @@
                 "linkTo": "ControlledTerm"
             }
         },
-        "experimental_conditions": {
-            "title": "Experimental Conditions",
-            "description": "Environmental and experimental parameters affecting the sample.",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-                "title": "Experimental Condition",
-                "description": "Reference to experimental condition applied to this sample.",
-                "comment": "See experimental_condition.json for available identifiers.",
-                "type": "string",
-                "linkTo": "ExperimentalCondition"
-            }
-        },
-        "treatments": {
-            "title": "Treatments",
-            "description": "Treatments applied to this biosample (ChEBI/UniProt agents).",
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-                "title": "Treatment",
-                "description": "Reference to treatment applied to this sample.",
-                "comment": "See treatment.json for available identifiers.",
-                "type": "string",
-                "linkTo": "Treatment"
-            }
+        "experimental_condition": {
+            "title": "Experimental Condition",
+            "description": "The experimental condition this sample was exposed to.",
+            "comment": "See experimental_condition.json for available identifiers.",
+            "type": "string",
+            "linkTo": "ExperimentalCondition"
         },
         "sources": {
             "title": "Sources",

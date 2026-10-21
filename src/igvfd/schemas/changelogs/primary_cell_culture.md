@@ -1,5 +1,11 @@
 # Primary Cell Culture Changelog
 
+## Schema version 6
+
+* Replace inherited `experimental_conditions`, a list, with `experimental_condition`, a single link to an ExperimentalCondition.
+* Remove inherited `treatments`; the Treatment type is removed.
+* During upgrade, keep the first of several `experimental_conditions` and preserve the rest, and any `treatments`, in `notes`.
+
 ## Schema version 5
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

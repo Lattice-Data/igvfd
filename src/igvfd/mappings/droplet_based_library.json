@@ -1,6 +1,6 @@
 {
-    "hash": "15d5461ea6117202d826296e3eacb93e",
-    "index_name": "droplet_based_library_15d5461e",
+    "hash": "f8daa00b0d6d9fd5d9837a88438bd55d",
+    "index_name": "droplet_based_library_f8daa00b",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -347,7 +347,7 @@
                             "enriched_cell_types": {
                                 "type": "keyword"
                             },
-                            "experimental_conditions": {
+                            "experimental_condition": {
                                 "type": "keyword"
                             },
                             "genetic_modification": {
@@ -439,9 +439,6 @@
                                 "type": "float"
                             },
                             "thickness_units": {
-                                "type": "keyword"
-                            },
-                            "treatments": {
                                 "type": "keyword"
                             },
                             "upper_bound_age": {

@@ -220,14 +220,14 @@ The main issue is not “rows that don’t have the link” but **rows that do h
 
 1. **Phase 1 (POST)**
    For any type that has optional linkTo fields: **strip** those keys in Phase 1 with `remove_keys(...)` so the initial POST does not send them. That way you never reference an object that might not exist yet.
-   - Example: biosample concrete types use `remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS)` so `experimental_conditions` and `treatments` are not sent in Phase 1.
+   - Example: biosample concrete types use `remove_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS)` so `experimental_condition` and `diseases` are not sent in Phase 1.
 
 2. **Phase 2 (PUT)**
    Only process rows that **have** the optional linkTo so you can add it back: use `skip_rows_missing_all_keys(linkTo_key)` so rows **missing** that key are skipped. Phase 2 then only runs for rows that have the link; by then the linked type is already loaded (it appears earlier in `ORDER`), so the PUT is safe.
-   - Example: for files, Phase 2 uses `skip_rows_missing_all_keys('derived_from')` so only rows with `derived_from` are updated. For biosample types, Phase 2 uses `skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS)` so only rows that have at least one of `experimental_conditions` or `treatments` get a PUT that adds those links back.
+   - Example: for files, Phase 2 uses `skip_rows_missing_all_keys('derived_from')` so only rows with `derived_from` are updated. For biosample types, Phase 2 uses `skip_rows_missing_all_keys(*BIOSAMPLE_OPTIONAL_LINKTO_KEYS)` so only rows that have at least one of `experimental_condition` or `diseases` get a PUT that adds those links back.
 
 3. **ORDER (load order)**
-   The type that is linked to must appear in `ORDER` **before** any type that references it (e.g. add `'treatment'` before biosample concrete types). That ensures Phase 2 PUTs see the linked objects already in the DB.
+   The type that is linked to must appear in `ORDER` **before** any type that references it (e.g. `'experimental_condition'` comes before biosample concrete types). That ensures Phase 2 PUTs see the linked objects already in the DB.
 
 4. **New schema that is linked to**
    Add the new schema to `PHASE1_PIPELINES` and `PHASE2_PIPELINES` with `skip_rows_missing_all_keys` for that schema’s **required** fields only.

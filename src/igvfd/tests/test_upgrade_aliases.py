@@ -32,7 +32,6 @@ ALIAS_UPGRADES = [
     ('source', '1', '2'),
     ('tabular_file', '5', '6'),
     ('tissue', '4', '5'),
-    ('treatment', '1', '2'),
     ('user', '6', '7'),
 ]
 
@@ -68,8 +67,7 @@ def test_alias_upgrades_cover_every_type_with_aliases(registry):
 # Types whose first upgrade step is the aliases one. snovault's default step used to take
 # their objects from any earlier version, or none, to the version they were then at.
 FIRST_STEP_TYPES = [
-    'access_key', 'document', 'experimental_condition', 'image', 'lab', 'page', 'source',
-    'treatment', 'user',
+    'access_key', 'document', 'experimental_condition', 'image', 'lab', 'page', 'source', 'user',
 ]
 
 
