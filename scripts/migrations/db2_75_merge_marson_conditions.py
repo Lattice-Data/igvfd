@@ -34,7 +34,13 @@ the merged condition. It also stops before step 1 if another object already
 holds a renamed alias. With --apply the run ends with the Release A acceptance report:
 no biosample links more than one ExperimentalCondition or a deleted one.
 Running the script again after it has finished writes nothing and repeats
-the report.
+the report, but only until Release B.
+
+This script was run on production on 2026-10-20 (DB2-75 Release A). It
+applies only before Release B (Biosample schema version 5), which replaces
+`experimental_conditions` with a single `experimental_condition`; after that
+it finds no biosamples to repoint and stops at the --expected-biosamples
+check without writing.
 
 Credentials come from {MODE}_KEY, {MODE}_SECRET and {MODE}_SERVER, the same
 convention db2-flattener uses.
