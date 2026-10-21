@@ -1,5 +1,9 @@
 # Droplet Based Library Changelog
 
+### Schema version 7
+
+* Rename *multiplexing_method* to *multiplexing_methods* (inherited from abstract Library schema).
+
 ### Schema version 6
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

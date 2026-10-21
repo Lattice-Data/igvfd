@@ -119,3 +119,18 @@ def droplet_based_library_5_6(value, system):
 @upgrade_step('plate_based_library', '6', '7')
 def plate_based_library_6_7(value, system):
     preserve_invalid_aliases(value)
+
+
+def _rename_multiplexing_method(value):
+    if 'multiplexing_method' in value:
+        value['multiplexing_methods'] = value.pop('multiplexing_method')
+
+
+@upgrade_step('droplet_based_library', '6', '7')
+def droplet_based_library_6_7(value, system):
+    _rename_multiplexing_method(value)
+
+
+@upgrade_step('plate_based_library', '7', '8')
+def plate_based_library_7_8(value, system):
+    _rename_multiplexing_method(value)

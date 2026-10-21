@@ -23,7 +23,7 @@ def test_plate_based_library_all_samples_have_multiplexing_barcodes_no_audit():
     value = {
         '@type': ['PlateBasedLibrary'],
         '@id': '/plate-based-libraries/IGVFDTEST0001/',
-        'multiplexing_method': ['combinatorial indexing'],
+        'multiplexing_methods': ['combinatorial indexing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -43,7 +43,7 @@ def test_plate_based_library_sample_missing_multiplexing_barcodes_audit():
     value = {
         '@type': ['PlateBasedLibrary'],
         '@id': '/plate-based-libraries/IGVFDTEST0001/',
-        'multiplexing_method': ['combinatorial indexing'],
+        'multiplexing_methods': ['combinatorial indexing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -63,7 +63,7 @@ def test_plate_based_library_single_sample_one_barcode_inconsistent_audit():
     value = {
         '@type': ['PlateBasedLibrary'],
         '@id': '/plate-based-libraries/IGVFDTEST0001/',
-        'multiplexing_method': ['combinatorial indexing'],
+        'multiplexing_methods': ['combinatorial indexing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -80,7 +80,7 @@ def test_plate_based_library_single_sample_two_barcodes_no_inconsistent_audit():
     value = {
         '@type': ['PlateBasedLibrary'],
         '@id': '/plate-based-libraries/IGVFDTEST0001/',
-        'multiplexing_method': ['combinatorial indexing'],
+        'multiplexing_methods': ['combinatorial indexing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -96,7 +96,7 @@ def test_plate_based_library_ngv_all_samples_without_barcodes_no_audit():
     value = {
         '@type': ['PlateBasedLibrary'],
         '@id': '/plate-based-libraries/IGVFDTEST0001/',
-        'multiplexing_method': ['natural genetic variation'],
+        'multiplexing_methods': ['natural genetic variation'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -116,7 +116,7 @@ def test_plate_based_library_ngv_sample_with_barcodes_unexpected_audit():
     value = {
         '@type': ['PlateBasedLibrary'],
         '@id': '/plate-based-libraries/IGVFDTEST0001/',
-        'multiplexing_method': ['natural genetic variation'],
+        'multiplexing_methods': ['natural genetic variation'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -138,7 +138,7 @@ def test_plate_based_library_ngv_missing_barcodes_no_missing_audit():
     value = {
         '@type': ['PlateBasedLibrary'],
         '@id': '/plate-based-libraries/IGVFDTEST0001/',
-        'multiplexing_method': ['natural genetic variation'],
+        'multiplexing_methods': ['natural genetic variation'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -223,7 +223,7 @@ def test_plate_based_library_fixture_with_multiplexing_method_missing_barcodes(
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'multiplexing_method': ['combinatorial indexing'],
+        'multiplexing_methods': ['combinatorial indexing'],
         'status': 'current',
     }
     library = testapp.post_json('/plate_based_library', library_item, status=201).json['@graph'][0]
@@ -263,7 +263,7 @@ def test_plate_based_library_fixture_with_multiplexing_barcodes_clean(
         'samples': [tissue_one['@id'], tissue_two['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'status': 'current',
     }
     library = testapp.post_json('/plate_based_library', library_item, status=201).json['@graph'][0]
@@ -303,7 +303,7 @@ def test_plate_based_library_fixture_single_sample_multiplexed_clean(
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
-            'multiplexing_method': ['combinatorial indexing'],
+            'multiplexing_methods': ['combinatorial indexing'],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
             'status': 'current',
@@ -342,7 +342,7 @@ def test_plate_based_library_fixture_single_sample_multiplexed_inconsistent_barc
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
-            'multiplexing_method': ['combinatorial indexing'],
+            'multiplexing_methods': ['combinatorial indexing'],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
             'status': 'current',
@@ -625,7 +625,7 @@ def test_plate_based_library_technology_single_sample_no_missing_multiplexing_me
 
 
 def test_plate_based_library_technology_with_multiplexing_method_no_missing_audit():
-    value = _plate_library_with_technology('EFO:0022967', multiplexing_method=['combinatorial indexing'])
+    value = _plate_library_with_technology('EFO:0022967', multiplexing_methods=['combinatorial indexing'])
     failures = list(audit_library_missing_multiplexing_method(value, {}))
     assert len(failures) == 0
 
@@ -681,7 +681,7 @@ def test_plate_based_library_technology_and_multiplexing_capture_single_audit():
 
 def test_plate_based_library_inconsistent_multiplexing_method_audit():
     for term_id in ('EFO:0022966', 'EFO:0022967', 'EFO:0030026'):
-        value = _plate_library_with_technology(term_id, multiplexing_method=['probe barcoding'])
+        value = _plate_library_with_technology(term_id, multiplexing_methods=['probe barcoding'])
         failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
         assert len(failures) == 1, term_id
         assert failures[0].category == 'inconsistent multiplexing method'
@@ -690,7 +690,7 @@ def test_plate_based_library_inconsistent_multiplexing_method_audit():
 
 
 def test_plate_based_library_natural_genetic_variation_inconsistent_multiplexing_method_audit():
-    value = _plate_library_with_technology('EFO:0022967', multiplexing_method=['natural genetic variation'])
+    value = _plate_library_with_technology('EFO:0022967', multiplexing_methods=['natural genetic variation'])
     failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
     assert len(failures) == 1
     assert failures[0].category == 'inconsistent multiplexing method'
@@ -698,20 +698,20 @@ def test_plate_based_library_natural_genetic_variation_inconsistent_multiplexing
 
 def test_plate_based_library_expected_multiplexing_method_no_inconsistent_audit():
     for term_id in ('EFO:0022966', 'EFO:0022967', 'EFO:0030026'):
-        value = _plate_library_with_technology(term_id, multiplexing_method=['combinatorial indexing'])
+        value = _plate_library_with_technology(term_id, multiplexing_methods=['combinatorial indexing'])
         failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
         assert len(failures) == 0, term_id
 
 
 def test_plate_based_library_non_plex_technology_no_inconsistent_multiplexing_method_audit():
     for term_id in ('EFO:0022490', 'EFO:0010550', 'EFO:0030028'):
-        value = _plate_library_with_technology(term_id, multiplexing_method=['probe barcoding'])
+        value = _plate_library_with_technology(term_id, multiplexing_methods=['probe barcoding'])
         failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
         assert len(failures) == 0, term_id
 
 
 def test_plate_based_library_other_technology_no_inconsistent_multiplexing_method_audit():
-    value = _plate_library_with_technology('EFO:0009922', multiplexing_method=['probe barcoding'])
+    value = _plate_library_with_technology('EFO:0009922', multiplexing_methods=['probe barcoding'])
     failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
     assert len(failures) == 0
 
@@ -753,7 +753,7 @@ def test_plate_based_library_fixture_technology_multiplexing_method(
     )
     testapp.patch_json(
         plate_based_library['@id'],
-        {'multiplexing_method': ['probe barcoding']},
+        {'multiplexing_methods': ['probe barcoding']},
         status=200,
     )
     res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')
@@ -768,7 +768,7 @@ def test_plate_based_library_fixture_technology_multiplexing_method(
     )
     testapp.patch_json(
         plate_based_library['@id'],
-        {'multiplexing_method': ['combinatorial indexing']},
+        {'multiplexing_methods': ['combinatorial indexing']},
         status=200,
     )
     res = indexer_testapp.get(plate_based_library['@id'] + '@@index-data')

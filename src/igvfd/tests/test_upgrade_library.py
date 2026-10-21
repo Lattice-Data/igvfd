@@ -469,3 +469,61 @@ def test_library_upgrade_note_satisfies_notes_schema(upgrader, existing_notes):
         target_version='5',
     )
     assert notes_pattern.search(result['notes']), repr(result['notes'])
+
+
+@pytest.mark.parametrize(
+    ('item_type', 'current_version', 'target_version', 'method'),
+    [
+        ('droplet_based_library', '6', '7', 'probe barcoding'),
+        ('plate_based_library', '7', '8', 'combinatorial indexing'),
+    ],
+)
+def test_library_upgrade_renames_multiplexing_method(
+    upgrader, item_type, current_version, target_version, method
+):
+    value = {
+        'schema_version': current_version,
+        'samples': MULTIPLEXED_SAMPLES,
+        'multiplexing_method': [method],
+    }
+    result = upgrader.upgrade(
+        item_type, value, current_version=current_version, target_version=target_version
+    )
+    assert result['schema_version'] == target_version
+    assert 'multiplexing_method' not in result
+    assert result['multiplexing_methods'] == [method]
+
+
+@pytest.mark.parametrize(
+    ('item_type', 'current_version', 'target_version'),
+    [
+        ('droplet_based_library', '6', '7'),
+        ('plate_based_library', '7', '8'),
+    ],
+)
+def test_library_upgrade_rename_without_multiplexing_method(
+    upgrader, item_type, current_version, target_version
+):
+    value = {
+        'schema_version': current_version,
+        'samples': SINGLE_SAMPLE,
+    }
+    result = upgrader.upgrade(
+        item_type, value, current_version=current_version, target_version=target_version
+    )
+    assert result['schema_version'] == target_version
+    assert 'multiplexing_method' not in result
+    assert 'multiplexing_methods' not in result
+
+
+def test_droplet_based_library_upgrade_1_7_maps_and_renames_multiplexing_method(upgrader):
+    value = {
+        'schema_version': '1',
+        'samples': MULTIPLEXED_SAMPLES,
+        'multiplexing_method': 'cell hashing',
+    }
+    result = upgrader.upgrade(
+        'droplet_based_library', value, current_version='1', target_version='7'
+    )
+    assert 'multiplexing_method' not in result
+    assert result['multiplexing_methods'] == ['antibody hashing']

@@ -54,7 +54,7 @@
             "Gene Expression",
             "Multiplexing Capture"
         ],
-        "multiplexing_method": [
+        "multiplexing_methods": [
             "combinatorial indexing"
         ],
         "library_cardinality": "single"
@@ -129,7 +129,7 @@
             "Gene Expression",
             "Multiplexing Capture"
         ],
-        "multiplexing_method": [
+        "multiplexing_methods": [
             "combinatorial indexing"
         ],
         "library_cardinality": "single"

@@ -1,6 +1,6 @@
 {
-    "hash": "0e978f27a50b31d67ae38aa44c08bc6f",
-    "index_name": "sequence_file_set_0e978f27",
+    "hash": "fc65c3e8972951b40e94f4b33375bd43",
+    "index_name": "sequence_file_set_fc65c3e8",
     "item_type": "sequence_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -415,7 +415,7 @@
                             "linked_libraries": {
                                 "type": "keyword"
                             },
-                            "multiplexing_method": {
+                            "multiplexing_methods": {
                                 "type": "keyword"
                             },
                             "notes": {

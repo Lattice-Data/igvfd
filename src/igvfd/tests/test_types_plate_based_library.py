@@ -118,12 +118,12 @@ def test_plate_based_library_multiplexing_method_with_one_sample(testapp, other_
             'samples': [tissue['@id']],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
-            'multiplexing_method': ['combinatorial indexing'],
+            'multiplexing_methods': ['combinatorial indexing'],
             'status': 'current',
         },
         status=201
     )
-    assert res.json['@graph'][0]['multiplexing_method'] == ['combinatorial indexing']
+    assert res.json['@graph'][0]['multiplexing_methods'] == ['combinatorial indexing']
 
 
 @pytest.mark.parametrize(
@@ -145,11 +145,11 @@ def test_plate_based_library_create_with_multiplexing_method_enum_values(
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'multiplexing_method': [multiplexing_method],
+        'multiplexing_methods': [multiplexing_method],
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
-    assert res.json['@graph'][0]['multiplexing_method'] == [multiplexing_method]
+    assert res.json['@graph'][0]['multiplexing_methods'] == [multiplexing_method]
 
 
 def test_plate_based_library_create_success(testapp, other_lab, tissue):
@@ -287,14 +287,14 @@ def test_plate_based_library_create_with_all_optional_fields(
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression', 'Multiplexing Capture'],
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'description': 'Complete plate-based library',
         'CRO_group_identifier': 'PLATE-CRO-42',
         'status': 'current',
     }
     res = testapp.post_json('/plate_based_library', item, status=201)
     assert res.json['@graph'][0]['feature_types'] == ['Gene Expression', 'Multiplexing Capture']
-    assert res.json['@graph'][0]['multiplexing_method'] == ['antibody hashing']
+    assert res.json['@graph'][0]['multiplexing_methods'] == ['antibody hashing']
     assert res.json['@graph'][0]['description'] == 'Complete plate-based library'
     assert res.json['@graph'][0]['CRO_group_identifier'] == 'PLATE-CRO-42'
 

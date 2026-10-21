@@ -102,7 +102,7 @@ NATURAL_GENETIC_VARIATION_METHOD = 'natural genetic variation'
 
 
 def _library_multiplexing_method(value):
-    methods = value.get('multiplexing_method') or []
+    methods = value.get('multiplexing_methods') or []
     return methods[0] if methods else None
 
 
@@ -137,7 +137,7 @@ def audit_library_samples_missing_multiplexing_barcodes(value, system):
     sample_links = join_obj_paths([sample['@id'] for sample in missing])
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has `multiplexing_method` but linked samples missing `multiplexing_barcodes`: '
+        f'has `multiplexing_methods` but linked samples missing `multiplexing_barcodes`: '
         f'{sample_links}.'
     )
     yield AuditFailure(
@@ -174,7 +174,7 @@ def audit_library_single_sample_insufficient_multiplexing_barcodes(value, system
     sample_links = join_obj_paths([sample['@id']])
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has `multiplexing_method` and a single linked biosample {sample_links} '
+        f'has `multiplexing_methods` and a single linked biosample {sample_links} '
         f'with fewer than two `multiplexing_barcodes`.'
     )
     yield AuditFailure(
@@ -205,7 +205,7 @@ def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
     sample_links = join_obj_paths([sample['@id'] for sample in with_multiplexing_barcodes])
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has no `multiplexing_method` but linked samples with `multiplexing_barcodes`: '
+        f'has no `multiplexing_methods` but linked samples with `multiplexing_barcodes`: '
         f'{sample_links}.'
     )
     yield AuditFailure(
@@ -216,7 +216,7 @@ def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
 
 
 # Library construction technologies whose libraries are always sample-multiplexed,
-# keyed by ControlledTerm term_id, with the multiplexing_method each one implies.
+# keyed by ControlledTerm term_id, with the multiplexing_methods value each one implies.
 # The ScaleBio and sci technologies count only in their "plex" form, which adds a
 # separate hash oligo.
 PROBE_BARCODING_METHOD = 'probe barcoding'
@@ -294,7 +294,7 @@ def audit_library_missing_multiplexing_method(value, system):
     lib_id = value['@id']
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has {" and ".join(reasons)} but is missing `multiplexing_method`.'
+        f'has {" and ".join(reasons)} but is missing `multiplexing_methods`.'
     )
     yield AuditFailure(
         audit_message.get('audit_category', ''),
@@ -327,7 +327,7 @@ def audit_library_inconsistent_multiplexing_method(value, system):
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
         f'has `library_construction_technology` '
         f'{audit_link(_technology_text(technology), technology["@id"])} '
-        f'and `multiplexing_method` `{method}` instead of `{expected_method}`.'
+        f'and `multiplexing_methods` `{method}` instead of `{expected_method}`.'
     )
     yield AuditFailure(
         audit_message.get('audit_category', ''),

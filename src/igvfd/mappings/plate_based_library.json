@@ -1,6 +1,6 @@
 {
-    "hash": "223cd618ec7094969810290ef6d66fa8",
-    "index_name": "plate_based_library_223cd618",
+    "hash": "9f26aee0e2e4ff3d94ebfdc22c6221fc",
+    "index_name": "plate_based_library_9f26aee0",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -293,7 +293,7 @@
                     "linked_libraries": {
                         "type": "keyword"
                     },
-                    "multiplexing_method": {
+                    "multiplexing_methods": {
                         "type": "keyword"
                     },
                     "notes": {

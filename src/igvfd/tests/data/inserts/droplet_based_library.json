@@ -121,7 +121,7 @@
         "aliases": [
             "lattice:droplet-library-multiplexed"
         ],
-        "multiplexing_method": [
+        "multiplexing_methods": [
             "antibody hashing"
         ],
         "feature_types": [
@@ -158,7 +158,7 @@
         "aliases": [
             "lattice:droplet-library-single-sample-multiplexed"
         ],
-        "multiplexing_method": [
+        "multiplexing_methods": [
             "antibody hashing"
         ],
         "feature_types": [
