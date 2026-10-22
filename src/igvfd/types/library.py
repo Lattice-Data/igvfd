@@ -29,7 +29,7 @@ class Library(Item):
         Path('lab', include=['@id', 'title']),
         Path('submitted_by', include=['@id', 'title']),
         Path('samples', include=['@id', 'aliases', 'multiplexing_barcodes', 'RT_indexes']),
-        Path('library_construction_technology', include=['@id', 'term_name']),
+        Path('library_construction_technology', include=['@id', 'term_id', 'term_name']),
     ]
 
 

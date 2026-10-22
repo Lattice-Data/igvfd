@@ -57,8 +57,8 @@ def droplet_based_library():
             'linked_libraries': {
                 'title': 'Linked Libraries'
             },
-            'multiplexing_method': {
-                'title': 'Multiplexing Method'
+            'multiplexing_methods': {
+                'title': 'Multiplexing Methods'
             },
             'lab': {
                 'title': 'Lab'

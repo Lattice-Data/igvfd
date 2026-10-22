@@ -2,6 +2,8 @@
 
 ### Minor changes since schema version 1
 
+* Rename *multiplexing_method* to *multiplexing_methods*.
+
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
 * Update `aliases` regex to allow only single spaces between words.
 * Update `aliases` regex to accept `shyam-prabhakar` prefix.

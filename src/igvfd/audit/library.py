@@ -102,7 +102,7 @@ NATURAL_GENETIC_VARIATION_METHOD = 'natural genetic variation'
 
 
 def _library_multiplexing_method(value):
-    methods = value.get('multiplexing_method') or []
+    methods = value.get('multiplexing_methods') or []
     return methods[0] if methods else None
 
 
@@ -137,7 +137,7 @@ def audit_library_samples_missing_multiplexing_barcodes(value, system):
     sample_links = join_obj_paths([sample['@id'] for sample in missing])
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has `multiplexing_method` but linked samples missing `multiplexing_barcodes`: '
+        f'has `multiplexing_methods` but linked samples missing `multiplexing_barcodes`: '
         f'{sample_links}.'
     )
     yield AuditFailure(
@@ -174,7 +174,7 @@ def audit_library_single_sample_insufficient_multiplexing_barcodes(value, system
     sample_links = join_obj_paths([sample['@id']])
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has `multiplexing_method` and a single linked biosample {sample_links} '
+        f'has `multiplexing_methods` and a single linked biosample {sample_links} '
         f'with fewer than two `multiplexing_barcodes`.'
     )
     yield AuditFailure(
@@ -205,8 +205,129 @@ def audit_library_samples_unexpected_multiplexing_barcodes(value, system):
     sample_links = join_obj_paths([sample['@id'] for sample in with_multiplexing_barcodes])
     detail = (
         f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
-        f'has no `multiplexing_method` but linked samples with `multiplexing_barcodes`: '
+        f'has no `multiplexing_methods` but linked samples with `multiplexing_barcodes`: '
         f'{sample_links}.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
+# Library construction technologies whose libraries are always sample-multiplexed,
+# keyed by ControlledTerm term_id, with the multiplexing_methods value each one implies.
+# The ScaleBio and sci technologies count only in their "plex" form, which adds a
+# separate hash oligo.
+PROBE_BARCODING_METHOD = 'probe barcoding'
+COMBINATORIAL_INDEXING_METHOD = 'combinatorial indexing'
+
+TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD = {
+    # 10x gene expression flex and its versions
+    'EFO:0022606': PROBE_BARCODING_METHOD,
+    'EFO:0920086': PROBE_BARCODING_METHOD,
+    'EFO:0920087': PROBE_BARCODING_METHOD,
+    'EFO:0920088': PROBE_BARCODING_METHOD,
+    'EFO:0920089': PROBE_BARCODING_METHOD,
+    # ScalePlex QuantumScale Single Cell RNA sequencing
+    'EFO:0022966': COMBINATORIAL_INDEXING_METHOD,
+    # ScalePlex Single Cell RNA sequencing v1.1
+    'EFO:0022967': COMBINATORIAL_INDEXING_METHOD,
+    # sci-Plex
+    'EFO:0030026': COMBINATORIAL_INDEXING_METHOD,
+}
+
+MULTIPLEXED_TECHNOLOGIES = frozenset(TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD)
+
+MULTIPLEXING_CAPTURE_FEATURE_TYPE = 'Multiplexing Capture'
+
+
+def _library_technology(value):
+    technology = value.get('library_construction_technology')
+    return technology if isinstance(technology, dict) else None
+
+
+def _technology_is_multiplexed(technology):
+    return technology is not None and technology.get('term_id') in MULTIPLEXED_TECHNOLOGIES
+
+
+def _technology_expected_multiplexing_method(technology):
+    if technology is None:
+        return None
+    return TECHNOLOGY_EXPECTED_MULTIPLEXING_METHOD.get(technology.get('term_id'))
+
+
+def _technology_text(technology):
+    return technology.get('term_name') or technology.get('term_id') or path_to_text(technology['@id'])
+
+
+def audit_library_missing_multiplexing_method(value, system):
+    '''
+    [
+        {
+            "audit_description": "Libraries pooling more than one sample with a sample-multiplexed technology, or capturing multiplexing features, are expected to specify a multiplexing method.",
+            "audit_category": "missing multiplexing method",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    if _library_multiplexing_method(value):
+        return
+    technology = _library_technology(value)
+    samples = value.get('samples', [])
+    reasons = []
+    # A single-sample library on these technologies can be a singleplex run with no
+    # sample barcodes. If it does carry barcodes, the unexpected multiplexing barcodes
+    # audit already flags the missing method.
+    if _technology_is_multiplexed(technology) and len(samples) > 1:
+        reasons.append(
+            f'`library_construction_technology` '
+            f'{audit_link(_technology_text(technology), technology["@id"])} '
+            f'with {len(samples)} linked samples'
+        )
+    if MULTIPLEXING_CAPTURE_FEATURE_TYPE in value.get('feature_types', []):
+        reasons.append(f'`feature_types` `{MULTIPLEXING_CAPTURE_FEATURE_TYPE}`')
+    if not reasons:
+        return
+    audit_message = get_audit_message(audit_library_missing_multiplexing_method)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    lib_id = value['@id']
+    detail = (
+        f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
+        f'has {" and ".join(reasons)} but is missing `multiplexing_methods`.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
+def audit_library_inconsistent_multiplexing_method(value, system):
+    '''
+    [
+        {
+            "audit_description": "Libraries are expected to specify the multiplexing method implied by their library construction technology.",
+            "audit_category": "inconsistent multiplexing method",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    method = _library_multiplexing_method(value)
+    if method is None:
+        return
+    technology = _library_technology(value)
+    expected_method = _technology_expected_multiplexing_method(technology)
+    if expected_method is None or method == expected_method:
+        return
+    audit_message = get_audit_message(audit_library_inconsistent_multiplexing_method)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    lib_id = value['@id']
+    detail = (
+        f'{object_type} {audit_link(path_to_text(lib_id), lib_id)} '
+        f'has `library_construction_technology` '
+        f'{audit_link(_technology_text(technology), technology["@id"])} '
+        f'and `multiplexing_methods` `{method}` instead of `{expected_method}`.'
     )
     yield AuditFailure(
         audit_message.get('audit_category', ''),
@@ -383,6 +504,19 @@ function_dispatcher_library_cro_group_identifier_object = {
 def audit_library_cro_group_identifier_object_dispatcher(value, system):
     for function_name in function_dispatcher_library_cro_group_identifier_object:
         for failure in function_dispatcher_library_cro_group_identifier_object[function_name](value, system):
+            yield failure
+
+
+function_dispatcher_library_multiplexing_method_embedded = {
+    'audit_library_missing_multiplexing_method': audit_library_missing_multiplexing_method,
+    'audit_library_inconsistent_multiplexing_method': audit_library_inconsistent_multiplexing_method,
+}
+
+
+@audit_checker('Library', frame='embedded')
+def audit_library_multiplexing_method_embedded_dispatcher(value, system):
+    for function_name in function_dispatcher_library_multiplexing_method_embedded:
+        for failure in function_dispatcher_library_multiplexing_method_embedded[function_name](value, system):
             yield failure
 
 

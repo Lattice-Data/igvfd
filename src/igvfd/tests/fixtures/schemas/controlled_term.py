@@ -63,6 +63,26 @@ def controlled_term_efo(testapp):
 
 
 @pytest.fixture
+def controlled_term_10x_flex(testapp):
+    item = {
+        'term_id': 'EFO:0022606',
+        'ontology_source': 'EFO',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
+def controlled_term_scaleplex(testapp):
+    item = {
+        'term_id': 'EFO:0022967',
+        'ontology_source': 'EFO',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
 def controlled_term_ethnicity(testapp):
     item = {
         'term_id': 'EFO:0000002',

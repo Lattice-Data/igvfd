@@ -1,7 +1,10 @@
 from igvfd.audit.library import (
+    MULTIPLEXED_TECHNOLOGIES,
     audit_dual_cardinality_self_linked_library,
     audit_droplet_based_library_samples_unexpected_rt_indexes,
+    audit_library_inconsistent_multiplexing_method,
     audit_library_missing_cro_group_identifier,
+    audit_library_missing_multiplexing_method,
     audit_library_samples_missing_multiplexing_barcodes,
     audit_library_samples_unexpected_multiplexing_barcodes,
     audit_library_single_sample_insufficient_multiplexing_barcodes,
@@ -125,7 +128,7 @@ def test_droplet_based_library_with_multiplexing_method_all_samples_have_barcode
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -148,7 +151,7 @@ def test_droplet_based_library_single_sample_one_barcode_inconsistent_audit():
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -166,7 +169,7 @@ def test_droplet_based_library_single_sample_two_barcodes_no_inconsistent_audit(
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -183,7 +186,7 @@ def test_droplet_based_library_two_samples_no_inconsistent_audit():
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -204,7 +207,7 @@ def test_droplet_based_library_ngv_single_sample_no_inconsistent_audit():
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['natural genetic variation'],
+        'multiplexing_methods': ['natural genetic variation'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -220,7 +223,7 @@ def test_droplet_based_library_with_multiplexing_method_missing_barcodes_audit()
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -241,7 +244,7 @@ def test_droplet_based_library_ngv_all_samples_without_barcodes_no_audit():
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['natural genetic variation'],
+        'multiplexing_methods': ['natural genetic variation'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -262,7 +265,7 @@ def test_droplet_based_library_ngv_sample_with_barcodes_unexpected_audit():
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['natural genetic variation'],
+        'multiplexing_methods': ['natural genetic variation'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -285,7 +288,7 @@ def test_droplet_based_library_ngv_missing_barcodes_no_missing_audit():
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['natural genetic variation'],
+        'multiplexing_methods': ['natural genetic variation'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -304,7 +307,7 @@ def test_droplet_based_library_with_multiplexing_method_no_unexpected_audit():
         '@type': ['DropletBasedLibrary'],
         '@id': '/droplet-based-libraries/IGVFDTEST0001/',
         'library_cardinality': 'single',
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'samples': [
             {
                 '@id': '/tissues/IGVFDTEST0001/',
@@ -421,7 +424,7 @@ def test_droplet_based_library_fixture_multiplexed_clean(
     library_item = {
         'lab': other_lab['@id'],
         'samples': [tissue_one['@id'], tissue_two['@id']],
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
         'status': 'current',
@@ -462,7 +465,7 @@ def test_droplet_based_library_fixture_single_sample_multiplexed_clean(
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
-            'multiplexing_method': ['antibody hashing'],
+            'multiplexing_methods': ['antibody hashing'],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
             'status': 'current',
@@ -500,7 +503,7 @@ def test_droplet_based_library_fixture_single_sample_multiplexed_inconsistent_ba
         {
             'lab': other_lab['@id'],
             'samples': [tissue['@id']],
-            'multiplexing_method': ['antibody hashing'],
+            'multiplexing_methods': ['antibody hashing'],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
             'status': 'current',
@@ -649,3 +652,204 @@ def test_droplet_based_library_fixture_missing_cro_group_identifier(
         error['category'] == 'missing CRO group identifier'
         for error in errors_list
     )
+
+
+def _droplet_library_with_technology(term_id, **kwargs):
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+        'samples': [
+            {'@id': '/tissues/IGVFDTEST0001/'},
+            {'@id': '/tissues/IGVFDTEST0002/'},
+        ],
+        'library_construction_technology': {
+            '@id': '/controlled-terms/' + term_id + '/',
+            'term_id': term_id,
+            'term_name': '10x gene expression flex',
+        },
+    }
+    value.update(kwargs)
+    return value
+
+
+def test_droplet_based_library_technology_missing_multiplexing_method_audit():
+    value = _droplet_library_with_technology('EFO:0022606')
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'missing multiplexing method'
+    assert failures[0].__json__()['level_name'] == 'ERROR'
+    assert '`library_construction_technology`' in failures[0].detail
+
+
+def test_droplet_based_library_technology_single_sample_no_missing_multiplexing_method_audit():
+    value = _droplet_library_with_technology(
+        'EFO:0022606', samples=[{'@id': '/tissues/IGVFDTEST0001/'}]
+    )
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_technology_with_multiplexing_method_no_missing_audit():
+    value = _droplet_library_with_technology('EFO:0022606', multiplexing_methods=['probe barcoding'])
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_other_technology_no_missing_multiplexing_method_audit():
+    value = _droplet_library_with_technology('EFO:0009922')
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_no_technology_no_missing_multiplexing_method_audit():
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression'],
+    }
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_multiplexing_capture_missing_multiplexing_method_audit():
+    value = {
+        '@type': ['DropletBasedLibrary'],
+        '@id': '/droplet-based-libraries/IGVFDTEST0001/',
+        'library_cardinality': 'single',
+        'feature_types': ['Gene Expression', 'Multiplexing Capture'],
+    }
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'missing multiplexing method'
+    assert '`Multiplexing Capture`' in failures[0].detail
+
+
+def test_droplet_based_library_technology_and_multiplexing_capture_single_audit():
+    value = _droplet_library_with_technology(
+        'EFO:0022606', feature_types=['Gene Expression', 'Multiplexing Capture']
+    )
+    failures = list(audit_library_missing_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert '`library_construction_technology`' in failures[0].detail
+    assert '`Multiplexing Capture`' in failures[0].detail
+
+
+def test_droplet_based_library_inconsistent_multiplexing_method_audit():
+    value = _droplet_library_with_technology('EFO:0022606', multiplexing_methods=['antibody hashing'])
+    failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'inconsistent multiplexing method'
+    assert failures[0].__json__()['level_name'] == 'ERROR'
+    assert '`probe barcoding`' in failures[0].detail
+
+
+def test_droplet_based_library_natural_genetic_variation_inconsistent_multiplexing_method_audit():
+    value = _droplet_library_with_technology('EFO:0022606', multiplexing_methods=['natural genetic variation'])
+    failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
+    assert len(failures) == 1
+    assert failures[0].category == 'inconsistent multiplexing method'
+
+
+def test_droplet_based_library_expected_multiplexing_method_no_inconsistent_audit():
+    value = _droplet_library_with_technology('EFO:0022606', multiplexing_methods=['probe barcoding'])
+    failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_other_technology_no_inconsistent_multiplexing_method_audit():
+    value = _droplet_library_with_technology('EFO:0009922', multiplexing_methods=['antibody hashing'])
+    failures = list(audit_library_inconsistent_multiplexing_method(value, {}))
+    assert len(failures) == 0
+
+
+def test_droplet_based_library_fixture_technology_multiplexing_method(
+    testapp,
+    indexer_testapp,
+    droplet_based_library,
+    controlled_term_10x_flex,
+    tissue_with_aliases,
+):
+    res = indexer_testapp.get(droplet_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] in ('missing multiplexing method', 'inconsistent multiplexing method')
+        for error in errors_list
+    )
+    testapp.patch_json(
+        droplet_based_library['@id'],
+        {'library_construction_technology': controlled_term_10x_flex['@id']},
+        status=200,
+    )
+    res = indexer_testapp.get(droplet_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] == 'missing multiplexing method'
+        for error in errors_list
+    )
+    testapp.patch_json(
+        droplet_based_library['@id'],
+        {'samples': droplet_based_library['samples'] + [tissue_with_aliases['@id']]},
+        status=200,
+    )
+    res = indexer_testapp.get(droplet_based_library['@id'] + '@@index-data')
+    errors = res.json['audit']
+    assert any(
+        error['category'] == 'missing multiplexing method'
+        for error in errors.get('ERROR', [])
+    )
+    testapp.patch_json(
+        droplet_based_library['@id'],
+        {'multiplexing_methods': ['antibody hashing']},
+        status=200,
+    )
+    res = indexer_testapp.get(droplet_based_library['@id'] + '@@index-data')
+    errors = res.json['audit']
+    assert any(
+        error['category'] == 'inconsistent multiplexing method'
+        for error in errors.get('ERROR', [])
+    )
+    assert not any(
+        error['category'] == 'missing multiplexing method'
+        for error in errors.get('ERROR', [])
+    )
+    testapp.patch_json(
+        droplet_based_library['@id'],
+        {'multiplexing_methods': ['probe barcoding']},
+        status=200,
+    )
+    res = indexer_testapp.get(droplet_based_library['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
+        error['category'] in ('missing multiplexing method', 'inconsistent multiplexing method')
+        for error in errors_list
+    )
+
+
+def test_droplet_based_library_fixture_multiplexing_capture_missing_multiplexing_method(
+    testapp,
+    indexer_testapp,
+    droplet_based_library,
+):
+    testapp.patch_json(
+        droplet_based_library['@id'],
+        {'feature_types': ['Gene Expression', 'Multiplexing Capture']},
+        status=200,
+    )
+    res = indexer_testapp.get(droplet_based_library['@id'] + '@@index-data')
+    errors = res.json['audit']
+    assert any(
+        error['category'] == 'missing multiplexing method'
+        for error in errors.get('ERROR', [])
+    )
+
+
+def test_multiplexed_technologies_terms_exist_in_ontology():
+    # A mistyped term_id would never match a library and skip both audits silently.
+    from igvfd.ontology import load_ontology
+    ontology = load_ontology()
+    for term_id in MULTIPLEXED_TECHNOLOGIES:
+        assert term_id in ontology, f'{term_id} is not in the ontology'
+        assert not ontology[term_id].get('deprecated'), f'{term_id} is deprecated'

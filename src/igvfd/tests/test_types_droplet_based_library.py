@@ -124,7 +124,7 @@ def test_droplet_based_library_multiplexing_method_min_items(testapp, other_lab,
             'samples': [tissue['@id'], tissue_with_aliases['@id']],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
-            'multiplexing_method': [],
+            'multiplexing_methods': [],
             'status': 'current',
         },
         status=422
@@ -139,7 +139,7 @@ def test_droplet_based_library_multiplexing_method_max_items(testapp, other_lab,
             'samples': [tissue['@id'], tissue_with_aliases['@id']],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
-            'multiplexing_method': ['antibody hashing', 'lipid hashing'],
+            'multiplexing_methods': ['antibody hashing', 'lipid hashing'],
             'status': 'current',
         },
         status=422
@@ -154,12 +154,12 @@ def test_droplet_based_library_multiplexing_method_with_one_sample(testapp, othe
             'samples': [tissue['@id']],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
-            'multiplexing_method': ['antibody hashing'],
+            'multiplexing_methods': ['antibody hashing'],
             'status': 'current',
         },
         status=201
     )
-    assert res.json['@graph'][0]['multiplexing_method'] == ['antibody hashing']
+    assert res.json['@graph'][0]['multiplexing_methods'] == ['antibody hashing']
 
 
 def test_droplet_based_library_multiplexing_method_enum(testapp, other_lab, tissue, tissue_with_aliases):
@@ -170,7 +170,7 @@ def test_droplet_based_library_multiplexing_method_enum(testapp, other_lab, tiss
             'samples': [tissue['@id'], tissue_with_aliases['@id']],
             'library_cardinality': 'single',
             'feature_types': ['Gene Expression'],
-            'multiplexing_method': ['invalid method'],
+            'multiplexing_methods': ['invalid method'],
             'status': 'current',
         },
         status=422
@@ -196,11 +196,11 @@ def test_droplet_based_library_create_with_multiplexing_method_enum_values(
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'single',
         'feature_types': ['Gene Expression'],
-        'multiplexing_method': [multiplexing_method],
+        'multiplexing_methods': [multiplexing_method],
         'status': 'current',
     }
     res = testapp.post_json('/droplet_based_library', item, status=201)
-    assert res.json['@graph'][0]['multiplexing_method'] == [multiplexing_method]
+    assert res.json['@graph'][0]['multiplexing_methods'] == [multiplexing_method]
 
 
 @pytest.mark.parametrize(
@@ -403,7 +403,7 @@ def test_droplet_based_library_create_with_all_optional_fields(
         'samples': [tissue['@id'], tissue_with_aliases['@id']],
         'library_cardinality': 'dual',
         'feature_types': ['Gene Expression', 'ATAC'],
-        'multiplexing_method': ['antibody hashing'],
+        'multiplexing_methods': ['antibody hashing'],
         'description': 'Complete droplet-based library',
         'CRO_group_identifier': 'CRO-GROUP-001',
         'status': 'current',
@@ -411,7 +411,7 @@ def test_droplet_based_library_create_with_all_optional_fields(
     res = testapp.post_json('/droplet_based_library', item, status=201)
     assert res.json['@graph'][0]['library_cardinality'] == 'dual'
     assert res.json['@graph'][0]['feature_types'] == ['Gene Expression', 'ATAC']
-    assert res.json['@graph'][0]['multiplexing_method'] == ['antibody hashing']
+    assert res.json['@graph'][0]['multiplexing_methods'] == ['antibody hashing']
     assert res.json['@graph'][0]['description'] == 'Complete droplet-based library'
     assert res.json['@graph'][0]['CRO_group_identifier'] == 'CRO-GROUP-001'
 

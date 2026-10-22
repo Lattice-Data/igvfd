@@ -39,7 +39,7 @@
     },
     "properties": {
         "schema_version": {
-            "default": "6"
+            "default": "7"
         },
         "feature_types": {
             "title": "Feature Types",
