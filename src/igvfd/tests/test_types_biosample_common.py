@@ -320,6 +320,54 @@ def test_biosample_preservation_method_is_optional(
     'biosample_type',
     ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
 )
+@pytest.mark.parametrize(
+    'sample_name',
+    ['S1', 'donor_01-brain', 'A' * 64],
+)
+def test_biosample_sample_name_accepts_valid_values(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, sample_name
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['sample_name'] = sample_name
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0]['sample_name'] == sample_name
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+@pytest.mark.parametrize(
+    'sample_name',
+    ['', ' S1', 'S1 ', 1, 'Sample 1', 'S.1', 'S/1', 'A' * 65],
+)
+def test_biosample_sample_name_rejects_invalid_values(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type, sample_name
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['sample_name'] = sample_name
+    payload['status'] = 'current'
+    testapp.post_json(endpoint, payload, status=422)
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
+def test_biosample_sample_name_is_optional(
+    testapp, other_lab, human_donor, controlled_term_brain, biosample_type
+):
+    endpoint, payload = _make_biosample_payload(other_lab, human_donor, controlled_term_brain, biosample_type)
+    payload['status'] = 'current'
+    res = testapp.post_json(endpoint, payload, status=201)
+    assert res.json['@graph'][0].get('sample_name') is None
+
+
+@pytest.mark.parametrize(
+    'biosample_type',
+    ['tissue', 'primary_cell_culture', 'organoid', 'cell_line'],
+)
 def test_biosample_collection_geographical_location_accepts_valid_enum(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type
 ):

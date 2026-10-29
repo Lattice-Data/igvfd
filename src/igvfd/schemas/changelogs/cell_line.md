@@ -1,5 +1,9 @@
 # Changelog for cell_line.json
 
+## Minor changes since schema version 6
+
+* Add `sample_name`.
+
 ## Schema version 6
 
 * Replace inherited `experimental_conditions`, a list, with `experimental_condition`, a single link to an ExperimentalCondition.

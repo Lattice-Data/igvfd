@@ -1,6 +1,6 @@
 {
-    "hash": "9f26aee0e2e4ff3d94ebfdc22c6221fc",
-    "index_name": "plate_based_library_9f26aee0",
+    "hash": "f2427d52d89a43beab70f4141dc6cb6e",
+    "index_name": "plate_based_library_f2427d52",
     "item_type": "plate_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -389,6 +389,9 @@
                                 "type": "long"
                             },
                             "preservation_method": {
+                                "type": "keyword"
+                            },
+                            "sample_name": {
                                 "type": "keyword"
                             },
                             "sample_procurement_interval": {

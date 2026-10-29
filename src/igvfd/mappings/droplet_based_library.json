@@ -1,6 +1,6 @@
 {
-    "hash": "31e5fe38a2911b475a621d42c699f335",
-    "index_name": "droplet_based_library_31e5fe38",
+    "hash": "90ec1f9f62f9194ce286e796165af307",
+    "index_name": "droplet_based_library_90ec1f9f",
     "item_type": "droplet_based_library",
     "mapping": {
         "dynamic_templates": [
@@ -389,6 +389,9 @@
                                 "type": "long"
                             },
                             "preservation_method": {
+                                "type": "keyword"
+                            },
+                            "sample_name": {
                                 "type": "keyword"
                             },
                             "sample_procurement_interval": {

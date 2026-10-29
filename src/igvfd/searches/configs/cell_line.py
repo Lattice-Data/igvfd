@@ -39,6 +39,9 @@ def cell_line():
             'aliases': {
                 'title': 'Aliases'
             },
+            'sample_name': {
+                'title': 'Sample Name'
+            },
             'sample_terms': {
                 'title': 'Sample Terms'
             },

@@ -81,6 +81,7 @@
     },
     "fuzzy_searchable_fields": [
         "aliases",
+        "sample_name",
         "description",
         "multiplexing_barcodes",
         "RT_indexes",
