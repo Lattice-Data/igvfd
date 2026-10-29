@@ -8,6 +8,7 @@
             "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
         ],
         "uuid": "9b6df595-2291-46cb-8a20-4c52bb1a2dcb",
+        "sample_name": "cell-line-reference",
         "schema_version": "1",
         "status": "current",
         "aliases": [

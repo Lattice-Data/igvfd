@@ -1,6 +1,6 @@
 {
-    "hash": "3a2ea9f36294a140af5f5373ac4c96d0",
-    "index_name": "cell_line_3a2ea9f3",
+    "hash": "a3a273c7315cb56214a39461021e3021",
+    "index_name": "cell_line_a3a273c7",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -608,6 +608,10 @@
                         "type": "text"
                     },
                     "preservation_method": {
+                        "type": "keyword"
+                    },
+                    "sample_name": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "sample_procurement_interval": {

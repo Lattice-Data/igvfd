@@ -46,6 +46,32 @@ def audit_biosample_missing_developmental_stages(value, system):
     )
 
 
+def audit_biosample_missing_sample_name(value, system):
+    '''
+    [
+        {
+            "audit_description": "Biosamples are expected to specify a sample name. For 10x Genomics assays processed with a Cell Ranger config.csv, the sample name must match the sample_id in that config.csv.",
+            "audit_category": "missing sample name",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    if value.get('sample_name'):
+        return
+    audit_message = get_audit_message(audit_biosample_missing_sample_name)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    biosample_id = value['@id']
+    detail = (
+        f'{object_type} {audit_link(path_to_text(biosample_id), biosample_id)} '
+        f'is missing `sample_name`.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
 def _developmental_stages_with_invalid_ontology(developmental_stages):
     return [
         stage for stage in developmental_stages
@@ -87,6 +113,7 @@ def audit_biosample_invalid_developmental_stages_ontology(value, system):
 
 function_dispatcher_biosample_object = {
     'audit_biosample_missing_developmental_stages': audit_biosample_missing_developmental_stages,
+    'audit_biosample_missing_sample_name': audit_biosample_missing_sample_name,
 }
 
 

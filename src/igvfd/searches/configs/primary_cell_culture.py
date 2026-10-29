@@ -39,6 +39,9 @@ def primary_cell_culture():
             'aliases': {
                 'title': 'Aliases'
             },
+            'sample_name': {
+                'title': 'Sample Name'
+            },
             'sample_terms': {
                 'title': 'Sample Terms'
             },

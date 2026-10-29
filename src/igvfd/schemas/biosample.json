@@ -156,6 +156,13 @@
                 "OCT embedded"
             ]
         },
+        "sample_name": {
+            "title": "Sample Name",
+            "description": "The name of the sample as used in sample sheets and processing configuration. IMPORTANT: for 10x Genomics assays processed with Cell Ranger using a config.csv (for example, cellranger multi for Flex or CellPlex), this value must exactly match (case-sensitive) the sample_id listed for this sample in the [samples] section of the config.csv. A mismatch breaks the link between Cell Ranger per-sample outputs and this biosample.",
+            "comment": "Optional, but biosamples without a sample_name are flagged by an ERROR audit.",
+            "type": "string",
+            "pattern": "^(\\S+(\\s|\\S)*\\S+|\\S)$"
+        },
         "collection_geographical_location": {
             "title": "Collection Geographical Location",
             "description": "The geographic location where the sample was collected. Enum values follow INSDC /geo_loc_name qualifier vocabulary: https://www.insdc.org/submitting-standards/geo_loc_name-qualifier-vocabulary/",

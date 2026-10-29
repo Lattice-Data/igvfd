@@ -1,5 +1,9 @@
 # Biosample Changelog
 
+## Minor changes since schema version 5
+
+* Add `sample_name`.
+
 ## Schema version 5
 
 * Replace `experimental_conditions`, a list, with `experimental_condition`, a single link to an ExperimentalCondition.

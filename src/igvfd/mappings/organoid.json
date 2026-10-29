@@ -1,6 +1,6 @@
 {
-    "hash": "fac1fd9602810cda72470434649c4dc2",
-    "index_name": "organoid_fac1fd96",
+    "hash": "46b50dac220c5ade10e2a897281bb069",
+    "index_name": "organoid_46b50dac",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -549,6 +549,10 @@
                         "type": "object"
                     },
                     "preservation_method": {
+                        "type": "keyword"
+                    },
+                    "sample_name": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "sample_procurement_interval": {

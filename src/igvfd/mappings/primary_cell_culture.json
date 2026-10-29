@@ -1,6 +1,6 @@
 {
-    "hash": "3e564635d6e79a0c8a6822f383821e5c",
-    "index_name": "primary_cell_culture_3e564635",
+    "hash": "e004b8c5c6ccf511619147424858c516",
+    "index_name": "primary_cell_culture_e004b8c5",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -441,6 +441,10 @@
                         "type": "long"
                     },
                     "preservation_method": {
+                        "type": "keyword"
+                    },
+                    "sample_name": {
+                        "copy_to": "_fuzzy",
                         "type": "keyword"
                     },
                     "sample_procurement_interval": {
