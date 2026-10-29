@@ -322,7 +322,7 @@ def test_biosample_preservation_method_is_optional(
 )
 @pytest.mark.parametrize(
     'sample_name',
-    ['S1', 'donor_01-brain', 'Sample 1'],
+    ['S1', 'donor_01-brain', 'A' * 64],
 )
 def test_biosample_sample_name_accepts_valid_values(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type, sample_name
@@ -340,7 +340,7 @@ def test_biosample_sample_name_accepts_valid_values(
 )
 @pytest.mark.parametrize(
     'sample_name',
-    ['', ' S1', 'S1 ', 1],
+    ['', ' S1', 'S1 ', 1, 'Sample 1', 'S.1', 'S/1', 'A' * 65],
 )
 def test_biosample_sample_name_rejects_invalid_values(
     testapp, other_lab, human_donor, controlled_term_brain, biosample_type, sample_name
