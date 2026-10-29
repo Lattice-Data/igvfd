@@ -53,7 +53,7 @@ def test_biosample_missing_sample_name_audit():
     failures = list(audit_biosample_missing_sample_name(value, {}))
     assert len(failures) == 1
     assert failures[0].category == 'missing sample name'
-    assert failures[0].level_name == 'ERROR'
+    assert failures[0].__json__()['level_name'] == 'ERROR'
     assert 'config.csv' in failures[0].detail
 
 
