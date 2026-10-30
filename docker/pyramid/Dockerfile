@@ -10,7 +10,10 @@ ENV REFERENCE_DATABASE_DIRECTORY=/srv/sqlite
 
 RUN useradd -u 1444 -m igvfd
 
+# Listing ca-certificates upgrades the base image's copy to the Debian release that distrusts
+# the compromised eMudhra intermediates (20250419+deb13u1); curl and git use this store.
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
     curl \
     gcc \
     git \
@@ -58,9 +61,11 @@ COPY --chown=igvfd:igvfd src/igvfd/__init__.py src/igvfd/__init__.py
 
 USER igvfd
 
-RUN python -m pip install pip==26.0.1
+RUN echo "pip==26.2.2 --hash=sha256:fd7f4dfa8190e014013b9f08f3e973f4e4c26ffd179a204895533a7254813a70" > /tmp/pip-bootstrap.txt \
+    && python -m pip install --require-hashes -r /tmp/pip-bootstrap.txt \
+    && rm /tmp/pip-bootstrap.txt
 
-RUN PIP_BUILD_CONSTRAINT=build-constraint.txt pip --use-feature=build-constraint install -e .[test]
+RUN PIP_BUILD_CONSTRAINT=build-constraint.txt pip install -e .[test]
 
 COPY --chown=igvfd:igvfd src/igvfd/schema_formats.py src/igvfd/schema_formats.py
 
