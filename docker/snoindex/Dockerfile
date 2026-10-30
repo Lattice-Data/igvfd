@@ -12,7 +12,10 @@ RUN mkdir -p /snovault-index
 
 RUN chown -R snoindex:snoindex /snovault-index
 
+# Listing ca-certificates upgrades the base image's copy to the Debian release that distrusts
+# the compromised eMudhra intermediates (20250419+deb13u1); curl and git use this store.
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
     curl \
     git \
     && apt-get clean \
