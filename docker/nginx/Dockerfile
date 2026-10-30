@@ -1,4 +1,4 @@
-FROM public.ecr.aws/nginx/nginx:1.29.3
+FROM public.ecr.aws/nginx/nginx:1.31.8
 
 # libheif arrives via nginx-module-image-filter -> libgd3. The base image still ships the
 # version vulnerable to DSA-6417-1, so upgrade it here rather than waiting for a base bump.

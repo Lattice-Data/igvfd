@@ -1093,7 +1093,7 @@
                         ],
                         "Essential": true,
                         "Image": {
-                            "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:bf053734e108ccb12882d2bf61e9b37447da784ce5940134ff6521c51c93440c"
+                            "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:aab39cd8f300fd199566840ed6a72275eaa474f83dfc9606379e56096cb2b0be"
                         },
                         "LogConfiguration": {
                             "LogDriver": "awslogs",
@@ -1706,7 +1706,7 @@
                         ],
                         "Essential": true,
                         "Image": {
-                            "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:bf053734e108ccb12882d2bf61e9b37447da784ce5940134ff6521c51c93440c"
+                            "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:aab39cd8f300fd199566840ed6a72275eaa474f83dfc9606379e56096cb2b0be"
                         },
                         "LogConfiguration": {
                             "LogDriver": "awslogs",
