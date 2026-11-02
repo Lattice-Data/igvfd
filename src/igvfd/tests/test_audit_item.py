@@ -47,6 +47,21 @@ def test_item_linked_to_deleted_objects_one_audit_per_property(
     assert '`sample_terms`' in details[1]
 
 
+def test_item_submitted_by_deleted_user_no_audit(testapp, indexer_testapp, submitter, other_lab, taxon_homo_sapiens):
+    item = {
+        'lab': other_lab['@id'],
+        'taxa': taxon_homo_sapiens['@id'],
+        'sex': 'unspecified',
+        'cxg_donor_id': 'lattice:test-cxg-submitted-by-deleted-user',
+        'submitted_by': submitter['@id'],
+    }
+    human_donor = testapp.post_json('/human_donor', item, status=201).json['@graph'][0]
+    testapp.patch_json(submitter['@id'], {'status': 'deleted'})
+    res = indexer_testapp.get(human_donor['@id'] + '@@index-data')
+    assert res.json['object']['submitted_by'] == submitter['@id']
+    assert _linked_to_deleted_errors(res) == []
+
+
 def test_deleted_item_linked_to_deleted_object_no_audit(testapp, indexer_testapp, tissue, controlled_term_brain):
     testapp.patch_json(controlled_term_brain['@id'], {'status': 'deleted'})
     testapp.patch_json(tissue['@id'], {'status': 'deleted'})

@@ -79,7 +79,12 @@ def audit_item_linked_to_deleted(value, system):
     audit_message = get_audit_message(audit_item_linked_to_deleted)
     object_type = space_in_words(value['@type'][0]).capitalize()
     item_id = value['@id']
+    schema_properties = context.type_info.schema['properties']
     for link_path in context.type_info.schema_links:
+        # Curators cannot edit admin_only links such as submitted_by, so a deleted
+        # (deactivated) user must not raise an audit on everything they submitted.
+        if schema_properties[link_path.split('.')[0]].get('permission') == 'admin_only':
+            continue
         deleted_paths = sorted({
             linked_id
             for linked_id in simple_path_ids(value, link_path)
