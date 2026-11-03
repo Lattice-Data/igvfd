@@ -8,11 +8,11 @@ TIMEOUT=${WAIT_FOR_SERVICES_TIMEOUT:-300}
 wait_for() {
     local name=$1 url=$2 pattern=$3
     local deadline=$((SECONDS + TIMEOUT))
-    until curl -s --max-time 5 "$url" | grep -q "$pattern"; do
+    local response
+    until response=$(curl -sS --max-time 5 "$url" 2>&1) && grep -q "$pattern" <<< "$response"; do
         if (( SECONDS >= deadline )); then
             echo "Timed out after ${TIMEOUT}s waiting for $name at $url. Last response:" >&2
-            curl -sS --max-time 5 "$url" 2>&1 | head -c 1000 >&2
-            echo >&2
+            head -c 1000 <<< "$response" >&2
             exit 1
         fi
         echo "Waiting for $name to become ready..."
