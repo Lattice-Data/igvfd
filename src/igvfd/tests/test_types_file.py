@@ -1493,6 +1493,7 @@ def test_matrix_file_accepts_md5sum(testapp, other_lab, tissue, file_type):
         MD5SUM_VALID.upper(),
         MD5SUM_VALID[:-1],
         MD5SUM_VALID + 'a',
+        MD5SUM_VALID + '\n',
         'g' * 32,
         '',
     ],
