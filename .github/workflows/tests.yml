@@ -288,9 +288,20 @@ jobs:
           cache-from: type=gha,scope=dedup
           cache-to: type=gha,scope=dedup
       - name: Check OpenSearch mappings
+        # A passing run takes a few minutes. This is a backstop: the entrypoint's own
+        # service waits already give up after five minutes.
+        timeout-minutes: 20
         run: |
           sudo useradd -u 1444 igvfd
           sudo usermod -a -G igvfd $(id -gn)
           sudo chown -R $USER:igvfd ./
           sudo chmod -R g+w ./
           docker compose run pyramid /scripts/pyramid/diff-opensearch-mappings.sh
+      # `docker compose run` only shows pyramid's output, so when the wait for
+      # OpenSearch fails the reason is otherwise never in the log. Also runs on a
+      # manual cancel, so a cancelled hang still leaves evidence.
+      - name: Show service state and OpenSearch logs
+        if: failure() || cancelled()
+        run: |
+          docker compose ps -a
+          docker compose logs --no-color opensearch
