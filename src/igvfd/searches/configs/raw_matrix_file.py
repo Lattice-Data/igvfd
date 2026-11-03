@@ -84,6 +84,9 @@ def raw_matrix_file():
             'file_size': {
                 'title': 'File Size'
             },
+            'md5sum': {
+                'title': 'MD5 Checksum'
+            },
             'lab': {
                 'title': 'Lab'
             },

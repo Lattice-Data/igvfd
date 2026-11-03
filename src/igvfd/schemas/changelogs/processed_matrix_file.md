@@ -1,5 +1,9 @@
 ## Changelog for processed_matrix_file.json
 
+### Minor changes since schema version 5
+
+* Add optional `md5sum`, a lowercase hex MD5 of the file content, not allowed when `no_file_available` is true. This is not the `md5sum` removed in schema version 3: it is optional, and missing values are flagged by an ERROR audit rather than rejected.
+
 ### Schema version 5
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

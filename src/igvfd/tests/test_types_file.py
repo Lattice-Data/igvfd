@@ -1458,3 +1458,63 @@ def test_matrix_files_reverse_links(testapp, matrix_file_set, matrix_file_set_wi
 
     processed_res = testapp.get(processed_file).json
     assert matrix_file_set_with_processed['@id'] in processed_res['matrix_file_sets']
+
+
+MD5SUM_VALID = '74b87337454200d4d33f80c4663dc5e5'
+
+
+def _md5sum_post_body(file_type, lab, tissue, **extra):
+    config = FILE_TYPE_CONFIGS[file_type]
+    file_format = config['default_format']
+    item = {
+        'lab': lab['@id'],
+        'file_format': file_format,
+        's3_uri': f"s3://lattice-test-data/{config['s3_path']}/md5sum.{file_format}",
+        'status': 'current',
+        **extra,
+    }
+    if item.get('no_file_available') is True:
+        item.pop('s3_uri')
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
+    return _file_post_body(file_type, item, tissue=raw_tissue)
+
+
+@pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_accepts_md5sum(testapp, other_lab, tissue, file_type):
+    item = _md5sum_post_body(file_type, other_lab, tissue, md5sum=MD5SUM_VALID)
+    res = testapp.post_json(FILE_TYPE_CONFIGS[file_type]['endpoint'], item, status=201)
+    assert res.json['@graph'][0]['md5sum'] == MD5SUM_VALID
+
+
+@pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
+@pytest.mark.parametrize(
+    'invalid_md5sum',
+    [
+        MD5SUM_VALID.upper(),
+        MD5SUM_VALID[:-1],
+        MD5SUM_VALID + 'a',
+        'g' * 32,
+        '',
+    ],
+)
+def test_matrix_file_rejects_invalid_md5sum(testapp, other_lab, tissue, file_type, invalid_md5sum):
+    item = _md5sum_post_body(file_type, other_lab, tissue, md5sum=invalid_md5sum)
+    testapp.post_json(FILE_TYPE_CONFIGS[file_type]['endpoint'], item, status=422)
+
+
+@pytest.mark.parametrize('file_type', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_rejects_md5sum_when_no_file_available_true(testapp, other_lab, tissue, file_type):
+    item = _md5sum_post_body(file_type, other_lab, tissue, no_file_available=True, md5sum=MD5SUM_VALID)
+    testapp.post_json(FILE_TYPE_CONFIGS[file_type]['endpoint'], item, status=422)
+
+
+@pytest.mark.parametrize('file_type', ['sequence_file', 'tabular_file'])
+def test_non_matrix_file_rejects_md5sum(testapp, other_lab, tissue, file_type):
+    item = _md5sum_post_body(file_type, other_lab, tissue, md5sum=MD5SUM_VALID)
+    testapp.post_json(FILE_TYPE_CONFIGS[file_type]['endpoint'], item, status=422)
+
+
+def test_matrix_file_md5sum_patch(testapp, raw_matrix_file, processed_matrix_file):
+    for matrix_file in (raw_matrix_file, processed_matrix_file):
+        res = testapp.patch_json(matrix_file['@id'], {'md5sum': MD5SUM_VALID}, status=200)
+        assert res.json['@graph'][0]['md5sum'] == MD5SUM_VALID

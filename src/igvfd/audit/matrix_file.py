@@ -39,12 +39,51 @@ def audit_raw_matrix_file_software_without_version(value, system):
     )
 
 
+def audit_matrix_file_missing_md5sum(value, system):
+    '''
+    [
+        {
+            "audit_description": "Matrix files with an S3 URI are expected to specify an MD5 checksum, which GEO requires for every processed file it receives.",
+            "audit_category": "missing md5sum",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    if not value.get('s3_uri'):
+        return
+    if value.get('md5sum'):
+        return
+    audit_message = get_audit_message(audit_matrix_file_missing_md5sum)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    obj_id = value['@id']
+    detail = (
+        f'{object_type} {audit_link(path_to_text(obj_id), obj_id)} '
+        f'has `s3_uri` but is missing `md5sum`.'
+    )
+    yield AuditFailure(
+        audit_message.get('audit_category', ''),
+        f'{detail} {audit_message.get("audit_description", "")}',
+        level=audit_message.get('audit_level', ''),
+    )
+
+
 function_dispatcher_raw_matrix_file_object = {
     'audit_raw_matrix_file_software_without_version': audit_raw_matrix_file_software_without_version,
+    'audit_matrix_file_missing_md5sum': audit_matrix_file_missing_md5sum,
+}
+
+function_dispatcher_processed_matrix_file_object = {
+    'audit_matrix_file_missing_md5sum': audit_matrix_file_missing_md5sum,
 }
 
 
 @audit_checker('RawMatrixFile', frame='object')
 def audit_raw_matrix_file_object_dispatcher(value, system):
     for fn in function_dispatcher_raw_matrix_file_object.values():
+        yield from fn(value, system)
+
+
+@audit_checker('ProcessedMatrixFile', frame='object')
+def audit_processed_matrix_file_object_dispatcher(value, system):
+    for fn in function_dispatcher_processed_matrix_file_object.values():
         yield from fn(value, system)

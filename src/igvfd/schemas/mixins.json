@@ -289,6 +289,16 @@
             "submissionExample": {
                 "appscript": "[\"/tissues/414e5c99-e9db-43b1-b7e9-49979fc6efb6\"]"
             }
+        },
+        "md5sum": {
+            "title": "MD5 Checksum",
+            "description": "Lowercase hex-encoded MD5 checksum of the file content, computed by reading the full object. GEO requires this checksum for every processed file it receives.",
+            "comment": "Optional, but matrix files with an s3_uri and no md5sum are flagged by an ERROR audit. S3 does not store an MD5 for multipart uploads and the CRC64NVME checksum cannot be converted to one, so compute it from the file content. Omit when no_file_available is true.",
+            "type": "string",
+            "pattern": "^[a-f0-9]{32}$",
+            "submissionExample": {
+                "appscript": "74b87337454200d4d33f80c4663dc5e5"
+            }
         }
     },
     "intended_cell_types": {
