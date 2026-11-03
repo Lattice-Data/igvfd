@@ -14,6 +14,7 @@
 * Update `aliases` regex to accept `will-allen` prefix.
 * Remove `file_size` comment.
 * Update `crc64nvme_base64` comment.
+* Anchor the `crc64nvme_base64` pattern at the true end of input with `(?![\s\S])` rather than `$`, so a value with a trailing newline is rejected.
 
 ### Minor changes since schema version 1
 

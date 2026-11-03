@@ -572,6 +572,8 @@ def test_file_requires_crc64nvme_when_file_available(testapp, other_lab, file_ty
         ('tabular_file', 'AAAAAAAAAA'),
         ('raw_matrix_file', 'AAAAAAAAAAA==='),
         ('processed_matrix_file', 'not-base64!!'),
+        ('sequence_file', CRC64NVME_BASE64_VALID + '\n'),
+        ('raw_matrix_file', CRC64NVME_BASE64_VALID + '\n'),
     ],
 )
 def test_file_rejects_invalid_crc64nvme_base64(testapp, other_lab, file_type, invalid_crc):

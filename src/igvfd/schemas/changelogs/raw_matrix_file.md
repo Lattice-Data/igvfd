@@ -3,6 +3,7 @@
 ### Minor changes since schema version 6
 
 * Add optional `md5sum`, a lowercase hex MD5 of the file content, not allowed when `no_file_available` is true. This is not the `md5sum` removed in schema version 3: it is optional, and missing values are flagged by an ERROR audit rather than rejected.
+* Anchor the inherited `crc64nvme_base64` pattern at the true end of input with `(?![\s\S])` rather than `$`, so a value with a trailing newline is rejected.
 
 ### Schema version 6
 
