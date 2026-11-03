@@ -74,11 +74,13 @@ function runOpensearch {
 
     setupSecurityPlugin
 
-    # Enable job control so we receive SIGCHLD when a child process terminates
-    set -m
-
-    # Make sure we terminate the child processes in the event of us received TERM (e.g. "docker container stop"), INT (e.g. ctrl-C), EXIT (this script terminates for an unexpected reason), or CHLD (one of the processes terminated unexpectedly)
-    trap terminateProcesses TERM INT EXIT CHLD
+    # Make sure we terminate opensearch in the event of us receiving TERM (e.g. "docker container stop"), INT (e.g. ctrl-C), or EXIT (this script terminates for an unexpected reason).
+    # Upstream also enables job control (set -m) and traps CHLD, to stop opensearch when the
+    # performance analyzer agent dies. This copy has no such agent, and in CI a stray CHLD
+    # killed opensearch a second after it started ("Killing opensearch process 9", then
+    # "bad value in trap_list[17]"); the container exited 0 and the service wait hung.
+    # opensearch is the only child, so `wait` below already returns when it exits.
+    trap terminateProcesses TERM INT EXIT
 
     # Start opensearch
     "$@" "${opensearch_opts[@]}" &
