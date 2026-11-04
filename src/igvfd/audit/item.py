@@ -12,6 +12,8 @@ from snovault.schema_utils import validate
 from snovault.util import simple_path_ids
 from .formatter import (
     audit_link,
+    get_audit_message,
+    join_obj_paths,
     path_to_text,
     space_in_words
 )
@@ -57,3 +59,45 @@ def audit_item_schema(value, system):
         )
         )
         yield AuditFailure(category, detail, level='INTERNAL_ACTION')
+
+
+@audit_checker('Item', frame='object')
+def audit_item_linked_to_deleted(value, system):
+    '''
+    [
+        {
+            "audit_description": "Objects that are not deleted are expected to be disconnected from deleted objects.",
+            "audit_category": "linked to deleted object",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    if value.get('status') == 'deleted':
+        return
+    context = system['context']
+    request = system['request']
+    audit_message = get_audit_message(audit_item_linked_to_deleted)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    item_id = value['@id']
+    schema_properties = context.type_info.schema['properties']
+    for link_path in context.type_info.schema_links:
+        # Curators cannot edit admin_only links such as submitted_by, so a deleted
+        # (deactivated) user must not raise an audit on everything they submitted.
+        if schema_properties[link_path.split('.')[0]].get('permission') == 'admin_only':
+            continue
+        deleted_paths = sorted({
+            linked_id
+            for linked_id in simple_path_ids(value, link_path)
+            if request.embed(linked_id, '@@object?skip_calculated=true').get('status') == 'deleted'
+        })
+        if not deleted_paths:
+            continue
+        detail = (
+            f'{object_type} {audit_link(path_to_text(item_id), item_id)} '
+            f'links in `{link_path}` to deleted {join_obj_paths(deleted_paths)}.'
+        )
+        yield AuditFailure(
+            audit_message.get('audit_category', ''),
+            f'{detail} {audit_message.get("audit_description", "")}',
+            level=audit_message.get('audit_level', ''),
+        )

@@ -123,5 +123,22 @@
             "SCALEQUANT-A1",
             "SCALEQUANT-A2"
         ]
+    },
+    {
+        "lab": "teri-klein",
+        "donors": [
+            "d4e5f6a7-b8c9-0123-def4-456789012345"
+        ],
+        "sample_terms": [
+            "e1d2c3b4-a5f6-4789-8abc-de0123456789"
+        ],
+        "uuid": "f2e3d4c5-b6a7-4890-9bcd-ef1234567890",
+        "sample_name": "tissue-linked-to-deleted-term",
+        "schema_version": "4",
+        "status": "current",
+        "aliases": [
+            "lattice:tissue-linked-to-deleted-term"
+        ],
+        "description": "Tissue linked to a deleted controlled term, exercising the linked to deleted object audit"
     }
 ]

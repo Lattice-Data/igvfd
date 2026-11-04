@@ -529,5 +529,15 @@
             "lattice:term-xenopus-tropicalis",
             "lattice:term-ncbitaxon-8364"
         ]
+    },
+    {
+        "term_id": "UBERON:0002107",
+        "ontology_source": "UBERON",
+        "uuid": "e1d2c3b4-a5f6-4789-8abc-de0123456789",
+        "schema_version": "4",
+        "status": "deleted",
+        "aliases": [
+            "lattice:term-uberon-0002107-deleted"
+        ]
     }
 ]
