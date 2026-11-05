@@ -39,6 +39,25 @@
             "$merge": [
                 "file.json#/allOf/0"
             ]
+        },
+        {
+            "if": {
+                "required": [
+                    "no_file_available"
+                ],
+                "properties": {
+                    "no_file_available": {
+                        "const": true
+                    }
+                }
+            },
+            "then": {
+                "not": {
+                    "required": [
+                        "md5sum"
+                    ]
+                }
+            }
         }
     ],
     "properties": {

@@ -1,5 +1,9 @@
 ## Changelog for tabular_file.json
 
+### Minor changes since schema version 6
+
+* Anchor the inherited `crc64nvme_base64` pattern at the true end of input with `(?![\s\S])` rather than `$`, so a value with a trailing newline is rejected.
+
 ### Schema version 6
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

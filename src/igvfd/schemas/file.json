@@ -93,7 +93,7 @@
             "description": "Base64-encoded CRC64NVME checksum as reported by AWS S3.",
             "comment": "Submit the Base64-encoded CRC64NVME checksum from S3 when the file is available (no_file_available is false). When no_file_available is true, omit both s3_uri and crc64nvme_base64.",
             "type": "string",
-            "pattern": "^[A-Za-z0-9+/]{11}={0,2}$",
+            "pattern": "^[A-Za-z0-9+/]{11}={0,2}(?![\\s\\S])",
             "submissionExample": {
                 "appscript": "AAAAAAAAAAA"
             }

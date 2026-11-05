@@ -1,6 +1,6 @@
 {
-    "hash": "2fc0129c0644bfb1b7fed08c54ea18ac",
-    "index_name": "processed_matrix_file_2fc0129c",
+    "hash": "93983f83be0acaba7a7c22ea010f5c6b",
+    "index_name": "processed_matrix_file_93983f83",
     "item_type": "processed_matrix_file",
     "mapping": {
         "dynamic_templates": [
@@ -248,6 +248,9 @@
                         "type": "object"
                     },
                     "matrix_file_sets": {
+                        "type": "keyword"
+                    },
+                    "md5sum": {
                         "type": "keyword"
                     },
                     "no_file_available": {
