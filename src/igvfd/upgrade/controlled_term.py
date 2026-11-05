@@ -17,6 +17,14 @@ CONTROLLED_TERM_DBXREF_PATTERN = re.compile(
 )
 
 
+# The ControlledTerm aliases pattern as of controlled_term 5: lattice:<ontology>_<term>,
+# lowercase letters, digits and single underscores only. Historical once released, like
+# the constant above; see test_controlled_term_upgrade_alias_pattern_matches_schema.
+CONTROLLED_TERM_ALIAS_PATTERN = re.compile(
+    r'^lattice:[a-z0-9]+(?:_[a-z0-9]+)+(?![\s\S])'
+)
+
+
 @upgrade_step('controlled_term', '1', '2')
 def controlled_term_1_2(value, system):
     value.pop('term_name', None)
@@ -30,3 +38,10 @@ def controlled_term_2_3(value, system):
 @upgrade_step('controlled_term', '3', '4')
 def controlled_term_3_4(value, system):
     preserve_invalid_aliases(value)
+
+
+@upgrade_step('controlled_term', '4', '5')
+def controlled_term_4_5(value, system):
+    # Stage 1 of DB2-84 added a compliant alias to every stored term before this step was
+    # released, so it removes only the legacy aliases; they stay readable in notes.
+    preserve_invalid_aliases(value, CONTROLLED_TERM_ALIAS_PATTERN)

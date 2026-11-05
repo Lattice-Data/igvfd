@@ -113,7 +113,7 @@
                 "type": "string",
                 "linkTo": "ControlledTerm",
                 "submissionExample": {
-                    "appscript": "lattice:term-dev-stage-human-embryonic"
+                    "appscript": "lattice:hsapdv_29_year_old_stage"
                 }
             }
         },

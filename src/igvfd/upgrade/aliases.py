@@ -15,9 +15,11 @@ ALIAS_PATTERN = re.compile(
 )
 
 
-def preserve_invalid_aliases(value):
-    """Drop aliases the anchored pattern rejects, preserving them in notes.
+def preserve_invalid_aliases(value, valid_pattern=ALIAS_PATTERN):
+    """Drop aliases valid_pattern rejects, preserving them in notes.
 
+    valid_pattern defaults to ALIAS_PATTERN, which the released steps rely on; a step
+    that enforces a narrower, type-specific pattern passes its own frozen constant.
     aliases has minItems 1, so the property is removed when no alias survives.
     """
     if 'aliases' not in value:
@@ -31,7 +33,7 @@ def preserve_invalid_aliases(value):
     for alias in value['aliases']:
         # search, matching how jsonschema applies `pattern`. The pattern ends with
         # `(?![\s\S])` rather than `$`, so search and fullmatch coincide.
-        target = valid_aliases if ALIAS_PATTERN.search(alias) else invalid_aliases
+        target = valid_aliases if valid_pattern.search(alias) else invalid_aliases
         target.append(alias)
     if not invalid_aliases:
         return

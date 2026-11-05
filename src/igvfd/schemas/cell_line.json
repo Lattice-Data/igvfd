@@ -52,7 +52,7 @@
             "type": "string",
             "linkTo": "ControlledTerm",
             "submissionExample": {
-                "appscript": "lattice:term-brain"
+                "appscript": "lattice:uberon_brain"
             }
         }
     },

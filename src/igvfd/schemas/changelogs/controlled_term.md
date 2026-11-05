@@ -1,5 +1,10 @@
 # Controlled Term Changelog
 
+### Schema version 5
+
+* Update `aliases` regex to accept only `lattice:<ontology>_<term>` with lowercase letters, digits and single underscores (e.g. `lattice:uberon_liver`).
+* Preserve `aliases` rejected by the updated regex in `notes` during upgrade.
+
 ### Schema version 4
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.

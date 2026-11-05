@@ -108,3 +108,90 @@ def test_controlled_term_upgrade_2_3_without_dbxrefs_does_not_add_notes(upgrader
     result = upgrader.upgrade('controlled_term', value, current_version='2', target_version='3')
     assert 'dbxrefs' not in result
     assert 'notes' not in result
+
+
+# The ControlledTerm aliases pattern as released with controlled_term 5.
+CONTROLLED_TERM_ALIAS_PATTERN_AS_RELEASED = r'^lattice:[a-z0-9]+(?:_[a-z0-9]+)+(?![\s\S])'
+
+
+def test_controlled_term_upgrade_alias_pattern_is_frozen():
+    from igvfd.upgrade.controlled_term import CONTROLLED_TERM_ALIAS_PATTERN
+
+    assert CONTROLLED_TERM_ALIAS_PATTERN.pattern == CONTROLLED_TERM_ALIAS_PATTERN_AS_RELEASED, (
+        'The released 4->5 step must keep removing exactly what it removed on release. '
+        'Add a new constant and step rather than editing this one.'
+    )
+
+
+def test_controlled_term_upgrade_alias_pattern_matches_schema():
+    from igvfd.upgrade.controlled_term import CONTROLLED_TERM_ALIAS_PATTERN
+
+    schema = load_schema('igvfd:schemas/controlled_term.json')
+    assert CONTROLLED_TERM_ALIAS_PATTERN.pattern == schema['properties']['aliases']['items']['pattern'], (
+        'controlled_term.json aliases pattern changed. Freeze the current constant under a '
+        'versioned name for the released step, add a new constant plus step, and point this '
+        'test and CONTROLLED_TERM_ALIAS_PATTERN_AS_RELEASED at the new constant.'
+    )
+
+
+def test_controlled_term_upgrade_4_5_preserves_legacy_aliases_in_notes(upgrader):
+    # What Stage 1 left on production: a legacy alias next to its compliant replacement.
+    value = {
+        'schema_version': '4',
+        'aliases': ['lattice:term-homo-sapiens', 'lattice:ncbitaxon_homo_sapiens', 'lattice:Brefeldin A'],
+        'notes': 'Existing note.',
+    }
+    result = upgrader.upgrade('controlled_term', value, current_version='4', target_version='5')
+    assert result['schema_version'] == '5'
+    assert result['aliases'] == ['lattice:ncbitaxon_homo_sapiens']
+    assert result['notes'] == (
+        'Existing note.\n'
+        'Aliases removed during schema upgrade: "lattice:term-homo-sapiens", "lattice:Brefeldin A".'
+    )
+
+
+def test_controlled_term_upgrade_4_5_keeps_compliant_aliases(upgrader):
+    value = {'schema_version': '4', 'aliases': ['lattice:chebi_vorinostat', 'lattice:chebi_saha']}
+    result = upgrader.upgrade('controlled_term', value, current_version='4', target_version='5')
+    assert result['aliases'] == ['lattice:chebi_vorinostat', 'lattice:chebi_saha']
+    assert 'notes' not in result
+
+
+def test_controlled_term_upgrade_4_5_drops_aliases_when_none_comply(upgrader):
+    # aliases is optional, so a term left with no compliant alias loses the property.
+    value = {'schema_version': '4', 'aliases': ['lattice:uberon-blood', 'will-allen:liver']}
+    result = upgrader.upgrade('controlled_term', value, current_version='4', target_version='5')
+    assert 'aliases' not in result
+    assert result['notes'] == (
+        'Aliases removed during schema upgrade: "lattice:uberon-blood", "will-allen:liver".'
+    )
+
+
+def test_controlled_term_upgrade_4_5_note_satisfies_notes_schema(upgrader):
+    notes_pattern = re.compile(
+        load_schema('igvfd:schemas/controlled_term.json')['properties']['notes']['pattern']
+    )
+    result = upgrader.upgrade(
+        'controlled_term',
+        {'schema_version': '4', 'aliases': ["lattice:efo-10x-5'-v3"]},
+        current_version='4',
+        target_version='5',
+    )
+    assert notes_pattern.search(result['notes']), repr(result['notes'])
+
+
+def test_controlled_term_upgrade_4_5_without_aliases(upgrader):
+    result = upgrader.upgrade('controlled_term', {'schema_version': '4'}, current_version='4', target_version='5')
+    assert result == {'schema_version': '5'}
+
+
+def test_controlled_term_upgrade_from_3_applies_both_alias_steps(upgrader):
+    # 3->4 drops whitespace damage with the shared pattern, then 4->5 applies the narrower one.
+    value = {'schema_version': '3', 'aliases': ['lattice:uberon_liver', 'lattice:liver\n', 'lattice:liver tissue']}
+    result = upgrader.upgrade('controlled_term', value, current_version='3', target_version='5')
+    assert result['schema_version'] == '5'
+    assert result['aliases'] == ['lattice:uberon_liver']
+    assert result['notes'] == (
+        'Aliases removed during schema upgrade: "lattice:liver\\n".\n'
+        'Aliases removed during schema upgrade: "lattice:liver tissue".'
+    )

@@ -316,7 +316,7 @@
                 "linkTo": "ControlledTerm"
             },
             "submissionExample": {
-                "appscript": "[\"lattice:term-t-cell\"]"
+                "appscript": "[\"lattice:cl_t_cell\"]"
             }
         }
     },
