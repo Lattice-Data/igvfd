@@ -77,7 +77,7 @@
                 "NCBITaxon:8364": "Xenopus tropicalis"
             },
             "submissionExample": {
-                "appscript": "lattice:term-mus-musculus"
+                "appscript": "lattice:ncbitaxon_mus_musculus"
             }
         },
         "sex": {

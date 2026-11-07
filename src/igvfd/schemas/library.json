@@ -137,7 +137,7 @@
             "type": "string",
             "linkTo": "ControlledTerm",
             "submissionExample": {
-                "appscript": "lattice:term-10x-flex"
+                "appscript": "lattice:efo_10x_gene_expression_flex_v1"
             }
         },
         "library_cardinality": {

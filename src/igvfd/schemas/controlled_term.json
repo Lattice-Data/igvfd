@@ -24,7 +24,20 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "4"
+            "default": "5"
+        },
+        "aliases": {
+            "items": {
+                "uniqueKey": "alias",
+                "title": "Lab Alias",
+                "description": "A lab specific identifier to reference an object.",
+                "comment": "ControlledTerm aliases take the form lattice:<ontology>_<term>, using only lowercase letters, digits and single underscores (e.g. lattice:uberon_liver). The ontology part is the lowercased term_id prefix (e.g. uberon, ncbitaxon, anti_uniprot).",
+                "type": "string",
+                "pattern": "^lattice:[a-z0-9]+(?:_[a-z0-9]+)+(?![\\s\\S])"
+            },
+            "submissionExample": {
+                "appscript": "[\"lattice:uberon_liver\", \"lattice:uberon_hepar\"]"
+            }
         },
         "term_id": {
             "title": "Term ID",

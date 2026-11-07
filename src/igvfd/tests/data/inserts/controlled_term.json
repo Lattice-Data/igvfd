@@ -6,7 +6,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-mondo-type2-diabetes"
+            "lattice:mondo_type2_diabetes"
         ]
     },
     {
@@ -16,9 +16,9 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-primary-cultured-cell",
-            "lattice:term-cl-0000001",
-            "lattice:term-primary-cell-culture-cell"
+            "lattice:cl_primary_cultured_cell",
+            "lattice:cl_0000001",
+            "lattice:cl_primary_cell_culture_cell"
         ]
     },
     {
@@ -28,8 +28,8 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-10x-flex",
-            "lattice:term-efo-0022606"
+            "lattice:efo_10x_flex",
+            "lattice:efo_0022606"
         ]
     },
     {
@@ -39,9 +39,9 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-uterine-cervix",
-            "lattice:term-uberon-0000002",
-            "lattice:term-cervix-tissue"
+            "lattice:uberon_uterine_cervix",
+            "lattice:uberon_0000002",
+            "lattice:uberon_cervix_tissue"
         ]
     },
     {
@@ -51,8 +51,8 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-hong-kong-chinese",
-            "lattice:term-hancestro-0026"
+            "lattice:hancestro_hong_kong_chinese",
+            "lattice:hancestro_0026"
         ]
     },
     {
@@ -62,8 +62,8 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-vitamin-D",
-            "lattice:term-chebi-27300"
+            "lattice:chebi_vitamin_d",
+            "lattice:chebi_27300"
         ],
         "dbxrefs": [
             "CAS:50-00-0"
@@ -76,7 +76,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-uniprot-insulin"
+            "lattice:uniprot_insulin"
         ]
     },
     {
@@ -86,7 +86,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-anti-uniprot-insulin"
+            "lattice:anti_uniprot_insulin"
         ]
     },
     {
@@ -96,7 +96,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-dev-stage-human-embryonic"
+            "lattice:hsapdv_dev_stage_human_embryonic"
         ]
     },
     {
@@ -106,7 +106,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-dev-stage-mouse-embryonic"
+            "lattice:mmusdv_dev_stage_mouse_embryonic"
         ]
     },
     {
@@ -116,7 +116,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-sex-female"
+            "lattice:pato_sex_female"
         ]
     },
     {
@@ -126,7 +126,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-fly-embryonic-pole-cell"
+            "lattice:fbbt_fly_embryonic_pole_cell"
         ]
     },
     {
@@ -136,7 +136,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-dev-stage-fly-day-0-adult"
+            "lattice:fbdv_dev_stage_fly_day_0_adult"
         ]
     },
     {
@@ -146,7 +146,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-cell-zebrafish-acid-secreting-cell"
+            "lattice:zfa_cell_zebrafish_acid_secreting_cell"
         ]
     },
     {
@@ -156,7 +156,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-dev-stage-zebrafish-zygote-1-cell"
+            "lattice:zfs_dev_stage_zebrafish_zygote_1_cell"
         ]
     },
     {
@@ -166,7 +166,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-cell-worm-germ-cell"
+            "lattice:wbbt_cell_worm_germ_cell"
         ]
     },
     {
@@ -176,7 +176,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-dev-stage-worm-421-min"
+            "lattice:wbls_dev_stage_worm_421_min"
         ]
     },
     {
@@ -186,7 +186,7 @@
         "schema_version": "2",
         "status": "current",
         "aliases": [
-            "lattice:term-cell-line-HEL"
+            "lattice:cvcl_cell_line_hel"
         ]
     },
     {
@@ -196,8 +196,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-alligator-mississippiensis",
-            "lattice:term-ncbitaxon-8496"
+            "lattice:ncbitaxon_alligator_mississippiensis",
+            "lattice:ncbitaxon_8496"
         ]
     },
     {
@@ -207,8 +207,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-anolis-carolinensis",
-            "lattice:term-ncbitaxon-28377"
+            "lattice:ncbitaxon_anolis_carolinensis",
+            "lattice:ncbitaxon_28377"
         ]
     },
     {
@@ -218,8 +218,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-beroe-ovata",
-            "lattice:term-ncbitaxon-10201"
+            "lattice:ncbitaxon_beroe_ovata",
+            "lattice:ncbitaxon_10201"
         ]
     },
     {
@@ -229,8 +229,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-biomphalaria-glabrata",
-            "lattice:term-ncbitaxon-6526"
+            "lattice:ncbitaxon_biomphalaria_glabrata",
+            "lattice:ncbitaxon_6526"
         ]
     },
     {
@@ -240,8 +240,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-chrysemys-picta-bellii",
-            "lattice:term-ncbitaxon-8478"
+            "lattice:ncbitaxon_chrysemys_picta_bellii",
+            "lattice:ncbitaxon_8478"
         ]
     },
     {
@@ -251,8 +251,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-ciona-intestinalis",
-            "lattice:term-ncbitaxon-7719"
+            "lattice:ncbitaxon_ciona_intestinalis",
+            "lattice:ncbitaxon_7719"
         ]
     },
     {
@@ -262,8 +262,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-coturnix-japonica",
-            "lattice:term-ncbitaxon-93934"
+            "lattice:ncbitaxon_coturnix_japonica",
+            "lattice:ncbitaxon_93934"
         ]
     },
     {
@@ -273,8 +273,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-danio-rerio",
-            "lattice:term-ncbitaxon-7955"
+            "lattice:ncbitaxon_danio_rerio",
+            "lattice:ncbitaxon_7955"
         ]
     },
     {
@@ -284,8 +284,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-euprymna-berryi",
-            "lattice:term-ncbitaxon-153281"
+            "lattice:ncbitaxon_euprymna_berryi",
+            "lattice:ncbitaxon_153281"
         ]
     },
     {
@@ -295,8 +295,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-homo-sapiens",
-            "lattice:term-ncbitaxon-9606"
+            "lattice:ncbitaxon_homo_sapiens",
+            "lattice:ncbitaxon_9606"
         ]
     },
     {
@@ -306,8 +306,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-hydroides-elegans",
-            "lattice:term-ncbitaxon-216498"
+            "lattice:ncbitaxon_hydroides_elegans",
+            "lattice:ncbitaxon_216498"
         ]
     },
     {
@@ -317,8 +317,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-leucoraja-erinaceus",
-            "lattice:term-ncbitaxon-7782"
+            "lattice:ncbitaxon_leucoraja_erinaceus",
+            "lattice:ncbitaxon_7782"
         ]
     },
     {
@@ -328,8 +328,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-limulus-polyphemus",
-            "lattice:term-ncbitaxon-6850"
+            "lattice:ncbitaxon_limulus_polyphemus",
+            "lattice:ncbitaxon_6850"
         ]
     },
     {
@@ -339,8 +339,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-littorina-littorea",
-            "lattice:term-ncbitaxon-31216"
+            "lattice:ncbitaxon_littorina_littorea",
+            "lattice:ncbitaxon_31216"
         ]
     },
     {
@@ -350,8 +350,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-mnemiopsis-leidyi",
-            "lattice:term-ncbitaxon-27923"
+            "lattice:ncbitaxon_mnemiopsis_leidyi",
+            "lattice:ncbitaxon_27923"
         ]
     },
     {
@@ -361,8 +361,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-monodelphis-domestica",
-            "lattice:term-ncbitaxon-13616"
+            "lattice:ncbitaxon_monodelphis_domestica",
+            "lattice:ncbitaxon_13616"
         ]
     },
     {
@@ -372,8 +372,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-mus-musculus",
-            "lattice:term-ncbitaxon-10090"
+            "lattice:ncbitaxon_mus_musculus",
+            "lattice:ncbitaxon_10090"
         ]
     },
     {
@@ -383,8 +383,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-myxine-glutinosa",
-            "lattice:term-ncbitaxon-7769"
+            "lattice:ncbitaxon_myxine_glutinosa",
+            "lattice:ncbitaxon_7769"
         ]
     },
     {
@@ -394,8 +394,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-nematostella-vectensis",
-            "lattice:term-ncbitaxon-45351"
+            "lattice:ncbitaxon_nematostella_vectensis",
+            "lattice:ncbitaxon_45351"
         ]
     },
     {
@@ -405,8 +405,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-nothobranchius-furzeri",
-            "lattice:term-ncbitaxon-105023"
+            "lattice:ncbitaxon_nothobranchius_furzeri",
+            "lattice:ncbitaxon_105023"
         ]
     },
     {
@@ -416,8 +416,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-octopus-bimaculoides",
-            "lattice:term-ncbitaxon-37653"
+            "lattice:ncbitaxon_octopus_bimaculoides",
+            "lattice:ncbitaxon_37653"
         ]
     },
     {
@@ -427,8 +427,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-parhyale-hawaiensis",
-            "lattice:term-ncbitaxon-317513"
+            "lattice:ncbitaxon_parhyale_hawaiensis",
+            "lattice:ncbitaxon_317513"
         ]
     },
     {
@@ -438,8 +438,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-patiria-miniata",
-            "lattice:term-ncbitaxon-46514"
+            "lattice:ncbitaxon_patiria_miniata",
+            "lattice:ncbitaxon_46514"
         ]
     },
     {
@@ -449,8 +449,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-petromyzon-marinus",
-            "lattice:term-ncbitaxon-7757"
+            "lattice:ncbitaxon_petromyzon_marinus",
+            "lattice:ncbitaxon_7757"
         ]
     },
     {
@@ -460,8 +460,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-platynereis-megalops",
-            "lattice:term-ncbitaxon-3269935"
+            "lattice:ncbitaxon_platynereis_megalops",
+            "lattice:ncbitaxon_3269935"
         ]
     },
     {
@@ -471,8 +471,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-ranitomeya-imitator",
-            "lattice:term-ncbitaxon-111125"
+            "lattice:ncbitaxon_ranitomeya_imitator",
+            "lattice:ncbitaxon_111125"
         ]
     },
     {
@@ -482,8 +482,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-saccoglossus-kowalevskii",
-            "lattice:term-ncbitaxon-10224"
+            "lattice:ncbitaxon_saccoglossus_kowalevskii",
+            "lattice:ncbitaxon_10224"
         ]
     },
     {
@@ -493,8 +493,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-sclerodactyla-briareus",
-            "lattice:term-ncbitaxon-7710"
+            "lattice:ncbitaxon_sclerodactyla_briareus",
+            "lattice:ncbitaxon_7710"
         ]
     },
     {
@@ -504,8 +504,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-sycon-ciliatum",
-            "lattice:term-ncbitaxon-27933"
+            "lattice:ncbitaxon_sycon_ciliatum",
+            "lattice:ncbitaxon_27933"
         ]
     },
     {
@@ -515,8 +515,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-turritopsis-dohrnii",
-            "lattice:term-ncbitaxon-308579"
+            "lattice:ncbitaxon_turritopsis_dohrnii",
+            "lattice:ncbitaxon_308579"
         ]
     },
     {
@@ -526,8 +526,8 @@
         "schema_version": "4",
         "status": "current",
         "aliases": [
-            "lattice:term-xenopus-tropicalis",
-            "lattice:term-ncbitaxon-8364"
+            "lattice:ncbitaxon_xenopus_tropicalis",
+            "lattice:ncbitaxon_8364"
         ]
     },
     {
@@ -537,7 +537,7 @@
         "schema_version": "4",
         "status": "deleted",
         "aliases": [
-            "lattice:term-uberon-0002107-deleted"
+            "lattice:uberon_0002107_deleted"
         ]
     }
 ]

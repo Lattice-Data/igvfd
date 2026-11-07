@@ -48,7 +48,7 @@
                 "NCBITaxon:9606": "Homo sapiens"
             },
             "submissionExample": {
-                "appscript": "lattice:term-homo-sapiens"
+                "appscript": "lattice:ncbitaxon_homo_sapiens"
             }
         },
         "sex": {
