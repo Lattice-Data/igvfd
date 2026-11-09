@@ -3,6 +3,7 @@
 ## Minor changes since schema version 5
 
 * Add `sample_name`.
+* Clarify that `selection_markers` lists only markers that apply to every cell type in `enriched_cell_types`.
 
 ## Schema version 5
 
