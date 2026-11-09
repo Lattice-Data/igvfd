@@ -517,7 +517,7 @@
         "selection_markers": {
             "title": "Selection Markers",
             "description": "Markers, gates, or fraction labels used to select the cells in this sample (for example surface markers, physical size classes, or lipid dye gates). Every listed marker must apply to all of the enriched_cell_types.",
-            "comment": "List a marker only if it was used to enrich every cell type in enriched_cell_types. When one cell type is enriched, list its markers. When several cell types were enriched using different markers, do not combine their markers into one list; list only the markers they share, or omit this property if none are shared. If the sample has no enriched_cell_types (for example depletion only, described in depleted_cell_types), list the markers that defined the selected fraction. Omit this property if selection was not characterized this way.",
+            "comment": "List a marker only if it was used to enrich every cell type in enriched_cell_types. When one cell type is enriched, list its markers. When several cell types were enriched using different markers, do not combine their markers into one list.",
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
