@@ -3,6 +3,7 @@
 ## Minor changes since schema version 6
 
 * Add `sample_name`.
+* Inherit the clarified `selection_markers` and `enriched_cell_types` descriptions from the abstract biosample profile.
 
 ## Schema version 6
 
