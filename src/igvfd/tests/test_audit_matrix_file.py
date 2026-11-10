@@ -301,6 +301,34 @@ def test_derived_from_two_incomplete_sets_two_audits(monkeypatch):
     assert len(failures) == 2
 
 
+class _RecordingRequest:
+    root = object()
+
+    def __init__(self):
+        self.embedded = []
+
+    def embed(self, *elements):
+        self.embedded.append(elements)
+        return {}
+
+
+def test_sequence_file_set_paths_embeds_derived_file(monkeypatch):
+    # Pins the embed that records the derived file in the matrix's embedded_uuids.
+    # The index-level test below would still pass without it, because
+    # audit_item_linked_to_deleted embeds the same path.
+    class _FileWithoutSets:
+        rev = {}
+
+    monkeypatch.setattr(
+        matrix_file_audit,
+        'traverse',
+        lambda root, path: {'context': _FileWithoutSets()},
+    )
+    request = _RecordingRequest()
+    assert matrix_file_audit.sequence_file_set_paths(request, R1) == set()
+    assert request.embedded == [(R1, '@@object?skip_calculated=true')]
+
+
 def _incomplete_errors(res):
     # A crashed audit reports nothing in its own category, which would pass as "no audit".
     assert not any(
