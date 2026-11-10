@@ -80,6 +80,12 @@ def sequence_file_set_paths(request, file_id):
     compute every calculated property, including sra_file_names, which embeds the
     set and its mates.
     '''
+    # The result is unused: embedding records file_id in the matrix's embedded_uuids.
+    # A set that starts linking file_id invalidates file_id, and only then does the
+    # indexer re-audit this matrix. traverse records nothing. audit_item_linked_to_deleted
+    # embeds the same path today, so this is an embed-cache hit, but this audit must
+    # not depend on that one.
+    request.embed(file_id, '@@object?skip_calculated=true')
     context = traverse(request.root, file_id)['context']
     paths = set()
     for rev_key, (rev_type, _) in getattr(context, 'rev', {}).items():

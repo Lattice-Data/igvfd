@@ -412,3 +412,23 @@ def test_matrix_file_derived_from_trimmed_cram_only_no_audit(
     )
     res = indexer_testapp.get(raw_matrix_file['@id'] + '@@index-data')
     assert _incomplete_errors(res) == []
+
+
+@pytest.mark.parametrize('fixture_name', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_index_depends_on_derived_from_files(
+    testapp,
+    indexer_testapp,
+    fixture_name,
+    request,
+    sequence_file_with_aliases,
+):
+    # A set created later that links this file invalidates the file, and the
+    # matrix is re-audited only if the file is in its embedded_uuids.
+    matrix_file = request.getfixturevalue(fixture_name)
+    testapp.patch_json(
+        matrix_file['@id'],
+        {'derived_from': [sequence_file_with_aliases['@id']]},
+        status=200,
+    )
+    res = indexer_testapp.get(matrix_file['@id'] + '@@index-data')
+    assert sequence_file_with_aliases['uuid'] in res.json['embedded_uuids']
