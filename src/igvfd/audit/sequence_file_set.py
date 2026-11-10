@@ -64,8 +64,43 @@ def audit_sequence_file_set_inconsistent_run_cardinality(value, system):
     )
 
 
+def audit_sequence_file_set_duplicate_sequence_file(value, system):
+    '''
+    [
+        {
+            "audit_description": "Each read, index and CRAM slot of a sequence file set is expected to link a different sequence file.",
+            "audit_category": "duplicate sequence file",
+            "audit_level": "ERROR"
+        }
+    ]
+    '''
+    slots_by_file = {}
+    for slot in ILLUMINA_SLOTS + CRAM_SLOTS:
+        if value.get(slot):
+            slots_by_file.setdefault(value[slot], []).append(slot)
+    duplicated = [(file_id, slots) for file_id, slots in slots_by_file.items() if len(slots) > 1]
+    if not duplicated:
+        return
+    audit_message = get_audit_message(audit_sequence_file_set_duplicate_sequence_file)
+    object_type = space_in_words(value['@type'][0]).capitalize()
+    set_id = value['@id']
+    for file_id, slots in duplicated:
+        named_slots = [f'`{slot}`' for slot in slots]
+        slot_list = f'{", ".join(named_slots[:-1])} and {named_slots[-1]}'
+        detail = (
+            f'{object_type} {audit_link(path_to_text(set_id), set_id)} '
+            f'links sequence file {audit_link(path_to_text(file_id), file_id)} in {slot_list}.'
+        )
+        yield AuditFailure(
+            audit_message.get('audit_category', ''),
+            f'{detail} {audit_message.get("audit_description", "")}',
+            level=audit_message.get('audit_level', ''),
+        )
+
+
 function_dispatcher_sequence_file_set_object = {
     'audit_sequence_file_set_inconsistent_run_cardinality': audit_sequence_file_set_inconsistent_run_cardinality,
+    'audit_sequence_file_set_duplicate_sequence_file': audit_sequence_file_set_duplicate_sequence_file,
 }
 
 
