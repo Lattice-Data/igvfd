@@ -1,3 +1,4 @@
+from pyramid.traversal import traverse
 from snovault import (
     AuditFailure,
     audit_checker,
@@ -72,11 +73,29 @@ def audit_matrix_file_missing_md5sum(value, system):
     )
 
 
+def sequence_file_set_paths(request, file_id):
+    '''Paths of the SequenceFileSets that link file_id in any slot.
+
+    Reads the reverse links directly, because rendering the file at @@object would
+    compute every calculated property, including sra_file_names, which embeds the
+    set and its mates.
+    '''
+    context = traverse(request.root, file_id)['context']
+    paths = set()
+    for rev_key, (rev_type, _) in getattr(context, 'rev', {}).items():
+        if rev_type == 'SequenceFileSet':
+            paths.update(
+                request.resource_path(request.root.get_by_uuid(set_uuid))
+                for set_uuid in context.get_rev_links(rev_key)
+            )
+    return paths
+
+
 def audit_matrix_file_derived_from_incomplete_sequence_file_set(value, system):
     '''
     [
         {
-            "audit_description": "Matrix files derived from files in a sequence file set are expected to be derived from every file in that set, including index reads.",
+            "audit_description": "Matrix files derived from files in a sequence file set are expected to be derived from every read and index file in that set, and from at least one of its CRAM files.",
             "audit_category": "incomplete derived from",
             "audit_level": "ERROR"
         }
@@ -88,25 +107,34 @@ def audit_matrix_file_derived_from_incomplete_sequence_file_set(value, system):
     request = system['request']
     set_ids = set()
     for file_id in derived_from:
-        set_ids.update(request.embed(file_id, '@@object').get('sequence_file_sets', []))
+        set_ids.update(sequence_file_set_paths(request, file_id))
     audit_message = get_audit_message(audit_matrix_file_derived_from_incomplete_sequence_file_set)
     object_type = space_in_words(value['@type'][0]).capitalize()
     obj_id = value['@id']
     for set_id in sorted(set_ids):
+        # skip_calculated omits @id, which is why set_id comes from the resource path.
         file_set = request.embed(set_id, '@@object?skip_calculated=true')
         if file_set.get('status') == 'deleted':
             continue
-        missing = sorted({
+        problems = []
+        missing_reads = sorted({
             file_set[slot]
-            for slot in ILLUMINA_SLOTS + CRAM_SLOTS
+            for slot in ILLUMINA_SLOTS
             if file_set.get(slot) and file_set[slot] not in derived_from
         })
-        if not missing:
+        if missing_reads:
+            problems.append(f'is missing {join_obj_paths(missing_reads)}')
+        # A matrix is built from the trimmed CRAM (usually) or the untrimmed one
+        # (rarely), never from both, so any one CRAM in the set is enough.
+        crams = sorted({file_set[slot] for slot in CRAM_SLOTS if file_set.get(slot)})
+        if crams and derived_from.isdisjoint(crams):
+            problems.append(f'is missing one of {join_obj_paths(crams)}')
+        if not problems:
             continue
         detail = (
             f'{object_type} {audit_link(path_to_text(obj_id), obj_id)} '
             f'is derived from files in sequence file set {audit_link(path_to_text(set_id), set_id)} '
-            f'but `derived_from` is missing {join_obj_paths(missing)}.'
+            f'but `derived_from` {" and ".join(problems)}.'
         )
         yield AuditFailure(
             audit_message.get('audit_category', ''),
