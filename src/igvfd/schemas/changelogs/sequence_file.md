@@ -2,6 +2,7 @@
 
 ### Minor changes since schema version 5
 
+* Make the inherited `s3_uri` immutable with `requestMethod: POST`: it is set when the file is created, and a PATCH or PUT that changes it, or adds it to a file that has none, is rejected. Resending the stored value is still accepted.
 * Add calculated property `sra_file_names`: the names under which the file's reads are submitted to SRA, chunked as `lattice-tools` `fastq_chunker` does once a file of its sequence file set reaches 100 GB.
 * Anchor the inherited `crc64nvme_base64` pattern at the true end of input with `(?![\s\S])` rather than `$`, so a value with a trailing newline is rejected.
 

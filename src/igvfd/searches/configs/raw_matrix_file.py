@@ -78,6 +78,9 @@ def raw_matrix_file():
             's3_uri': {
                 'title': 'S3 URI'
             },
+            'geo_file_name': {
+                'title': 'GEO File Name'
+            },
             'no_file_available': {
                 'title': 'No File Available'
             },

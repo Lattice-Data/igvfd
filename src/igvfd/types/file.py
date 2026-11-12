@@ -6,6 +6,7 @@ from snovault import (
     load_schema,
 )
 from snovault.util import Path
+from igvfd.geo_file_names import geo_name_from_s3_uri
 from igvfd.sra_file_names import (
     READ_SLOTS,
     set_file_names,
@@ -223,6 +224,22 @@ class RawMatrixFile(File):
     def matrix_file_sets(self, request):
         uuids = self.get_rev_links('matrix_file_sets')
         return reverse_link_paths(request, sorted(uuids))
+
+    @calculated_property(
+        schema={
+            'title': 'GEO File Name',
+            'type': 'string',
+            'description': 'Name under which this file is submitted to GEO. Cell Ranger gives every '
+                           'run the same file names, so the GroupID and sample folders of the '
+                           'file\'s S3 path are joined to its file name. Absent unless the path has '
+                           'a processed/cellranger folder.',
+            'notSubmittable': True,
+        }
+    )
+    def geo_file_name(self, s3_uri=None):
+        if s3_uri is None:
+            return None
+        return geo_name_from_s3_uri(s3_uri)
 
 
 @collection(

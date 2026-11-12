@@ -2,6 +2,8 @@
 
 ### Minor changes since schema version 6
 
+* Add calculated property `geo_file_name`: the name under which the file is submitted to GEO, built from the GroupID and sample folders of a Cell Ranger output path (`processed/cellranger`) and the file name, joined with `_`. Absent for any other path.
+* Make the inherited `s3_uri` immutable with `requestMethod: POST`: it is set when the file is created, and a PATCH or PUT that changes it, or adds it to a file that has none, is rejected. Resending the stored value is still accepted.
 * Add optional `md5sum`, a lowercase hex MD5 of the file content, not allowed when `no_file_available` is true. This is not the `md5sum` removed in schema version 3: it is optional, and missing values are flagged by an ERROR audit rather than rejected.
 * Anchor the inherited `crc64nvme_base64` pattern at the true end of input with `(?![\s\S])` rather than `$`, so a value with a trailing newline is rejected.
 

@@ -82,8 +82,10 @@
         "s3_uri": {
             "title": "S3 URI",
             "description": "The S3 URI where the file is stored.",
+            "comment": "Set when the file is created; it cannot be changed or added afterwards, because the names under which the file is submitted to SRA and GEO are derived from it.",
             "type": "string",
             "pattern": "^s3://.+",
+            "requestMethod": "POST",
             "submissionExample": {
                 "appscript": "s3://igvfd-bucket/path/to/file.fastq.gz"
             }
