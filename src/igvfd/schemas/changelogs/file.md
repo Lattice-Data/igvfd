@@ -6,6 +6,7 @@
 
 ### Minor changes since schema version 2
 
+* Make `s3_uri` immutable with `requestMethod: POST`: it is set when the file is created, and a PATCH or PUT that changes it, or adds it to a file that has none, is rejected. Resending the stored value is still accepted.
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
 * Update `aliases` regex to allow only single spaces between words.
 * Update `aliases` regex to accept `shyam-prabhakar` prefix.

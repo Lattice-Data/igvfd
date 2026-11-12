@@ -1521,3 +1521,142 @@ def test_matrix_file_md5sum_patch(testapp, raw_matrix_file, processed_matrix_fil
     for matrix_file in (raw_matrix_file, processed_matrix_file):
         res = testapp.patch_json(matrix_file['@id'], {'md5sum': MD5SUM_VALID}, status=200)
         assert res.json['@graph'][0]['md5sum'] == MD5SUM_VALID
+
+
+CELLRANGER_S3_URI = (
+    's3://lattice-test-data/test-project/AN00000001/GROUP01/processed/cellranger/Run_2026_01_01/'
+    'outs/per_sample_outs/SAMPLE01/count/sample_filtered_feature_bc_matrix.h5'
+)
+ALL_FILE_TYPES = ['sequence_file', 'tabular_file', 'raw_matrix_file', 'processed_matrix_file']
+
+
+def _raw_matrix_file_body(other_lab, tissue, **overrides):
+    item = {
+        'lab': other_lab['@id'],
+        'file_format': 'h5',
+        'status': 'current',
+        **overrides,
+    }
+    return _file_post_body('raw_matrix_file', item, tissue=tissue)
+
+
+def test_raw_matrix_file_geo_file_name_from_cellranger_path(testapp, other_lab, tissue):
+    body = _raw_matrix_file_body(other_lab, tissue, s3_uri=CELLRANGER_S3_URI)
+    posted = testapp.post_json('/raw_matrix_file', body, status=201).json['@graph'][0]
+    res = testapp.get(posted['@id'])
+    assert res.json['geo_file_name'] == 'GROUP01_SAMPLE01_sample_filtered_feature_bc_matrix.h5'
+
+
+def test_raw_matrix_file_geo_file_name_absent_outside_cellranger_layout(testapp, raw_matrix_file):
+    res = testapp.get(raw_matrix_file['@id'])
+    assert 'geo_file_name' not in res.json
+
+
+def test_raw_matrix_file_geo_file_name_absent_without_s3_uri(testapp, other_lab, tissue):
+    body = _raw_matrix_file_body(other_lab, tissue, no_file_available=True)
+    posted = testapp.post_json('/raw_matrix_file', body, status=201).json['@graph'][0]
+    res = testapp.get(posted['@id'])
+    assert 'geo_file_name' not in res.json
+
+
+def test_raw_matrix_file_geo_file_name_not_submittable(testapp, other_lab, tissue):
+    body = _raw_matrix_file_body(other_lab, tissue, s3_uri=CELLRANGER_S3_URI, geo_file_name='mine.h5')
+    testapp.post_json('/raw_matrix_file', body, status=422)
+
+
+def _post_file_with_s3_uri(testapp, other_lab, tissue, file_type):
+    config = FILE_TYPE_CONFIGS[file_type]
+    file_format = config['default_format']
+    item = {
+        'lab': other_lab['@id'],
+        'file_format': file_format,
+        'status': 'current',
+        's3_uri': f's3://lattice-test-data/{config["s3_path"]}/immutable.{file_format}',
+    }
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
+    body = _file_post_body(file_type, item, tissue=raw_tissue)
+    posted = testapp.post_json(config['endpoint'], body, status=201).json['@graph'][0]
+    return body, posted
+
+
+def _assert_s3_uri_locked(res):
+    assert any(
+        error.get('name') == ['s3_uri'] and 'request method' in error.get('description', '')
+        for error in res.json['errors']
+    ), res.json['errors']
+
+
+@pytest.mark.parametrize('file_type', ALL_FILE_TYPES)
+def test_file_s3_uri_patch_with_same_value_accepted(testapp, other_lab, tissue, file_type):
+    body, posted = _post_file_with_s3_uri(testapp, other_lab, tissue, file_type)
+    res = testapp.patch_json(posted['@id'], {'s3_uri': body['s3_uri']}, status=200)
+    assert res.json['@graph'][0]['s3_uri'] == body['s3_uri']
+
+
+@pytest.mark.parametrize('file_type', ALL_FILE_TYPES)
+def test_file_s3_uri_patch_with_new_value_rejected(testapp, other_lab, tissue, file_type):
+    # testapp runs as an admin: the lock holds for admins too, and submitters
+    # cannot edit a current file at all
+    body, posted = _post_file_with_s3_uri(testapp, other_lab, tissue, file_type)
+    res = testapp.patch_json(posted['@id'], {'s3_uri': body['s3_uri'] + '.moved'}, status=422)
+    _assert_s3_uri_locked(res)
+    assert testapp.get(posted['@id']).json['s3_uri'] == body['s3_uri']
+
+
+@pytest.mark.parametrize('file_type', ALL_FILE_TYPES)
+def test_file_s3_uri_put_keeps_or_rejects(testapp, other_lab, tissue, file_type):
+    body, posted = _post_file_with_s3_uri(testapp, other_lab, tissue, file_type)
+    testapp.put_json(posted['@id'], body, status=200)
+    res = testapp.put_json(posted['@id'], {**body, 's3_uri': body['s3_uri'] + '.moved'}, status=422)
+    _assert_s3_uri_locked(res)
+
+
+@pytest.mark.parametrize('file_type', ALL_FILE_TYPES)
+def test_file_s3_uri_cannot_be_added_after_creation(testapp, other_lab, tissue, file_type):
+    config = FILE_TYPE_CONFIGS[file_type]
+    file_format = config['default_format']
+    raw_tissue = tissue if file_type == 'raw_matrix_file' else None
+    body = _file_post_body(
+        file_type,
+        {
+            'lab': other_lab['@id'],
+            'file_format': file_format,
+            'status': 'current',
+            'no_file_available': True,
+        },
+        tissue=raw_tissue,
+    )
+    posted = testapp.post_json(config['endpoint'], body, status=201).json['@graph'][0]
+    patch = {
+        'no_file_available': False,
+        's3_uri': f's3://lattice-test-data/{config["s3_path"]}/added-later.{file_format}',
+        'crc64nvme_base64': CRC64NVME_BASE64_VALID,
+    }
+    if file_type == 'sequence_file':
+        patch['read_count'] = SEQUENCE_FILE_READ_COUNT
+    res = testapp.patch_json(posted['@id'], patch, status=422)
+    _assert_s3_uri_locked(res)
+
+
+@pytest.mark.parametrize('file_type', ALL_FILE_TYPES)
+def test_file_s3_uri_put_without_it_rejected_while_file_available(testapp, other_lab, tissue, file_type):
+    body, posted = _post_file_with_s3_uri(testapp, other_lab, tissue, file_type)
+    without = {key: value for key, value in body.items() if key != 's3_uri'}
+    testapp.put_json(posted['@id'], without, status=422)
+    assert testapp.get(posted['@id']).json['s3_uri'] == body['s3_uri']
+
+
+@pytest.mark.parametrize('file_type', ALL_FILE_TYPES)
+def test_file_s3_uri_dropped_only_by_declaring_no_file_available(testapp, other_lab, tissue, file_type):
+    # requestMethod only checks values that are sent, so a PUT that declares the file
+    # unavailable can still drop s3_uri; it cannot be set again afterwards
+    body, posted = _post_file_with_s3_uri(testapp, other_lab, tissue, file_type)
+    dropped = {
+        key: value for key, value in body.items()
+        if key not in ('s3_uri', 'crc64nvme_base64', 'read_count')
+    }
+    dropped['no_file_available'] = True
+    testapp.put_json(posted['@id'], dropped, status=200)
+    assert 's3_uri' not in testapp.get(posted['@id']).json
+    res = testapp.put_json(posted['@id'], body, status=422)
+    _assert_s3_uri_locked(res)

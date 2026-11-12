@@ -1,6 +1,6 @@
 {
-    "hash": "88123a1e3caca5cffc1209f56b7f0879",
-    "index_name": "matrix_file_set_88123a1e",
+    "hash": "e0e1b1673249d0b23bd0c0d4590fd866",
+    "index_name": "matrix_file_set_e0e1b167",
     "item_type": "matrix_file_set",
     "mapping": {
         "dynamic_templates": [
@@ -363,6 +363,9 @@
                                 "type": "long"
                             },
                             "genome_assembly": {
+                                "type": "keyword"
+                            },
+                            "geo_file_name": {
                                 "type": "keyword"
                             },
                             "is_multiplexed": {

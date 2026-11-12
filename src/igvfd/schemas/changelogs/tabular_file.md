@@ -2,6 +2,7 @@
 
 ### Minor changes since schema version 6
 
+* Make the inherited `s3_uri` immutable with `requestMethod: POST`: it is set when the file is created, and a PATCH or PUT that changes it, or adds it to a file that has none, is rejected. Resending the stored value is still accepted.
 * Anchor the inherited `crc64nvme_base64` pattern at the true end of input with `(?![\s\S])` rather than `$`, so a value with a trailing newline is rejected.
 
 ### Schema version 6

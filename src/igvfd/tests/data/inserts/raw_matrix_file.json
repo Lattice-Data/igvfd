@@ -6,7 +6,7 @@
         "software_version": "7.1.0",
         "genome_assembly": "GRCh38",
         "is_multiplexed": false,
-        "s3_uri": "s3://lattice-test-data/matrix/raw-001.h5",
+        "s3_uri": "s3://lattice-test-data/test-project/AN00000001/GROUP01/processed/cellranger/Run_2026_01_01/outs/per_sample_outs/SAMPLE01/count/sample_filtered_feature_bc_matrix.h5",
         "crc64nvme_base64": "AAAAAAAAAAA",
         "md5sum": "3f2b8c1d9e4a7b6c5d0e1f2a3b4c5d6e",
         "feature_keys": [

@@ -1,6 +1,6 @@
 {
-    "hash": "2e5ba95121d82af06d8bd5fc7aeca57f",
-    "index_name": "raw_matrix_file_2e5ba951",
+    "hash": "84ded8fb232c5769905be18f2be062cd",
+    "index_name": "raw_matrix_file_84ded8fb",
     "item_type": "raw_matrix_file",
     "mapping": {
         "dynamic_templates": [
@@ -189,6 +189,9 @@
                     },
                     "genome_assembly": {
                         "copy_to": "_fuzzy",
+                        "type": "keyword"
+                    },
+                    "geo_file_name": {
                         "type": "keyword"
                     },
                     "is_multiplexed": {

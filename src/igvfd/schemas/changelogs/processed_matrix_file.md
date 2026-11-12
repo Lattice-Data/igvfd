@@ -2,6 +2,7 @@
 
 ### Minor changes since schema version 5
 
+* Make the inherited `s3_uri` immutable with `requestMethod: POST`: it is set when the file is created, and a PATCH or PUT that changes it, or adds it to a file that has none, is rejected. Resending the stored value is still accepted.
 * Add optional `md5sum`, a lowercase hex MD5 of the file content, not allowed when `no_file_available` is true. This is not the `md5sum` removed in schema version 3: it is optional, and missing values are flagged by an ERROR audit rather than rejected.
 * Anchor the inherited `crc64nvme_base64` pattern at the true end of input with `(?![\s\S])` rather than `$`, so a value with a trailing newline is rejected.
 
