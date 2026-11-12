@@ -1,6 +1,9 @@
 import pytest
 
+from igvfd.audit import matrix_file as matrix_file_audit
+from igvfd.audit.formatter import path_to_text
 from igvfd.audit.matrix_file import (
+    audit_matrix_file_derived_from_incomplete_sequence_file_set,
     audit_matrix_file_missing_md5sum,
     audit_raw_matrix_file_software_without_version,
 )
@@ -171,3 +174,289 @@ def test_sequence_file_no_md5sum_audit(indexer_testapp, sequence_file):
         error['category'] == 'missing md5sum'
         for error in errors_list
     )
+
+
+INCOMPLETE_DERIVED_FROM = 'incomplete derived from'
+MATRIX_ID = '/raw-matrix-files/IGVFDTEST0001/'
+SET_A = '/sequence-file-sets/b2a1f0d2-0000-4000-8000-00000000000a/'
+SET_B = '/sequence-file-sets/b2a1f0d2-0000-4000-8000-00000000000b/'
+R1 = '/sequence-files/IGVFDTEST0R1/'
+R2 = '/sequence-files/IGVFDTEST0R2/'
+R3 = '/sequence-files/IGVFDTEST0R3/'
+I1 = '/sequence-files/IGVFDTEST0I1/'
+I2 = '/sequence-files/IGVFDTEST0I2/'
+B1 = '/sequence-files/IGVFDTEST0B1/'
+B2 = '/sequence-files/IGVFDTEST0B2/'
+UNTRIMMED = '/sequence-files/IGVFDTEST0UC/'
+TRIMMED = '/sequence-files/IGVFDTEST0TC/'
+OTHER = '/raw-matrix-files/IGVFDTEST0002/'
+
+
+class _StubRequest:
+    '''Serves each set at its path, without @id, as the skip_calculated frame does.'''
+
+    def __init__(self, sets):
+        self.sets = {
+            file_set['@id']: {key: val for key, val in file_set.items() if key != '@id'}
+            for file_set in sets
+        }
+
+    def embed(self, path, *args):
+        return self.sets[path.split('@@')[0]]
+
+
+def _run(monkeypatch, derived_from, *sets):
+    links = {}
+    for file_set in sets:
+        for slot, file_id in file_set.items():
+            if slot.startswith(('read', 'index')) or slot.endswith('_cram'):
+                links.setdefault(file_id, set()).add(file_set['@id'])
+    monkeypatch.setattr(
+        matrix_file_audit,
+        'sequence_file_set_paths',
+        lambda request, file_id: links.get(file_id, set()),
+    )
+    value = {'@type': ['RawMatrixFile'], '@id': MATRIX_ID}
+    if derived_from is not None:
+        value['derived_from'] = derived_from
+    system = {'request': _StubRequest(sets)}
+    return list(audit_matrix_file_derived_from_incomplete_sequence_file_set(value, system))
+
+
+def _set(set_id=SET_A, status='current', **slots):
+    return {'@id': set_id, 'status': status, **slots}
+
+
+ILLUMINA_SET = _set(read1=R1, read2=R2, index1=I1, index2=I2)
+
+
+def test_derived_from_complete_set_no_audit(monkeypatch):
+    assert _run(monkeypatch, [R1, R2, I1, I2], ILLUMINA_SET) == []
+
+
+def test_derived_from_missing_index_reads_audit(monkeypatch):
+    failures = _run(monkeypatch, [R1, R2], ILLUMINA_SET)
+    assert len(failures) == 1
+    assert failures[0].category == INCOMPLETE_DERIVED_FROM
+    assert failures[0].__json__()['level_name'] == 'ERROR'
+    missing = failures[0].detail.split('is missing')[1]
+    assert 'IGVFDTEST0I1' in missing
+    assert 'IGVFDTEST0I2' in missing
+    assert 'IGVFDTEST0R1' not in missing
+
+
+def test_derived_from_missing_read3_audit(monkeypatch):
+    triplet = _set(read1=R1, read2=R2, read3=R3)
+    failures = _run(monkeypatch, [R1, R2], triplet)
+    assert len(failures) == 1
+    assert 'IGVFDTEST0R3' in failures[0].detail.split('is missing')[1]
+
+
+def test_derived_from_absent_no_audit(monkeypatch):
+    assert _run(monkeypatch, None, ILLUMINA_SET) == []
+
+
+def test_derived_from_deleted_set_no_audit(monkeypatch):
+    deleted = _set(status='deleted', read1=R1, read2=R2)
+    assert _run(monkeypatch, [R1], deleted) == []
+
+
+def test_derived_from_file_outside_any_set_no_audit(monkeypatch):
+    assert _run(monkeypatch, [OTHER], ILLUMINA_SET) == []
+
+
+@pytest.mark.parametrize('derived_from', [[TRIMMED], [UNTRIMMED]])
+def test_derived_from_either_cram_no_audit(monkeypatch, derived_from):
+    ultima = _set(untrimmed_cram=UNTRIMMED, trimmed_cram=TRIMMED)
+    assert _run(monkeypatch, derived_from, ultima) == []
+
+
+@pytest.mark.parametrize('slot', ['untrimmed_cram', 'trimmed_cram'])
+def test_derived_from_only_cram_no_audit(monkeypatch, slot):
+    assert _run(monkeypatch, [TRIMMED], _set(**{slot: TRIMMED})) == []
+
+
+def test_derived_from_no_cram_of_cram_set_audit(monkeypatch):
+    # The set is reached through a read, so derived_from has none of its CRAMs.
+    mixed = _set(read1=R1, untrimmed_cram=UNTRIMMED, trimmed_cram=TRIMMED)
+    failures = _run(monkeypatch, [R1], mixed)
+    assert len(failures) == 1
+    assert 'is missing one of' in failures[0].detail
+    assert 'IGVFDTEST0UC' in failures[0].detail
+    assert 'IGVFDTEST0TC' in failures[0].detail
+
+
+def test_derived_from_two_sets_only_incomplete_one_audited(monkeypatch):
+    set_b = _set(set_id=SET_B, read1=B1, read2=B2)
+    failures = _run(monkeypatch, [R1, R2, I1, I2, B1], ILLUMINA_SET, set_b)
+    assert len(failures) == 1
+    assert path_to_text(SET_B) in failures[0].detail
+    assert path_to_text(SET_A) not in failures[0].detail
+    assert 'IGVFDTEST0B2' in failures[0].detail
+
+
+def test_derived_from_two_incomplete_sets_two_audits(monkeypatch):
+    set_b = _set(set_id=SET_B, read1=B1, read2=B2)
+    failures = _run(monkeypatch, [R1, B1], ILLUMINA_SET, set_b)
+    assert len(failures) == 2
+
+
+class _RecordingRequest:
+    root = object()
+
+    def __init__(self):
+        self.embedded = []
+
+    def embed(self, *elements):
+        self.embedded.append(elements)
+        return {}
+
+
+def test_sequence_file_set_paths_embeds_derived_file(monkeypatch):
+    # Pins the embed that records the derived file in the matrix's embedded_uuids.
+    # The index-level test below would still pass without it, because
+    # audit_item_linked_to_deleted embeds the same path.
+    class _FileWithoutSets:
+        rev = {}
+
+    monkeypatch.setattr(
+        matrix_file_audit,
+        'traverse',
+        lambda root, path: {'context': _FileWithoutSets()},
+    )
+    request = _RecordingRequest()
+    assert matrix_file_audit.sequence_file_set_paths(request, R1) == set()
+    assert request.embedded == [(R1, '@@object?skip_calculated=true')]
+
+
+def _incomplete_errors(res):
+    # A crashed audit reports nothing in its own category, which would pass as "no audit".
+    assert not any(
+        error['category'] == 'audit script error'
+        for error in _audit_errors(res)
+    )
+    return [
+        error for error in _audit_errors(res)
+        if error['category'] == INCOMPLETE_DERIVED_FROM
+    ]
+
+
+@pytest.mark.parametrize('fixture_name', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_derived_from_partial_set_audit(
+    testapp,
+    indexer_testapp,
+    fixture_name,
+    request,
+    sequence_file_set_illumina_paired_end,
+    sequence_file,
+    sequence_file_with_description,
+):
+    matrix_file = request.getfixturevalue(fixture_name)
+    testapp.patch_json(
+        matrix_file['@id'],
+        {'derived_from': [sequence_file['@id']]},
+        status=200,
+    )
+    res = indexer_testapp.get(matrix_file['@id'] + '@@index-data')
+    errors = _incomplete_errors(res)
+    assert len(errors) == 1
+    assert errors[0]['level_name'] == 'ERROR'
+    assert path_to_text(sequence_file_with_description['@id']) in errors[0]['detail']
+
+
+@pytest.mark.parametrize('fixture_name', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_derived_from_full_set_no_audit(
+    testapp,
+    indexer_testapp,
+    fixture_name,
+    request,
+    sequence_file_set_illumina_paired_end,
+    sequence_file,
+    sequence_file_with_description,
+):
+    matrix_file = request.getfixturevalue(fixture_name)
+    testapp.patch_json(
+        matrix_file['@id'],
+        {'derived_from': [sequence_file['@id'], sequence_file_with_description['@id']]},
+        status=200,
+    )
+    res = indexer_testapp.get(matrix_file['@id'] + '@@index-data')
+    assert _incomplete_errors(res) == []
+
+
+def test_matrix_file_derived_from_audit_fires_on_added_index_read(
+    testapp,
+    indexer_testapp,
+    raw_matrix_file,
+    sequence_file_set_illumina_paired_end,
+    sequence_file,
+    sequence_file_with_description,
+    sequence_file_with_aliases,
+):
+    testapp.patch_json(
+        raw_matrix_file['@id'],
+        {'derived_from': [sequence_file['@id'], sequence_file_with_description['@id']]},
+        status=200,
+    )
+    testapp.patch_json(
+        sequence_file_set_illumina_paired_end['@id'],
+        {
+            'index1': sequence_file_with_aliases['@id'],
+            'run_cardinality': 'paired-end-with-index',
+        },
+        status=200,
+    )
+    res = indexer_testapp.get(raw_matrix_file['@id'] + '@@index-data')
+    errors = _incomplete_errors(res)
+    assert len(errors) == 1
+    assert path_to_text(sequence_file_with_aliases['@id']) in errors[0]['detail']
+
+
+def test_matrix_file_derived_from_trimmed_cram_only_no_audit(
+    testapp,
+    indexer_testapp,
+    raw_matrix_file,
+    sequence_file_set_ultima,
+    sequence_file_cram,
+    other_lab,
+):
+    trimmed = testapp.post_json('/sequence_file', {
+        'lab': other_lab['@id'],
+        'file_format': 'cram',
+        's3_uri': 's3://lattice-test-data/sequence/fixture-cram-trimmed-001.cram',
+        'crc64nvme_base64': 'AAAAAAAAAAA',
+        'read_count': 8000000,
+        'status': 'current',
+    }, status=201).json['@graph'][0]
+    testapp.patch_json(
+        sequence_file_set_ultima['@id'],
+        {'trimmed_cram': trimmed['@id']},
+        status=200,
+    )
+    testapp.patch_json(
+        raw_matrix_file['@id'],
+        {'derived_from': [trimmed['@id']]},
+        status=200,
+    )
+    res = indexer_testapp.get(raw_matrix_file['@id'] + '@@index-data')
+    assert _incomplete_errors(res) == []
+
+
+@pytest.mark.parametrize('fixture_name', ['raw_matrix_file', 'processed_matrix_file'])
+def test_matrix_file_index_depends_on_derived_from_files(
+    testapp,
+    indexer_testapp,
+    fixture_name,
+    request,
+    sequence_file_with_aliases,
+):
+    # A set created later that links this file invalidates the file, and the
+    # matrix is re-audited only if the file is in its embedded_uuids.
+    matrix_file = request.getfixturevalue(fixture_name)
+    testapp.patch_json(
+        matrix_file['@id'],
+        {'derived_from': [sequence_file_with_aliases['@id']]},
+        status=200,
+    )
+    res = indexer_testapp.get(matrix_file['@id'] + '@@index-data')
+    assert sequence_file_with_aliases['uuid'] in res.json['embedded_uuids']
