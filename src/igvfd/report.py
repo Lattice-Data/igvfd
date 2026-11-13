@@ -188,7 +188,7 @@ def list_visible_columns_for_schemas(request, schema, search_configs):
                 limited_columns[field] = {'title': field}
                 if field in schema['properties']:
                     limited_columns[field] = {
-                        'title': schema['properties'][field]['title']
+                        'title': schema['properties'][field].get('title', field)
                     }
         columns = limited_columns
     return columns
@@ -315,7 +315,7 @@ def get_result_columns(request, facets, report_response_columns):
                     schema = request.registry[TYPES][type_str].schema
                     if field in schema['properties']:
                         limited_columns[field] = {
-                            'title': schema['properties'][field]['title']
+                            'title': schema['properties'][field].get('title', field)
                         }
                         break
         columns = limited_columns

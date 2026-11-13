@@ -353,3 +353,23 @@ def test_search_views_search_quick(workbook, testapp):
         '/search-quick/?type=User&lab=/labs/teri-klein/'
     )
     assert len(r.json['@graph']) >= 8
+
+
+@pytest.mark.parametrize('item_type', ['DropletBasedLibrary', 'PlateBasedLibrary'])
+def test_search_views_multireport_library_dbxrefs_column_title(workbook, testapp, item_type):
+    r = testapp.get(
+        '/multireport/?type={}&field=%40id&field=dbxrefs'.format(item_type)
+    )
+    assert r.json['result_columns']['dbxrefs'] == {'title': 'External resources'}
+
+
+@pytest.mark.parametrize('url', [
+    '/report.tsv?type=DropletBasedLibrary&field=%40id&field=dbxrefs',
+    '/report.tsv?type=PlateBasedLibrary&field=%40id&field=dbxrefs',
+    '/multireport.tsv?type=DropletBasedLibrary&field=%40id&field=dbxrefs',
+    '/multireport.tsv?type=PlateBasedLibrary&field=%40id&field=dbxrefs',
+])
+def test_search_views_report_tsv_library_dbxrefs_column_title(workbook, testapp, url):
+    r = testapp.get(url)
+    header = r.body.decode('utf-8').split('\r\n')[1].split('\t')
+    assert header == ['ID', 'External resources']

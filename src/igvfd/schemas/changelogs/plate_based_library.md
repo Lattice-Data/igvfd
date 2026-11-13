@@ -1,5 +1,9 @@
 # Plate Based Library Changelog
 
+### Minor changes since schema version 8
+
+* Add *title* and *description* to inherited *dbxrefs*.
+
 ### Schema version 8
 
 * Rename *multiplexing_method* to *multiplexing_methods* (inherited from abstract Library schema).

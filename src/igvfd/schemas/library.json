@@ -43,6 +43,8 @@
             "default": "1"
         },
         "dbxrefs": {
+            "title": "External resources",
+            "description": "Identifiers from external resources that may have 1-to-1 or 1-to-many relationships with Lattice objects",
             "type": "array",
             "minItems": 1,
             "uniqueItems": true,
