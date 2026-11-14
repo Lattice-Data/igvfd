@@ -1,6 +1,6 @@
 {
-    "hash": "984b722918cab126b5b3d6cba51185b1",
-    "index_name": "organoid_984b7229",
+    "hash": "d2394af7955f93e2060046dc48a77cf9",
+    "index_name": "organoid_d2394af7",
     "item_type": "organoid",
     "mapping": {
         "dynamic_templates": [
@@ -263,7 +263,7 @@
                             "description": {
                                 "type": "text"
                             },
-                            "ethnicity": {
+                            "ethnicities": {
                                 "type": "keyword"
                             },
                             "lab": {

@@ -1,6 +1,6 @@
 {
-    "hash": "16ebab391d10185d23d2fe4cc06c239e",
-    "index_name": "tissue_16ebab39",
+    "hash": "9e0709c848f3cbae47b191bab49c2aaa",
+    "index_name": "tissue_9e0709c8",
     "item_type": "tissue",
     "mapping": {
         "dynamic_templates": [
@@ -266,7 +266,7 @@
                             "description": {
                                 "type": "text"
                             },
-                            "ethnicity": {
+                            "ethnicities": {
                                 "type": "keyword"
                             },
                             "lab": {

@@ -1,6 +1,6 @@
 {
-    "hash": "2f0dd1f4aca68fa696f1dfbd833357df",
-    "index_name": "cell_line_2f0dd1f4",
+    "hash": "d44bea251b0f9499e2aef5cf61e7bdca",
+    "index_name": "cell_line_d44bea25",
     "item_type": "cell_line",
     "mapping": {
         "dynamic_templates": [
@@ -263,7 +263,7 @@
                             "description": {
                                 "type": "text"
                             },
-                            "ethnicity": {
+                            "ethnicities": {
                                 "type": "keyword"
                             },
                             "lab": {
@@ -387,7 +387,7 @@
                             "description": {
                                 "type": "text"
                             },
-                            "ethnicity": {
+                            "ethnicities": {
                                 "type": "keyword"
                             },
                             "lab": {
