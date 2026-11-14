@@ -25,14 +25,32 @@ def test_biosample_missing_developmental_stages_no_audit():
     assert len(failures) == 0
 
 
-def test_biosample_missing_developmental_stages_audit():
+@pytest.mark.parametrize(
+    'biosample_type, path, expected_level',
+    [
+        ('Tissue', '/tissues/IGVFDTEST0001/', 'WARNING'),
+        ('Organoid', '/organoids/IGVFDTEST0001/', 'ERROR'),
+        ('PrimaryCellCulture', '/primary-cell-cultures/IGVFDTEST0001/', 'ERROR'),
+    ],
+)
+def test_biosample_missing_developmental_stages_audit(biosample_type, path, expected_level):
     value = {
-        '@type': ['Tissue'],
-        '@id': '/tissues/IGVFDTEST0001/',
+        '@type': [biosample_type, 'Biosample', 'Item'],
+        '@id': path,
     }
     failures = list(audit_biosample_missing_developmental_stages(value, {}))
     assert len(failures) == 1
     assert failures[0].category == 'missing developmental stage'
+    assert failures[0].__json__()['level_name'] == expected_level
+
+
+def test_cell_line_missing_developmental_stages_no_audit():
+    value = {
+        '@type': ['CellLine', 'Biosample', 'Item'],
+        '@id': '/cell-lines/IGVFDTEST0001/',
+    }
+    failures = list(audit_biosample_missing_developmental_stages(value, {}))
+    assert len(failures) == 0
 
 
 def test_biosample_missing_sample_name_no_audit():
@@ -119,12 +137,39 @@ def test_biosample_invalid_developmental_stages_ontology_zfa_audit():
     assert failures[0].category == 'invalid developmental stage'
 
 
-@pytest.mark.parametrize('biosample_type', ['tissue', 'organoid'])
-def test_biosample_fixture_missing_developmental_stages_audit(indexer_testapp, biosample_type, request):
+@pytest.mark.parametrize(
+    'biosample_type, expected_level, other_level',
+    [
+        ('tissue', 'WARNING', 'ERROR'),
+        ('organoid', 'ERROR', 'WARNING'),
+        ('primary_cell_culture', 'ERROR', 'WARNING'),
+    ],
+)
+def test_biosample_fixture_missing_developmental_stages_audit(
+    indexer_testapp,
+    biosample_type,
+    expected_level,
+    other_level,
+    request,
+):
     fixture = request.getfixturevalue(biosample_type)
     res = indexer_testapp.get(fixture['@id'] + '@@index-data')
-    errors_list = _audit_errors(res)
+    audit = res.json['audit']
     assert any(
+        error['category'] == 'missing developmental stage'
+        for error in audit.get(expected_level, [])
+    )
+    assert not any(
+        error['category'] == 'missing developmental stage'
+        for error in audit.get(other_level, [])
+    )
+
+
+def test_cell_line_fixture_missing_developmental_stages_audit_clean(indexer_testapp, cell_line):
+    assert not cell_line.get('developmental_stages')
+    res = indexer_testapp.get(cell_line['@id'] + '@@index-data')
+    errors_list = _audit_errors(res)
+    assert not any(
         error['category'] == 'missing developmental stage'
         for error in errors_list
     )
