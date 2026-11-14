@@ -90,3 +90,10 @@ def human_donor_3_4(value, system):
 @upgrade_step('non_human_donor', '3', '4')
 def non_human_donor_3_4(value, system):
     link_taxa_to_controlled_term(value, system)
+
+
+@upgrade_step('human_donor', '4', '5')
+def human_donor_4_5(value, system):
+    # A donor can report more than one ethnicity, so the single link becomes a list.
+    if 'ethnicity' in value:
+        value['ethnicities'] = [value.pop('ethnicity')]
