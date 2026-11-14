@@ -24,16 +24,26 @@ def audit_biosample_missing_developmental_stages(value, system):
     '''
     [
         {
-            "audit_description": "Biosamples are expected to specify a developmental stage.",
+            "audit_description": "Organoids and primary cell cultures are expected to specify a developmental stage.",
             "audit_category": "missing developmental stage",
             "audit_level": "ERROR"
+        },
+        {
+            "audit_description": "Tissues are expected to specify a developmental stage. A general developmental stage can usually be found for primary tissue.",
+            "audit_category": "missing developmental stage",
+            "audit_level": "WARNING"
         }
     ]
     '''
     if value.get('developmental_stages'):
         return
-    audit_message = get_audit_message(audit_biosample_missing_developmental_stages)
-    object_type = space_in_words(value['@type'][0]).capitalize()
+    biosample_type = value['@type'][0]
+    # CELLxGENE sets development_stage_ontology_term_id to "na" for cell lines.
+    if biosample_type == 'CellLine':
+        return
+    message_index = 1 if biosample_type == 'Tissue' else 0
+    audit_message = get_audit_message(audit_biosample_missing_developmental_stages, index=message_index)
+    object_type = space_in_words(biosample_type).capitalize()
     biosample_id = value['@id']
     detail = (
         f'{object_type} {audit_link(path_to_text(biosample_id), biosample_id)} '
