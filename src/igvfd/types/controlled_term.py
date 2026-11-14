@@ -12,6 +12,20 @@ from .base import (
 )
 
 
+ANTIBODY_TERM_PREFIX = 'anti-'
+
+
+def split_antibody_prefix(term_id):
+    """Split a term_id into its antibody prefix and the term the ontology holds.
+
+    UniProt terms can be "anti-{term_id}" for antibodies; the ontology only has the bare term.
+    Returns ('anti-', bare_term_id) for those and ('', term_id) for everything else.
+    """
+    if term_id.startswith(ANTIBODY_TERM_PREFIX):
+        return ANTIBODY_TERM_PREFIX, term_id[len(ANTIBODY_TERM_PREFIX):]
+    return '', term_id
+
+
 @collection(
     name='controlled_terms',
     unique_key='controlled_term:term_id',
@@ -50,9 +64,7 @@ class ControlledTerm(Item):
         }
     )
     def term_name(self, registry, term_id):
-        # uniprot terms can be "anti-{term_id}" for antibodies
-        term_prefix = 'anti-' if term_id.startswith('anti-') else ''
-        term_to_lookup = term_id[len(term_prefix):]
+        term_prefix, term_to_lookup = split_antibody_prefix(term_id)
         name = self._get_ontology_string(registry, term_to_lookup, 'label')
         if not name:
             return ''
@@ -68,9 +80,7 @@ class ControlledTerm(Item):
         }
     )
     def definition(self, registry, term_id):
-        # uniprot terms can be "anti-{term_id}" for antibodies
-        term_prefix = 'anti-' if term_id.startswith('anti-') else ''
-        term_to_lookup = term_id[len(term_prefix):]
+        term_prefix, term_to_lookup = split_antibody_prefix(term_id)
         description = self._get_ontology_string(registry, term_to_lookup, 'description')
         return term_prefix + description if description else ''
 

@@ -3,6 +3,7 @@ from snovault import (
     audit_checker,
 )
 
+from ..types.controlled_term import split_antibody_prefix
 from .formatter import (
     audit_link,
     get_audit_message,
@@ -12,8 +13,7 @@ from .formatter import (
 
 
 def _ontology_entry(registry, term_id):
-    # uniprot terms can be "anti-{term_id}" for antibodies; the ontology holds the bare term.
-    lookup = term_id[len('anti-'):] if term_id.startswith('anti-') else term_id
+    _, lookup = split_antibody_prefix(term_id)
     ontology = registry['ontology']
     if lookup not in ontology:
         return {}

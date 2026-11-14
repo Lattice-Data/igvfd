@@ -267,3 +267,13 @@ def test_controlled_term_dbxrefs_patch(testapp):
     assert patched.json['@graph'][0]['dbxrefs'] == ['CAS:50-00-0']
     testapp.patch_json(at_id, {'dbxrefs': ['50-00-0']}, status=422)
     testapp.patch_json(at_id, {'dbxrefs': []}, status=422)
+
+
+@pytest.mark.parametrize('term_id, expected', [
+    ('anti-uniprot:P01308', ('anti-', 'uniprot:P01308')),
+    ('uniprot:P01308', ('', 'uniprot:P01308')),
+    ('CL:0000000', ('', 'CL:0000000')),
+])
+def test_split_antibody_prefix(term_id, expected):
+    from igvfd.types.controlled_term import split_antibody_prefix
+    assert split_antibody_prefix(term_id) == expected
