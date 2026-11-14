@@ -33,7 +33,7 @@
     ],
     "properties": {
         "schema_version": {
-            "default": "4"
+            "default": "5"
         },
         "taxa": {
             "title": "Taxa",
@@ -63,12 +63,19 @@
                 "unspecified"
             ]
         },
-        "ethnicity": {
-            "title": "Ethnicity",
-            "type": "string",
-            "description": "The ethnicity of the human donor.",
-            "comment": "Link to ControlledTerm with ethnicity ontology terms.",
-            "linkTo": "ControlledTerm"
+        "ethnicities": {
+            "title": "Ethnicities",
+            "description": "The ethnicities of the human donor.",
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+                "title": "Ethnicity",
+                "description": "An ethnicity of the human donor.",
+                "comment": "Link to ControlledTerm with ethnicity ontology terms.",
+                "type": "string",
+                "linkTo": "ControlledTerm"
+            }
         }
     },
     "fuzzy_searchable_fields": [
@@ -76,7 +83,7 @@
         "cxg_donor_id",
         "description",
         "taxa.term_name",
-        "ethnicity"
+        "ethnicities"
     ],
     "exact_searchable_fields": [
         "@type"

@@ -210,3 +210,38 @@ def test_human_donor_sex_enum_invalid(testapp, other_lab, taxon_homo_sapiens):
         },
         status=422,
     )
+
+
+def test_human_donor_ethnicities_accepts_multiple_terms(
+    testapp, human_donor_with_ethnicities, controlled_term_ethnicity, controlled_term_hancestro
+):
+    res = testapp.get(human_donor_with_ethnicities['@id'])
+    assert res.json['ethnicities'] == [controlled_term_ethnicity['@id'], controlled_term_hancestro['@id']]
+
+
+def test_human_donor_ethnicities_patch(testapp, human_donor, controlled_term_hancestro):
+    testapp.patch_json(human_donor['@id'], {'ethnicities': [controlled_term_hancestro['@id']]}, status=200)
+    res = testapp.get(human_donor['@id'])
+    assert res.json['ethnicities'] == [controlled_term_hancestro['@id']]
+
+
+@pytest.mark.parametrize(
+    'case',
+    [
+        'empty',
+        'duplicate',
+        'unknown',
+    ]
+)
+def test_human_donor_ethnicities_invalid(testapp, human_donor, controlled_term_hancestro, case):
+    term = controlled_term_hancestro['@id']
+    ethnicities = {
+        'empty': [],
+        'duplicate': [term, term],
+        'unknown': ['/controlled-terms/HANCESTRO_9999999/'],
+    }[case]
+    testapp.patch_json(human_donor['@id'], {'ethnicities': ethnicities}, status=422)
+
+
+def test_human_donor_ethnicity_singular_rejected(testapp, human_donor, controlled_term_hancestro):
+    testapp.patch_json(human_donor['@id'], {'ethnicity': controlled_term_hancestro['@id']}, status=422)

@@ -10,8 +10,8 @@ def human_donor():
             'taxa.term_name': {
                 'title': 'Taxa'
             },
-            'ethnicity.term_name': {
-                'title': 'Ethnicity'
+            'ethnicities.term_name': {
+                'title': 'Ethnicities'
             },
             'cxg_donor_id': {
                 'title': 'Cell x Gene Donor Identifier'
@@ -48,8 +48,8 @@ def human_donor():
             'cxg_donor_id': {
                 'title': 'Cell x Gene Donor Identifier'
             },
-            'ethnicity': {
-                'title': 'Ethnicity'
+            'ethnicities': {
+                'title': 'Ethnicities'
             },
             'lab': {
                 'title': 'Lab'

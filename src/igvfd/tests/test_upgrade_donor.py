@@ -118,3 +118,48 @@ def test_donor_upgrade_taxa_term_ids_are_allowed_by_schema(registry):
             'A schema that drops or renames a species needs its own upgrade step; TAXA_TERM_IDS '
             'stays frozen for the released 3 -> 4 steps.'
         )
+
+
+_ETHNICITY_UUID = 'f2d9b9aa-4b22-4c8a-9d9b-3a4e2b7b5c10'
+
+
+def test_human_donor_upgrade_4_to_5_moves_ethnicity_to_list(upgrader):
+    value = {
+        'schema_version': '4',
+        'lab': '/labs/mock/',
+        'cxg_donor_id': 'CXG-UPGRADE-ETHNICITY',
+        'ethnicity': _ETHNICITY_UUID,
+    }
+    result = upgrader.upgrade('human_donor', value, current_version='4', target_version='5')
+    assert result['schema_version'] == '5'
+    assert 'ethnicity' not in result
+    assert result['ethnicities'] == [_ETHNICITY_UUID]
+
+
+def test_human_donor_upgrade_4_to_5_without_ethnicity(upgrader):
+    value = {
+        'schema_version': '4',
+        'lab': '/labs/mock/',
+        'cxg_donor_id': 'CXG-UPGRADE-NO-ETHNICITY',
+    }
+    result = upgrader.upgrade('human_donor', value, current_version='4', target_version='5')
+    assert result['schema_version'] == '5'
+    assert 'ethnicity' not in result
+    assert 'ethnicities' not in result
+
+
+def test_human_donor_upgrade_3_to_5_links_taxa_and_lists_ethnicity(upgrader, registry, taxon_homo_sapiens):
+    value = {
+        'schema_version': '3',
+        'lab': '/labs/mock/',
+        'taxa': 'Homo sapiens',
+        'cxg_donor_id': 'CXG-UPGRADE-3-TO-5',
+        'ethnicity': _ETHNICITY_UUID,
+    }
+    result = upgrader.upgrade(
+        'human_donor', value, current_version='3', target_version='5', registry=registry
+    )
+    assert result['schema_version'] == '5'
+    assert result['taxa'] == taxon_homo_sapiens['uuid']
+    assert 'ethnicity' not in result
+    assert result['ethnicities'] == [_ETHNICITY_UUID]
