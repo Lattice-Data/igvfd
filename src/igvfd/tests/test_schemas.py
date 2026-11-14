@@ -53,3 +53,19 @@ def test_schemas_etag(testapp):
     etag = testapp.get('/profiles/', status=200).etag
     assert etag
     testapp.get('/profiles/', headers={'If-None-Match': etag}, status=304)
+
+
+def test_every_profile_property_has_title(registry):
+    # Report views use property titles as column headers. A schema that mixes
+    # in another schema's raw properties, such as library.json#/properties,
+    # drops any title that the source only got from its own mixins.
+    # Test-only types from igvfd.tests.testing_views are skipped.
+    from snovault import TYPES
+    missing = sorted(
+        '{}.{}'.format(typeinfo.name, prop)
+        for typeinfo in registry[TYPES].by_item_type.values()
+        if typeinfo.factory.__module__.startswith('igvfd.types.')
+        for prop, definition in typeinfo.schema['properties'].items()
+        if 'title' not in definition
+    )
+    assert missing == [], missing

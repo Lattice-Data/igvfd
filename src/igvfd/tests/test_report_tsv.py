@@ -37,3 +37,53 @@ def test_get_host_type():
     assert 'igvfd-dev' == get_host_type('igvfd-dev.demo.lattice-data.org')
     assert 'igvfd-igvf-2320-improve-sample-summary' == get_host_type(
         'igvfd-igvf-2320-improve-sample-summary.demo.lattice-data.org')
+
+
+def _fake_report_request(fields, schemas_by_type):
+    from types import SimpleNamespace
+    from snovault import TYPES
+    from webob.multidict import MultiDict
+
+    class FakeTypes(dict):
+        abstract = {}
+
+    types = FakeTypes(
+        (type_name, SimpleNamespace(schema=schema))
+        for type_name, schema in schemas_by_type.items()
+    )
+    return SimpleNamespace(
+        params=MultiDict([('field', field) for field in fields]),
+        registry={
+            TYPES: types,
+            'SEARCH_CONFIG_REPORT_CLIENT': {type_name: [] for type_name in schemas_by_type},
+        },
+    )
+
+
+UNTITLED_PROPERTY_SCHEMA = {
+    'properties': {
+        'titled': {'title': 'Titled', 'type': 'string'},
+        'untitled': {'type': 'array'},
+    }
+}
+
+
+def test_list_visible_columns_for_schemas_falls_back_to_field_name_without_title():
+    from igvfd.report import list_visible_columns_for_schemas
+    request = _fake_report_request(['titled', 'untitled'], {'Thing': UNTITLED_PROPERTY_SCHEMA})
+    columns = list_visible_columns_for_schemas(request, UNTITLED_PROPERTY_SCHEMA, [])
+    assert dict(columns) == {
+        'titled': {'title': 'Titled'},
+        'untitled': {'title': 'untitled'},
+    }
+
+
+def test_get_result_columns_falls_back_to_field_name_without_title():
+    from igvfd.report import get_result_columns
+    request = _fake_report_request(['titled', 'untitled'], {'Thing': UNTITLED_PROPERTY_SCHEMA})
+    facets = [{'field': 'type', 'terms': [{'key': 'Thing'}]}]
+    columns = get_result_columns(request, facets, {})
+    assert dict(columns) == {
+        'titled': {'title': 'Titled'},
+        'untitled': {'title': 'untitled'},
+    }

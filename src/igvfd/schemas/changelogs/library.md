@@ -2,6 +2,8 @@
 
 ### Minor changes since schema version 1
 
+* Add *title* and *description* to *dbxrefs*, which the regex override had dropped from the concrete library profiles.
+
 * Rename *multiplexing_method* to *multiplexing_methods*.
 
 * Update `aliases` regex to anchor at true end of input with `(?![\s\S])` rather than `$`.
