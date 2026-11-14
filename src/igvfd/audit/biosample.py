@@ -41,7 +41,8 @@ def audit_biosample_missing_developmental_stages(value, system):
     # CELLxGENE sets development_stage_ontology_term_id to "na" for cell lines.
     if biosample_type == 'CellLine':
         return
-    message_index = 1 if biosample_type == 'Tissue' else 0
+    # Positions in the docstring list above: 0 is the ERROR message, 1 the WARNING one.
+    message_index = {'Tissue': 1}.get(biosample_type, 0)
     audit_message = get_audit_message(audit_biosample_missing_developmental_stages, index=message_index)
     object_type = space_in_words(biosample_type).capitalize()
     biosample_id = value['@id']
