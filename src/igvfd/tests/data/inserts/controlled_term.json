@@ -539,5 +539,15 @@
         "aliases": [
             "lattice:uberon_0002107_deleted"
         ]
+    },
+    {
+        "term_id": "CL:0000002",
+        "ontology_source": "CL",
+        "uuid": "720a0d9e-8d53-4931-aaec-5ed890c46034",
+        "schema_version": "5",
+        "status": "current",
+        "aliases": [
+            "lattice:cl_0000002_deprecated"
+        ]
     }
 ]

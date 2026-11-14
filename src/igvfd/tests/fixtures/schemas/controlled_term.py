@@ -12,6 +12,17 @@ def controlled_term(testapp):
 
 
 @pytest.fixture
+def controlled_term_deprecated(testapp):
+    # CL:0000002 (obsolete immortal cell line cell) is deprecated and replaced by CLO:0000019.
+    item = {
+        'term_id': 'CL:0000002',
+        'ontology_source': 'CL',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
 def controlled_term_with_definition(testapp):
     item = {
         'term_id': 'CL:0000000',
