@@ -43,6 +43,18 @@ def controlled_term_with_synonyms(testapp):
 
 
 @pytest.fixture
+def controlled_term_deprecated_with_consider(testapp):
+    # CL:0000004 (obsolete cell by organism) is deprecated with no replaced_by; the ontology
+    # suggests considering CL:0000000, CL:0000003 and CL:0001034, and CL:0000003 is deprecated too.
+    item = {
+        'term_id': 'CL:0000004',
+        'ontology_source': 'CL',
+        'status': 'current',
+    }
+    return testapp.post_json('/controlled_term', item, status=201).json['@graph'][0]
+
+
+@pytest.fixture
 def controlled_term_with_aliases(testapp):
     item = {
         'term_id': 'CL:9000000',

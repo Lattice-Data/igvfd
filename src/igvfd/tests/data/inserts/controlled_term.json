@@ -549,5 +549,15 @@
         "aliases": [
             "lattice:cl_0000002_deprecated"
         ]
+    },
+    {
+        "term_id": "CL:9999999",
+        "ontology_source": "CL",
+        "uuid": "99e64803-efd0-4e89-8c0d-788750489014",
+        "schema_version": "5",
+        "status": "current",
+        "aliases": [
+            "lattice:cl_9999999_not_in_ontology"
+        ]
     }
 ]
