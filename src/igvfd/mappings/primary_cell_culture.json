@@ -1,6 +1,6 @@
 {
-    "hash": "47a9425ec4c37b70cf1fc46d613f316a",
-    "index_name": "primary_cell_culture_47a9425e",
+    "hash": "caa3a5ceca7b8cd959e9bf4c1b1608a8",
+    "index_name": "primary_cell_culture_caa3a5ce",
     "item_type": "primary_cell_culture",
     "mapping": {
         "dynamic_templates": [
@@ -266,7 +266,7 @@
                             "description": {
                                 "type": "text"
                             },
-                            "ethnicity": {
+                            "ethnicities": {
                                 "type": "keyword"
                             },
                             "lab": {

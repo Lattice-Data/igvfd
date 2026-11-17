@@ -1,5 +1,10 @@
 # Human Donor Changelog
 
+### Schema version 5
+
+* Replace the single `ethnicity` link with `ethnicities`, a list of unique links to ControlledTerms.
+* Upgrade `ethnicity` to a one-item `ethnicities` list.
+
 ### Schema version 4
 
 * Change `taxa` from an enum to a link to a ControlledTerm, restricted to the NCBITaxon term for Homo sapiens.

@@ -42,13 +42,15 @@ def human_donor_with_aliases(testapp, other_lab, taxon_homo_sapiens):
 
 
 @pytest.fixture
-def human_donor_with_ethnicity(testapp, other_lab, controlled_term_ethnicity, taxon_homo_sapiens):
+def human_donor_with_ethnicities(
+    testapp, other_lab, controlled_term_ethnicity, controlled_term_hancestro, taxon_homo_sapiens
+):
     item = {
         'lab': other_lab['@id'],
         'taxa': taxon_homo_sapiens['@id'],
         'sex': 'female',
         'cxg_donor_id': 'lattice:test-cxg-human-004',
-        'ethnicity': controlled_term_ethnicity['@id'],
+        'ethnicities': [controlled_term_ethnicity['@id'], controlled_term_hancestro['@id']],
         'status': 'current',
     }
     return testapp.post_json('/human_donor', item, status=201).json['@graph'][0]
