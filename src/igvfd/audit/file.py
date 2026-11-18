@@ -1,7 +1,4 @@
-from snovault import (
-    AuditFailure,
-    audit_checker,
-)
+from snovault import AuditFailure
 
 from .formatter import (
     audit_link,
@@ -53,14 +50,3 @@ def audit_file_missing_file_set(value, system):
         f'{detail} {audit_message.get("audit_description", "")}',
         level=audit_message.get('audit_level', ''),
     )
-
-
-function_dispatcher_sequence_file_object = {
-    'audit_file_missing_file_set': audit_file_missing_file_set,
-}
-
-
-@audit_checker('SequenceFile', frame='object')
-def audit_sequence_file_object_dispatcher(value, system):
-    for fn in function_dispatcher_sequence_file_object.values():
-        yield from fn(value, system)
