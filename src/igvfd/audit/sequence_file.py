@@ -23,6 +23,8 @@ def audit_sequence_file_multiple_sequence_file_sets(value, system):
         }
     ]
     '''
+    if value.get('status') == 'deleted':
+        return
     request = system['request']
     # sequence_file_sets already counts a set once even when it links this file
     # in two slots; reverse links ignore status, so deleted sets are dropped here.

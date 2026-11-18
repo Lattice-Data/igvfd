@@ -54,6 +54,17 @@ def test_sequence_file_audit_clears_after_deleting_a_set(
     assert _errors(indexer_testapp, sequence_file) == []
 
 
+def test_deleted_sequence_file_in_two_sets_no_audit(
+    testapp,
+    indexer_testapp,
+    sequence_file,
+    sequence_file_set_illumina_single_end,
+    sequence_file_set_illumina_paired_end,
+):
+    testapp.patch_json(sequence_file['@id'], {'status': 'deleted'}, status=200)
+    assert _errors(indexer_testapp, sequence_file) == []
+
+
 def test_sequence_file_audit_names_only_non_deleted_sets(
     testapp,
     indexer_testapp,
