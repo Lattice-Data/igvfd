@@ -3,6 +3,7 @@ from snovault import (
     audit_checker,
 )
 
+from .file import audit_file_missing_file_set
 from .formatter import (
     audit_link,
     get_audit_message,
@@ -47,6 +48,7 @@ def audit_sequence_file_multiple_sequence_file_sets(value, system):
 
 function_dispatcher_sequence_file_object = {
     'audit_sequence_file_multiple_sequence_file_sets': audit_sequence_file_multiple_sequence_file_sets,
+    'audit_file_missing_file_set': audit_file_missing_file_set,
 }
 
 
