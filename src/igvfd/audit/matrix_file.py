@@ -4,6 +4,7 @@ from snovault import (
     audit_checker,
 )
 
+from .file import audit_file_missing_file_set
 from .formatter import (
     audit_link,
     get_audit_message,
@@ -153,11 +154,13 @@ function_dispatcher_raw_matrix_file_object = {
     'audit_raw_matrix_file_software_without_version': audit_raw_matrix_file_software_without_version,
     'audit_matrix_file_missing_md5sum': audit_matrix_file_missing_md5sum,
     'audit_matrix_file_derived_from_incomplete_sequence_file_set': audit_matrix_file_derived_from_incomplete_sequence_file_set,
+    'audit_file_missing_file_set': audit_file_missing_file_set,
 }
 
 function_dispatcher_processed_matrix_file_object = {
     'audit_matrix_file_missing_md5sum': audit_matrix_file_missing_md5sum,
     'audit_matrix_file_derived_from_incomplete_sequence_file_set': audit_matrix_file_derived_from_incomplete_sequence_file_set,
+    'audit_file_missing_file_set': audit_file_missing_file_set,
 }
 
 
