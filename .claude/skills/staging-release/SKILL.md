@@ -157,6 +157,20 @@ Only after the user says the AWS step is done.
    rules above).
 2. Report the release URL.
 
+## Phase H -- draft the Slack announcement (doc step 13)
+
+After the release is published, draft a short announcement for the user to post. Do not
+post it yourself. Build it from the release notes:
+
+- First line: `:rocket: *igvfd vX.Y.Z* is live at https://data.lattice-data.org/`
+- One bullet per JIRA ticket, as `• *DB2-nn:* <short summary>`. Leave out the version
+  bump commit.
+- One closing line on impact: whether there are schema/API changes or a data migration.
+  Work this out from the diff (`git diff <last-tag>..vX.Y.Z --stat`, mainly
+  `src/igvfd/schemas/` and `src/igvfd/upgrade/`). If you can't tell, say so instead of guessing.
+
+Keep it to about four lines. Show it in a code block so it can be copied as is.
+
 ## Resuming mid-release
 
 Releases span human gates, so the user will often come back later. Re-run `preflight.sh`

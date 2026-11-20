@@ -1,7 +1,8 @@
 > **Automated path:** run the `staging-release` skill (`.claude/skills/staging-release/`)
-> to have Claude drive steps 3-9 and 12, stopping at each human gate. The guarded helper
+> to have Claude drive steps 3-9 and 12, and draft the step 13 announcement, stopping at each human gate. The guarded helper
 > scripts it calls live in `scripts/release/` and can also be run by hand. Steps 1 (JIRA),
-> 10 (Slack `#aws-igvf-staging`) and 11 (AWS approve/reject) stay manual. You always pick
+> 10 (Slack `#aws-igvf-staging`), 11 (AWS approve/reject) and posting the step 13
+> announcement stay manual. You always pick
 > the version number yourself; nothing derives it.
 >
 > Scripts: `preflight.sh` (survey), `merge-to-main.sh` (step 6),
@@ -87,3 +88,13 @@ proceed ONLY if there are no batch-upgrade errors, and if there are no errors (L
     staging back.
 
 12. On Github `Make a Release` from the tag, pasting the proper commits in the details.
+
+13. Announce the release on Slack. Keep it to a few lines: the version, the production
+    URL, one bullet per JIRA ticket from the release notes, and one line on impact. Say
+    whether there are schema/API changes or a data migration. Example:
+
+```
+:rocket: *igvfd vX.Y.Z* is live at https://data.lattice-data.org/
+• *DB2-92:* nginx base image bumped to 1.31.9
+No changes to the schemas or the API, and no migration is needed.
+```
